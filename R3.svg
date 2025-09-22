@@ -42,7 +42,7 @@
    showgrid="true"><inkscape:grid
      id="grid1"
      units="mm"
-     originx="-23029.562"
+     originx="-28110.329"
      originy="-2164.4583"
      spacingx="99.999998"
      spacingy="100"
@@ -745,22 +745,22 @@
   </font><inkscape:path-effect
      effect="powerclip"
      message=""
-     id="path-effect79-4-0-6-0-4"
+     id="path-effect79-4-0-6-0-4-3-7"
      is_visible="true"
      lpeversion="1"
      inverse="true"
      flatten="false"
      hide_clip="false" /><clipPath
      clipPathUnits="userSpaceOnUse"
-     id="clipath_lpe_path-effect79-4-0-6-0-4"><rect
+     id="clipath_lpe_path-effect79-4-0-6-0-4-3-7"><rect
        style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
-       id="rect115"
+       id="rect119"
        width="1270.9302"
        height="1148.0061"
        x="27749.107"
        y="2890.4697"
        d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" /><path
-       id="lpe_path-effect79-4-0-6-0-4"
+       id="lpe_path-effect79-4-0-6-0-4-3-7"
        style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
        class="powerclip"
        d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><font
@@ -20350,17 +20350,17 @@
 
  
 <g
-   id="g116"
+   id="g122"
    transform="translate(-26696.5,-4325.9373)"
-   inkscape:label="R1"><path
+   inkscape:label="R3"><path
      style="fill:#737373;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
-     id="rect77-9-5-5-2-2"
+     id="rect77-9-5-5-2-2-0-0"
      width="2450"
      height="1400"
      x="26696.5"
      y="2764.8999"
-     clip-path="url(#clipath_lpe_path-effect79-4-0-6-0-4)"
-     inkscape:path-effect="#path-effect79-4-0-6-0-4"
+     clip-path="url(#clipath_lpe_path-effect79-4-0-6-0-4-3-7)"
+     inkscape:path-effect="#path-effect79-4-0-6-0-4-3-7"
      sodipodi:type="rect"
      d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
      transform="translate(-1e-4,1561.0374)" /><text
@@ -20368,9 +20368,9 @@
      style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
      x="26725.137"
      y="5521.9321"
-     id="text79-2-6-7-2-6"><tspan
+     id="text79-2-6-7-2-6-4-8"><tspan
        sodipodi:role="line"
-       id="tspan79-0-7-7-3-0"
+       id="tspan79-0-7-7-3-0-8-9"
        style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;fill-opacity:1;stroke-width:0"
        x="26725.137"
        y="5521.9321">R</tspan></text><text
@@ -20378,9 +20378,9 @@
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#737373;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
      x="28042.244"
      y="5451.2998"
-     id="text80-7-3-4-6-6"><tspan
+     id="text80-7-3-4-6-6-3-3"><tspan
        sodipodi:role="line"
        style="fill:#737373;fill-opacity:1;stroke-width:0"
        x="28042.244"
        y="5451.2998"
-       id="tspan97-57-7-1">1</tspan></text></g></svg>
+       id="tspan97-57-7-1-0-0">3</tspan></text></g></svg>
