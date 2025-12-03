@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="128" height="128" role="img" aria-labelledby="title2 desc2">
+  <title id="title2">Haut-parleur compact</title>
+  <desc id="desc2">Icône haut-parleur compacte, plein</desc>
+  <g fill="currentColor">
+    <path d="M9 24v16a2 2 0 0 0 2 2h9.5L34 51V13L20.5 22H11a2 2 0 0 0-2 2z"/>
+    <path d="M41 26c1.8 1.8 1.8 6.6 0 8.4a1 1 0 1 1-1.4-1.4c1-1 1-4.6 0-5.6a1 1 0 0 1 1.4-1.4z"/>
+  </g>
+</svg>
