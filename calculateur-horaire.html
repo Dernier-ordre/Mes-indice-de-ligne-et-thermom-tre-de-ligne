@@ -69,11 +69,11 @@
             <label style="color:white;">1. Choisir ton Niveau</label>
             <select id="lvl-select" onchange="loadLines()">
                 <option value="">-- Sélectionner --</option>
-                <option value="1">Niveau 1 (Débutant)</option>
+                <option value="1">Niveau 1</option>
                 <option value="2">Niveau 2</option>
                 <option value="3">Niveau 3</option>
                 <option value="4">Niveau 4</option>
-                <option value="5">Niveau 5 (Expert)</option>
+                <option value="5">Niveau 5</option>
             </select>
         </div>
         <div>
@@ -128,11 +128,11 @@
 <script>
 // --- DONNÉES DE CONFIGURATION TM ---
 const tmData = {
-    "1": [{n:"Ligne 2", t:28}, {n:"Ligne 2", t:32}, {n:"Ligne 3", t:38}],
-    "2": [{n:"Ligne 10", t:45}, {n:"Ligne 12", t:52}, {n:"Ligne 14", t:48}],
-    "3": [{n:"Ligne 20", t:60}, {n:"Ligne 25", t:75}],
-    "4": [{n:"Ligne 40", t:90}, {n:"Ligne 42", t:110}],
-    "5": [{n:"Ligne 100", t:130}, {n:"Ligne 110", t:150}]
+    "1": [{n:"Ligne 1", t:48}, {n:"Ligne 2", t:80}, {n:"Ligne 3", t:64}, {n:"Ligne 4", t:56}],
+    "2": [{n:"Ligne 1", t:48}, {n:"Ligne 2", t:80}, {n:"Ligne 3", t:64}, {n:"Ligne 4", t:56}, {n:"Ligne 5", t:80}, {n:"Ligne 6", t:40}, {n:"Ligne 7", t:36}],
+    "3": [{n:"Ligne 1", t:48}, {n:"Ligne 2", t:80}, {n:"Ligne 3", t:64}, {n:"Ligne 4", t:56}, {n:"Ligne 5", t:80}, {n:"Ligne 6", t:40}, {n:"Ligne 7", t:36}, {n:"Ligne 8", t:64}, {n:"Ligne 9", t:36}, {n:"Ligne 10", t:60}, {n:"Ligne 11", t:42}, {n:"Ligne 60", t:40, {n:"Ligne 61", t:64}],
+    "4": [{n:"Ligne 1", t:48}, {n:"Ligne 2", t:80}, {n:"Ligne 3", t:64}, {n:"Ligne 4", t:56}, {n:"Ligne 5", t:80}, {n:"Ligne 6", t:40}, {n:"Ligne 7", t:36}, {n:"Ligne 8", t:64}, {n:"Ligne 9", t:36}, {n:"Ligne 10", t:60}, {n:"Ligne 11", t:42}, , {n:"Ligne 12", t:54}, {n:"Ligne 13", t:36}, {n:"Ligne 60", t:40}, {n:"Ligne 61", t:64}, {n:"Ligne 62", t:80}, {n:"Ligne 63", t:58}, {n:"Ligne 64", t:28}, {n:"Ligne 101", t:72}, {n:"Ligne 102", t:54}, {n:"Ligne 103", t:42}, {n:"Ligne 104", t:48}, {n:"Ligne 201", t:116}, {n:"Ligne 202", t:74}, {n:"Ligne 203", t:124}],
+    "5": [{n:"Ligne T1", t:92}, {n:"Ligne 2", t:48}, {n:"Ligne 3", t:64}, {n:"Ligne 4", t:94}, {n:"Ligne 5", t:74}, {n:"Ligne 6", t:40}, {n:"Ligne 7", t:36}, {n:"Ligne 8", t:64}, {n:"Ligne 9", t:36}, {n:"Ligne 10", t:66}, {n:"Ligne 11", t:42}, , {n:"Ligne 12", t:54}, {n:"Ligne 13", t:36}, {n:"Ligne 14", t:48}, {n:"Ligne 15", t:96}, {n:"Ligne 16", t:44}, {n:"Ligne 17", t:66}, {n:"Ligne 18", t:80}, {n:"Ligne 60", t:40}, {n:"Ligne 61", t:64}, {n:"Ligne 62", t:80}, {n:"Ligne 63", t:58}, {n:"Ligne 64", t:28}, {n:"Ligne 65", t:50}, {n:"Ligne 101", t:72}, {n:"Ligne 102", t:54}, {n:"Ligne 103", t:42}, {n:"Ligne 104", t:48}, {n:"Ligne 105", t:100}, {n:"Ligne 106", t:52}, {n:"Ligne 151", t:104}, {n:"Ligne 201", t:116}, {n:"Ligne 202", t:74}, {n:"Ligne 203", t:124}, {n:"Ligne 204", t:140}, {n:"Ligne 205", t:90}, {n:"Ligne 206", t:96}, {n:"Ligne 251", t:112}]
 };
 
 // --- GESTION INTERFACE ---
