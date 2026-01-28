@@ -5,110 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculateur Horaire - Transport Manager</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #27ae60; --light: #f4f6f7; }
+        :root { --primary: #2c3e50; --secondary: #e67e22; --light: #f4f6f7; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--light); padding: 20px; color: #333; }
-        .container { max-width: 1100px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        h1 { text-align: center; color: var(--primary); margin-bottom: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        h1 { text-align: center; color: var(--primary); }
         
         .panel { background: #eef2f3; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #dee2e6; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         
         label { font-weight: bold; font-size: 0.9em; color: #555; display: block; margin-bottom: 5px; }
         input, button { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        input:focus { border-color: var(--accent); outline: none; }
         
-        .period-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px; align-items: end; background: white; padding: 10px; border-radius: 5px; border: 1px solid #eee; }
+        .period-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px; align-items: end; background: white; padding: 10px; border-radius: 5px; }
         
-        button { cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-add { background: #3498db; color: white; border: none; }
-        .btn-calc { background: var(--accent); color: white; border: none; font-size: 1.1em; padding: 15px; margin-top: 10px; }
-        .btn-remove { background: #e74c3c; color: white; border: none; width: auto; padding: 0 15px; }
+        .btn-add { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; }
+        .btn-calc { background: var(--primary); color: white; border: none; font-size: 1.1em; padding: 15px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-calc:hover { background: #1a252f; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.85em; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-        th { background-color: var(--primary); color: white; position: sticky; top: 0; }
+        /* Zone Résultats avec 2 colonnes */
+        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
+        @media (max-width: 900px) { .results-grid { grid-template-columns: 1fr; } }
+
+        .table-container { overflow-x: auto; background: white; border: 1px solid #ddd; border-radius: 8px; }
+        .table-header { padding: 10px; background: var(--primary); color: white; text-align: center; font-weight: bold; border-radius: 8px 8px 0 0; }
+        .header-retour { background: var(--secondary); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.8em; white-space: nowrap; }
+        th, td { border: 1px solid #ddd; padding: 6px; text-align: center; }
         tr:nth-child(even) { background-color: #f9f9f9; }
-        
-        /* Style pour différencier les heures de pointe */
-        .row-peak { background-color: #e8f8f5 !important; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Super Calculateur d'Horaires</h1>
+    <h1>Calculateur Horaire (Aller / Retour)</h1>
 
     <div class="panel">
-        <h3 style="margin-top:0;">Paramètres de la ligne</h3>
         <div class="grid-3">
             <div>
                 <label>Temps Roulage Aller-Retour (min)</label>
-                <input type="number" id="totalTime" value="50" placeholder="Ex: 50">
+                <input type="number" id="totalTime" value="50">
             </div>
             <div>
-                <label>Pause/Régulation par tour (min)</label>
-                <input type="number" id="breakTime" value="10" placeholder="Ex: 10">
+                <label>Pause Totale (min)</label>
+                <input type="number" id="breakTime" value="10">
             </div>
             <div>
-                <label>Nombre d'arrêts (Aller)</label>
+                <label>Nombre d'arrêts</label>
                 <input type="number" id="nbStops" value="10">
             </div>
         </div>
-        <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
-            ℹ️ <em>Le temps de cycle sera de <span id="cycle-display">60</span> min.</em>
+        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">
+            * Le calcul suppose que la pause est répartie équitablement aux deux terminus.
         </p>
     </div>
 
     <div class="panel">
-        <h3 style="margin-top:0;">Définition des Services</h3>
+        <h3>Services / Périodes</h3>
         <div id="periods-container"></div>
-        <button class="btn-add" onclick="addPeriodRow()">+ Ajouter une plage horaire</button>
+        <button class="btn-add" onclick="addPeriodRow()">+ Ajouter une plage</button>
     </div>
 
-    <button class="btn-calc" onclick="generateSchedule()">CALCULER LA GRILLE HORAIRE</button>
+    <button class="btn-calc" onclick="generateSchedule()">CALCULER LES HORAIRES</button>
 
-    <div id="results" style="display:none; margin-top: 30px;">
-        <h3>Grille Horaire Générée</h3>
-        <div style="overflow-x: auto;">
-            <table id="schedule-table">
-                <thead></thead>
-                <tbody></tbody>
-            </table>
+    <div class="results-grid" id="results" style="display:none;">
+        
+        <div>
+            <div class="table-header">Sens ALLER (Départ Terminus 1)</div>
+            <div class="table-container">
+                <table id="table-aller">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
+
+        <div>
+            <div class="table-header header-retour">Sens RETOUR (Départ Terminus 2)</div>
+            <div class="table-container">
+                <table id="table-retour">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <script>
-    // Initialisation
     window.onload = function() {
-        // On met des valeurs par défaut pour l'exemple
-        addPeriodRow('06:00', '09:00', 6); // Pointe Matin (10 min fréq)
-        addPeriodRow('09:00', '16:00', 3); // Creuse (20 min fréq)
-        addPeriodRow('16:00', '20:00', 6); // Pointe Soir (10 min fréq)
-        updateCycleDisplay();
+        addPeriodRow('06:00', '22:00', 4);
     };
 
-    // Mettre à jour l'affichage du temps de cycle en direct
-    document.getElementById('totalTime').addEventListener('input', updateCycleDisplay);
-    document.getElementById('breakTime').addEventListener('input', updateCycleDisplay);
-
-    function updateCycleDisplay() {
-        const t = parseInt(document.getElementById('totalTime').value) || 0;
-        const b = parseInt(document.getElementById('breakTime').value) || 0;
-        document.getElementById('cycle-display').innerText = t + b;
-    }
-
     function addPeriodRow(startVal = '', endVal = '', busVal = '') {
-        const container = document.getElementById('periods-container');
         const div = document.createElement('div');
         div.className = 'period-row';
         div.innerHTML = `
             <div><label>Début</label><input type="time" class="p-start" value="${startVal}"></div>
             <div><label>Fin</label><input type="time" class="p-end" value="${endVal}"></div>
             <div><label>Nb Bus</label><input type="number" class="p-bus" value="${busVal}" min="1"></div>
-            <button class="btn-remove" onclick="this.parentElement.remove()">Suppr.</button>
+            <button style="background:#e74c3c; color:white; border:none; border-radius:5px; cursor:pointer;" onclick="this.parentElement.remove()">X</button>
         `;
-        container.appendChild(div);
+        document.getElementById('periods-container').appendChild(div);
     }
 
     function timeToMin(timeStr) {
@@ -117,117 +116,110 @@
         return h * 60 + m;
     }
 
+    // Fonction qui gère l'affichage des heures > 24h (ex: 25h10 devient 01h10)
     function minToTime(minutes) {
         let h = Math.floor(minutes / 60);
         let m = Math.floor(minutes % 60);
-        if (h >= 24) h -= 24; 
+        while (h >= 24) { h -= 24; } 
         return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
     }
 
     function generateSchedule() {
-        console.log("Démarrage du calcul...");
-        
-        // 1. Récupération & Sécurité
+        // 1. Inputs
         const totalTime = parseInt(document.getElementById('totalTime').value);
         const breakTime = parseInt(document.getElementById('breakTime').value);
         const nbStops = parseInt(document.getElementById('nbStops').value);
-
-        if (isNaN(totalTime) || isNaN(breakTime) || isNaN(nbStops)) {
-            alert("Erreur : Veuillez remplir tous les champs numériques en haut.");
-            return;
-        }
+        
+        if (isNaN(totalTime) || isNaN(breakTime)) return;
 
         const cycleTime = totalTime + breakTime;
-        const oneWayTime = totalTime / 2;
-        // Temps entre 2 arrêts = Temps Aller / (Nb Arrêts - 1)
-        const timeBetweenStops = nbStops > 1 ? oneWayTime / (nbStops - 1) : 0;
-
-        // 2. Traitement des périodes
-        const rows = document.querySelectorAll('.period-row');
-        let periods = [];
+        const oneWayDrive = totalTime / 2;
+        const halfBreak = breakTime / 2; // Pause à chaque bout de ligne
+        const timeBetweenStops = nbStops > 1 ? oneWayDrive / (nbStops - 1) : 0;
         
-        rows.forEach(row => {
-            const s = timeToMin(row.querySelector('.p-start').value);
-            const e = timeToMin(row.querySelector('.p-end').value);
-            const b = parseInt(row.querySelector('.p-bus').value);
+        // Décalage pour le départ retour : Temps Aller + Demi-Pause
+        const returnOffset = oneWayDrive + halfBreak;
 
-            if (s !== -1 && e !== -1 && b > 0) {
-                periods.push({ start: s, end: e, nbBus: b });
-            }
+        // 2. Récupération Périodes
+        let periods = [];
+        document.querySelectorAll('.period-row').forEach(row => {
+            let s = timeToMin(row.querySelector('.p-start').value);
+            let e = timeToMin(row.querySelector('.p-end').value);
+            let b = parseInt(row.querySelector('.p-bus').value);
+
+            // GESTION NUIT : Si fin < début (ex: 22h -> 01h), on ajoute 24h à la fin
+            if (e < s) e += 1440; 
+
+            if (s !== -1 && e !== -1 && b > 0) periods.push({ start: s, end: e, nbBus: b });
         });
 
-        if (periods.length === 0) {
-            alert("Erreur : Aucune période valide définie. Vérifiez les heures et le nombre de bus (min 1).");
-            return;
-        }
-
-        // Tri des périodes par heure de début
         periods.sort((a, b) => a.start - b.start);
 
-        // 3. Construction du tableau
-        const tableHead = document.querySelector('#schedule-table thead');
-        const tableBody = document.querySelector('#schedule-table tbody');
-        
-        // Header
-        let headerHTML = '<tr><th>Départ Terminus</th>';
-        for(let i=1; i < nbStops; i++) {
-            headerHTML += `<th>Arrêt ${i+1}</th>`;
-        }
-        headerHTML += '<th>Fréquence</th></tr>';
-        tableHead.innerHTML = headerHTML;
-        tableBody.innerHTML = '';
+        // 3. Préparation Tableaux
+        const theadAller = document.querySelector('#table-aller thead');
+        const tbodyAller = document.querySelector('#table-aller tbody');
+        const theadRetour = document.querySelector('#table-retour thead');
+        const tbodyRetour = document.querySelector('#table-retour tbody');
 
-        // 4. BOUCLE DE CALCUL
+        // Headers
+        let hAller = '<tr>';
+        let hRetour = '<tr>';
+        for(let i=1; i<=nbStops; i++) {
+            hAller += `<th>Arrêt ${i}</th>`;
+            hRetour += `<th>Arrêt ${nbStops - i + 1}</th>`; // Inverse les numéros pour le retour
+        }
+        hAller += '</tr>'; hRetour += '</tr>';
+        
+        theadAller.innerHTML = hAller;
+        theadRetour.innerHTML = hRetour;
+        tbodyAller.innerHTML = '';
+        tbodyRetour.innerHTML = '';
+
+        // 4. BOUCLE PRINCIPALE
         let currentTime = periods[0].start;
         const endTimeOfDay = periods[periods.length - 1].end;
-        let count = 0; // Sécurité anti boucle infinie
+        let safety = 0;
 
-        while (currentTime < endTimeOfDay && count < 500) {
-            // Dans quelle période sommes-nous ?
-            let currentPeriod = periods.find(p => currentTime >= p.start && currentTime < p.end);
+        while (currentTime < endTimeOfDay && safety < 1000) {
+            // Trouver la période active
+            let period = periods.find(p => currentTime >= p.start && currentTime < p.end);
 
-            if (!currentPeriod) {
-                // Si on est dans un "trou" (ex: pause midi), on saute à la prochaine période
-                let nextPeriod = periods.find(p => p.start > currentTime);
-                if (nextPeriod) {
-                    currentTime = nextPeriod.start;
-                    continue;
-                } else {
-                    break; // Fin de service
-                }
+            if (!period) {
+                // Saut au prochain créneau si trou
+                let next = periods.find(p => p.start > currentTime);
+                if (next) { currentTime = next.start; continue; }
+                else { break; }
             }
 
-            // CALCUL DE LA FRÉQUENCE
-            // Fréquence = (Temps Roulage + Pause) / Nb Bus
-            let frequency = cycleTime / currentPeriod.nbBus;
+            let frequency = cycleTime / period.nbBus;
 
-            if (frequency <= 0) {
-                alert("Erreur critique : Fréquence nulle ou négative.");
-                break;
-            }
-
-            // Création de la ligne
-            let rowHTML = `<tr>`;
+            // --- GÉNÉRATION LIGNE ALLER ---
+            let rowAller = '<tr>';
             for (let s = 0; s < nbStops; s++) {
-                // On arrondit à la minute près pour l'affichage
-                let passageTime = Math.round(currentTime + (s * timeBetweenStops));
-                rowHTML += `<td>${minToTime(passageTime)}</td>`;
+                let t = Math.round(currentTime + (s * timeBetweenStops));
+                rowAller += `<td>${minToTime(t)}</td>`;
             }
-            // Colonne info fréquence
-            rowHTML += `<td style="color:#777; font-size:0.8em;">${Math.round(frequency)} min</td></tr>`;
+            rowAller += '</tr>';
+            tbodyAller.innerHTML += rowAller;
+
+            // --- GÉNÉRATION LIGNE RETOUR (Liée à l'Aller) ---
+            // Le bus arrive au terminus, fait sa pause, et repart
+            let startRetour = currentTime + returnOffset;
             
-            tableBody.innerHTML += rowHTML;
+            let rowRetour = '<tr>';
+            for (let s = 0; s < nbStops; s++) {
+                let t = Math.round(startRetour + (s * timeBetweenStops));
+                rowRetour += `<td>${minToTime(t)}</td>`;
+            }
+            rowRetour += '</tr>';
+            tbodyRetour.innerHTML += rowRetour;
 
-            // Avancer le temps pour le prochain bus
+            // Incrément
             currentTime += frequency;
-            count++;
+            safety++;
         }
 
-        document.getElementById('results').style.display = 'block';
-        
-        if (count >= 500) {
-            alert("Attention : Le calcul a été stoppé car il générait trop de lignes. Vérifiez que la fréquence n'est pas trop courte.");
-        }
+        document.getElementById('results').style.display = 'grid';
     }
 </script>
 
