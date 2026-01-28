@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur de Grilles Horaires</title>
+    <title>Calculateur de Grilles Horaires avec Intervalles</title>
     <style>
         :root { --aller: #2c3e50; --retour: #d35400; --bg: #f5f6fa; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: #2f3640; }
@@ -27,7 +27,7 @@
         .table-wrapper { overflow-x: auto; border: 1px solid #dcdde1; border-radius: 0 0 8px 8px; background: white; margin-bottom: 30px; }
         table { border-collapse: collapse; width: 100%; font-size: 0.85em; }
         
-        /* LA COLONNE DE GAUCHE (ARRÊTS) FIXE */
+        /* Colonne des arrêts fixe */
         td:first-child, th:first-child { 
             position: sticky; 
             left: 0; 
@@ -40,15 +40,16 @@
             padding-left: 15px;
         }
         
-        th, td { border: 1px solid #dcdde1; padding: 12px; text-align: center; min-width: 85px; }
+        th, td { border: 1px solid #dcdde1; padding: 10px; text-align: center; min-width: 90px; }
         th { background: #f1f2f6; }
+        .freq-info { font-weight: normal; font-size: 0.75em; color: #666; display: block; margin-top: 4px; border-top: 1px solid #ddd; padding-top: 2px;}
         tr:hover td { background-color: #f1f2f6; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2 style="text-align: center;">Calculateur de Fiches Horaires</h2>
+    <h2 style="text-align: center;">Calculateur de Fiches Horaires Pro</h2>
 
     <div class="config-box">
         <div><label>Temps Aller-Retour (min)</label><input type="number" id="totalTime" value="50"></div>
@@ -57,28 +58,32 @@
     </div>
 
     <div style="background:#f1f2f6; padding:20px; border-radius:10px;">
-        <label>Configuration des Services (Véhicules par période)</label>
+        <label>Configuration des Périodes et Nombre de Bus</label>
         <div id="periods-container"></div>
         <button class="btn-add" onclick="addPeriod()">+ Ajouter une période</button>
     </div>
 
-    <button class="btn-calc" onclick="calculate()">GÉNÉRER LES GRILLES ALLER ET RETOUR</button>
+    <button class="btn-calc" onclick="calculate()">GÉNÉRER LES GRILLES AVEC INTERVALLES</button>
 
     <div id="results" style="display:none;">
         <div class="schedule-section">
-            <h3 class="table-title title-aller">SENS ALLER (Terminus A → Terminus B)</h3>
+            <h3 class="table-title title-aller">SENS ALLER (Terminus A → B)</h3>
             <div class="table-wrapper"><table id="table-aller"></table></div>
         </div>
 
         <div class="schedule-section">
-            <h3 class="table-title title-retour">SENS RETOUR (Terminus B → Terminus A)</h3>
+            <h3 class="table-title title-retour">SENS RETOUR (Terminus B → A)</h3>
             <div class="table-wrapper"><table id="table-retour"></table></div>
         </div>
     </div>
 </div>
 
 <script>
-    window.onload = function() { addPeriod('06:00', '22:00', 4); };
+    window.onload = function() { 
+        addPeriod('06:00', '09:00', 6); // Pointe matin
+        addPeriod('09:00', '16:00', 3); // Creuse
+        addPeriod('16:00', '20:00', 6); // Pointe soir
+    };
 
     function addPeriod(s='', e='', b='') {
         const div = document.createElement('div');
@@ -111,27 +116,26 @@
         const cycle = arTime + pause;
         const oneWay = arTime / 2;
         const stopInterval = oneWay / (nStops - 1);
-        const returnStartOffset = oneWay + (pause / 2); // Départ retour après trajet + demi-pause
+        const returnStartOffset = oneWay + (pause / 2);
 
         let periods = [];
         document.querySelectorAll('.period-row').forEach(row => {
             let s = toMin(row.querySelector('.p-start').value);
             let e = toMin(row.querySelector('.p-end').value);
             let b = parseInt(row.querySelector('.p-bus').value);
-            if (e <= s) e += 1440; // Gestion minuit
+            if (e <= s) e += 1440; 
             if (b > 0) periods.push({s, e, b});
         });
         periods.sort((a,b) => a.s - b.s);
 
         const buildTable = (isRetour) => {
             let table = [];
-            // Créer les lignes pour chaque arrêt
             for(let i=0; i<nStops; i++) {
                 let name = isRetour ? `Arrêt ${nStops - i}` : `Arrêt ${i + 1}`;
                 table[i] = `<tr><td>${name}</td>`;
             }
 
-            let header = `<tr><th>Arrêts</th>`;
+            let header = `<tr><th>Arrêts / Courses</th>`;
             let time = periods[0].s;
             let end = periods[periods.length - 1].e;
             let c = 1;
@@ -143,14 +147,17 @@
                     if(next) { time = next.s; continue; } else break;
                 }
 
-                header += `<th>C${c}</th>`;
+                let frequency = cycle / p.b;
+                // Affichage de l'intervalle dans le header
+                header += `<th>C${c}<span class="freq-info">Int: ${Math.round(frequency)} min</span></th>`;
+                
                 let baseTime = isRetour ? time + returnStartOffset : time;
 
                 for(let i=0; i<nStops; i++) {
                     table[i] += `<td>${toStr(Math.round(baseTime + (i * stopInterval)))}</td>`;
                 }
 
-                time += (cycle / p.b);
+                time += frequency;
                 c++;
             }
             return `<thead>${header}</tr></thead><tbody>${table.join('</tr>')}</tbody>`;
