@@ -3,87 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur de Grilles Horaires avec Intervalles</title>
+    <title>SAEIV - Transport Manager</title>
     <style>
-        :root { --aller: #2c3e50; --retour: #d35400; --bg: #f5f6fa; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: #2f3640; }
-        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        :root { --primary: #2c3e50; --accent: #3498db; --success: #27ae60; --bg: #ecf0f1; --card: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #2c3e50; }
         
-        /* Configuration */
-        .config-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; background: #f1f2f6; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-        label { font-weight: bold; font-size: 0.85em; display: block; margin-bottom: 5px; }
-        input, button { width: 100%; padding: 10px; border: 1px solid #dcdde1; border-radius: 6px; }
+        .container { max-width: 1400px; margin: 0 auto; }
         
-        .period-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px; background: white; padding: 10px; border-radius: 6px; align-items: end; }
-        .btn-add { background: #3498db; color: white; border: none; cursor: pointer; font-weight: bold; }
-        .btn-calc { background: #2f3640; color: white; border: none; padding: 15px; font-size: 1.1em; cursor: pointer; margin-top: 15px; font-weight: bold; }
+        /* HEADER & PRESETS */
+        .top-bar { background: var(--primary); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .preset-group { display: flex; gap: 15px; align-items: center; }
+        select { padding: 10px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; }
+        
+        /* CONFIGURATION GRID */
+        .config-grid { display: grid; grid-template-columns: 300px 1fr; gap: 20px; align-items: start; }
+        @media (max-width: 900px) { .config-grid { grid-template-columns: 1fr; } }
 
-        /* Tableaux */
-        .schedule-section { margin-top: 40px; }
-        .table-title { padding: 12px; color: white; font-weight: bold; border-radius: 8px 8px 0 0; margin: 0; }
-        .title-aller { background: var(--aller); }
-        .title-retour { background: var(--retour); }
-
-        .table-wrapper { overflow-x: auto; border: 1px solid #dcdde1; border-radius: 0 0 8px 8px; background: white; margin-bottom: 30px; }
-        table { border-collapse: collapse; width: 100%; font-size: 0.85em; }
+        .card { background: var(--card); padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        h3 { margin-top: 0; border-bottom: 2px solid var(--bg); padding-bottom: 10px; color: var(--primary); }
         
-        /* Colonne des arrêts fixe */
-        td:first-child, th:first-child { 
-            position: sticky; 
-            left: 0; 
-            background: #f8f9fa; 
-            font-weight: bold; 
-            z-index: 10; 
-            border-right: 2px solid #2f3640; 
-            min-width: 140px; 
-            text-align: left;
-            padding-left: 15px;
+        label { font-weight: 600; font-size: 0.9em; display: block; margin-bottom: 5px; color: #7f8c8d; }
+        input { width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 6px; box-sizing: border-box; margin-bottom: 15px; transition: 0.3s; }
+        input:focus { border-color: var(--accent); outline: none; }
+
+        /* LISTE DES ARRÊTS PERSONNALISABLES */
+        #stop-names-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-height: 300px; overflow-y: auto; padding-right: 5px; }
+        .stop-input { margin-bottom: 0; font-size: 0.85em; }
+
+        /* PÉRIODES */
+        .period-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; align-items: end; background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--accent); }
+        
+        /* BOUTONS */
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 1em; }
+        .btn-add { background: var(--accent); color: white; }
+        .btn-calc { background: var(--primary); color: white; font-size: 1.1em; padding: 15px; margin-top: 20px; }
+        .btn-export { background: var(--success); color: white; width: auto; padding: 10px 20px; margin-left: auto; display: block; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* RÉSULTATS */
+        #results { margin-top: 30px; display: none; }
+        .table-wrapper { overflow-x: auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px; position: relative; }
+        
+        table { border-collapse: collapse; width: 100%; font-size: 0.85em; white-space: nowrap; }
+        th, td { padding: 12px 15px; text-align: center; border: 1px solid #ecf0f1; }
+        
+        /* En-tête de ligne (Course + Voiture + Intervalle) */
+        .header-cell { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .vh-badge { background: #34495e; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.75em; }
+        .int-badge { color: #7f8c8d; font-size: 0.75em; font-style: italic; }
+
+        /* Colonne Arrêt Fixe */
+        th:first-child, td:first-child { 
+            position: sticky; left: 0; z-index: 10; 
+            background: #fdfdfd; border-right: 3px solid #bdc3c7; 
+            font-weight: bold; text-align: left; min-width: 150px;
         }
-        
-        th, td { border: 1px solid #dcdde1; padding: 10px; text-align: center; min-width: 90px; }
-        th { background: #f1f2f6; }
-        .freq-info { font-weight: normal; font-size: 0.75em; color: #666; display: block; margin-top: 4px; border-top: 1px solid #ddd; padding-top: 2px;}
-        tr:hover td { background-color: #f1f2f6; }
+        th { background: var(--primary); color: white; z-index: 11; }
+        th.return-header { background: #e67e22; }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2 style="text-align: center;">Calculateur de Fiches Horaires Pro</h2>
-
-    <div class="config-box">
-        <div><label>Temps Aller-Retour (min)</label><input type="number" id="totalTime" value="50"></div>
-        <div><label>Pause Conducteur Totale (min)</label><input type="number" id="breakTime" value="10"></div>
-        <div><label>Nombre d'arrêts (Aller)</label><input type="number" id="nbStops" value="10"></div>
+    
+    <div class="top-bar">
+        <div style="font-size: 1.2em; font-weight: bold;">🚌 Calculateur SAEIV</div>
+        <div class="preset-group">
+            <select id="level-select" onchange="updateLineSelect()">
+                <option value="">Choisir Niveau...</option>
+                <option value="1">Niveau 1</option>
+                <option value="2">Niveau 2</option>
+                <option value="3">Niveau 3</option>
+                <option value="4">Niveau 4</option>
+                <option value="5">Niveau 5</option>
+            </select>
+            <select id="line-select" onchange="loadPreset()">
+                <option value="">Choisir Ligne...</option>
+            </select>
+        </div>
     </div>
 
-    <div style="background:#f1f2f6; padding:20px; border-radius:10px;">
-        <label>Configuration des Périodes et Nombre de Bus</label>
-        <div id="periods-container"></div>
-        <button class="btn-add" onclick="addPeriod()">+ Ajouter une période</button>
-    </div>
-
-    <button class="btn-calc" onclick="calculate()">GÉNÉRER LES GRILLES AVEC INTERVALLES</button>
-
-    <div id="results" style="display:none;">
-        <div class="schedule-section">
-            <h3 class="table-title title-aller">SENS ALLER (Terminus A → B)</h3>
-            <div class="table-wrapper"><table id="table-aller"></table></div>
+    <div class="config-grid">
+        <div class="card">
+            <h3>Paramètres de la Ligne</h3>
+            <label>Temps Aller-Retour (min)</label>
+            <input type="number" id="totalTime" value="45">
+            
+            <label>Pause Conducteur Totale (min)</label>
+            <input type="number" id="breakTime" value="15">
+            
+            <label>Nombre d'arrêts</label>
+            <input type="number" id="nbStops" value="10" oninput="generateStopInputs()">
+            
+            <h3>Noms des Arrêts</h3>
+            <div id="stop-names-container">
+                </div>
         </div>
 
-        <div class="schedule-section">
-            <h3 class="table-title title-retour">SENS RETOUR (Terminus B → A)</h3>
-            <div class="table-wrapper"><table id="table-retour"></table></div>
+        <div class="card">
+            <h3>Grille des Services (Périodes)</h3>
+            <p style="font-size:0.8em; color:#7f8c8d;">Définissez vos plages horaires et le nombre de bus engagés.</p>
+            
+            <div id="periods-container"></div>
+            <button class="btn btn-add" onclick="addPeriod()">+ Ajouter une plage horaire</button>
+
+            <button class="btn btn-calc" onclick="calculate()">GÉNÉRER LA FICHE HORAIRE</button>
+        </div>
+    </div>
+
+    <div id="results">
+        <div style="display:flex; justify-content:end; margin-bottom:10px;">
+            <button class="btn btn-export" onclick="exportToExcel()">📥 Télécharger Excel (.xls)</button>
+        </div>
+
+        <h3 style="color: var(--primary);">⬆ SENS ALLER</h3>
+        <div class="table-wrapper">
+            <table id="table-aller"></table>
+        </div>
+
+        <h3 style="color: #e67e22;">⬇ SENS RETOUR</h3>
+        <div class="table-wrapper">
+            <table id="table-retour"></table>
         </div>
     </div>
 </div>
 
 <script>
-    window.onload = function() { 
-        addPeriod('06:00', '09:00', 6); // Pointe matin
-        addPeriod('09:00', '16:00', 3); // Creuse
-        addPeriod('16:00', '20:00', 6); // Pointe soir
+    // --- 1. DONNÉES PRÉ-CONFIGURÉES (Exemple basé sur la logique TM) ---
+    // Tu peux modifier les valeurs 'time' (Temps trajet AR) ici
+    const presets = {
+        '1': [ {name: 'Ligne 1', time: 30}, {name: 'Ligne 2', time: 35} ],
+        '2': [ {name: 'Ligne 3', time: 40}, {name: 'Ligne 4', time: 45} ],
+        '3': [ {name: 'Ligne 5', time: 50}, {name: 'Ligne 6', time: 55} ],
+        '4': [ {name: 'Ligne 7', time: 60}, {name: 'Ligne 8', time: 65} ],
+        '5': [ {name: 'Ligne 9', time: 70}, {name: 'Ligne 10', time: 80} ]
     };
+
+    // --- 2. GESTION DE L'INTERFACE ---
+    window.onload = function() {
+        generateStopInputs();
+        addPeriod('06:00', '09:00', 4);
+        addPeriod('09:00', '16:00', 2);
+        addPeriod('16:00', '20:00', 4);
+    };
+
+    function updateLineSelect() {
+        const lvl = document.getElementById('level-select').value;
+        const sel = document.getElementById('line-select');
+        sel.innerHTML = '<option value="">Choisir Ligne...</option>';
+        if(presets[lvl]) {
+            presets[lvl].forEach(l => {
+                sel.innerHTML += `<option value="${l.time}">${l.name} (${l.time} min)</option>`;
+            });
+        }
+    }
+
+    function loadPreset() {
+        const time = document.getElementById('line-select').value;
+        if(time) document.getElementById('totalTime').value = time;
+    }
+
+    function generateStopInputs() {
+        const n = parseInt(document.getElementById('nbStops').value) || 0;
+        const container = document.getElementById('stop-names-container');
+        // On garde les anciennes valeurs si possible
+        const oldInputs = document.querySelectorAll('.stop-input');
+        let oldValues = [];
+        oldInputs.forEach(inp => oldValues.push(inp.value));
+
+        container.innerHTML = '';
+        for(let i=0; i<n; i++) {
+            let val = oldValues[i] ? oldValues[i] : `Arrêt ${i+1}`;
+            let input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'stop-input';
+            input.value = val;
+            input.placeholder = `Nom Arrêt ${i+1}`;
+            container.appendChild(input);
+        }
+    }
 
     function addPeriod(s='', e='', b='') {
         const div = document.createElement('div');
@@ -91,17 +190,14 @@
         div.innerHTML = `
             <div><label>Début</label><input type="time" class="p-start" value="${s}"></div>
             <div><label>Fin</label><input type="time" class="p-end" value="${e}"></div>
-            <div><label>Bus</label><input type="number" class="p-bus" value="${b}"></div>
-            <button style="background:#e74c3c; color:white; border:none; border-radius:5px; cursor:pointer;" onclick="this.parentElement.remove()">X</button>
+            <div><label>Bus</label><input type="number" class="p-bus" value="${b}" min="1"></div>
+            <button style="background:#e74c3c; color:white; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;" onclick="this.parentElement.remove()">X</button>
         `;
         document.getElementById('periods-container').appendChild(div);
     }
 
-    function toMin(str) {
-        const [h, m] = str.split(':').map(Number);
-        return h * 60 + m;
-    }
-
+    // --- 3. MOTEUR DE CALCUL ---
+    function toMin(str) { const [h, m] = str.split(':').map(Number); return h * 60 + m; }
     function toStr(min) {
         let h = Math.floor(min / 60) % 24;
         let m = Math.floor(min % 60);
@@ -111,34 +207,40 @@
     function calculate() {
         const arTime = parseInt(document.getElementById('totalTime').value);
         const pause = parseInt(document.getElementById('breakTime').value);
-        const nStops = parseInt(document.getElementById('nbStops').value);
+        const nbStops = parseInt(document.getElementById('nbStops').value);
         
+        // Récupération des noms d'arrêts
+        let stopNames = [];
+        document.querySelectorAll('.stop-input').forEach(inp => stopNames.push(inp.value));
+
         const cycle = arTime + pause;
         const oneWay = arTime / 2;
-        const stopInterval = oneWay / (nStops - 1);
+        const stopInterval = nbStops > 1 ? oneWay / (nbStops - 1) : 0;
         const returnStartOffset = oneWay + (pause / 2);
 
+        // Périodes
         let periods = [];
         document.querySelectorAll('.period-row').forEach(row => {
             let s = toMin(row.querySelector('.p-start').value);
             let e = toMin(row.querySelector('.p-end').value);
             let b = parseInt(row.querySelector('.p-bus').value);
-            if (e <= s) e += 1440; 
+            if (e <= s) e += 1440;
             if (b > 0) periods.push({s, e, b});
         });
         periods.sort((a,b) => a.s - b.s);
 
         const buildTable = (isRetour) => {
-            let table = [];
-            for(let i=0; i<nStops; i++) {
-                let name = isRetour ? `Arrêt ${nStops - i}` : `Arrêt ${i + 1}`;
-                table[i] = `<tr><td>${name}</td>`;
+            let tableRows = [];
+            // Init lignes avec noms des arrêts (inversés si retour)
+            for(let i=0; i<nbStops; i++) {
+                let name = isRetour ? stopNames[nbStops - 1 - i] : stopNames[i];
+                tableRows[i] = `<tr><td>${name}</td>`;
             }
 
-            let header = `<tr><th>Arrêts / Courses</th>`;
+            let header = `<tr><th>Arrêts</th>`;
             let time = periods[0].s;
             let end = periods[periods.length - 1].e;
-            let c = 1;
+            let courseCount = 1;
 
             while(time < end) {
                 let p = periods.find(p => time >= p.s && time < p.e);
@@ -147,26 +249,60 @@
                     if(next) { time = next.s; continue; } else break;
                 }
 
-                let frequency = cycle / p.b;
-                // Affichage de l'intervalle dans le header
-                header += `<th>C${c}<span class="freq-info">Int: ${Math.round(frequency)} min</span></th>`;
+                let freq = cycle / p.b;
                 
+                // CALCUL DU VÉHICULE (Rotation)
+                // Le véhicule V est calculé avec un modulo sur le nombre de bus
+                let vehicleId = ((courseCount - 1) % p.b) + 1;
+
+                // Construction Header Cell
+                header += `
+                    <th class="${isRetour ? 'return-header' : ''}">
+                        <div class="header-cell">
+                            <span>C${courseCount}</span>
+                            <span class="vh-badge">V${vehicleId}</span>
+                            <span class="int-badge">${Math.round(freq)} min</span>
+                        </div>
+                    </th>`;
+
                 let baseTime = isRetour ? time + returnStartOffset : time;
 
-                for(let i=0; i<nStops; i++) {
-                    table[i] += `<td>${toStr(Math.round(baseTime + (i * stopInterval)))}</td>`;
+                for(let i=0; i<nbStops; i++) {
+                    tableRows[i] += `<td>${toStr(Math.round(baseTime + (i * stopInterval)))}</td>`;
                 }
 
-                time += frequency;
-                c++;
+                time += freq;
+                courseCount++;
             }
-            return `<thead>${header}</tr></thead><tbody>${table.join('</tr>')}</tbody>`;
+            return `<thead>${header}</tr></thead><tbody>${tableRows.join('</tr>')}</tbody>`;
         };
 
         document.getElementById('table-aller').innerHTML = buildTable(false);
         document.getElementById('table-retour').innerHTML = buildTable(true);
         document.getElementById('results').style.display = 'block';
     }
+
+    // --- 4. FONCTION EXPORT EXCEL ---
+    function exportToExcel() {
+        const aller = document.getElementById('table-aller').outerHTML;
+        const retour = document.getElementById('table-retour').outerHTML;
+        
+        let html = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+            <head><meta charset="UTF-8"></head>
+            <body>
+                <h2>SENS ALLER</h2>${aller}<br><br>
+                <h2>SENS RETOUR</h2>${retour}
+            </body></html>`;
+
+        const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Fiche_Horaire_TM.xls';
+        a.click();
+    }
 </script>
+
 </body>
 </html>
