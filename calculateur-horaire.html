@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur TM - Final</title>
+    <title>Calculateur TM - Version Gold</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -53,9 +53,9 @@
         .btn-add { background: #ced6e0; color: #2f3542; }
 
         /* TABLEAUX ECRAN (SCROLL + STICKY) */
-        .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; max-width: 100%; }
+        .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 30px; border: 1px solid #eee; max-width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         table { border-collapse: collapse; width: max-content; font-size: 0.75em; }
-        th, td { border: 1px solid #eee; padding: 6px; text-align: center; min-width: 50px; }
+        th, td { border: 1px solid #eee; padding: 8px; text-align: center; min-width: 50px; }
         
         /* Colonne 1 figée */
         th:first-child, td:first-child { 
@@ -66,7 +66,10 @@
         
         .course-head { background: var(--line-color); color: white; }
         .hf-zone { background: #fff9e6; font-style: italic; color: #d35400; font-weight: bold; }
-        h4 { margin: 20px 0 10px 0; color: var(--primary); border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+        
+        /* Titres dans l'aperçu */
+        .day-title { color: var(--primary); border-bottom: 3px solid var(--line-color); padding-bottom: 5px; margin-bottom: 20px; font-size: 1.4em; text-transform: uppercase; letter-spacing: 1px; }
+        h4 { margin: 10px 0 5px 0; color: #555; background: #eee; padding: 5px 10px; border-radius: 4px; display: inline-block; }
         
         /* Pour cacher les tableaux temporaires du PDF */
         #hidden-pdf-container { display: none; }
@@ -199,11 +202,18 @@ function generateAll() {
     document.getElementById('results').style.display = 'block';
 }
 
-// Génération pour l'écran : UN SEUL TABLEAU PAR DIRECTION
+// Génération pour l'écran : UN SEUL TABLEAU PAR DIRECTION AVEC TITRE
 function generateTableForDisplay(dayId) {
     const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
     if(periodsElements.length === 0) return "";
     
+    // Titres explicites
+    const dayTitles = {
+        'semaine': 'Horaires Lundi - Vendredi',
+        'samedi': 'Horaires Samedi',
+        'dimanche': 'Horaires Dimanche'
+    };
+
     const arTime = parseInt(document.getElementById('totalTime').value);
     const pause = parseInt(document.getElementById('breakTime').value);
     const nbStops = parseInt(document.getElementById('nbStops').value);
@@ -257,13 +267,13 @@ function generateTableForDisplay(dayId) {
         return `<div class="table-container"><table><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table></div>`;
     };
 
-    return `<h4>Aller</h4>${makeSingleTable(false)}<h4>Retour</h4>${makeSingleTable(true)}`;
+    return `<h2 class="day-title">${dayTitles[dayId]}</h2><h4>Aller</h4>${makeSingleTable(false)}<h4>Retour</h4>${makeSingleTable(true)}`;
 }
 
-// Génération pour PDF : TABLEAUX DÉCOUPÉS (Non affiché, utilisé par generatePDF)
+// Génération pour PDF : TABLEAUX DÉCOUPÉS
 function generateTableDataForPDF(dayId) {
     const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
-    if(periodsElements.length === 0) return [];
+    if(periodsElements.length === 0) return { aller: [], retour: [] };
     
     const arTime = parseInt(document.getElementById('totalTime').value);
     const pause = parseInt(document.getElementById('breakTime').value);
@@ -327,7 +337,6 @@ function generateTableDataForPDF(dayId) {
     return { aller: makeChunks(false), retour: makeChunks(true) };
 }
 
-// --- PDF HELPER & GENERATOR ---
 function getCorresColor(shortName) {
     for (let lvl in tmData) { for (let line of tmData[lvl]) { if (line.n === shortName || line.n === "Ligne " + shortName) return line.c; } }
     if(shortName === "A" || shortName === "B") return "#e84393"; 
@@ -403,7 +412,7 @@ function generatePDF() {
         }
     });
 
-    // --- SCHEDULES GENERATION (VIA HIDDEN CONTAINER) ---
+    // --- SCHEDULES ---
     doc.addPage();
     drawHeader(doc, networkName, "Horaires", lineColor);
     let currentY = 30;
@@ -416,10 +425,8 @@ function generatePDF() {
         // Generate chunked HTML specific for PDF
         const data = generateTableDataForPDF(day.id);
         
-        // Function to process a list of HTML table strings
         const processTables = (htmlList, directionTitle) => {
             htmlList.forEach((html, index) => {
-                // Temporarily inject to parse
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = html;
                 const table = tempDiv.querySelector('table');
@@ -461,12 +468,84 @@ function generatePDF() {
 function exportHTMLtoTXT() {
     const netName = document.getElementById('network-name').value || "Reseau";
     const lineName = document.getElementById('line-select').options[document.getElementById('line-select').selectedIndex].text || "Ligne";
-    let content = `Horaires HTML - ${netName} - ${lineName}\n\n`;
-    const getDayContent = (id, title) => { const el = document.getElementById(id); return (el && el.innerHTML) ? `\n<div class="schedule-section">\n<h2>${title}</h2>\n${el.innerHTML}\n</div>\n\n` : ""; };
-    content += getDayContent('res-semaine', 'Semaine');
-    content += getDayContent('res-samedi', 'Samedi');
-    content += getDayContent('res-dimanche', 'Dimanche');
-    const blob = new Blob([content], { type: 'text/plain' });
+    const lineColor = document.getElementById('custom-color').value;
+
+    let css = `<style>
+    .tm-scroll-container { overflow-x: auto; max-width: 100%; border: 1px solid #ddd; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .tm-table { border-collapse: collapse; width: max-content; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.85em; }
+    .tm-table th, .tm-table td { padding: 8px 12px; border: 1px solid #eee; text-align: center; }
+    .tm-table th:first-child, .tm-table td:first-child {
+        position: sticky; left: 0; background-color: #f9f9f9; z-index: 10; border-right: 3px solid ${lineColor}; text-align: left; font-weight: bold; color: #2c3e50;
+    }
+    .tm-header { background-color: ${lineColor}; color: white; }
+    .hf-zone { background: #fff9e6; font-style: italic; color: #d35400; font-weight: bold; }
+    h2 { border-bottom: 3px solid ${lineColor}; color: ${lineColor}; padding-bottom: 5px; margin-top: 30px; }
+    h3 { background: #eee; padding: 8px; border-radius: 4px; color: #333; margin-bottom: 0; }
+    </style>`;
+
+    const generateSingleTable = (dayId, title) => {
+        const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
+        if(periodsElements.length === 0) return "";
+
+        const arTime = parseInt(document.getElementById('totalTime').value);
+        const pause = parseInt(document.getElementById('breakTime').value);
+        const nbStops = parseInt(document.getElementById('nbStops').value);
+        const stopNames = Array.from(document.querySelectorAll('.stop-name')).map(i => i.value);
+        const cycle = arTime + pause, oneWay = arTime / 2, gap = oneWay / (nbStops - 1), returnDelay = oneWay + (pause / 2);
+        
+        let periods = [];
+        periodsElements.forEach(p => {
+            let s = timeToMin(p.querySelector('.p-start').value), e = timeToMin(p.querySelector('.p-end').value), b = parseInt(p.querySelector('.p-bus').value);
+            if(e <= s) e += 1440; if(b > 0) periods.push({s, e, b, freq: cycle/b});
+        });
+        periods.sort((a,b) => a.s - b.s);
+
+        const makeSingleTable = (isRetour) => {
+            let allTrips = [];
+            let cur = periods[0].s, end = periods[periods.length-1].e, count = 1;
+            while(cur < end) {
+                let p = periods.find(p => cur >= p.s && cur < p.e);
+                if(!p) { let next = periods.find(p => p.s > cur); if(next) cur = next.s; else break; p = next; }
+                allTrips.push({ id: count, time: cur, freq: p.freq });
+                cur += p.freq; count++;
+            }
+
+            let renderGroups = [];
+            allTrips.forEach(trip => {
+                let lastGroup = renderGroups[renderGroups.length - 1];
+                if(trip.freq <= 6) {
+                    if(lastGroup && lastGroup.type === 'HF' && Math.round(lastGroup.freq) === Math.round(trip.freq)) { lastGroup.trips.push(trip); } 
+                    else { renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] }); }
+                } else { renderGroups.push({ type: 'NORM', trip: trip }); }
+            });
+
+            let rows = Array(nbStops).fill("");
+            for(let j=0; j<nbStops; j++) rows[j] = `<tr><td>${isRetour ? stopNames[nbStops-1-j] : stopNames[j]}</td>`;
+            let header = `<tr><th>Arrêts</th>`;
+            
+            renderGroups.forEach(group => {
+                if(group.type === 'NORM') {
+                    header += `<th class="tm-header">C${group.trip.id}</th>`;
+                    let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
+                    for(let j=0; j<nbStops; j++) rows[j] += `<td>${minToTime(Math.round(base + (j*gap)))}</td>`;
+                } else {
+                    let startT = minToTime(group.trips[0].time);
+                    let lastTrip = group.trips[group.trips.length-1];
+                    let endT = minToTime(lastTrip.time + group.freq);
+                    header += `<th class="tm-header">C${group.trips[0].id}-${lastTrip.id}</th>`;
+                    for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
+                }
+            });
+
+            return `<h3>${isRetour ? "Retour" : "Aller"}</h3><div class="tm-scroll-container"><table class="tm-table"><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table></div>`;
+        };
+
+        return `<h2>${title}</h2>` + makeSingleTable(false) + "<br>" + makeSingleTable(true);
+    };
+
+    let fullContent = css + generateSingleTable('semaine', 'Horaires - Semaine') + generateSingleTable('samedi', 'Horaires - Samedi') + generateSingleTable('dimanche', 'Horaires - Dimanche');
+    
+    const blob = new Blob([fullContent], { type: 'text/plain' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Tableaux_HTML_${netName}_${lineName}.txt`; a.click();
 }
 
