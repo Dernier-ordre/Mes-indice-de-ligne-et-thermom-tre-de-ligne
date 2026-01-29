@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créateur de fiche horaire</title>
+    <title>Calculateur TM - Final</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -52,13 +52,24 @@
         .btn-txt { background: #34495e; color: white; font-size: 1em; margin-top: 10px; }
         .btn-add { background: #ced6e0; color: #2f3542; }
 
-        .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; }
-        table { border-collapse: collapse; width: 100%; font-size: 0.75em; }
+        /* TABLEAUX ECRAN (SCROLL + STICKY) */
+        .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; max-width: 100%; }
+        table { border-collapse: collapse; width: max-content; font-size: 0.75em; }
         th, td { border: 1px solid #eee; padding: 6px; text-align: center; min-width: 50px; }
-        th:first-child, td:first-child { position: sticky; left: 0; background: #f8f9fa; z-index: 10; border-right: 2px solid var(--line-color); text-align: left; min-width: 120px; }
+        
+        /* Colonne 1 figée */
+        th:first-child, td:first-child { 
+            position: sticky; left: 0; background: #f8f9fa; z-index: 10; 
+            border-right: 3px solid var(--line-color); text-align: left; min-width: 130px; 
+            font-weight: bold; color: var(--primary);
+        }
+        
         .course-head { background: var(--line-color); color: white; }
         .hf-zone { background: #fff9e6; font-style: italic; color: #d35400; font-weight: bold; }
-        h4 { margin: 15px 0 5px 0; color: var(--primary); border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+        h4 { margin: 20px 0 10px 0; color: var(--primary); border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+        
+        /* Pour cacher les tableaux temporaires du PDF */
+        #hidden-pdf-container { display: none; }
     </style>
 </head>
 <body>
@@ -96,7 +107,7 @@
             <div id="input-samedi" class="tab-content"><div id="container-samedi"></div><button class="btn btn-add" onclick="addPeriod('samedi')">+ Période Samedi</button></div>
             <div id="input-dimanche" class="tab-content"><div id="container-dimanche"></div><button class="btn btn-add" onclick="addPeriod('dimanche')">+ Période Dimanche</button></div>
 
-            <button class="btn btn-calc" onclick="generateAll()">Générer HTML (Aperçu)</button>
+            <button class="btn btn-calc" onclick="generateAll()">Actualiser l'aperçu</button>
             
             <div style="margin-top:15px; padding:10px; background:#f1f2f6; border-radius:8px;">
                 <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
@@ -114,12 +125,13 @@
             <div id="res-semaine"></div><div id="res-samedi"></div><div id="res-dimanche"></div>
         </div>
     </div>
+    
+    <div id="hidden-pdf-container"></div>
 </div>
 
 <script>
 const { jsPDF } = window.jspdf;
 
-// --- DONNÉES COMPLÈTES ---
 const tmData = {
     "1": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}} ],
     "2": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}} ],
@@ -128,7 +140,6 @@ const tmData = {
     "5": [ {n:"Ligne T1", t:92, s:44, c:"#e67e22", map: {1:"Gare Centrale", 44:"Technopole"}}, {n:"Ligne 2", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 20:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"Centre commercial Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:74, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}}, {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place de l'Europe", 8:"Pôle Luca Pacioli", 27:"Campus Marthe Gautier"}}, {n:"Ligne 9", t:36, s:12, c:"#0019a8", map: {1:"Haute-ville", 5:"Musée d'Art Moderne", 12:"Campus Alan Turing"}}, {n:"Ligne 10", t:66, s:24, c:"#ffce00", map: {1:"Campus Alan Turing", 9:"Lycée Karl Marx", 14:"Parc de l'Étang", 22:"Gare de l'Est", 24:"CRT Est"}}, {n:"Ligne 11", t:42, s:14, c:"#751056", map: {1:"Cimetière", 14:"Hôpital"}}, {n:"Ligne 12", t:54, s:21, c:"#007229", map: {1:"Mairie", 21:"Z.I. Nord"}}, {n:"Ligne 13", t:36, s:15, c:"#76d0bd", map: {1:"Parc des Sports", 15:"Gare de l'Est"}}, {n:"Ligne 14", t:48, s:18, c:"#dc241f", map: {1:"Z.I. Nord", 18:"Mairie"}}, {n:"Ligne 15", t:96, s:36, c:"#751056", map: {1:"Aéroport", 36:"Parc des Sports"}}, {n:"Ligne 16", t:44, s:20, c:"#ffce00", map: {1:"Hôpital", 20:"Gare de l'Est"}}, {n:"Ligne 17", t:66, s:28, c:"#00afad", map: {1:"Cimetière", 28:"Z.I. Sud"}}, {n:"Ligne 18", t:80, s:33, c:"#868f98", map: {1:"Campus Marthe Gautier", 33:"Place du Palais"}}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd", map: {1:"Gare Centrale", 17:"Z.I. Nord"}}, {n:"Ligne 61", t:64, s:27, c:"#0019a8", map: {1:"Gare Centrale", 27:"Aéroport"}}, {n:"Ligne 62", t:80, s:30, c:"#b727bf", map: {1:"Gare Centrale", 30:"Z.I. Sud"}}, {n:"Ligne 63", t:58, s:26, c:"#e86a10", map: {1:"Gare Centrale", 26:"Place du Palais"}}, {n:"Ligne 64", t:28, s:13, c:"#ffce00", map: {1:"Gare Centrale", 13:"Mairie"}}, {n:"Ligne 65", t:50, s:27, c:"#9364CC", map: {1:"Gare Centrale", 27:"Technopole"}}, {n:"Ligne 101", t:72, s:16, c:"#751056"}, {n:"Ligne 102", t:54, s:12, c:"#007229"}, {n:"Ligne 103", t:42, s:8, c:"#ffce00"}, {n:"Ligne 104", t:48, s:10, c:"#9364cc"}, {n:"Ligne 105", t:100, s:20, c:"#00afad", map: {1:"Université", 20:"Campus Marthe Gautier"}}, {n:"Ligne 106", t:52, s:11, c:"#d799af", map: {1:"Lycée", 11:"Cimetière"}}, {n:"Ligne 151", t:104, s:21, c:"#0019a8", map: {1:"Lycée Pro", 21:"Z.I. Nord"}}, {n:"Ligne 201", t:116, s:6, c:"#894e24", map: {1:"Gare Routière", 6:"Ville Voisine A"}}, {n:"Ligne 202", t:74, s:5, c:"#dc241f", map: {1:"Gare Routière", 5:"Ville Voisine B"}}, {n:"Ligne 203", t:124, s:5, c:"#00afad", map: {1:"Gare Routière", 5:"Ville Voisine C"}}, {n:"Ligne 204", t:140, s:8, c:"#9364cc", map: {1:"Gare Routière", 8:"Ville Voisine D"}}, {n:"Ligne 205", t:90, s:7, c:"#007229", map: {1:"Gare Routière", 7:"Ville Voisine E"}}, {n:"Ligne 206", t:96, s:5, c:"#0019a8", map: {1:"Gare Routière", 5:"Ville Voisine F"}}, {n:"Ligne 251", t:112, s:7, c:"#d799af", map: {1:"Gare Routière", 7:"Aéroport Regional"}}, {n:"Ligne PL1", t:230, s:25, c:"#203ec0", map: {1:"Gare Centrale", 25:"Z.I. Sud"}}, {n:"Ligne PL2", t:82, s:8, c:"#20b3c0", map: {1:"Place du Palais", 8:"Z.I. Nord"}}, {n:"Ligne PL3", t:56, s:27, c:"#5120c0", map: {1:"Mairie", 27:"Hôpital"}} ]
 };
 
-// --- LOGIQUE UI ---
 function saveNetworkName() { localStorage.setItem('tm_network_name', document.getElementById('network-name').value); }
 function applyLineColor(color) { document.documentElement.style.setProperty('--line-color', color); document.getElementById('custom-color').value = color; }
 function applyManualColor(color) { document.documentElement.style.setProperty('--line-color', color); }
@@ -175,14 +186,21 @@ function addPeriod(day, s='06:00', e='22:00', b='4') { const cont = document.get
 function timeToMin(s) { if(!s) return 0; const [h,m] = s.split(':').map(Number); return h*60+m; }
 function minToTime(m) { let h = Math.floor(m/60)%24, min = Math.floor(m%60); return `${h.toString().padStart(2,'0')}:${min.toString().padStart(2,'0')}`; }
 
+// ---------------------------------------------------------
+// LOGIQUE PRINCIPALE : 2 MODES DE GENERATION
+// 1. ECRAN (Tableau unique, scroll)
+// 2. PDF (Tableaux découpés par 15)
+// ---------------------------------------------------------
+
 function generateAll() {
     ['semaine', 'samedi', 'dimanche'].forEach(day => {
-        document.getElementById('res-' + day).innerHTML = generateTableForDay(day);
+        document.getElementById('res-' + day).innerHTML = generateTableForDisplay(day);
     });
     document.getElementById('results').style.display = 'block';
 }
 
-function generateTableForDay(dayId) {
+// Génération pour l'écran : UN SEUL TABLEAU PAR DIRECTION
+function generateTableForDisplay(dayId) {
     const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
     if(periodsElements.length === 0) return "";
     
@@ -199,7 +217,7 @@ function generateTableForDay(dayId) {
     });
     periods.sort((a,b) => a.s - b.s);
 
-    const makeTable = (isRetour) => {
+    const makeSingleTable = (isRetour) => {
         let allTrips = [];
         let cur = periods[0].s, end = periods[periods.length-1].e, count = 1;
         while(cur < end) {
@@ -209,14 +227,72 @@ function generateTableForDay(dayId) {
             cur += p.freq; count++;
         }
 
-        // CHUNK 15 FOR PDF
+        let renderGroups = [];
+        allTrips.forEach(trip => {
+            let lastGroup = renderGroups[renderGroups.length - 1];
+            if(trip.freq <= 6) {
+                if(lastGroup && lastGroup.type === 'HF' && Math.round(lastGroup.freq) === Math.round(trip.freq)) { lastGroup.trips.push(trip); } 
+                else { renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] }); }
+            } else { renderGroups.push({ type: 'NORM', trip: trip }); }
+        });
+
+        let rows = Array(nbStops).fill("");
+        for(let j=0; j<nbStops; j++) rows[j] = `<tr><td>${isRetour ? stopNames[nbStops-1-j] : stopNames[j]}</td>`;
+        let header = `<tr><th>Arrêts</th>`;
+        
+        renderGroups.forEach(group => {
+            if(group.type === 'NORM') {
+                header += `<th class="course-head">C${group.trip.id}</th>`;
+                let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
+                for(let j=0; j<nbStops; j++) rows[j] += `<td>${minToTime(Math.round(base + (j*gap)))}</td>`;
+            } else {
+                let startT = minToTime(group.trips[0].time);
+                let lastTrip = group.trips[group.trips.length-1];
+                let endT = minToTime(lastTrip.time + group.freq);
+                header += `<th class="course-head">C${group.trips[0].id}-${lastTrip.id}</th>`;
+                for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
+            }
+        });
+
+        return `<div class="table-container"><table><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table></div>`;
+    };
+
+    return `<h4>Aller</h4>${makeSingleTable(false)}<h4>Retour</h4>${makeSingleTable(true)}`;
+}
+
+// Génération pour PDF : TABLEAUX DÉCOUPÉS (Non affiché, utilisé par generatePDF)
+function generateTableDataForPDF(dayId) {
+    const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
+    if(periodsElements.length === 0) return [];
+    
+    const arTime = parseInt(document.getElementById('totalTime').value);
+    const pause = parseInt(document.getElementById('breakTime').value);
+    const nbStops = parseInt(document.getElementById('nbStops').value);
+    const stopNames = Array.from(document.querySelectorAll('.stop-name')).map(i => i.value);
+    const cycle = arTime + pause, oneWay = arTime / 2, gap = oneWay / (nbStops - 1), returnDelay = oneWay + (pause / 2);
+    
+    let periods = [];
+    periodsElements.forEach(p => {
+        let s = timeToMin(p.querySelector('.p-start').value), e = timeToMin(p.querySelector('.p-end').value), b = parseInt(p.querySelector('.p-bus').value);
+        if(e <= s) e += 1440; if(b > 0) periods.push({s, e, b, freq: cycle/b});
+    });
+    periods.sort((a,b) => a.s - b.s);
+
+    const makeChunks = (isRetour) => {
+        let allTrips = [];
+        let cur = periods[0].s, end = periods[periods.length-1].e, count = 1;
+        while(cur < end) {
+            let p = periods.find(p => cur >= p.s && cur < p.e);
+            if(!p) { let next = periods.find(p => p.s > cur); if(next) cur = next.s; else break; p = next; }
+            allTrips.push({ id: count, time: cur, freq: p.freq });
+            cur += p.freq; count++;
+        }
+
+        let chunkTables = [];
         const CHUNK_SIZE = 15;
-        let htmlOutput = "";
         
         for (let i = 0; i < allTrips.length; i += CHUNK_SIZE) {
             let chunk = allTrips.slice(i, i + CHUNK_SIZE);
-            let chunkIndex = Math.floor(i / CHUNK_SIZE) + 1;
-            
             let renderGroups = [];
             chunk.forEach(trip => {
                 let lastGroup = renderGroups[renderGroups.length - 1];
@@ -243,16 +319,15 @@ function generateTableForDay(dayId) {
                     for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
                 }
             });
-
-            htmlOutput += `<h4>${isRetour ? "Retour" : "Aller"} (Partie ${chunkIndex})</h4>`;
-            htmlOutput += `<table><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table><br>`;
+            chunkTables.push(`<table><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table>`);
         }
-        return htmlOutput;
+        return chunkTables;
     };
-    return `<div class="direction-block">${makeTable(false)}</div><div class="direction-block">${makeTable(true)}</div>`;
+
+    return { aller: makeChunks(false), retour: makeChunks(true) };
 }
 
-// --- HELPER COULEUR CORRESPONDANCE ---
+// --- PDF HELPER & GENERATOR ---
 function getCorresColor(shortName) {
     for (let lvl in tmData) { for (let line of tmData[lvl]) { if (line.n === shortName || line.n === "Ligne " + shortName) return line.c; } }
     if(shortName === "A" || shortName === "B") return "#e84393"; 
@@ -260,18 +335,16 @@ function getCorresColor(shortName) {
     return "#505050"; 
 }
 
-// --- HEADER DU PDF ---
 function drawHeader(doc, networkName, lineNameText, lineColor) {
     doc.setFillColor(lineColor);
-    doc.rect(0, 0, 210, 18, 'F'); // REDUCED HEIGHT
+    doc.rect(0, 0, 210, 18, 'F');
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(15); // REDUCED FONT
+    doc.setFontSize(15);
     doc.setFont("helvetica", "bold");
     doc.text(networkName.toUpperCase(), 10, 12);
     doc.text(lineNameText, 200, 12, { align: 'right' });
 }
 
-// --- GENERATION PDF INTELLIGENTE ---
 function generatePDF() {
     const doc = new jsPDF();
     const networkName = document.getElementById('network-name').value || "RESEAU";
@@ -283,19 +356,17 @@ function generatePDF() {
 
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(16);
-    doc.text("Plan de la ligne", 10, 35); // REMONTÉ
+    doc.text("Plan de la ligne", 10, 35);
 
     const stops = Array.from(document.querySelectorAll('.stop-name')).map(i => i.value);
     const corres = Array.from(document.querySelectorAll('.stop-corres')).map(i => i.value);
     
     let xLine = 20;
-    let startY = 45; // REMONTÉ
-    let availableHeight = 230; // PLUS DE PLACE
+    let startY = 45;
+    let availableHeight = 230;
     let gap = 14; 
     
-    if ((stops.length * gap) > availableHeight) {
-        gap = availableHeight / (stops.length - 1);
-    }
+    if ((stops.length * gap) > availableHeight) { gap = availableHeight / (stops.length - 1); }
 
     doc.setDrawColor(lineColor);
     doc.setLineWidth(3.5); 
@@ -332,47 +403,56 @@ function generatePDF() {
         }
     });
 
-    // --- SCHEDULES ---
+    // --- SCHEDULES GENERATION (VIA HIDDEN CONTAINER) ---
     doc.addPage();
     drawHeader(doc, networkName, "Horaires", lineColor);
-    let currentY = 30; // START HIGHER
+    let currentY = 30;
 
-    generateAll(); // Refresh HTML
-    
     const days = [ {id:'semaine', t:'Lundi-Vendredi'}, {id:'samedi', t:'Samedi'}, {id:'dimanche', t:'Dimanche'} ];
+    const hiddenContainer = document.getElementById('hidden-pdf-container');
+    hiddenContainer.innerHTML = ""; // Clear
 
     days.forEach(day => {
-        const container = document.getElementById('res-' + day.id);
-        const titles = container.getElementsByTagName('h4');
-        const tables = container.getElementsByTagName('table');
+        // Generate chunked HTML specific for PDF
+        const data = generateTableDataForPDF(day.id);
         
-        for(let i=0; i<tables.length; i++) {
-            let table = tables[i];
-            let title = `${day.t} - ${titles[i] ? titles[i].innerText : ""}`;
+        // Function to process a list of HTML table strings
+        const processTables = (htmlList, directionTitle) => {
+            htmlList.forEach((html, index) => {
+                // Temporarily inject to parse
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+                const table = tempDiv.querySelector('table');
+                
+                let title = `${day.t} - ${directionTitle} (Partie ${index+1})`;
 
-            // Check if space left (approx 50 units for header + 1 row)
-            if (currentY + 50 > 280) { 
-                doc.addPage();
-                drawHeader(doc, networkName, "Horaires", lineColor);
-                currentY = 30; 
-            }
+                // Check Space
+                if (currentY + 50 > 280) { 
+                    doc.addPage();
+                    drawHeader(doc, networkName, "Horaires", lineColor);
+                    currentY = 30; 
+                }
 
-            doc.setTextColor(0,0,0);
-            doc.setFontSize(12);
-            doc.text(title, 14, currentY);
+                doc.setTextColor(0,0,0);
+                doc.setFontSize(12);
+                doc.text(title, 14, currentY);
 
-            doc.autoTable({
-                html: table,
-                startY: currentY + 5,
-                theme: 'grid',
-                headStyles: { fillColor: lineColor, textColor: 255, fontSize: 8 },
-                bodyStyles: { fontSize: 7, cellPadding: 1 },
-                styles: { overflow: 'linebreak' },
-                margin: { bottom: 15 }
+                doc.autoTable({
+                    html: table,
+                    startY: currentY + 5,
+                    theme: 'grid',
+                    headStyles: { fillColor: lineColor, textColor: 255, fontSize: 8 },
+                    bodyStyles: { fontSize: 7, cellPadding: 1 },
+                    styles: { overflow: 'linebreak' },
+                    margin: { bottom: 15 }
+                });
+
+                currentY = doc.lastAutoTable.finalY + 12;
             });
+        };
 
-            currentY = doc.lastAutoTable.finalY + 12; // REDUCED MARGIN
-        }
+        if(data.aller && data.aller.length > 0) processTables(data.aller, "Aller");
+        if(data.retour && data.retour.length > 0) processTables(data.retour, "Retour");
     });
 
     doc.save(`Fiche_${networkName}_${lineNameText}.pdf`);
@@ -381,84 +461,12 @@ function generatePDF() {
 function exportHTMLtoTXT() {
     const netName = document.getElementById('network-name').value || "Reseau";
     const lineName = document.getElementById('line-select').options[document.getElementById('line-select').selectedIndex].text || "Ligne";
-    const lineColor = document.getElementById('custom-color').value;
-
-    let css = `<style>
-    .tm-scroll-container { overflow-x: auto; max-width: 100%; border: 1px solid #ddd; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .tm-table { border-collapse: collapse; width: max-content; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.85em; }
-    .tm-table th, .tm-table td { padding: 8px 12px; border: 1px solid #eee; text-align: center; }
-    .tm-table th:first-child, .tm-table td:first-child {
-        position: sticky; left: 0; background-color: #f9f9f9; z-index: 10; border-right: 3px solid ${lineColor}; text-align: left; font-weight: bold; color: #2c3e50;
-    }
-    .tm-header { background-color: ${lineColor}; color: white; }
-    .hf-zone { background: #fff9e6; font-style: italic; color: #d35400; font-weight: bold; }
-    h2 { border-bottom: 3px solid ${lineColor}; color: ${lineColor}; padding-bottom: 5px; margin-top: 30px; }
-    h3 { background: #eee; padding: 8px; border-radius: 4px; color: #333; margin-bottom: 0; }
-    </style>`;
-
-    const generateSingleTable = (dayId, title) => {
-        const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
-        if(periodsElements.length === 0) return "";
-
-        const arTime = parseInt(document.getElementById('totalTime').value);
-        const pause = parseInt(document.getElementById('breakTime').value);
-        const nbStops = parseInt(document.getElementById('nbStops').value);
-        const stopNames = Array.from(document.querySelectorAll('.stop-name')).map(i => i.value);
-        const cycle = arTime + pause, oneWay = arTime / 2, gap = oneWay / (nbStops - 1), returnDelay = oneWay + (pause / 2);
-        
-        let periods = [];
-        periodsElements.forEach(p => {
-            let s = timeToMin(p.querySelector('.p-start').value), e = timeToMin(p.querySelector('.p-end').value), b = parseInt(p.querySelector('.p-bus').value);
-            if(e <= s) e += 1440; if(b > 0) periods.push({s, e, b, freq: cycle/b});
-        });
-        periods.sort((a,b) => a.s - b.s);
-
-        const makeSingleTable = (isRetour) => {
-            let allTrips = [];
-            let cur = periods[0].s, end = periods[periods.length-1].e, count = 1;
-            while(cur < end) {
-                let p = periods.find(p => cur >= p.s && cur < p.e);
-                if(!p) { let next = periods.find(p => p.s > cur); if(next) cur = next.s; else break; p = next; }
-                allTrips.push({ id: count, time: cur, freq: p.freq });
-                cur += p.freq; count++;
-            }
-
-            let renderGroups = [];
-            allTrips.forEach(trip => {
-                let lastGroup = renderGroups[renderGroups.length - 1];
-                if(trip.freq <= 6) {
-                    if(lastGroup && lastGroup.type === 'HF' && Math.round(lastGroup.freq) === Math.round(trip.freq)) { lastGroup.trips.push(trip); } 
-                    else { renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] }); }
-                } else { renderGroups.push({ type: 'NORM', trip: trip }); }
-            });
-
-            let rows = Array(nbStops).fill("");
-            for(let j=0; j<nbStops; j++) rows[j] = `<tr><td>${isRetour ? stopNames[nbStops-1-j] : stopNames[j]}</td>`;
-            let header = `<tr><th>Arrêts/course</th>`;
-            
-            renderGroups.forEach(group => {
-                if(group.type === 'NORM') {
-                    header += `<th class="tm-header">C${group.trip.id}</th>`;
-                    let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
-                    for(let j=0; j<nbStops; j++) rows[j] += `<td>${minToTime(Math.round(base + (j*gap)))}</td>`;
-                } else {
-                    let startT = minToTime(group.trips[0].time);
-                    let lastTrip = group.trips[group.trips.length-1];
-                    let endT = minToTime(lastTrip.time + group.freq);
-                    header += `<th class="tm-header">C${group.trips[0].id}-${lastTrip.id}</th>`;
-                    for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
-                }
-            });
-
-            return `<h3>${isRetour ? "Retour" : "Aller"}</h3><div class="tm-scroll-container"><table class="tm-table"><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table></div>`;
-        };
-
-        return `<h2>${title}</h2>` + makeSingleTable(false) + "<br>" + makeSingleTable(true);
-    };
-
-    let fullContent = css + generateSingleTable('semaine', 'Horaires - Semaine') + generateSingleTable('samedi', 'Horaires - Samedi') + generateSingleTable('dimanche', 'Horaires - Dimanche');
-    
-    const blob = new Blob([fullContent], { type: 'text/plain' });
+    let content = `Horaires HTML - ${netName} - ${lineName}\n\n`;
+    const getDayContent = (id, title) => { const el = document.getElementById(id); return (el && el.innerHTML) ? `\n<div class="schedule-section">\n<h2>${title}</h2>\n${el.innerHTML}\n</div>\n\n` : ""; };
+    content += getDayContent('res-semaine', 'Semaine');
+    content += getDayContent('res-samedi', 'Samedi');
+    content += getDayContent('res-dimanche', 'Dimanche');
+    const blob = new Blob([content], { type: 'text/plain' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Tableaux_HTML_${netName}_${lineName}.txt`; a.click();
 }
 
