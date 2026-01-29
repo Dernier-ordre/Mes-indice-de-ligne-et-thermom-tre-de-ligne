@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur TM - PDF Pro Fluide</title>
+    <title>Calculateur TM - Suite Complète</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -119,7 +119,6 @@
 <script>
 const { jsPDF } = window.jspdf;
 
-// --- DONNÉES COMPLÈTES (L1-L10 Détaillées + N1-N5) ---
 const tmData = {
     "1": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}} ],
     "2": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}} ],
@@ -128,7 +127,6 @@ const tmData = {
     "5": [ {n:"Ligne T1", t:92, s:44, c:"#e67e22", map: {1:"Gare Centrale", 44:"Technopole"}}, {n:"Ligne 2", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 20:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"Centre commercial Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:74, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}}, {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place de l'Europe", 8:"Pôle Luca Pacioli", 27:"Campus Marthe Gautier"}}, {n:"Ligne 9", t:36, s:12, c:"#0019a8", map: {1:"Haute-ville", 5:"Musée d'Art Moderne", 12:"Campus Alan Turing"}}, {n:"Ligne 10", t:66, s:24, c:"#ffce00", map: {1:"Campus Alan Turing", 9:"Lycée Karl Marx", 14:"Parc de l'Étang", 22:"Gare de l'Est", 24:"CRT Est"}}, {n:"Ligne 11", t:42, s:14, c:"#751056", map: {1:"Cimetière", 14:"Hôpital"}}, {n:"Ligne 12", t:54, s:21, c:"#007229", map: {1:"Mairie", 21:"Z.I. Nord"}}, {n:"Ligne 13", t:36, s:15, c:"#76d0bd", map: {1:"Parc des Sports", 15:"Gare de l'Est"}}, {n:"Ligne 14", t:48, s:18, c:"#dc241f", map: {1:"Z.I. Nord", 18:"Mairie"}}, {n:"Ligne 15", t:96, s:36, c:"#751056", map: {1:"Aéroport", 36:"Parc des Sports"}}, {n:"Ligne 16", t:44, s:20, c:"#ffce00", map: {1:"Hôpital", 20:"Gare de l'Est"}}, {n:"Ligne 17", t:66, s:28, c:"#00afad", map: {1:"Cimetière", 28:"Z.I. Sud"}}, {n:"Ligne 18", t:80, s:33, c:"#868f98", map: {1:"Campus Marthe Gautier", 33:"Place du Palais"}}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd", map: {1:"Gare Centrale", 17:"Z.I. Nord"}}, {n:"Ligne 61", t:64, s:27, c:"#0019a8", map: {1:"Gare Centrale", 27:"Aéroport"}}, {n:"Ligne 62", t:80, s:30, c:"#b727bf", map: {1:"Gare Centrale", 30:"Z.I. Sud"}}, {n:"Ligne 63", t:58, s:26, c:"#e86a10", map: {1:"Gare Centrale", 26:"Place du Palais"}}, {n:"Ligne 64", t:28, s:13, c:"#ffce00", map: {1:"Gare Centrale", 13:"Mairie"}}, {n:"Ligne 65", t:50, s:27, c:"#9364CC", map: {1:"Gare Centrale", 27:"Technopole"}}, {n:"Ligne 101", t:72, s:16, c:"#751056"}, {n:"Ligne 102", t:54, s:12, c:"#007229"}, {n:"Ligne 103", t:42, s:8, c:"#ffce00"}, {n:"Ligne 104", t:48, s:10, c:"#9364cc"}, {n:"Ligne 105", t:100, s:20, c:"#00afad", map: {1:"Université", 20:"Campus Marthe Gautier"}}, {n:"Ligne 106", t:52, s:11, c:"#d799af", map: {1:"Lycée", 11:"Cimetière"}}, {n:"Ligne 151", t:104, s:21, c:"#0019a8", map: {1:"Lycée Pro", 21:"Z.I. Nord"}}, {n:"Ligne 201", t:116, s:6, c:"#894e24", map: {1:"Gare Routière", 6:"Ville Voisine A"}}, {n:"Ligne 202", t:74, s:5, c:"#dc241f", map: {1:"Gare Routière", 5:"Ville Voisine B"}}, {n:"Ligne 203", t:124, s:5, c:"#00afad", map: {1:"Gare Routière", 5:"Ville Voisine C"}}, {n:"Ligne 204", t:140, s:8, c:"#9364cc", map: {1:"Gare Routière", 8:"Ville Voisine D"}}, {n:"Ligne 205", t:90, s:7, c:"#007229", map: {1:"Gare Routière", 7:"Ville Voisine E"}}, {n:"Ligne 206", t:96, s:5, c:"#0019a8", map: {1:"Gare Routière", 5:"Ville Voisine F"}}, {n:"Ligne 251", t:112, s:7, c:"#d799af", map: {1:"Gare Routière", 7:"Aéroport Regional"}}, {n:"Ligne PL1", t:230, s:25, c:"#203ec0", map: {1:"Gare Centrale", 25:"Z.I. Sud"}}, {n:"Ligne PL2", t:82, s:8, c:"#20b3c0", map: {1:"Place du Palais", 8:"Z.I. Nord"}}, {n:"Ligne PL3", t:56, s:27, c:"#5120c0", map: {1:"Mairie", 27:"Hôpital"}} ]
 };
 
-// --- LOGIQUE UI ---
 function saveNetworkName() { localStorage.setItem('tm_network_name', document.getElementById('network-name').value); }
 function applyLineColor(color) { document.documentElement.style.setProperty('--line-color', color); document.getElementById('custom-color').value = color; }
 function applyManualColor(color) { document.documentElement.style.setProperty('--line-color', color); }
@@ -209,7 +207,7 @@ function generateTableForDay(dayId) {
             cur += p.freq; count++;
         }
 
-        // --- SPLIT INTO CHUNKS OF 15 ---
+        // CHUNK 15 FOR PDF
         const CHUNK_SIZE = 15;
         let htmlOutput = "";
         
@@ -252,19 +250,98 @@ function generateTableForDay(dayId) {
     return `<div class="direction-block">${makeTable(false)}</div><div class="direction-block">${makeTable(true)}</div>`;
 }
 
-// --- HELPER COULEUR CORRESPONDANCE ---
-function getCorresColor(shortName) {
-    for (let lvl in tmData) {
-        for (let line of tmData[lvl]) {
-            if (line.n === shortName || line.n === "Ligne " + shortName) return line.c;
-        }
+// --- NOUVELLE FONCTION EXPORT TXT (TABLEAU UNIQUE + SCROLL + STICKY) ---
+function exportHTMLtoTXT() {
+    const netName = document.getElementById('network-name').value || "Reseau";
+    const lineName = document.getElementById('line-select').options[document.getElementById('line-select').selectedIndex].text || "Ligne";
+    const lineColor = document.getElementById('custom-color').value;
+
+    let css = `<style>
+    .tm-scroll-container { overflow-x: auto; max-width: 100%; border: 1px solid #ddd; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .tm-table { border-collapse: collapse; width: max-content; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.85em; }
+    .tm-table th, .tm-table td { padding: 8px 12px; border: 1px solid #eee; text-align: center; }
+    .tm-table th:first-child, .tm-table td:first-child {
+        position: sticky; left: 0; background-color: #f9f9f9; z-index: 10; border-right: 3px solid ${lineColor}; text-align: left; font-weight: bold; color: #2c3e50;
     }
+    .tm-header { background-color: ${lineColor}; color: white; }
+    .hf-zone { background: #fff9e6; font-style: italic; color: #d35400; font-weight: bold; }
+    h2 { border-bottom: 3px solid ${lineColor}; color: ${lineColor}; padding-bottom: 5px; margin-top: 30px; }
+    h3 { background: #eee; padding: 8px; border-radius: 4px; color: #333; margin-bottom: 0; }
+    </style>`;
+
+    const generateSingleTable = (dayId, title) => {
+        const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
+        if(periodsElements.length === 0) return "";
+
+        const arTime = parseInt(document.getElementById('totalTime').value);
+        const pause = parseInt(document.getElementById('breakTime').value);
+        const nbStops = parseInt(document.getElementById('nbStops').value);
+        const stopNames = Array.from(document.querySelectorAll('.stop-name')).map(i => i.value);
+        const cycle = arTime + pause, oneWay = arTime / 2, gap = oneWay / (nbStops - 1), returnDelay = oneWay + (pause / 2);
+        
+        let periods = [];
+        periodsElements.forEach(p => {
+            let s = timeToMin(p.querySelector('.p-start').value), e = timeToMin(p.querySelector('.p-end').value), b = parseInt(p.querySelector('.p-bus').value);
+            if(e <= s) e += 1440; if(b > 0) periods.push({s, e, b, freq: cycle/b});
+        });
+        periods.sort((a,b) => a.s - b.s);
+
+        const makeSingleTable = (isRetour) => {
+            let allTrips = [];
+            let cur = periods[0].s, end = periods[periods.length-1].e, count = 1;
+            while(cur < end) {
+                let p = periods.find(p => cur >= p.s && cur < p.e);
+                if(!p) { let next = periods.find(p => p.s > cur); if(next) cur = next.s; else break; p = next; }
+                allTrips.push({ id: count, time: cur, freq: p.freq });
+                cur += p.freq; count++;
+            }
+
+            let renderGroups = [];
+            allTrips.forEach(trip => {
+                let lastGroup = renderGroups[renderGroups.length - 1];
+                if(trip.freq <= 6) {
+                    if(lastGroup && lastGroup.type === 'HF' && Math.round(lastGroup.freq) === Math.round(trip.freq)) { lastGroup.trips.push(trip); } 
+                    else { renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] }); }
+                } else { renderGroups.push({ type: 'NORM', trip: trip }); }
+            });
+
+            let rows = Array(nbStops).fill("");
+            for(let j=0; j<nbStops; j++) rows[j] = `<tr><td>${isRetour ? stopNames[nbStops-1-j] : stopNames[j]}</td>`;
+            let header = `<tr><th>Arrêts</th>`;
+            
+            renderGroups.forEach(group => {
+                if(group.type === 'NORM') {
+                    header += `<th class="tm-header">C${group.trip.id}</th>`;
+                    let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
+                    for(let j=0; j<nbStops; j++) rows[j] += `<td>${minToTime(Math.round(base + (j*gap)))}</td>`;
+                } else {
+                    let startT = minToTime(group.trips[0].time);
+                    let lastTrip = group.trips[group.trips.length-1];
+                    let endT = minToTime(lastTrip.time + group.freq);
+                    header += `<th class="tm-header">C${group.trips[0].id}-${lastTrip.id}</th>`;
+                    for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
+                }
+            });
+
+            return `<h3>${isRetour ? "Retour" : "Aller"}</h3><div class="tm-scroll-container"><table class="tm-table"><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table></div>`;
+        };
+
+        return `<h2>${title}</h2>` + makeSingleTable(false) + "<br>" + makeSingleTable(true);
+    };
+
+    let fullContent = css + generateSingleTable('semaine', 'Horaires - Semaine') + generateSingleTable('samedi', 'Horaires - Samedi') + generateSingleTable('dimanche', 'Horaires - Dimanche');
+    
+    const blob = new Blob([fullContent], { type: 'text/plain' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Tableaux_HTML_${netName}_${lineName}.txt`; a.click();
+}
+
+function getCorresColor(shortName) {
+    for (let lvl in tmData) { for (let line of tmData[lvl]) { if (line.n === shortName || line.n === "Ligne " + shortName) return line.c; } }
     if(shortName === "A" || shortName === "B") return "#e84393"; 
     if(shortName.startsWith("T")) return "#e67e22"; 
     return "#505050"; 
 }
 
-// --- HEADER DU PDF ---
 function drawHeader(doc, networkName, lineNameText, lineColor) {
     doc.setFillColor(lineColor);
     doc.rect(0, 0, 210, 30, 'F');
@@ -275,7 +352,6 @@ function drawHeader(doc, networkName, lineNameText, lineColor) {
     doc.text(lineNameText, 200, 20, { align: 'right' });
 }
 
-// --- GENERATION PDF INTELLIGENTE ---
 function generatePDF() {
     const doc = new jsPDF();
     const networkName = document.getElementById('network-name').value || "RESEAU";
@@ -297,9 +373,7 @@ function generatePDF() {
     let availableHeight = 217;
     let gap = 14; 
     
-    if ((stops.length * gap) > availableHeight) {
-        gap = availableHeight / (stops.length - 1);
-    }
+    if ((stops.length * gap) > availableHeight) { gap = availableHeight / (stops.length - 1); }
 
     doc.setDrawColor(lineColor);
     doc.setLineWidth(3.5); 
@@ -336,13 +410,7 @@ function generatePDF() {
         }
     });
 
-    // --- SCHEDULES : START NEW PAGE AFTER THERMOMETER ---
-    doc.addPage();
-    drawHeader(doc, networkName, "Horaires", lineColor);
-    let currentY = 45;
-
-    generateAll(); // Refresh HTML
-    
+    generateAll(); 
     const days = [ {id:'semaine', t:'Lundi-Vendredi'}, {id:'samedi', t:'Samedi'}, {id:'dimanche', t:'Dimanche'} ];
 
     days.forEach(day => {
@@ -350,53 +418,46 @@ function generatePDF() {
         const titles = container.getElementsByTagName('h4');
         const tables = container.getElementsByTagName('table');
         
-        // Loop through chunks
         for(let i=0; i<tables.length; i++) {
             let table = tables[i];
             let title = `${day.t} - ${titles[i] ? titles[i].innerText : ""}`;
 
-            // --- CHECK SPACE LOGIC ---
-            // Title (10) + Header (20) + 1 Row (10) approx 40 units needed to start
-            if (currentY + 50 > 280) { 
+            // Check Space Logic
+            if (doc.lastAutoTable && doc.lastAutoTable.finalY > 240) {
                 doc.addPage();
-                drawHeader(doc, networkName, "Horaires", lineColor);
-                currentY = 45; // Reset Y
+                drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
+                doc.lastAutoTable.finalY = 30; 
+            } else if (i === 0 && day.id === 'semaine') {
+                doc.addPage();
+                drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
+            } else if (i === 0) {
+                // Pour Samedi et Dimanche, si on est en haut de page, on met le header, sinon on continue
+                if(doc.lastAutoTable && doc.lastAutoTable.finalY > 200) {
+                     doc.addPage();
+                     drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
+                     doc.lastAutoTable.finalY = 30;
+                }
             }
 
-            // Draw Title
+            let startY = (doc.lastAutoTable && doc.lastAutoTable.finalY > 30) ? doc.lastAutoTable.finalY + 15 : 40;
+
             doc.setTextColor(0,0,0);
             doc.setFontSize(12);
-            doc.text(title, 14, currentY);
+            doc.text(title, 14, startY);
 
-            // Draw Table
             doc.autoTable({
                 html: table,
-                startY: currentY + 5,
+                startY: startY + 5,
                 theme: 'grid',
                 headStyles: { fillColor: lineColor, textColor: 255, fontSize: 8 },
                 bodyStyles: { fontSize: 7, cellPadding: 1 },
                 styles: { overflow: 'linebreak' },
                 margin: { bottom: 20 }
             });
-
-            // Update Cursor for next table (Previous table end + margin)
-            currentY = doc.lastAutoTable.finalY + 15;
         }
     });
 
     doc.save(`Fiche_${networkName}_${lineNameText}.pdf`);
-}
-
-function exportHTMLtoTXT() {
-    const netName = document.getElementById('network-name').value || "Reseau";
-    const lineName = document.getElementById('line-select').options[document.getElementById('line-select').selectedIndex].text || "Ligne";
-    let content = `Horaires HTML - ${netName} - ${lineName}\n\n`;
-    const getDayContent = (id, title) => { const el = document.getElementById(id); return (el && el.innerHTML) ? `\n<div class="schedule-section">\n<h2>${title}</h2>\n${el.innerHTML}\n</div>\n\n` : ""; };
-    content += getDayContent('res-semaine', 'Semaine');
-    content += getDayContent('res-samedi', 'Samedi');
-    content += getDayContent('res-dimanche', 'Dimanche');
-    const blob = new Blob([content], { type: 'text/plain' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Tableaux_HTML_${netName}_${lineName}.txt`; a.click();
 }
 
 window.onload = () => { uiStops(); ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = ''); addPeriod('semaine', '06:00', '22:00', '4'); addPeriod('samedi', '07:00', '20:00', '2'); addPeriod('dimanche', '08:00', '20:00', '1'); const savedName = localStorage.getItem('tm_network_name'); if(savedName) document.getElementById('network-name').value = savedName; };
