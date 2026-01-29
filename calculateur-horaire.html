@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur TM - Version Gold (Excel + Design)</title>
+    <title>Calculateur TM - Version Service (S)</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -50,7 +50,6 @@
         .btn { border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; text-transform: uppercase; transition: 0.3s; }
         .btn:hover { opacity: 0.9; transform: translateY(-2px); }
         
-        /* Tous les boutons d'action prennent la couleur de la ligne */
         .btn-action { background: var(--line-color); color: white; font-size: 1em; margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         
         .btn-add { background: #ced6e0; color: #2f3542; }
@@ -114,7 +113,7 @@
             <div id="input-samedi" class="tab-content"><div id="container-samedi"></div><button class="btn btn-add" onclick="addPeriod('samedi')">+ Période Samedi</button></div>
             <div id="input-dimanche" class="tab-content"><div id="container-dimanche"></div><button class="btn btn-add" onclick="addPeriod('dimanche')">+ Période Dimanche</button></div>
 
-            <button class="btn btn-action" onclick="generateAll()">Actualiser l'aperçu</button>
+            <button class="btn btn-action" onclick="generateAll()">Générer HTML (Aperçu)</button>
             
             <div style="margin-top:15px; padding:10px; background:#f1f2f6; border-radius:8px;">
                 <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:bold;">
@@ -138,7 +137,7 @@
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:15px;">
                 <button class="btn btn-action" onclick="generatePDF()">📄 PDF</button>
                 <button class="btn btn-action" onclick="exportToExcel()">📊 EXCEL</button>
-                <button class="btn btn-action" style="grid-column: 1 / -1;" onclick="exportHTMLtoTXT()">💾 HTML (TXT)</button>
+                <button class="btn btn-action" style="grid-column: 1 / -1;" onclick="exportHTMLtoTXT()">💾 EXPORTER HTML (TXT)</button>
             </div>
         </div>
     </div>
@@ -155,6 +154,7 @@
 <script>
 const { jsPDF } = window.jspdf;
 
+// DONNÉES COMPLÈTES (L1-L10, N1-N5)
 const tmData = {
     "1": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}} ],
     "2": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}} ],
@@ -231,7 +231,6 @@ function addCustomIcon() {
     const reader = new FileReader();
     
     reader.onload = function(e) {
-        // Pour gérer SVG et Ratios : On dessine dans un canvas invisible
         const img = new Image();
         img.onload = function() {
             const canvas = document.createElement('canvas');
@@ -240,10 +239,8 @@ function addCustomIcon() {
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
             
-            // Convertir en PNG DataURL (Fixe le problème SVG pour jsPDF)
             const pngData = canvas.toDataURL('image/png');
             
-            // Stocker le PNG et le ratio
             customIcons[name] = {
                 src: pngData,
                 ratio: img.width / img.height
@@ -338,14 +335,14 @@ function generateTableForDisplay(dayId) {
         
         renderGroups.forEach(group => {
             if(group.type === 'NORM') {
-                header += `<th class="course-head">C${group.trip.id}</th>`;
+                header += `<th class="course-head">S${group.trip.id}</th>`;
                 let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
                 for(let j=0; j<nbStops; j++) rows[j] += `<td>${minToTime(Math.round(base + (j*gap)))}</td>`;
             } else {
                 let startT = minToTime(group.trips[0].time);
                 let lastTrip = group.trips[group.trips.length-1];
                 let endT = minToTime(lastTrip.time + group.freq);
-                header += `<th class="course-head">C${group.trips[0].id}-${lastTrip.id}</th>`;
+                header += `<th class="course-head">S${group.trips[0].id}-${lastTrip.id}</th>`;
                 for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
             }
         });
@@ -398,14 +395,14 @@ function generateTableDataForPDF(dayId) {
             let header = `<tr><th>Arrêts</th>`;
             renderGroups.forEach(group => {
                 if(group.type === 'NORM') {
-                    header += `<th class="course-head">C${group.trip.id}</th>`;
+                    header += `<th class="course-head">S${group.trip.id}</th>`;
                     let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
                     for(let j=0; j<nbStops; j++) rows[j] += `<td>${minToTime(Math.round(base + (j*gap)))}</td>`;
                 } else {
                     let startT = minToTime(group.trips[0].time);
                     let lastTrip = group.trips[group.trips.length-1];
                     let endT = minToTime(lastTrip.time + group.freq);
-                    header += `<th class="course-head">C${group.trips[0].id}-${lastTrip.id}</th>`;
+                    header += `<th class="course-head">S${group.trips[0].id}-${lastTrip.id}</th>`;
                     for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
                 }
             });
@@ -494,14 +491,11 @@ function generatePDF() {
             lines.forEach(l => {
                 let upperL = l.toUpperCase();
                 if (customIcons[upperL]) {
-                    // Calcul pour conserver le ratio (Max 8x8)
                     let maxDim = 8;
                     let ratio = customIcons[upperL].ratio;
                     let w = maxDim;
                     let h = w / ratio;
                     if(h > maxDim) { h = maxDim; w = h * ratio; }
-                    
-                    // Centrage précis
                     doc.addImage(customIcons[upperL].src, 'PNG', xCor - (w/2), yPos - (h/2), w, h);
                 } else {
                     let bubbleColor = getCorresColor(l);
@@ -641,14 +635,14 @@ function exportHTMLtoTXT() {
             
             renderGroups.forEach(group => {
                 if(group.type === 'NORM') {
-                    header += `<th class="tm-header">C${group.trip.id}</th>`;
+                    header += `<th class="tm-header">S${group.trip.id}</th>`;
                     let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
                     for(let j=0; j<nbStops; j++) rows[j] += `<td>${minToTime(Math.round(base + (j*gap)))}</td>`;
                 } else {
                     let startT = minToTime(group.trips[0].time);
                     let lastTrip = group.trips[group.trips.length-1];
                     let endT = minToTime(lastTrip.time + group.freq);
-                    header += `<th class="tm-header">C${group.trips[0].id}-${lastTrip.id}</th>`;
+                    header += `<th class="tm-header">S${group.trips[0].id}-${lastTrip.id}</th>`;
                     for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
                 }
             });
@@ -660,6 +654,7 @@ function exportHTMLtoTXT() {
     };
 
     let fullContent = css + generateSingleTable('semaine', 'Horaires - Semaine') + generateSingleTable('samedi', 'Horaires - Samedi') + generateSingleTable('dimanche', 'Horaires - Dimanche');
+    
     const blob = new Blob([fullContent], { type: 'text/plain' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Tableaux_HTML_${netName}_${lineName}.txt`; a.click();
 }
@@ -674,8 +669,6 @@ function exportToExcel() {
     ['semaine', 'samedi', 'dimanche'].forEach(day => {
         const div = document.getElementById('res-' + day);
         if(div && div.innerHTML.trim() !== "") {
-            html += `<h1>${day.toUpperCase()}</h1>`;
-            // On nettoie un peu le HTML pour Excel si besoin, mais le tableau brut passe généralement bien
             html += div.innerHTML;
             html += '<br><hr><br>';
         }
