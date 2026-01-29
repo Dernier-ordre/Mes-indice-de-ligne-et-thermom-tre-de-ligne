@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur TM - PDF Thermomètre Monopage</title>
+    <title>Calculateur TM - PDF Tableaux Fractionnés</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -51,12 +51,13 @@
         .btn-pdf { background: #e74c3c; color: white; font-size: 1.1em; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); margin-top: 20px; }
         .btn-add { background: #ced6e0; color: #2f3542; }
 
-        .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 20px; }
-        table { border-collapse: collapse; width: 100%; font-size: 0.8em; }
-        th, td { border: 1px solid #eee; padding: 8px; text-align: center; min-width: 60px; }
-        th:first-child, td:first-child { position: sticky; left: 0; background: #f8f9fa; z-index: 10; border-right: 2px solid var(--line-color); text-align: left; min-width: 140px; }
+        .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; }
+        table { border-collapse: collapse; width: 100%; font-size: 0.75em; }
+        th, td { border: 1px solid #eee; padding: 6px; text-align: center; min-width: 50px; }
+        th:first-child, td:first-child { position: sticky; left: 0; background: #f8f9fa; z-index: 10; border-right: 2px solid var(--line-color); text-align: left; min-width: 120px; }
         .course-head { background: var(--line-color); color: white; }
         .hf-zone { background: #fff9e6; font-style: italic; color: #d35400; font-weight: bold; }
+        h4 { margin: 15px 0 5px 0; color: var(--primary); border-bottom: 2px solid #ddd; padding-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -78,9 +79,7 @@
             <label>Nombre d'arrêts</label><input type="number" id="nbStops" value="10" oninput="uiStops()">
             
             <label>Liste des Arrêts & Correspondances</label>
-            <div style="font-size:0.75em; color:#666; margin-bottom:5px;">
-                Col 1: Nom de l'arrêt | Col 2: Correspondances (ex: "1, A, T1")
-            </div>
+            <div style="font-size:0.75em; color:#666; margin-bottom:5px;">Col 1: Nom | Col 2: Correspondances (ex: "1, A, T1")</div>
             <div id="stop-list" class="stops-list"></div>
         </div>
 
@@ -100,8 +99,7 @@
             
             <div style="margin-top:15px; padding:10px; background:#f1f2f6; border-radius:8px;">
                 <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
-                    <input type="checkbox" id="custom-icons-check"> 
-                    Utiliser icônes perso (Placeholder)
+                    <input type="checkbox" id="custom-icons-check"> Utiliser icônes perso (Placeholder)
                 </label>
             </div>
             
@@ -119,7 +117,6 @@
 <script>
 const { jsPDF } = window.jspdf;
 
-// --- DONNÉES COMPLÈTES ---
 const tmData = {
     "1": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}} ],
     "2": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}} ],
@@ -208,33 +205,48 @@ function generateTableForDay(dayId) {
             allTrips.push({ id: count, time: cur, freq: p.freq });
             cur += p.freq; count++;
         }
-        let renderGroups = [];
-        allTrips.forEach(trip => {
-            let lastGroup = renderGroups[renderGroups.length - 1];
-            if(trip.freq <= 6) {
-                if(lastGroup && lastGroup.type === 'HF' && Math.round(lastGroup.freq) === Math.round(trip.freq)) { lastGroup.trips.push(trip); } 
-                else { renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] }); }
-            } else { renderGroups.push({ type: 'NORM', trip: trip }); }
-        });
-        let rows = Array(nbStops).fill("");
-        for(let i=0; i<nbStops; i++) rows[i] = `<tr><td>${isRetour ? stopNames[nbStops-1-i] : stopNames[i]}</td>`;
-        let header = `<tr><th>Arrêts</th>`;
-        renderGroups.forEach(group => {
-            if(group.type === 'NORM') {
-                header += `<th class="course-head">C${group.trip.id}</th>`;
-                let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
-                for(let i=0; i<nbStops; i++) rows[i] += `<td>${minToTime(Math.round(base + (i*gap)))}</td>`;
-            } else {
-                let startT = minToTime(group.trips[0].time);
-                let lastTrip = group.trips[group.trips.length-1];
-                let endT = minToTime(lastTrip.time + group.freq);
-                header += `<th class="course-head">C${group.trips[0].id}-${lastTrip.id}</th>`;
-                for(let i=0; i<nbStops; i++) rows[i] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
-            }
-        });
-        return `<table><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table>`;
+
+        // --- SPLIT INTO CHUNKS OF 20 ---
+        const CHUNK_SIZE = 20;
+        let htmlOutput = "";
+        
+        for (let i = 0; i < allTrips.length; i += CHUNK_SIZE) {
+            let chunk = allTrips.slice(i, i + CHUNK_SIZE);
+            let chunkIndex = Math.floor(i / CHUNK_SIZE) + 1;
+            
+            let renderGroups = [];
+            chunk.forEach(trip => {
+                let lastGroup = renderGroups[renderGroups.length - 1];
+                if(trip.freq <= 6) {
+                    if(lastGroup && lastGroup.type === 'HF' && Math.round(lastGroup.freq) === Math.round(trip.freq)) { lastGroup.trips.push(trip); } 
+                    else { renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] }); }
+                } else { renderGroups.push({ type: 'NORM', trip: trip }); }
+            });
+
+            let rows = Array(nbStops).fill("");
+            for(let j=0; j<nbStops; j++) rows[j] = `<tr><td>${isRetour ? stopNames[nbStops-1-j] : stopNames[j]}</td>`;
+            let header = `<tr><th>Arrêts</th>`;
+            
+            renderGroups.forEach(group => {
+                if(group.type === 'NORM') {
+                    header += `<th class="course-head">C${group.trip.id}</th>`;
+                    let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
+                    for(let j=0; j<nbStops; j++) rows[j] += `<td>${minToTime(Math.round(base + (j*gap)))}</td>`;
+                } else {
+                    let startT = minToTime(group.trips[0].time);
+                    let lastTrip = group.trips[group.trips.length-1];
+                    let endT = minToTime(lastTrip.time + group.freq);
+                    header += `<th class="course-head">C${group.trips[0].id}-${lastTrip.id}</th>`;
+                    for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
+                }
+            });
+
+            htmlOutput += `<h4>${isRetour ? "Retour" : "Aller"} (Partie ${chunkIndex})</h4>`;
+            htmlOutput += `<table><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table><br>`;
+        }
+        return htmlOutput;
     };
-    return `<h4>Aller</h4><div class="table-container">${makeTable(false)}</div><h4>Retour</h4><div class="table-container">${makeTable(true)}</div>`;
+    return `<div class="direction-block">${makeTable(false)}</div><div class="direction-block">${makeTable(true)}</div>`;
 }
 
 // --- HELPER COULEUR CORRESPONDANCE ---
@@ -260,7 +272,7 @@ function drawHeader(doc, networkName, lineNameText, lineColor) {
     doc.text(lineNameText, 200, 20, { align: 'right' });
 }
 
-// --- GENERATION PDF MONOPAGE ---
+// --- GENERATION PDF MONOPAGE + TABLEAUX FRACTIONNÉS ---
 function generatePDF() {
     const doc = new jsPDF();
     const networkName = document.getElementById('network-name').value || "RESEAU";
@@ -279,26 +291,19 @@ function generatePDF() {
     
     let xLine = 20;
     let startY = 60;
-    
-    // CALCUL DU GAP POUR QUE TOUT RENTRE SUR UNE PAGE
-    // Hauteur dispo = 297 (A4) - 60 (Header) - 20 (Marge bas) = 217
     let availableHeight = 217;
-    let gap = 14; // Défaut
+    let gap = 14; 
     
-    // Si la hauteur totale théorique dépasse la page, on réduit le gap
     if ((stops.length * gap) > availableHeight) {
         gap = availableHeight / (stops.length - 1);
     }
 
-    // Ligne continue (épaisse)
     doc.setDrawColor(lineColor);
     doc.setLineWidth(3.5); 
     doc.line(xLine, startY, xLine, startY + ((stops.length - 1) * gap));
 
     stops.forEach((stop, index) => {
         let yPos = startY + (index * gap);
-        
-        // Point (Gros pour terminus, petit pour les autres)
         let radius = (index === 0 || index === stops.length - 1) ? 3 : 1.5; 
         
         doc.setFillColor(255, 255, 255);
@@ -328,35 +333,50 @@ function generatePDF() {
         }
     });
 
-    generateAll(); 
+    // GENERATION DES PAGES HORAIRES
+    generateAll(); // Ensure HTML is fresh
+    
     const days = [ {id:'semaine', t:'Lundi-Vendredi'}, {id:'samedi', t:'Samedi'}, {id:'dimanche', t:'Dimanche'} ];
 
     days.forEach(day => {
         const container = document.getElementById('res-' + day.id);
+        const titles = container.getElementsByTagName('h4');
         const tables = container.getElementsByTagName('table');
-        if(tables.length > 0) {
-            doc.addPage();
-            drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
+        
+        // Loop through all generated chunk tables
+        for(let i=0; i<tables.length; i++) {
+            let table = tables[i];
+            let title = titles[i] ? titles[i].innerText : "";
+
+            // Check if we need a new page (Simple logic: Always new page for start of day, or if no space)
+            // For simplicity in this version: Start Day on new page, then flow.
+            if (i === 0) {
+                doc.addPage();
+                drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
+            } else {
+                // If not enough space for next table (approx 100 units), add page
+                if (doc.lastAutoTable && doc.lastAutoTable.finalY > 200) {
+                    doc.addPage();
+                    drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
+                }
+            }
+
+            let finalY = (doc.lastAutoTable && doc.lastAutoTable.finalY && i > 0) ? doc.lastAutoTable.finalY + 15 : 40;
+
+            // Print Title part (Aller Partie X)
+            doc.setTextColor(0,0,0);
+            doc.setFontSize(12);
+            doc.text(title, 14, finalY);
 
             doc.autoTable({
-                html: tables[0],
-                startY: 40,
+                html: table,
+                startY: finalY + 5,
                 theme: 'grid',
                 headStyles: { fillColor: lineColor, textColor: 255, fontSize: 8 },
                 bodyStyles: { fontSize: 7, cellPadding: 1 },
-                margin: { top: 40 }
+                styles: { overflow: 'linebreak' },
+                margin: { top: 30 }
             });
-
-            if(tables[1]) {
-                doc.autoTable({
-                    html: tables[1],
-                    startY: doc.lastAutoTable.finalY + 15,
-                    theme: 'grid',
-                    headStyles: { fillColor: lineColor, textColor: 255, fontSize: 8 },
-                    bodyStyles: { fontSize: 7, cellPadding: 1 },
-                    showHead: 'firstPage'
-                });
-            }
         }
     });
 
