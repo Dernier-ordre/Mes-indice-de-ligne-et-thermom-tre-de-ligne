@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créateur de fiche horaire</title>
+    <title>Créateur de fiche horaire - Courses (C)</title>
     <style>
         :root { --primary: #1e272e; --accent: #05c46b; --tm-blue: #3c40c6; --bg: #f1f2f6; --line-color: #3c40c6; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
@@ -213,7 +213,7 @@ const tmData = {
         {n:"Ligne T1", t:92, s:44, c:"#e67e22", map: {1:"Gare Centrale", 44:"Technopole"}},
         {n:"Ligne 2", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}},
         {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}},
-        {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}},
+        {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"Centre commercial Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}},
         {n:"Ligne 5", t:74, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}},
         {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Hôpital", 17:"Z.I. Sud"}},
         {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Cimetière", 30:"Parc des Sports"}},
@@ -394,18 +394,18 @@ function generateTableForDay(dayId) {
 
         let rows = Array(nbStops).fill("");
         for(let i=0; i<nbStops; i++) rows[i] = `<tr><td>${isRetour ? stopNames[nbStops-1-i] : stopNames[i]}</td>`;
-        let header = `<tr><th>Arrêts/course</th>`;
+        let header = `<tr><th>Arrêts</th>`;
 
         renderGroups.forEach(group => {
             if(group.type === 'NORM') {
-                header += `<th class="course-head">D${group.trip.id}<div class="badge-int">${Math.round(group.trip.freq)}m</div></th>`;
+                header += `<th class="course-head">C${group.trip.id}<div class="badge-int">${Math.round(group.trip.freq)}m</div></th>`;
                 let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
                 for(let i=0; i<nbStops; i++) rows[i] += `<td>${minToTime(Math.round(base + (i*gap)))}</td>`;
             } else {
                 let startT = minToTime(group.trips[0].time);
                 let lastTrip = group.trips[group.trips.length-1];
                 let endT = minToTime(lastTrip.time + group.freq);
-                header += `<th class="course-head">C${group.trips[0].id} - C${lastTrip.id}</th>`;
+                header += `<th class="course-head">C${group.trips[0].id} à C${lastTrip.id}</th>`;
                 for(let i=0; i<nbStops; i++) {
                     rows[i] += `<td class="hf-zone">De ${startT} à ${endT}<br>Toutes les ${Math.round(group.freq)} min</td>`;
                 }
@@ -434,9 +434,9 @@ function exportExcel() {
 window.onload = () => { 
     uiStops(); 
     ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = '');
-    addPeriod('semaine', '06:00', '09:30', '4');
-    addPeriod('samedi', '07:00', '09:30', '2');
-    addPeriod('dimanche', '08:00', '09:30', '1');
+    addPeriod('semaine', '06:00', '22:00', '4');
+    addPeriod('samedi', '07:00', '20:00', '2');
+    addPeriod('dimanche', '08:00', '20:00', '1');
     const savedName = localStorage.getItem('tm_network_name');
     if(savedName) document.getElementById('network-name').value = savedName;
 };
