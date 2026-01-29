@@ -405,7 +405,7 @@ function generateTableForDay(dayId) {
                 let startT = minToTime(group.trips[0].time);
                 let lastTrip = group.trips[group.trips.length-1];
                 let endT = minToTime(lastTrip.time + group.freq);
-                header += `<th class="course-head">C${group.trips[0].id} - D${lastTrip.id}</th>`;
+                header += `<th class="course-head">C${group.trips[0].id} - C${lastTrip.id}</th>`;
                 for(let i=0; i<nbStops; i++) {
                     rows[i] += `<td class="hf-zone">De ${startT} à ${endT}<br>Toutes les ${Math.round(group.freq)} min</td>`;
                 }
