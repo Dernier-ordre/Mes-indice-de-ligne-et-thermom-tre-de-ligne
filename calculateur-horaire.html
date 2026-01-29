@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur TM - Direction Nommée</title>
+    <title>Calculateur TM - Thermomètre Multi-Pages</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -57,7 +57,6 @@
         table { border-collapse: collapse; width: max-content; font-size: 0.75em; }
         th, td { border: 1px solid #eee; padding: 8px; text-align: center; min-width: 50px; }
         
-        /* Colonne 1 figée */
         th:first-child, td:first-child { 
             position: sticky; left: 0; background: #f8f9fa; z-index: 10; 
             border-right: 3px solid var(--line-color); text-align: left; min-width: 130px; 
@@ -69,9 +68,8 @@
         
         /* Titres dans l'aperçu */
         .day-title { color: var(--primary); border-bottom: 3px solid var(--line-color); padding-bottom: 5px; margin-bottom: 20px; font-size: 1.4em; text-transform: uppercase; letter-spacing: 1px; }
-        h4 { margin: 15px 0 5px 0; color: #555; background: #eee; padding: 8px 12px; border-radius: 4px; display: inline-block; font-weight: bold; font-size: 1.1em; }
+        h4 { margin: 10px 0 5px 0; color: #555; background: #eee; padding: 5px 10px; border-radius: 4px; display: inline-block; }
         
-        /* Pour cacher les tableaux temporaires du PDF */
         #hidden-pdf-container { display: none; }
     </style>
 </head>
@@ -114,7 +112,7 @@
             
             <div style="margin-top:15px; padding:10px; background:#f1f2f6; border-radius:8px;">
                 <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
-                    <input type="checkbox" id="custom-icons-check"> Utiliser icônes perso (Bientôt)
+                    <input type="checkbox" id="custom-icons-check"> Utiliser icônes perso (Placeholder)
                 </label>
             </div>
             
@@ -135,7 +133,7 @@
 <script>
 const { jsPDF } = window.jspdf;
 
-// --- DONNÉES COMPLÈTES (L1-L10 Détaillées) ---
+// DONNÉES COMPLÈTES
 const tmData = {
     "1": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}} ],
     "2": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}} ],
@@ -388,16 +386,41 @@ function generatePDF() {
     let availableHeight = 230;
     let gap = 14; 
     
-    if ((stops.length * gap) > availableHeight) { gap = availableHeight / (stops.length - 1); }
+    if (stops.length > 20) {
+        // Multi-page logic for thermometer
+        // ... (previous multi-page logic can be restored here if needed, but keeping single page compact for now as requested)
+        if ((stops.length * gap) > availableHeight) { gap = availableHeight / (stops.length - 1); }
+    } else {
+        if ((stops.length * gap) > availableHeight) { gap = availableHeight / (stops.length - 1); }
+    }
 
+    // --- LOGIC THERMOMETRE MULTI-PAGE SI TROP LONG ---
+    let yPos = startY;
     doc.setDrawColor(lineColor);
     doc.setLineWidth(3.5); 
-    doc.line(xLine, startY, xLine, startY + ((stops.length - 1) * gap));
 
-    stops.forEach((stop, index) => {
-        let yPos = startY + (index * gap);
-        let radius = (index === 0 || index === stops.length - 1) ? 3 : 1.5; 
-        
+    for (let i = 0; i < stops.length; i++) {
+        // Pagination si fin de page
+        if (yPos + gap > 270) {
+            doc.line(xLine, yPos, xLine, 270);
+            doc.addPage();
+            drawHeader(doc, networkName, lineNameText, lineColor);
+            yPos = 50; 
+            doc.setDrawColor(lineColor);
+            doc.setLineWidth(3.5); 
+            doc.line(xLine, 40, xLine, yPos);
+        }
+
+        // Ligne vers le suivant
+        if (i < stops.length - 1) {
+            let nextY = (yPos + gap > 270) ? 270 : yPos + gap;
+            doc.setDrawColor(lineColor); 
+            doc.setLineWidth(3.5);       
+            doc.line(xLine, yPos, xLine, nextY);
+        }
+
+        // Points
+        let radius = (i === 0 || i === stops.length - 1) ? 3 : 2.2; // 2.2 intermédiaire
         doc.setFillColor(255, 255, 255);
         doc.setDrawColor(lineColor);
         doc.setLineWidth(1.5);
@@ -406,10 +429,10 @@ function generatePDF() {
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(10);
         doc.setFont("helvetica", "normal");
-        doc.text(stop, xLine + 12, yPos, { baseline: 'middle' });
+        doc.text(stops[i], xLine + 12, yPos, { baseline: 'middle' });
 
-        if(corres[index] && !useCustomIcons) {
-            let lines = corres[index].split(',').map(s => s.trim());
+        if(corres[i] && !useCustomIcons) {
+            let lines = corres[i].split(',').map(s => s.trim());
             let xCor = xLine + 100; 
             lines.forEach(l => {
                 if(!l) return;
@@ -423,32 +446,29 @@ function generatePDF() {
                 xCor += 9;
             });
         }
-    });
+        yPos += gap;
+    }
 
-    // --- SCHEDULES GENERATION (VIA HIDDEN CONTAINER) ---
+    // --- SCHEDULES GENERATION ---
     doc.addPage();
     drawHeader(doc, networkName, "Horaires", lineColor);
     let currentY = 30;
 
     const days = [ {id:'semaine', t:'Lundi-Vendredi'}, {id:'samedi', t:'Samedi'}, {id:'dimanche', t:'Dimanche'} ];
     const hiddenContainer = document.getElementById('hidden-pdf-container');
-    hiddenContainer.innerHTML = ""; // Clear
+    hiddenContainer.innerHTML = ""; 
 
     days.forEach(day => {
-        // Generate chunked HTML specific for PDF
         const data = generateTableDataForPDF(day.id);
         
-        // Function to process a list of HTML table strings
         const processTables = (htmlList, directionTitle) => {
             htmlList.forEach((html, index) => {
-                // Temporarily inject to parse
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = html;
                 const table = tempDiv.querySelector('table');
                 
                 let title = `${day.t} - ${directionTitle} (Partie ${index+1})`;
 
-                // Check Space
                 if (currentY + 50 > 280) { 
                     doc.addPage();
                     drawHeader(doc, networkName, "Horaires", lineColor);
