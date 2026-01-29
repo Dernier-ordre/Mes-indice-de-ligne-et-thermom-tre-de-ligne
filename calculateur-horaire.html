@@ -394,7 +394,7 @@ function generateTableForDay(dayId) {
 
         let rows = Array(nbStops).fill("");
         for(let i=0; i<nbStops; i++) rows[i] = `<tr><td>${isRetour ? stopNames[nbStops-1-i] : stopNames[i]}</td>`;
-        let header = `<tr><th>Arrêts</th>`;
+        let header = `<tr><th>Arrêts/course</th>`;
 
         renderGroups.forEach(group => {
             if(group.type === 'NORM') {
@@ -405,7 +405,7 @@ function generateTableForDay(dayId) {
                 let startT = minToTime(group.trips[0].time);
                 let lastTrip = group.trips[group.trips.length-1];
                 let endT = minToTime(lastTrip.time + group.freq);
-                header += `<th class="course-head">D${group.trips[0].id} - D${lastTrip.id}</th>`;
+                header += `<th class="course-head">C${group.trips[0].id} - D${lastTrip.id}</th>`;
                 for(let i=0; i<nbStops; i++) {
                     rows[i] += `<td class="hf-zone">De ${startT} à ${endT}<br>Toutes les ${Math.round(group.freq)} min</td>`;
                 }
@@ -434,9 +434,9 @@ function exportExcel() {
 window.onload = () => { 
     uiStops(); 
     ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = '');
-    addPeriod('semaine', '06:00', '22:00', '4');
-    addPeriod('samedi', '07:00', '20:00', '2');
-    addPeriod('dimanche', '08:00', '20:00', '1');
+    addPeriod('semaine', '06:00', '9:30', '4');
+    addPeriod('samedi', '07:00', '9:30', '2');
+    addPeriod('dimanche', '08:00', '9:30', '1');
     const savedName = localStorage.getItem('tm_network_name');
     if(savedName) document.getElementById('network-name').value = savedName;
 };
