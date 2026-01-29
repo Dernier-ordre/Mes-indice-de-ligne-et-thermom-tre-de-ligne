@@ -434,9 +434,9 @@ function exportExcel() {
 window.onload = () => { 
     uiStops(); 
     ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = '');
-    addPeriod('semaine', '06:00', '9:30', '4');
-    addPeriod('samedi', '07:00', '9:30', '2');
-    addPeriod('dimanche', '08:00', '9:30', '1');
+    addPeriod('semaine', '06:00', '09:30', '4');
+    addPeriod('samedi', '07:00', '09:30', '2');
+    addPeriod('dimanche', '08:00', '09:30', '1');
     const savedName = localStorage.getItem('tm_network_name');
     if(savedName) document.getElementById('network-name').value = savedName;
 };
