@@ -165,25 +165,20 @@
 <script>
 // --- DONNÉES TM (Idem précédent) ---
 const tmData = {
-    "1": [{n:"Ligne 1", t:48, s:20}, {n:"Ligne 2", t:80, s:34}, {n:"Ligne 3", t:64, s:27}, {n:"Ligne 4", t:56, s:24}],
-    "2": [{n:"Ligne 1", t:48, s:20}, {n:"Ligne 2", t:80, s:34}, {n:"Ligne 3", t:64, s:27}, {n:"Ligne 4", t:56, s:24}, {n:"Ligne 5", t:80, s:34}, {n:"Ligne 6", t:40, s:17}, {n:"Ligne 7", t:36, s:30}],
-    "3": [{n:"Ligne 1", t:48, s:20}, {n:"Ligne 2", t:80, s:34}, {n:"Ligne 3", t:64, s:27}, {n:"Ligne 4", t:56, s:24}, {n:"Ligne 5", t:80, s:34}, {n:"Ligne 6", t:40, s:17}, {n:"Ligne 7", t:36, s:30}, {n:"Ligne 8", t:64, s:27}, {n:"Ligne 9", t:36, s:12}, {n:"Ligne 10", t:60, s:20}, {n:"Ligne 11", t:42, s:14}, {n:"Ligne 60", t:40, s:17}, {n:"Ligne 61", t:64, s:27}, {n:"Ligne PL1", t:188, s:15}],
-    "4": [{n:"Ligne 1", t:48, s:20}, {n:"Ligne 2", t:80, s:34}, {n:"Ligne 3", t:64, s:27}, {n:"Ligne 4", t:56, s:24}, {n:"Ligne 5", t:80, s:34}, {n:"Ligne 6", t:40, s:17}, {n:"Ligne 7", t:36, s:30}, {n:"Ligne 8", t:64, s:27}, {n:"Ligne 9", t:36, s:12}, {n:"Ligne 10", t:60, s:20}, {n:"Ligne 11", t:42, s:14}, {n:"Ligne 12", t:54, s:21}, {n:"Ligne 13", t:36, s:15}, {n:"Ligne 60", t:40, s:17}, {n:"Ligne 61", t:64, s:27}, {n:"Ligne 62", t:80, s:30}, {n:"Ligne 63", t:58, s:26}, {n:"Ligne 64", t:28, s:13}, {n:"Ligne 101", t:72, s:16}, {n:"Ligne 102", t:54, s:12}, {n:"Ligne 103", t:42, s:8}, {n:"Ligne 104", t:48, s:10}, {n:"Ligne 201", t:116, s:5}, {n:"Ligne 202", t:74, s:4}, {n:"Ligne 203", t:124, s:5}, {n:"Ligne PL1", t:208, s:17}, {n:"Ligne PL2", t:82, s:8}],
-    "5": [{n:"Ligne T1", t:92, s:44}, {n:"Ligne 2", t:48, s:20}, {n:"Ligne 3", t:64, s:27}, {n:"Ligne 4", t:94, s:37}, {n:"Ligne 5", t:74, s:34}, {n:"Ligne 6", t:40, s:17}, {n:"Ligne 7", t:36, s:30}, {n:"Ligne 8", t:64, s:27}, {n:"Ligne 9", t:36, s:12}, {n:"Ligne 10", t:66, s:24}, {n:"Ligne 11", t:42, s:14}, {n:"Ligne 12", t:54, s:21}, {n:"Ligne 13", t:36, s:15}, {n:"Ligne 14", t:48, s:18}, {n:"Ligne 15", t:96, s:36}, {n:"Ligne 16", t:44, s:20}, {n:"Ligne 17", t:66, s:28}, {n:"Ligne 18", t:80, s:33}, {n:"Ligne 60", t:40, s:17}, {n:"Ligne 61", t:64, s:27}, {n:"Ligne 62", t:80, s:30}, {n:"Ligne 63", t:58, s:26}, {n:"Ligne 64", t:28, s:13}, {n:"Ligne 65", t:50, s:27}, {n:"Ligne 101", t:72, s:16}, {n:"Ligne 102", t:54, s:12}, {n:"Ligne 103", t:42, s:8}, {n:"Ligne 104", t:48, s:10}, {n:"Ligne 105", t:100, s:20}, {n:"Ligne 106", t:52, s:11}, {n:"Ligne 151", t:104, s:21}, {n:"Ligne 201", t:116, s:6}, {n:"Ligne 202", t:74, s:5}, {n:"Ligne 203", t:124, s:5}, {n:"Ligne 204", t:140, s:8}, {n:"Ligne 205", t:90, s:7}, {n:"Ligne 206", t:96, s:5}, {n:"Ligne 251", t:112, s:7}, {n:"Ligne PL1", t:208, s:17}, {n:"Ligne PL2", t:82, s:8}, {n:"Ligne PL3", t:56, s:27}]
+    "1": [{n:"Ligne 1", t:48, s:20, c:"#dc241f"}, {n:"Ligne 2", t:80, s:34, c:"#9364cc"}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00"}, {n:"Ligne 4", t:56, s:24, c:"#00afad"}],
+    "2": [{n:"Ligne 1", t:48, s:20, c:"#dc241f"}, {n:"Ligne 2", t:80, s:34 c:"#9364cc"}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00"}, {n:"Ligne 4", t:56, s:24, c:"#00afad"}, {n:"Ligne 5", t:80, s:34, c:"#e86a10"}, {n:"Ligne 6", t:40, s:17, c:"#894e24"}, {n:"Ligne 7", t:36, s:30, c:"#007229"}],
+    "3": [{n:"Ligne 1", t:48, s:20, c:"#dc241f"}, {n:"Ligne 2", t:80, s:34 c:"#9364cc"}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00"}, {n:"Ligne 4", t:56, s:24, c:"#00afad"}, {n:"Ligne 5", t:80, s:34, c:"#e86a10"}, {n:"Ligne 6", t:40, s:17, c:"#894e24"}, {n:"Ligne 7", t:36, s:30, c:"#007229"}, {n:"Ligne 8", t:64, s:27, c:"#d799af"}, {n:"Ligne 9", t:36, s:12, c:"#0019a8"}, {n:"Ligne 10", t:60, s:20, c:"#ffce00"}, {n:"Ligne 11", t:42, s:14, c:"#751056"}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd"}, {n:"Ligne 61", t:64, s:27, c:"#0019a8"}, {n:"Ligne PL1", t:188, s:15, c:"#203ec0"}],
+    "4": [{n:"Ligne 1", t:48, s:20, c:"#dc241f"}, {n:"Ligne 2", t:80, s:34 c:"#9364cc"}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00"}, {n:"Ligne 4", t:56, s:24, c:"#00afad"}, {n:"Ligne 5", t:80, s:34, c:"#e86a10"}, {n:"Ligne 6", t:40, s:17, c:"#894e24"}, {n:"Ligne 7", t:36, s:30, c:"#007229"}, {n:"Ligne 8", t:64, s:27, c:"#d799af"}, {n:"Ligne 9", t:36, s:12, c:"#0019a8"}, {n:"Ligne 10", t:60, s:20, c:"#ffce00"}, {n:"Ligne 11", t:42, s:14, c:"#751056"}, {n:"Ligne 12", t:54, s:21, c:"#007229"}, {n:"Ligne 13", t:36, s:15, c:"#76d0bd"}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd"}, {n:"Ligne 61", t:64, s:27, c:"#0019a8"}, {n:"Ligne 62", t:80, s:30, c:"#b727bf"}, {n:"Ligne 63", t:58, s:26, c:"#e86a10"}, {n:"Ligne 64", t:28, s:13, c:"#ffce00"}, {n:"Ligne 101", t:72, s:16, c:"#751056"}, {n:"Ligne 102", t:54, s:12, c:"#007229"}, {n:"Ligne 103", t:42, s:8, c:"#ffce00"}, {n:"Ligne 104", t:48, s:10, c:"#9364cc"}, {n:"Ligne 201", t:116, s:5, c:"#894e24"}, {n:"Ligne 202", t:74, s:4, c:"#dc241f"}, {n:"Ligne 203", t:124, s:5, c:"#00afad"}, {n:"Ligne PL1", t:208, s:17, c:"#203ec0"}, {n:"Ligne PL2", t:82, s:8, c:"#20b3c0"}],
+    "5": [{n:"Ligne T1", t:92, s:44, c:"#dc241f"}, {n:"Ligne 2", t:48, s:20 c:"#9364cc"}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00"}, {n:"Ligne 4", t:94, s:37, c:"#00afad"}, {n:"Ligne 5", t:74, s:34, c:"#e86a10"}, {n:"Ligne 6", t:40, s:17, c:"#894e24"}, {n:"Ligne 7", t:36, s:30, c:"#007229"}, {n:"Ligne 8", t:64, s:27, c:"#d799af"}, {n:"Ligne 9", t:36, s:12, c:"#0019a8"}, {n:"Ligne 10", t:66, s:24, c:"#ffce00"}, {n:"Ligne 11", t:42, s:14, c:"#751056"}, {n:"Ligne 12", t:54, s:21, c:"#007229"}, {n:"Ligne 13", t:36, s:15, c:"#76d0bd"}, {n:"Ligne 14", t:48, s:18, c:"#dc241f"}, {n:"Ligne 15", t:96, s:36, c:"#751056"}, {n:"Ligne 16", t:44, s:20, c:"#ffce00"}, {n:"Ligne 17", t:66, s:28, c:"#00afad"}, {n:"Ligne 18", t:80, s:33, c:"#868f98"}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd"}, {n:"Ligne 61", t:64, s:27, c:"#0019a8"}, {n:"Ligne 62", t:80, s:30, c:"#b727bf"}, {n:"Ligne 63", t:58, s:26, c:"#e86a10"}, {n:"Ligne 64", t:28, s:13, c:"#ffce00"}, {n:"Ligne 65", t:50, s:27, c:"#9364CC"}, {n:"Ligne 101", t:72, s:16, c:"#751056"}, {n:"Ligne 102", t:54, s:12, c:"#007229"}, {n:"Ligne 103", t:42, s:8, c:"#ffce00"}, {n:"Ligne 104", t:48, s:10, c:"#9364cc"}, {n:"Ligne 105", t:100, s:20, c:"#00afad"}, {n:"Ligne 106", t:52, s:11, c:"#d799af"}, {n:"Ligne 151", t:104, s:21, c:"#0019a8"}, {n:"Ligne 201", t:116, s:6, c:"#894e24"}, {n:"Ligne 202", t:74, s:5, c:"#dc241f"}, {n:"Ligne 203", t:124, s:5, c:"#00afad"}, {n:"Ligne 204", t:140, s:8, c:"#9364cc"}, {n:"Ligne 205", t:90, s:7, c:"#007229"}, {n:"Ligne 206", t:96, s:5, c:"#0019a8"}, {n:"Ligne 251", t:112, s:7, c:"#d799af"}, {n:"Ligne PL1", t:208, s:17, c:"#203ec0"}, {n:"Ligne PL2", t:82, s:8, c:"#20b3c0"}, {n:"Ligne PL3", t:56, s:27, c:"#5120c0"}]
 };
 
-// --- LOGIQUE COULEURS ---
-function getLineColor(name) {
-    // Extraction du numéro pour générer une couleur
-    let num = name.replace(/\D/g, ''); 
-    if(!num) num = name.charCodeAt(0) + name.charCodeAt(name.length-1);
-    num = parseInt(num);
-
-    const colors = [
-        "#ef5777", "#575fcf", "#4bcffa", "#34e7e4", "#0be881", "#f53b57", "#3c40c6", "#0fb9b1", "#2d98da", "#3867d6", 
-        "#8854d0", "#a55eea", "#fa8231", "#eb3b5a", "#20bf6b", "#45aaf2", "#4b7bec"
-    ];
-    return colors[num % colors.length];
+// --- LOGIQUE COULEURS (FIXE) ---
+function applyLineColor(color) {
+    // Applique la couleur définie dans tmData au thème
+    document.documentElement.style.setProperty('--line-color', color);
+    
+    // Change aussi la bordure du select pour un rappel visuel
+    document.getElementById('line-select').style.borderColor = color;
 }
 
 // --- INITIALISATION & UI ---
@@ -207,10 +202,8 @@ function applyLine() {
         document.getElementById('totalTime').value = line.t;
         document.getElementById('nbStops').value = line.s;
         
-        // APPLICATION DE LA COULEUR
-        const color = getLineColor(line.n);
-        document.documentElement.style.setProperty('--line-color', color);
-        document.getElementById('line-select').style.borderColor = color;
+        // On applique la couleur FIXE définie dans l'objet de la ligne
+        applyLineColor(line.c);
         
         uiStops(); 
     }
