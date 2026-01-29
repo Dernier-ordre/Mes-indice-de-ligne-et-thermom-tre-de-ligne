@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur TM - PDF Final Ajusté</title>
+    <title>Calculateur TM - Version Ultime</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -51,6 +51,7 @@
         .btn-pdf { background: #e74c3c; color: white; font-size: 1.1em; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); margin-top: 15px; }
         .btn-txt { background: #34495e; color: white; font-size: 1em; margin-top: 10px; }
         .btn-add { background: #ced6e0; color: #2f3542; }
+        .btn-icon { background: #f39c12; color: white; font-size: 0.9em; margin-top: 5px; }
 
         /* TABLEAUX ECRAN */
         .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 30px; border: 1px solid #eee; max-width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -65,6 +66,13 @@
         .hf-zone { background: #fff9e6; font-style: italic; color: #d35400; font-weight: bold; }
         .day-title { color: var(--primary); border-bottom: 3px solid var(--line-color); padding-bottom: 5px; margin-bottom: 20px; font-size: 1.4em; text-transform: uppercase; letter-spacing: 1px; }
         h4 { margin: 10px 0 5px 0; color: #555; background: #eee; padding: 5px 10px; border-radius: 4px; display: inline-block; }
+        
+        /* GESTIONNAIRE D'ICONES */
+        #icon-manager { display: none; background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 10px; border: 1px solid #ddd; }
+        .icon-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+        .icon-list-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 5px; margin-bottom: 5px; border: 1px solid #eee; border-radius: 4px; }
+        .icon-preview { width: 20px; height: 20px; object-fit: contain; margin-right: 10px; }
+
         #hidden-pdf-container { display: none; }
     </style>
 </head>
@@ -87,9 +95,7 @@
             <label>Nombre d'arrêts</label><input type="number" id="nbStops" value="10" oninput="uiStops()">
             
             <label>Liste des Arrêts & Correspondances</label>
-            <div style="font-size:0.75em; color:#666; margin-bottom:5px;">
-                Col 1: Nom de l'arrêt | Col 2: Correspondances (ex: "1, A, T1")
-            </div>
+            <div style="font-size:0.75em; color:#666; margin-bottom:5px;">Col 1: Nom | Col 2: Correspondances (ex: "1, A, T1")</div>
             <div id="stop-list" class="stops-list"></div>
         </div>
 
@@ -108,10 +114,21 @@
             <button class="btn btn-calc" onclick="generateAll()">Actualiser l'aperçu</button>
             
             <div style="margin-top:15px; padding:10px; background:#f1f2f6; border-radius:8px;">
-                <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
-                    <input type="checkbox" id="custom-icons-check"> 
-                    Utiliser icônes perso (Placeholder)
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:bold;">
+                    <input type="checkbox" id="custom-icons-check" checked> Activer indices personnalisés
                 </label>
+                <button class="btn btn-icon" onclick="toggleIconManager()">🖼️ Gérer les icônes</button>
+                
+                <div id="icon-manager">
+                    <label>Ajouter un indice</label>
+                    <div class="icon-row">
+                        <input type="text" id="new-icon-name" placeholder="Nom Ligne (ex: T1)">
+                        <input type="file" id="new-icon-file" accept="image/*">
+                    </div>
+                    <button class="btn btn-add" style="margin-top:0" onclick="addCustomIcon()">Ajouter</button>
+                    <hr style="margin:10px 0; border:0; border-top:1px solid #ddd;">
+                    <div id="icon-storage-list"></div>
+                </div>
             </div>
             
             <button class="btn btn-pdf" onclick="generatePDF()">📄 TÉLÉCHARGER LE PDF</button>
@@ -131,7 +148,7 @@
 <script>
 const { jsPDF } = window.jspdf;
 
-// --- DONNÉES COMPLÈTES ---
+// DONNÉES COMPLÈTES (L1-L10, N1-N5)
 const tmData = {
     "1": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}} ],
     "2": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}} ],
@@ -140,7 +157,7 @@ const tmData = {
     "5": [ {n:"Ligne T1", t:92, s:44, c:"#e67e22", map: {1:"Gare Centrale", 44:"Technopole"}}, {n:"Ligne 2", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 20:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"Centre commercial Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:74, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}}, {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place de l'Europe", 8:"Pôle Luca Pacioli", 27:"Campus Marthe Gautier"}}, {n:"Ligne 9", t:36, s:12, c:"#0019a8", map: {1:"Haute-ville", 5:"Musée d'Art Moderne", 12:"Campus Alan Turing"}}, {n:"Ligne 10", t:66, s:24, c:"#ffce00", map: {1:"Campus Alan Turing", 9:"Lycée Karl Marx", 14:"Parc de l'Étang", 22:"Gare de l'Est", 24:"CRT Est"}}, {n:"Ligne 11", t:42, s:14, c:"#751056", map: {1:"Cimetière", 14:"Hôpital"}}, {n:"Ligne 12", t:54, s:21, c:"#007229", map: {1:"Mairie", 21:"Z.I. Nord"}}, {n:"Ligne 13", t:36, s:15, c:"#76d0bd", map: {1:"Parc des Sports", 15:"Gare de l'Est"}}, {n:"Ligne 14", t:48, s:18, c:"#dc241f", map: {1:"Z.I. Nord", 18:"Mairie"}}, {n:"Ligne 15", t:96, s:36, c:"#751056", map: {1:"Aéroport", 36:"Parc des Sports"}}, {n:"Ligne 16", t:44, s:20, c:"#ffce00", map: {1:"Hôpital", 20:"Gare de l'Est"}}, {n:"Ligne 17", t:66, s:28, c:"#00afad", map: {1:"Cimetière", 28:"Z.I. Sud"}}, {n:"Ligne 18", t:80, s:33, c:"#868f98", map: {1:"Campus Marthe Gautier", 33:"Place du Palais"}}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd", map: {1:"Gare Centrale", 17:"Z.I. Nord"}}, {n:"Ligne 61", t:64, s:27, c:"#0019a8", map: {1:"Gare Centrale", 27:"Aéroport"}}, {n:"Ligne 62", t:80, s:30, c:"#b727bf", map: {1:"Gare Centrale", 30:"Z.I. Sud"}}, {n:"Ligne 63", t:58, s:26, c:"#e86a10", map: {1:"Gare Centrale", 26:"Place du Palais"}}, {n:"Ligne 64", t:28, s:13, c:"#ffce00", map: {1:"Gare Centrale", 13:"Mairie"}}, {n:"Ligne 65", t:50, s:27, c:"#9364CC", map: {1:"Gare Centrale", 27:"Technopole"}}, {n:"Ligne 101", t:72, s:16, c:"#751056"}, {n:"Ligne 102", t:54, s:12, c:"#007229"}, {n:"Ligne 103", t:42, s:8, c:"#ffce00"}, {n:"Ligne 104", t:48, s:10, c:"#9364cc"}, {n:"Ligne 105", t:100, s:20, c:"#00afad", map: {1:"Université", 20:"Campus Marthe Gautier"}}, {n:"Ligne 106", t:52, s:11, c:"#d799af", map: {1:"Lycée", 11:"Cimetière"}}, {n:"Ligne 151", t:104, s:21, c:"#0019a8", map: {1:"Lycée Pro", 21:"Z.I. Nord"}}, {n:"Ligne 201", t:116, s:6, c:"#894e24", map: {1:"Gare Routière", 6:"Ville Voisine A"}}, {n:"Ligne 202", t:74, s:5, c:"#dc241f", map: {1:"Gare Routière", 5:"Ville Voisine B"}}, {n:"Ligne 203", t:124, s:5, c:"#00afad", map: {1:"Gare Routière", 5:"Ville Voisine C"}}, {n:"Ligne 204", t:140, s:8, c:"#9364cc", map: {1:"Gare Routière", 8:"Ville Voisine D"}}, {n:"Ligne 205", t:90, s:7, c:"#007229", map: {1:"Gare Routière", 7:"Ville Voisine E"}}, {n:"Ligne 206", t:96, s:5, c:"#0019a8", map: {1:"Gare Routière", 5:"Ville Voisine F"}}, {n:"Ligne 251", t:112, s:7, c:"#d799af", map: {1:"Gare Routière", 7:"Aéroport Regional"}}, {n:"Ligne PL1", t:230, s:25, c:"#203ec0", map: {1:"Gare Centrale", 25:"Z.I. Sud"}}, {n:"Ligne PL2", t:82, s:8, c:"#20b3c0", map: {1:"Place du Palais", 8:"Z.I. Nord"}}, {n:"Ligne PL3", t:56, s:27, c:"#5120c0", map: {1:"Mairie", 27:"Hôpital"}} ]
 };
 
-// --- FONCTIONS UI ---
+// --- LOGIQUE UI ---
 function saveNetworkName() { localStorage.setItem('tm_network_name', document.getElementById('network-name').value); }
 function applyLineColor(color) { document.documentElement.style.setProperty('--line-color', color); document.getElementById('custom-color').value = color; }
 function applyManualColor(color) { document.documentElement.style.setProperty('--line-color', color); }
@@ -187,6 +204,54 @@ function addPeriod(day, s='06:00', e='22:00', b='4') { const cont = document.get
 function timeToMin(s) { if(!s) return 0; const [h,m] = s.split(':').map(Number); return h*60+m; }
 function minToTime(m) { let h = Math.floor(m/60)%24, min = Math.floor(m%60); return `${h.toString().padStart(2,'0')}:${min.toString().padStart(2,'0')}`; }
 
+// --- GESTION DES ICÔNES PERSONNALISÉES ---
+let customIcons = {};
+
+function toggleIconManager() {
+    const el = document.getElementById('icon-manager');
+    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+
+function addCustomIcon() {
+    const name = document.getElementById('new-icon-name').value.trim().toUpperCase();
+    const fileInput = document.getElementById('new-icon-file');
+    
+    if(!name || fileInput.files.length === 0) { alert("Veuillez entrer un nom et choisir une image."); return; }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        customIcons[name] = e.target.result; // Base64 string
+        renderIconList();
+        document.getElementById('new-icon-name').value = '';
+        fileInput.value = '';
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+}
+
+function renderIconList() {
+    const container = document.getElementById('icon-storage-list');
+    container.innerHTML = '';
+    for(let name in customIcons) {
+        container.innerHTML += `
+        <div class="icon-list-item">
+            <div style="display:flex;align-items:center;">
+                <img src="${customIcons[name]}" class="icon-preview">
+                <strong>${name}</strong>
+            </div>
+            <button class="btn-del" style="position:static" onclick="deleteIcon('${name}')">×</button>
+        </div>`;
+    }
+}
+
+function deleteIcon(name) {
+    delete customIcons[name];
+    renderIconList();
+}
+
+// ---------------------------------------------------------
+// LOGIQUE PRINCIPALE
+// ---------------------------------------------------------
+
 function generateAll() {
     ['semaine', 'samedi', 'dimanche'].forEach(day => {
         document.getElementById('res-' + day).innerHTML = generateTableForDisplay(day);
@@ -194,6 +259,7 @@ function generateAll() {
     document.getElementById('results').style.display = 'block';
 }
 
+// Génération ECRAN
 function generateTableForDisplay(dayId) {
     const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
     if(periodsElements.length === 0) return "";
@@ -226,6 +292,7 @@ function generateTableForDisplay(dayId) {
             allTrips.push({ id: count, time: cur, freq: p.freq });
             cur += p.freq; count++;
         }
+
         let renderGroups = [];
         allTrips.forEach(trip => {
             let lastGroup = renderGroups[renderGroups.length - 1];
@@ -234,9 +301,11 @@ function generateTableForDisplay(dayId) {
                 else { renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] }); }
             } else { renderGroups.push({ type: 'NORM', trip: trip }); }
         });
+
         let rows = Array(nbStops).fill("");
         for(let j=0; j<nbStops; j++) rows[j] = `<tr><td>${isRetour ? stopNames[nbStops-1-j] : stopNames[j]}</td>`;
         let header = `<tr><th>Arrêts</th>`;
+        
         renderGroups.forEach(group => {
             if(group.type === 'NORM') {
                 header += `<th class="course-head">C${group.trip.id}</th>`;
@@ -250,11 +319,14 @@ function generateTableForDisplay(dayId) {
                 for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
             }
         });
+
         return `<div class="table-container"><table><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table></div>`;
     };
+
     return `<h2 class="day-title">${dayTitles[dayId]}</h2><h4>${titleAller}</h4>${makeSingleTable(false)}<h4>${titleRetour}</h4>${makeSingleTable(true)}`;
 }
 
+// Génération PDF DATA
 function generateTableDataForPDF(dayId) {
     const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
     if(periodsElements.length === 0) return { aller: [], retour: [] };
@@ -356,22 +428,19 @@ function generatePDF() {
     let yPos = startY;
     
     doc.setDrawColor(lineColor);
-    doc.setLineWidth(3.5); // REGLAGE EPAISSEUR OPTIMAL
+    doc.setLineWidth(3.5); 
 
     for (let i = 0; i < stops.length; i++) {
         // Pagination si fin de page (seuil à 285)
         if (yPos + gap > 285) {
-            // FIN DE PAGE 1 : ligne jusqu'au bas de la feuille (marge)
-            doc.line(xLine, yPos, xLine, 285); 
+            doc.line(xLine, yPos, xLine, 285); // Ligne jusqu'en bas (STOP NET)
             doc.addPage();
             drawHeader(doc, networkName, lineNameText, lineColor);
             
             yPos = 50; 
-            
-            // DEBUT PAGE 2 : ligne qui reprend SOUS le header (18+2 = 20)
-            doc.setDrawColor(lineColor);
+            doc.setDrawColor(lineColor); 
             doc.setLineWidth(3.5); 
-            doc.line(xLine, 18, xLine, yPos); 
+            doc.line(xLine, 18, xLine, yPos); // Reprise SOUS le header
         }
 
         if (i < stops.length - 1) {
@@ -381,7 +450,7 @@ function generatePDF() {
             doc.line(xLine, yPos, xLine, nextY);
         }
 
-        let radius = (i === 0 || i === stops.length - 1) ? 3.5 : 2.0; 
+        let radius = (i === 0 || i === stops.length - 1) ? 3.5 : 2.2; // Points plus visibles
         
         doc.setFillColor(255, 255, 255);
         doc.setDrawColor(lineColor);
@@ -407,7 +476,31 @@ function generatePDF() {
                 doc.text(l, xCor, yPos, { align: 'center', baseline: 'middle' });
                 xCor += 9;
             });
+        } 
+        // --- LOGIQUE ICONE PERSO ---
+        else if (corres[i] && useCustomIcons) {
+            let lines = corres[i].split(',').map(s => s.trim());
+            let xCor = xLine + 100;
+            lines.forEach(l => {
+                let upperL = l.toUpperCase();
+                // Si une icône perso existe pour ce nom de ligne
+                if (customIcons[upperL]) {
+                    // addImage(data, format, x, y, w, h)
+                    // On centre l'image (7x7) sur le point yPos
+                    doc.addImage(customIcons[upperL], 'PNG', xCor - 3.5, yPos - 3.5, 7, 7);
+                } else {
+                    // Fallback sur bulle standard si pas d'image
+                    let bubbleColor = getCorresColor(l);
+                    doc.setFillColor(bubbleColor); 
+                    doc.circle(xCor, yPos, 3.5, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(7);
+                    doc.text(l, xCor, yPos, { align: 'center', baseline: 'middle' });
+                }
+                xCor += 9;
+            });
         }
+
         yPos += gap;
     }
 
