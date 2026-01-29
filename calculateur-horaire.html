@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur TM - Version Service (S)</title>
+    <title>Calculateur TM - Export Modulaire</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -49,9 +49,7 @@
         /* BOUTONS UNIFIÉS */
         .btn { border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; text-transform: uppercase; transition: 0.3s; }
         .btn:hover { opacity: 0.9; transform: translateY(-2px); }
-        
         .btn-action { background: var(--line-color); color: white; font-size: 1em; margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        
         .btn-add { background: #ced6e0; color: #2f3542; }
         .btn-sm { font-size: 0.85em; padding: 8px 15px; width: auto; display: inline-block; margin-top: 5px; }
 
@@ -154,7 +152,6 @@
 <script>
 const { jsPDF } = window.jspdf;
 
-// DONNÉES COMPLÈTES (L1-L10, N1-N5)
 const tmData = {
     "1": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}} ],
     "2": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}} ],
@@ -163,7 +160,6 @@ const tmData = {
     "5": [ {n:"Ligne T1", t:92, s:44, c:"#e67e22", map: {1:"Gare Centrale", 44:"Technopole"}}, {n:"Ligne 2", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 20:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"Centre commercial Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:74, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}}, {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place de l'Europe", 8:"Pôle Luca Pacioli", 27:"Campus Marthe Gautier"}}, {n:"Ligne 9", t:36, s:12, c:"#0019a8", map: {1:"Haute-ville", 5:"Musée d'Art Moderne", 12:"Campus Alan Turing"}}, {n:"Ligne 10", t:66, s:24, c:"#ffce00", map: {1:"Campus Alan Turing", 9:"Lycée Karl Marx", 14:"Parc de l'Étang", 22:"Gare de l'Est", 24:"CRT Est"}}, {n:"Ligne 11", t:42, s:14, c:"#751056", map: {1:"Cimetière", 14:"Hôpital"}}, {n:"Ligne 12", t:54, s:21, c:"#007229", map: {1:"Mairie", 21:"Z.I. Nord"}}, {n:"Ligne 13", t:36, s:15, c:"#76d0bd", map: {1:"Parc des Sports", 15:"Gare de l'Est"}}, {n:"Ligne 14", t:48, s:18, c:"#dc241f", map: {1:"Z.I. Nord", 18:"Mairie"}}, {n:"Ligne 15", t:96, s:36, c:"#751056", map: {1:"Aéroport", 36:"Parc des Sports"}}, {n:"Ligne 16", t:44, s:20, c:"#ffce00", map: {1:"Hôpital", 20:"Gare de l'Est"}}, {n:"Ligne 17", t:66, s:28, c:"#00afad", map: {1:"Cimetière", 28:"Z.I. Sud"}}, {n:"Ligne 18", t:80, s:33, c:"#868f98", map: {1:"Campus Marthe Gautier", 33:"Place du Palais"}}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd", map: {1:"Gare Centrale", 17:"Z.I. Nord"}}, {n:"Ligne 61", t:64, s:27, c:"#0019a8", map: {1:"Gare Centrale", 27:"Aéroport"}}, {n:"Ligne 62", t:80, s:30, c:"#b727bf", map: {1:"Gare Centrale", 30:"Z.I. Sud"}}, {n:"Ligne 63", t:58, s:26, c:"#e86a10", map: {1:"Gare Centrale", 26:"Place du Palais"}}, {n:"Ligne 64", t:28, s:13, c:"#ffce00", map: {1:"Gare Centrale", 13:"Mairie"}}, {n:"Ligne 65", t:50, s:27, c:"#9364CC", map: {1:"Gare Centrale", 27:"Technopole"}}, {n:"Ligne 101", t:72, s:16, c:"#751056"}, {n:"Ligne 102", t:54, s:12, c:"#007229"}, {n:"Ligne 103", t:42, s:8, c:"#ffce00"}, {n:"Ligne 104", t:48, s:10, c:"#9364cc"}, {n:"Ligne 105", t:100, s:20, c:"#00afad", map: {1:"Université", 20:"Campus Marthe Gautier"}}, {n:"Ligne 106", t:52, s:11, c:"#d799af", map: {1:"Lycée", 11:"Cimetière"}}, {n:"Ligne 151", t:104, s:21, c:"#0019a8", map: {1:"Lycée Pro", 21:"Z.I. Nord"}}, {n:"Ligne 201", t:116, s:6, c:"#894e24", map: {1:"Gare Routière", 6:"Ville Voisine A"}}, {n:"Ligne 202", t:74, s:5, c:"#dc241f", map: {1:"Gare Routière", 5:"Ville Voisine B"}}, {n:"Ligne 203", t:124, s:5, c:"#00afad", map: {1:"Gare Routière", 5:"Ville Voisine C"}}, {n:"Ligne 204", t:140, s:8, c:"#9364cc", map: {1:"Gare Routière", 8:"Ville Voisine D"}}, {n:"Ligne 205", t:90, s:7, c:"#007229", map: {1:"Gare Routière", 7:"Ville Voisine E"}}, {n:"Ligne 206", t:96, s:5, c:"#0019a8", map: {1:"Gare Routière", 5:"Ville Voisine F"}}, {n:"Ligne 251", t:112, s:7, c:"#d799af", map: {1:"Gare Routière", 7:"Aéroport Regional"}}, {n:"Ligne PL1", t:230, s:25, c:"#203ec0", map: {1:"Gare Centrale", 25:"Z.I. Sud"}}, {n:"Ligne PL2", t:82, s:8, c:"#20b3c0", map: {1:"Place du Palais", 8:"Z.I. Nord"}}, {n:"Ligne PL3", t:56, s:27, c:"#5120c0", map: {1:"Mairie", 27:"Hôpital"}} ]
 };
 
-// --- LOGIQUE UI ---
 function saveNetworkName() { localStorage.setItem('tm_network_name', document.getElementById('network-name').value); }
 function applyLineColor(color) { 
     document.documentElement.style.setProperty('--line-color', color); 
@@ -593,9 +589,12 @@ function exportHTMLtoTXT() {
     h3 { background: #eee; padding: 8px; border-radius: 4px; color: #333; margin-bottom: 0; }
     </style>`;
 
-    const generateSingleTable = (dayId, title) => {
+    let output = "=== 1. STYLE CSS (A copier une seule fois) ===\n\n" + css + "\n\n\n";
+
+    // Helper pour générer un bloc propre
+    const generateHtmlForDirection = (dayId, isRetour, title) => {
         const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
-        if(periodsElements.length === 0) return "";
+        if(periodsElements.length === 0) return null;
 
         const arTime = parseInt(document.getElementById('totalTime').value);
         const pause = parseInt(document.getElementById('breakTime').value);
@@ -610,52 +609,73 @@ function exportHTMLtoTXT() {
         });
         periods.sort((a,b) => a.s - b.s);
 
-        const makeSingleTable = (isRetour) => {
-            let allTrips = [];
-            let cur = periods[0].s, end = periods[periods.length-1].e, count = 1;
-            while(cur < end) {
-                let p = periods.find(p => cur >= p.s && cur < p.e);
-                if(!p) { let next = periods.find(p => p.s > cur); if(next) cur = next.s; else break; p = next; }
-                allTrips.push({ id: count, time: cur, freq: p.freq });
-                cur += p.freq; count++;
+        let allTrips = [];
+        let cur = periods[0].s, end = periods[periods.length-1].e, count = 1;
+        while(cur < end) {
+            let p = periods.find(p => cur >= p.s && cur < p.e);
+            if(!p) { let next = periods.find(p => p.s > cur); if(next) cur = next.s; else break; p = next; }
+            allTrips.push({ id: count, time: cur, freq: p.freq });
+            cur += p.freq; count++;
+        }
+
+        let renderGroups = [];
+        allTrips.forEach(trip => {
+            let lastGroup = renderGroups[renderGroups.length - 1];
+            if(trip.freq <= 6) {
+                if(lastGroup && lastGroup.type === 'HF' && Math.round(lastGroup.freq) === Math.round(trip.freq)) { lastGroup.trips.push(trip); } 
+                else { renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] }); }
+            } else { renderGroups.push({ type: 'NORM', trip: trip }); }
+        });
+
+        let rows = Array(nbStops).fill("");
+        for(let j=0; j<nbStops; j++) rows[j] = `<tr><td>${isRetour ? stopNames[nbStops-1-j] : stopNames[j]}</td>`;
+        let header = `<tr><th>Arrêts</th>`;
+        
+        renderGroups.forEach(group => {
+            if(group.type === 'NORM') {
+                header += `<th class="tm-header">S${group.trip.id}</th>`;
+                let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
+                for(let j=0; j<nbStops; j++) rows[j] += `<td>${minToTime(Math.round(base + (j*gap)))}</td>`;
+            } else {
+                let startT = minToTime(group.trips[0].time);
+                let lastTrip = group.trips[group.trips.length-1];
+                let endT = minToTime(lastTrip.time + group.freq);
+                header += `<th class="tm-header">S${group.trips[0].id}-${lastTrip.id}</th>`;
+                for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
             }
+        });
 
-            let renderGroups = [];
-            allTrips.forEach(trip => {
-                let lastGroup = renderGroups[renderGroups.length - 1];
-                if(trip.freq <= 6) {
-                    if(lastGroup && lastGroup.type === 'HF' && Math.round(lastGroup.freq) === Math.round(trip.freq)) { lastGroup.trips.push(trip); } 
-                    else { renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] }); }
-                } else { renderGroups.push({ type: 'NORM', trip: trip }); }
-            });
-
-            let rows = Array(nbStops).fill("");
-            for(let j=0; j<nbStops; j++) rows[j] = `<tr><td>${isRetour ? stopNames[nbStops-1-j] : stopNames[j]}</td>`;
-            let header = `<tr><th>Arrêts</th>`;
-            
-            renderGroups.forEach(group => {
-                if(group.type === 'NORM') {
-                    header += `<th class="tm-header">S${group.trip.id}</th>`;
-                    let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
-                    for(let j=0; j<nbStops; j++) rows[j] += `<td>${minToTime(Math.round(base + (j*gap)))}</td>`;
-                } else {
-                    let startT = minToTime(group.trips[0].time);
-                    let lastTrip = group.trips[group.trips.length-1];
-                    let endT = minToTime(lastTrip.time + group.freq);
-                    header += `<th class="tm-header">S${group.trips[0].id}-${lastTrip.id}</th>`;
-                    for(let j=0; j<nbStops; j++) rows[j] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
-                }
-            });
-
-            return `<h3>${isRetour ? titleRetour : titleAller}</h3><div class="tm-scroll-container"><table class="tm-table"><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table></div>`;
-        };
-
-        return `<h2>${title}</h2>` + makeSingleTable(false) + "<br>" + makeSingleTable(true);
+        return `<h3>${title}</h3><div class="tm-scroll-container"><table class="tm-table"><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table></div>`;
     };
 
-    let fullContent = css + generateSingleTable('semaine', 'Horaires - Semaine') + generateSingleTable('samedi', 'Horaires - Samedi') + generateSingleTable('dimanche', 'Horaires - Dimanche');
+    // Boucle de génération
+    const days = [
+        {id:'semaine', t:'SEMAINE'}, 
+        {id:'samedi', t:'SAMEDI'}, 
+        {id:'dimanche', t:'DIMANCHE'}
+    ];
+
+    days.forEach(day => {
+        let titleAller = `${day.t} - ALLER (${firstStop} -> ${lastStop})`;
+        let htmlAller = generateHtmlForDirection(day.id, false, titleAller);
+        if(htmlAller) {
+            output += `=== 2. ${titleAller} ===\n`;
+            output += `\n`;
+            output += htmlAller;
+            output += "\n\n\n\n";
+        }
+
+        let titleRetour = `${day.t} - RETOUR (${lastStop} -> ${firstStop})`;
+        let htmlRetour = generateHtmlForDirection(day.id, true, titleRetour);
+        if(htmlRetour) {
+            output += `=== 3. ${titleRetour} ===\n`;
+            output += `\n`;
+            output += htmlRetour;
+            output += "\n\n\n\n";
+        }
+    });
     
-    const blob = new Blob([fullContent], { type: 'text/plain' });
+    const blob = new Blob([output], { type: 'text/plain' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Tableaux_HTML_${netName}_${lineName}.txt`; a.click();
 }
 
@@ -669,6 +689,7 @@ function exportToExcel() {
     ['semaine', 'samedi', 'dimanche'].forEach(day => {
         const div = document.getElementById('res-' + day);
         if(div && div.innerHTML.trim() !== "") {
+            html += `<h1>${day.toUpperCase()}</h1>`;
             html += div.innerHTML;
             html += '<br><hr><br>';
         }
