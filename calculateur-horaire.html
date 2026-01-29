@@ -48,9 +48,19 @@
         .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         table { border-collapse: collapse; width: 100%; font-size: 0.85em; }
         th, td { border: 1px solid #eee; padding: 12px; text-align: center; min-width: 80px; }
-        th:first-child, td:first-child { position: sticky; left: 0; background: #f8f9fa; z-index: 10; border-right: 3px solid var(--line-color); min-width: 160px; text-align: left; }
-        th { background: var(--primary); color: white; }
-        .course-info { display: flex; flex-direction: column; font-size: 0.85em; }
+        
+        /* Correction cellule A1 */
+        th:first-child { 
+            position: sticky; left: 0; background: #f8f9fa !important; z-index: 10; 
+            border-right: 3px solid var(--line-color); color: var(--primary) !important; 
+            text-align: left; min-width: 160px;
+        }
+        td:first-child { position: sticky; left: 0; background: #f8f9fa; z-index: 10; border-right: 3px solid var(--line-color); text-align: left; }
+        
+        /* Couleur dynamique des entêtes de courses */
+        .course-head { background: var(--line-color) !important; color: white !important; font-weight: bold; }
+        
+        .hf-zone { background: #fff9e6; font-style: italic; color: #d35400; font-weight: bold; }
         
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -64,11 +74,7 @@
             <label style="color:white;">1. Niveau</label>
             <select id="lvl-select" onchange="loadLines()">
                 <option value="">-- Niv --</option>
-                <option value="1">Niveau 1</option>
-                <option value="2">Niveau 2</option>
-                <option value="3">Niveau 3</option>
-                <option value="4">Niveau 4</option>
-                <option value="5">Niveau 5</option>
+                <option value="1">Niveau 1</option><option value="2">Niveau 2</option><option value="3">Niveau 3</option><option value="4">Niveau 4</option><option value="5">Niveau 5</option>
             </select>
         </div>
         <div>
@@ -207,31 +213,69 @@ function generateAll() {
 function generateTableForDay(dayId) {
     const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
     if(periodsElements.length === 0) return "<p style='text-align:center; padding:20px;'>Aucune donnée.</p>";
+    
     const arTime = parseInt(document.getElementById('totalTime').value);
     const pause = parseInt(document.getElementById('breakTime').value);
     const nbStops = parseInt(document.getElementById('nbStops').value);
     const stopNames = Array.from(document.querySelectorAll('.stop-name')).map(i => i.value);
     const cycle = arTime + pause, oneWay = arTime / 2, gap = oneWay / (nbStops - 1), returnDelay = oneWay + (pause / 2);
+    
     let periods = [];
     periodsElements.forEach(p => {
         let s = timeToMin(p.querySelector('.p-start').value), e = timeToMin(p.querySelector('.p-end').value), b = parseInt(p.querySelector('.p-bus').value);
-        if(e <= s) e += 1440; if(b > 0) periods.push({s, e, b});
+        if(e <= s) e += 1440; if(b > 0) periods.push({s, e, b, freq: cycle/b});
     });
     periods.sort((a,b) => a.s - b.s);
+
     const makeTable = (isRetour) => {
-        let rows = []; for(let i=0; i<nbStops; i++) rows[i] = `<tr><td>${isRetour ? stopNames[nbStops-1-i] : stopNames[i]}</td>`;
-        let header = `<tr><th>Arrêts</th>`, cur = periods[0].s, end = periods[periods.length-1].e, count = 1;
+        // 1. Calculer tous les passages
+        let allTrips = [];
+        let cur = periods[0].s, end = periods[periods.length-1].e, count = 1;
         while(cur < end) {
             let p = periods.find(p => cur >= p.s && cur < p.e);
             if(!p) { let next = periods.find(p => p.s > cur); if(next) cur = next.s; else break; p = next; }
-            let freq = cycle / p.b;
-            header += `<th><div class="course-info"><strong>D${count}</strong></div></th>`;
-            let base = isRetour ? cur + returnDelay : cur;
-            for(let i=0; i<nbStops; i++) rows[i] += `<td>${minToTime(Math.round(base + (i*gap)))}</td>`;
-            cur += freq; count++;
+            allTrips.push({ id: count, time: cur, freq: p.freq });
+            cur += p.freq; count++;
         }
+
+        // 2. Grouper par fréquence (Forte vs Normale)
+        let renderGroups = [];
+        allTrips.forEach(trip => {
+            let lastGroup = renderGroups[renderGroups.length - 1];
+            if(trip.freq <= 6) {
+                if(lastGroup && lastGroup.type === 'HF' && lastGroup.freq === trip.freq) {
+                    lastGroup.trips.push(trip);
+                } else {
+                    renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] });
+                }
+            } else {
+                renderGroups.push({ type: 'NORM', trip: trip });
+            }
+        });
+
+        // 3. Générer le HTML
+        let rows = Array(nbStops).fill("");
+        for(let i=0; i<nbStops; i++) rows[i] = `<tr><td>${isRetour ? stopNames[nbStops-1-i] : stopNames[i]}</td>`;
+        let header = `<tr><th>Arrêts</th>`;
+
+        renderGroups.forEach(group => {
+            if(group.type === 'NORM') {
+                header += `<th class="course-head">D${group.trip.id}</th>`;
+                let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
+                for(let i=0; i<nbStops; i++) rows[i] += `<td>${minToTime(Math.round(base + (i*gap)))}</td>`;
+            } else {
+                let startT = minToTime(group.trips[0].time);
+                let endT = minToTime(group.trips[group.trips.length-1].time + group.freq);
+                header += `<th class="course-head" style="min-width:120px;">D${group.trips[0].id} à D${group.trips[group.trips.length-1].id}</th>`;
+                for(let i=0; i<nbStops; i++) {
+                    rows[i] += `<td class="hf-zone">De ${startT} à ${endT}<br>Toutes les ${Math.round(group.freq)} min</td>`;
+                }
+            }
+        });
+
         return `<table><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table>`;
     };
+
     return `<h4>Aller</h4><div class="table-container">${makeTable(false)}</div><h4>Retour</h4><div class="table-container">${makeTable(true)}</div>`;
 }
 
