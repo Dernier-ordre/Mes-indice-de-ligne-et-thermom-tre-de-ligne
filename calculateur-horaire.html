@@ -732,7 +732,7 @@ function exportToExcel() {
     a.click();
 }
 
-window.onload = () => { uiStops(); ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = ''); addPeriod('semaine', ':', ':', ''); addPeriod('samedi', ':', ':', ''); addPeriod('dimanche', ':', ':', ''); const savedName = localStorage.getItem('tm_network_name'); if(savedName) document.getElementById('network-name').value = savedName; };
+window.onload = () => { uiStops(); ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = ''); addPeriod('semaine', '06:00', '09:30', '2'); addPeriod('samedi', '06:00', '09:30', '2'); addPeriod('dimanche', '06:00', '09:30', '2'); const savedName = localStorage.getItem('tm_network_name'); if(savedName) document.getElementById('network-name').value = savedName; };
 </script>
 </body>
 </html>
