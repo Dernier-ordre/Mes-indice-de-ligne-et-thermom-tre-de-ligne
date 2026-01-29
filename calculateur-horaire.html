@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur TM - Réseau & PDF Ready</title>
+    <title>Calculateur TM - Réseau Final</title>
     <style>
         :root { --primary: #1e272e; --accent: #05c46b; --tm-blue: #3c40c6; --bg: #f1f2f6; --line-color: #3c40c6; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
@@ -26,30 +26,26 @@
         }
         select:focus, input:focus { border-color: var(--line-color); outline: none; }
         
-        /* Sélecteur couleur */
         .color-picker-container { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 8px; }
         input[type="color"] { width: 50px; height: 40px; padding: 2px; cursor: pointer; border: none; background: none; }
         #line-select { border-width: 3px; font-weight: bold; color: var(--primary); transition: 0.3s; }
 
-        /* Onglets */
+        .stops-list { display: grid; grid-template-columns: 1fr; gap: 8px; max-height: 400px; overflow-y: auto; margin-top: 10px; padding: 5px; background: #f9f9f9; border-radius: 8px; }
+        .stop-item { display: flex; align-items: center; gap: 5px; }
+
         .tabs-header { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
         .tab-btn { border: none; background: #dfe4ea; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; color: #57606f; transition: 0.3s; }
         .tab-btn.active { background: var(--line-color); color: white; transform: scale(1.05); }
         .tab-content { display: none; animation: fadeIn 0.3s; }
         .tab-content.active { display: block; }
 
-        /* Périodes */
         .period-box { background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 5px solid var(--line-color); margin-bottom: 15px; position: relative; }
         .period-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
         
-        .stops-list { display: grid; grid-template-columns: 1fr; gap: 8px; max-height: 400px; overflow-y: auto; margin-top: 10px; padding: 5px; background: #f9f9f9; border-radius: 8px; }
-        .stop-item { display: flex; align-items: center; gap: 5px; }
-
         .btn { border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; text-transform: uppercase; width: 100%; margin-top: 10px; }
         .btn-calc { background: var(--line-color); color: white; font-size: 1.1em; margin-top: 20px; }
         .btn-add { background: #ced6e0; color: #2f3542; }
 
-        /* Tableaux */
         .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         table { border-collapse: collapse; width: 100%; font-size: 0.85em; }
         th, td { border: 1px solid #eee; padding: 12px; text-align: center; min-width: 80px; }
@@ -151,13 +147,118 @@
 </div>
 
 <script>
-// --- DONNÉES ---
+// --- DONNÉES OFFICIELLES TM NIVEAUX 1 A 5 (CORRIGÉES) ---
 const tmData = {
-    "1": [{n:"Ligne 1", t:48, s:20, c:"#dc241f"}, {n:"Ligne 2", t:80, s:34, c:"#9364cc"}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00"}, {n:"Ligne 4", t:56, s:24, c:"#00afad"}],
-    "2": [{n:"Ligne 1", t:48, s:20, c:"#dc241f"}, {n:"Ligne 2", t:80, s:34, c:"#9364cc"}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00"}, {n:"Ligne 4", t:56, s:24, c:"#00afad"}, {n:"Ligne 5", t:80, s:34, c:"#e86a10"}, {n:"Ligne 6", t:40, s:17, c:"#894e24"}, {n:"Ligne 7", t:36, s:30, c:"#007229"}],
-    "3": [{n:"Ligne 1", t:48, s:20, c:"#dc241f"}, {n:"Ligne 2", t:80, s:34, c:"#9364cc"}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00"}, {n:"Ligne 4", t:56, s:24, c:"#00afad"}, {n:"Ligne 5", t:80, s:34, c:"#e86a10"}, {n:"Ligne 6", t:40, s:17, c:"#894e24"}, {n:"Ligne 7", t:36, s:30, c:"#007229"}, {n:"Ligne 8", t:64, s:27, c:"#d799af"}, {n:"Ligne 9", t:36, s:12, c:"#0019a8"}, {n:"Ligne 10", t:60, s:20, c:"#ffce00"}, {n:"Ligne 11", t:42, s:14, c:"#751056"}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd"}, {n:"Ligne 61", t:64, s:27, c:"#0019a8"}, {n:"Ligne PL1", t:188, s:15, c:"#203ec0"}],
-    "4": [{n:"Ligne 1", t:48, s:20, c:"#dc241f"}, {n:"Ligne 2", t:80, s:34, c:"#9364cc"}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00"}, {n:"Ligne 4", t:56, s:24, c:"#00afad"}, {n:"Ligne 5", t:80, s:34, c:"#e86a10"}, {n:"Ligne 6", t:40, s:17, c:"#894e24"}, {n:"Ligne 7", t:36, s:30, c:"#007229"}, {n:"Ligne 8", t:64, s:27, c:"#d799af"}, {n:"Ligne 9", t:36, s:12, c:"#0019a8"}, {n:"Ligne 10", t:60, s:20, c:"#ffce00"}, {n:"Ligne 11", t:42, s:14, c:"#751056"}, {n:"Ligne 12", t:54, s:21, c:"#007229"}, {n:"Ligne 13", t:36, s:15, c:"#76d0bd"}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd"}, {n:"Ligne 61", t:64, s:27, c:"#0019a8"}, {n:"Ligne 62", t:80, s:30, c:"#b727bf"}, {n:"Ligne 63", t:58, s:26, c:"#e86a10"}, {n:"Ligne 64", t:28, s:13, c:"#ffce00"}, {n:"Ligne 101", t:72, s:16, c:"#751056"}, {n:"Ligne 102", t:54, s:12, c:"#007229"}, {n:"Ligne 103", t:42, s:8, c:"#ffce00"}, {n:"Ligne 104", t:48, s:10, c:"#9364cc"}, {n:"Ligne 201", t:116, s:5, c:"#894e24"}, {n:"Ligne 202", t:74, s:4, c:"#dc241f"}, {n:"Ligne 203", t:124, s:5, c:"#00afad"}, {n:"Ligne PL1", t:208, s:17, c:"#203ec0"}, {n:"Ligne PL2", t:82, s:8, c:"#20b3c0"}],
-    "5": [{n:"Ligne T1", t:92, s:44, c:"#dc241f"}, {n:"Ligne 2", t:48, s:20, c:"#9364cc"}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00"}, {n:"Ligne 4", t:94, s:37, c:"#00afad"}, {n:"Ligne 5", t:74, s:34, c:"#e86a10"}, {n:"Ligne 6", t:40, s:17, c:"#894e24"}, {n:"Ligne 7", t:36, s:30, c:"#007229"}, {n:"Ligne 8", t:64, s:27, c:"#d799af"}, {n:"Ligne 9", t:36, s:12, c:"#0019a8"}, {n:"Ligne 10", t:66, s:24, c:"#ffce00"}, {n:"Ligne 11", t:42, s:14, c:"#751056"}, {n:"Ligne 12", t:54, s:21, c:"#007229"}, {n:"Ligne 13", t:36, s:15, c:"#76d0bd"}, {n:"Ligne 14", t:48, s:18, c:"#dc241f"}, {n:"Ligne 15", t:96, s:36, c:"#751056"}, {n:"Ligne 16", t:44, s:20, c:"#ffce00"}, {n:"Ligne 17", t:66, s:28, c:"#00afad"}, {n:"Ligne 18", t:80, s:33, c:"#868f98"}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd"}, {n:"Ligne 61", t:64, s:27, c:"#0019a8"}, {n:"Ligne 62", t:80, s:30, c:"#b727bf"}, {n:"Ligne 63", t:58, s:26, c:"#e86a10"}, {n:"Ligne 64", t:28, s:13, c:"#ffce00"}, {n:"Ligne 65", t:50, s:27, c:"#9364CC"}, {n:"Ligne 101", t:72, s:16, c:"#751056"}, {n:"Ligne 102", t:54, s:12, c:"#007229"}, {n:"Ligne 103", t:42, s:8, c:"#ffce00"}, {n:"Ligne 104", t:48, s:10, c:"#9364cc"}, {n:"Ligne 105", t:100, s:20, c:"#00afad"}, {n:"Ligne 106", t:52, s:11, c:"#d799af"}, {n:"Ligne 151", t:104, s:21, c:"#0019a8"}, {n:"Ligne 201", t:116, s:6, c:"#894e24"}, {n:"Ligne 202", t:74, s:5, c:"#dc241f"}, {n:"Ligne 203", t:124, s:5, c:"#00afad"}, {n:"Ligne 204", t:140, s:8, c:"#9364cc"}, {n:"Ligne 205", t:90, s:7, c:"#007229"}, {n:"Ligne 206", t:96, s:5, c:"#0019a8"}, {n:"Ligne 251", t:112, s:7, c:"#d799af"}, {n:"Ligne PL1", t:208, s:17, c:"#203ec0"}, {n:"Ligne PL2", t:82, s:8, c:"#20b3c0"}, {n:"Ligne PL3", t:56, s:27, c:"#5120c0"}]
+    "1": [
+        {n:"Ligne 1", t:48, s:20, c:"#dc241f", start:"Campus Alan Turing", end:"Gare Centrale"},
+        {n:"Ligne 2", t:80, s:34, c:"#9364cc", start:"Aéroport", end:"Gare Centrale"},
+        {n:"Ligne 3", t:64, s:27, c:"#f1ab00", start:"Gare Centrale", end:"Campus Marthe Gautier"},
+        {n:"Ligne 4", t:56, s:24, c:"#00afad", start:"Gare Centrale", end:"Gare de l'Est"}
+    ],
+    "2": [
+        {n:"Ligne 1", t:48, s:20, c:"#dc241f", start:"Campus Alan Turing", end:"Gare Centrale"},
+        {n:"Ligne 2", t:80, s:34, c:"#9364cc", start:"Aéroport", end:"Gare Centrale"},
+        {n:"Ligne 3", t:64, s:27, c:"#f1ab00", start:"Gare Centrale", end:"Campus Marthe Gautier"},
+        {n:"Ligne 4", t:56, s:24, c:"#00afad", start:"Gare Centrale", end:"Gare de l'Est"},
+        {n:"Ligne 5", t:80, s:34, c:"#e86a10", start:"Mairie", end:"Place du Palais"},
+        {n:"Ligne 6", t:40, s:17, c:"#894e24", start:"Hôpital", end:"Z.I. Sud"},
+        {n:"Ligne 7", t:36, s:30, c:"#007229", start:"Cimetière", end:"Parc des Sports"}
+    ],
+    "3": [
+        {n:"Ligne 1", t:48, s:20, c:"#dc241f", start:"Campus Alan Turing", end:"Gare Centrale"},
+        {n:"Ligne 2", t:80, s:34, c:"#9364cc", start:"Aéroport", end:"Gare Centrale"},
+        {n:"Ligne 3", t:64, s:27, c:"#f1ab00", start:"Gare Centrale", end:"Campus Marthe Gautier"},
+        {n:"Ligne 4", t:56, s:24, c:"#00afad", start:"Gare Centrale", end:"Gare de l'Est"},
+        {n:"Ligne 5", t:80, s:34, c:"#e86a10", start:"Mairie", end:"Place du Palais"},
+        {n:"Ligne 6", t:40, s:17, c:"#894e24", start:"Hôpital", end:"Z.I. Sud"},
+        {n:"Ligne 7", t:36, s:30, c:"#007229", start:"Cimetière", end:"Parc des Sports"},
+        {n:"Ligne 8", t:64, s:27, c:"#d799af", start:"Place du Palais", end:"Z.I. Nord"},
+        {n:"Ligne 9", t:36, s:12, c:"#0019a8", start:"Gare de l'Est", end:"Hôpital"},
+        {n:"Ligne 10", t:60, s:20, c:"#ffce00", start:"Mairie", end:"Z.I. Sud"},
+        {n:"Ligne 11", t:42, s:14, c:"#751056", start:"Cimetière", end:"Hôpital"},
+        {n:"Ligne 60", t:40, s:17, c:"#76d0bd", start:"Gare Centrale", end:"Z.I. Nord"},
+        {n:"Ligne 61", t:64, s:27, c:"#0019a8", start:"Gare Centrale", end:"Aéroport"},
+        {n:"Ligne PL1", t:188, s:15, c:"#203ec0", start:"Gare Centrale", end:"Z.I. Sud"}
+    ],
+    "4": [
+        {n:"Ligne 1", t:48, s:20, c:"#dc241f", start:"Campus Alan Turing", end:"Gare Centrale"},
+        {n:"Ligne 2", t:80, s:34, c:"#9364cc", start:"Aéroport", end:"Gare Centrale"},
+        {n:"Ligne 3", t:64, s:27, c:"#f1ab00", start:"Gare Centrale", end:"Campus Marthe Gautier"},
+        {n:"Ligne 4", t:56, s:24, c:"#00afad", start:"Gare Centrale", end:"Gare de l'Est"},
+        {n:"Ligne 5", t:80, s:34, c:"#e86a10", start:"Mairie", end:"Place du Palais"},
+        {n:"Ligne 6", t:40, s:17, c:"#894e24", start:"Hôpital", end:"Z.I. Sud"},
+        {n:"Ligne 7", t:36, s:30, c:"#007229", start:"Cimetière", end:"Parc des Sports"},
+        {n:"Ligne 8", t:64, s:27, c:"#d799af", start:"Place du Palais", end:"Z.I. Nord"},
+        {n:"Ligne 9", t:36, s:12, c:"#0019a8", start:"Gare de l'Est", end:"Hôpital"},
+        {n:"Ligne 10", t:60, s:20, c:"#ffce00", start:"Mairie", end:"Z.I. Sud"},
+        {n:"Ligne 11", t:42, s:14, c:"#751056", start:"Cimetière", end:"Hôpital"},
+        {n:"Ligne 12", t:54, s:21, c:"#007229", start:"Mairie", end:"Z.I. Nord"},
+        {n:"Ligne 13", t:36, s:15, c:"#76d0bd", start:"Parc des Sports", end:"Gare de l'Est"},
+        {n:"Ligne 60", t:40, s:17, c:"#76d0bd", start:"Gare Centrale", end:"Z.I. Nord"},
+        {n:"Ligne 61", t:64, s:27, c:"#0019a8", start:"Gare Centrale", end:"Aéroport"},
+        {n:"Ligne 62", t:80, s:30, c:"#b727bf", start:"Gare Centrale", end:"Z.I. Sud"},
+        {n:"Ligne 63", t:58, s:26, c:"#e86a10", start:"Gare Centrale", end:"Place du Palais"},
+        {n:"Ligne 64", t:28, s:13, c:"#ffce00", start:"Gare Centrale", end:"Mairie"},
+        {n:"Ligne 101", t:72, s:16, c:"#751056", start:"Lycée", end:"Z.I. Sud"},
+        {n:"Ligne 102", t:54, s:12, c:"#007229", start:"Collège", end:"Mairie"},
+        {n:"Ligne 103", t:42, s:8, c:"#ffce00", start:"Lycée", end:"Gare de l'Est"},
+        {n:"Ligne 104", t:48, s:10, c:"#9364cc", start:"Collège", end:"Place du Palais"},
+        {n:"Ligne 201", t:116, s:5, c:"#894e24", start:"Gare Routière", end:"Ville Voisine A"},
+        {n:"Ligne 202", t:74, s:4, c:"#dc241f", start:"Gare Routière", end:"Ville Voisine B"},
+        {n:"Ligne 203", t:124, s:5, c:"#00afad", start:"Gare Routière", end:"Ville Voisine C"},
+        {n:"Ligne PL1", t:208, s:17, c:"#203ec0", start:"Gare Centrale", end:"Z.I. Sud"},
+        {n:"Ligne PL2", t:82, s:8, c:"#20b3c0", start:"Place du Palais", end:"Z.I. Nord"}
+    ],
+    "5": [
+        // T1 remplace l'ancienne L2 + extension L4
+        {n:"Ligne T1", t:92, s:44, c:"#e67e22", start:"Gare Centrale", end:"Technopole"},
+        // L2 reprend l'ancienne L1
+        {n:"Ligne 2", t:48, s:20, c:"#dc241f", start:"Campus Alan Turing", end:"Gare Centrale"},
+        // Ligne 5 optimisée (BHNS) : temps réduit
+        {n:"Ligne 5", t:74, s:34, c:"#e86a10", start:"Mairie", end:"Place du Palais"},
+        // Ligne 10 étendue : plus d'arrêts
+        {n:"Ligne 10", t:66, s:24, c:"#ffce00", start:"Mairie", end:"Z.I. Sud"},
+        // PL1 étendue
+        {n:"Ligne PL1", t:230, s:25, c:"#203ec0", start:"Gare Centrale", end:"Z.I. Sud"},
+        
+        // Autres lignes inchangées ou nouvelles
+        {n:"Ligne 3", t:64, s:27, c:"#f1ab00", start:"Gare Centrale", end:"Campus Marthe Gautier"},
+        {n:"Ligne 4", t:56, s:24, c:"#00afad", start:"Gare Centrale", end:"Gare de l'Est"},
+        {n:"Ligne 6", t:40, s:17, c:"#894e24", start:"Hôpital", end:"Z.I. Sud"},
+        {n:"Ligne 7", t:36, s:30, c:"#007229", start:"Cimetière", end:"Parc des Sports"},
+        {n:"Ligne 8", t:64, s:27, c:"#d799af", start:"Place du Palais", end:"Z.I. Nord"},
+        {n:"Ligne 9", t:36, s:12, c:"#0019a8", start:"Gare de l'Est", end:"Hôpital"},
+        {n:"Ligne 11", t:42, s:14, c:"#751056", start:"Cimetière", end:"Hôpital"},
+        {n:"Ligne 12", t:54, s:21, c:"#007229", start:"Mairie", end:"Z.I. Nord"},
+        {n:"Ligne 13", t:36, s:15, c:"#76d0bd", start:"Parc des Sports", end:"Gare de l'Est"},
+        {n:"Ligne 14", t:48, s:18, c:"#dc241f", start:"Z.I. Nord", end:"Mairie"},
+        {n:"Ligne 15", t:96, s:36, c:"#751056", start:"Aéroport", end:"Parc des Sports"},
+        {n:"Ligne 16", t:44, s:20, c:"#ffce00", start:"Hôpital", end:"Gare de l'Est"},
+        {n:"Ligne 17", t:66, s:28, c:"#00afad", start:"Cimetière", end:"Z.I. Sud"},
+        {n:"Ligne 18", t:80, s:33, c:"#868f98", start:"Campus Marthe Gautier", end:"Place du Palais"},
+        {n:"Ligne 60", t:40, s:17, c:"#76d0bd", start:"Gare Centrale", end:"Z.I. Nord"},
+        {n:"Ligne 61", t:64, s:27, c:"#0019a8", start:"Gare Centrale", end:"Aéroport"},
+        {n:"Ligne 62", t:80, s:30, c:"#b727bf", start:"Gare Centrale", end:"Z.I. Sud"},
+        {n:"Ligne 63", t:58, s:26, c:"#e86a10", start:"Gare Centrale", end:"Place du Palais"},
+        {n:"Ligne 64", t:28, s:13, c:"#ffce00", start:"Gare Centrale", end:"Mairie"},
+        {n:"Ligne 65", t:50, s:27, c:"#9364CC", start:"Gare Centrale", end:"Technopole"},
+        {n:"Ligne 101", t:72, s:16, c:"#751056", start:"Lycée", end:"Z.I. Sud"},
+        {n:"Ligne 102", t:54, s:12, c:"#007229", start:"Collège", end:"Mairie"},
+        {n:"Ligne 103", t:42, s:8, c:"#ffce00", start:"Lycée", end:"Gare de l'Est"},
+        {n:"Ligne 104", t:48, s:10, c:"#9364cc", start:"Collège", end:"Place du Palais"},
+        {n:"Ligne 105", t:100, s:20, c:"#00afad", start:"Université", end:"Campus Marthe Gautier"},
+        {n:"Ligne 106", t:52, s:11, c:"#d799af", start:"Lycée", end:"Cimetière"},
+        {n:"Ligne 151", t:104, s:21, c:"#0019a8", start:"Lycée Pro", end:"Z.I. Nord"},
+        {n:"Ligne 201", t:116, s:6, c:"#894e24", start:"Gare Routière", end:"Ville Voisine A"},
+        {n:"Ligne 202", t:74, s:5, c:"#dc241f", start:"Gare Routière", end:"Ville Voisine B"},
+        {n:"Ligne 203", t:124, s:5, c:"#00afad", start:"Gare Routière", end:"Ville Voisine C"},
+        {n:"Ligne 204", t:140, s:8, c:"#9364cc", start:"Gare Routière", end:"Ville Voisine D"},
+        {n:"Ligne 205", t:90, s:7, c:"#007229", start:"Gare Routière", end:"Ville Voisine E"},
+        {n:"Ligne 206", t:96, s:5, c:"#0019a8", start:"Gare Routière", end:"Ville Voisine F"},
+        {n:"Ligne 251", t:112, s:7, c:"#d799af", start:"Gare Routière", end:"Aéroport Regional"},
+        {n:"Ligne PL2", t:82, s:8, c:"#20b3c0", start:"Place du Palais", end:"Z.I. Nord"},
+        {n:"Ligne PL3", t:56, s:27, c:"#5120c0", start:"Mairie", end:"Hôpital"}
+    ]
 };
 
 // --- LOGIQUE SAUVEGARDE NOM RÉSEAU ---
@@ -195,20 +296,20 @@ function applyLine() {
         document.getElementById('totalTime').value = line.t;
         document.getElementById('nbStops').value = line.s;
         applyLineColor(line.c);
-        uiStops(); 
+        uiStops(line.start, line.end);
     }
 }
 
-function uiStops() {
-    const n = document.getElementById('nbStops').value;
+function uiStops(startName = null, endName = null) {
+    const n = parseInt(document.getElementById('nbStops').value);
     const container = document.getElementById('stop-list');
-    
-    // Sauvegarde des noms existants
     let existing = Array.from(document.querySelectorAll('.stop-name')).map(i=>i.value);
-    
     container.innerHTML = '';
     for(let i=1; i<=n; i++) {
-        let val = existing[i-1] ? existing[i-1] : `Arrêt ${i}`;
+        let val = `Arrêt ${i}`;
+        if(startName && i === 1) val = startName;
+        else if(endName && i === n) val = endName;
+        else if(existing[i-1]) val = existing[i-1];
         container.innerHTML += `<div class="stop-item"><span>${i}.</span><input type="text" class="stop-name" value="${val}"></div>`;
     }
 }
@@ -336,8 +437,6 @@ window.onload = () => {
     addPeriod('semaine', '06:00', '22:00', '4');
     addPeriod('samedi', '07:00', '20:00', '2');
     addPeriod('dimanche', '08:00', '20:00', '1');
-    
-    // Charger le nom du réseau
     const savedName = localStorage.getItem('tm_network_name');
     if(savedName) document.getElementById('network-name').value = savedName;
 };
