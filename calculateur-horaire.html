@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur TM - Suite Complète</title>
+    <title>Calculateur TM - PDF Compact & Pro</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -119,6 +119,7 @@
 <script>
 const { jsPDF } = window.jspdf;
 
+// --- DONNÉES COMPLÈTES ---
 const tmData = {
     "1": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}} ],
     "2": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}} ],
@@ -127,6 +128,7 @@ const tmData = {
     "5": [ {n:"Ligne T1", t:92, s:44, c:"#e67e22", map: {1:"Gare Centrale", 44:"Technopole"}}, {n:"Ligne 2", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 20:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"Centre commercial Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:74, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}}, {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place de l'Europe", 8:"Pôle Luca Pacioli", 27:"Campus Marthe Gautier"}}, {n:"Ligne 9", t:36, s:12, c:"#0019a8", map: {1:"Haute-ville", 5:"Musée d'Art Moderne", 12:"Campus Alan Turing"}}, {n:"Ligne 10", t:66, s:24, c:"#ffce00", map: {1:"Campus Alan Turing", 9:"Lycée Karl Marx", 14:"Parc de l'Étang", 22:"Gare de l'Est", 24:"CRT Est"}}, {n:"Ligne 11", t:42, s:14, c:"#751056", map: {1:"Cimetière", 14:"Hôpital"}}, {n:"Ligne 12", t:54, s:21, c:"#007229", map: {1:"Mairie", 21:"Z.I. Nord"}}, {n:"Ligne 13", t:36, s:15, c:"#76d0bd", map: {1:"Parc des Sports", 15:"Gare de l'Est"}}, {n:"Ligne 14", t:48, s:18, c:"#dc241f", map: {1:"Z.I. Nord", 18:"Mairie"}}, {n:"Ligne 15", t:96, s:36, c:"#751056", map: {1:"Aéroport", 36:"Parc des Sports"}}, {n:"Ligne 16", t:44, s:20, c:"#ffce00", map: {1:"Hôpital", 20:"Gare de l'Est"}}, {n:"Ligne 17", t:66, s:28, c:"#00afad", map: {1:"Cimetière", 28:"Z.I. Sud"}}, {n:"Ligne 18", t:80, s:33, c:"#868f98", map: {1:"Campus Marthe Gautier", 33:"Place du Palais"}}, {n:"Ligne 60", t:40, s:17, c:"#76d0bd", map: {1:"Gare Centrale", 17:"Z.I. Nord"}}, {n:"Ligne 61", t:64, s:27, c:"#0019a8", map: {1:"Gare Centrale", 27:"Aéroport"}}, {n:"Ligne 62", t:80, s:30, c:"#b727bf", map: {1:"Gare Centrale", 30:"Z.I. Sud"}}, {n:"Ligne 63", t:58, s:26, c:"#e86a10", map: {1:"Gare Centrale", 26:"Place du Palais"}}, {n:"Ligne 64", t:28, s:13, c:"#ffce00", map: {1:"Gare Centrale", 13:"Mairie"}}, {n:"Ligne 65", t:50, s:27, c:"#9364CC", map: {1:"Gare Centrale", 27:"Technopole"}}, {n:"Ligne 101", t:72, s:16, c:"#751056"}, {n:"Ligne 102", t:54, s:12, c:"#007229"}, {n:"Ligne 103", t:42, s:8, c:"#ffce00"}, {n:"Ligne 104", t:48, s:10, c:"#9364cc"}, {n:"Ligne 105", t:100, s:20, c:"#00afad", map: {1:"Université", 20:"Campus Marthe Gautier"}}, {n:"Ligne 106", t:52, s:11, c:"#d799af", map: {1:"Lycée", 11:"Cimetière"}}, {n:"Ligne 151", t:104, s:21, c:"#0019a8", map: {1:"Lycée Pro", 21:"Z.I. Nord"}}, {n:"Ligne 201", t:116, s:6, c:"#894e24", map: {1:"Gare Routière", 6:"Ville Voisine A"}}, {n:"Ligne 202", t:74, s:5, c:"#dc241f", map: {1:"Gare Routière", 5:"Ville Voisine B"}}, {n:"Ligne 203", t:124, s:5, c:"#00afad", map: {1:"Gare Routière", 5:"Ville Voisine C"}}, {n:"Ligne 204", t:140, s:8, c:"#9364cc", map: {1:"Gare Routière", 8:"Ville Voisine D"}}, {n:"Ligne 205", t:90, s:7, c:"#007229", map: {1:"Gare Routière", 7:"Ville Voisine E"}}, {n:"Ligne 206", t:96, s:5, c:"#0019a8", map: {1:"Gare Routière", 5:"Ville Voisine F"}}, {n:"Ligne 251", t:112, s:7, c:"#d799af", map: {1:"Gare Routière", 7:"Aéroport Regional"}}, {n:"Ligne PL1", t:230, s:25, c:"#203ec0", map: {1:"Gare Centrale", 25:"Z.I. Sud"}}, {n:"Ligne PL2", t:82, s:8, c:"#20b3c0", map: {1:"Place du Palais", 8:"Z.I. Nord"}}, {n:"Ligne PL3", t:56, s:27, c:"#5120c0", map: {1:"Mairie", 27:"Hôpital"}} ]
 };
 
+// --- LOGIQUE UI ---
 function saveNetworkName() { localStorage.setItem('tm_network_name', document.getElementById('network-name').value); }
 function applyLineColor(color) { document.documentElement.style.setProperty('--line-color', color); document.getElementById('custom-color').value = color; }
 function applyManualColor(color) { document.documentElement.style.setProperty('--line-color', color); }
@@ -250,7 +252,132 @@ function generateTableForDay(dayId) {
     return `<div class="direction-block">${makeTable(false)}</div><div class="direction-block">${makeTable(true)}</div>`;
 }
 
-// --- NOUVELLE FONCTION EXPORT TXT (TABLEAU UNIQUE + SCROLL + STICKY) ---
+// --- HELPER COULEUR CORRESPONDANCE ---
+function getCorresColor(shortName) {
+    for (let lvl in tmData) { for (let line of tmData[lvl]) { if (line.n === shortName || line.n === "Ligne " + shortName) return line.c; } }
+    if(shortName === "A" || shortName === "B") return "#e84393"; 
+    if(shortName.startsWith("T")) return "#e67e22"; 
+    return "#505050"; 
+}
+
+// --- HEADER DU PDF ---
+function drawHeader(doc, networkName, lineNameText, lineColor) {
+    doc.setFillColor(lineColor);
+    doc.rect(0, 0, 210, 18, 'F'); // REDUCED HEIGHT
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(15); // REDUCED FONT
+    doc.setFont("helvetica", "bold");
+    doc.text(networkName.toUpperCase(), 10, 12);
+    doc.text(lineNameText, 200, 12, { align: 'right' });
+}
+
+// --- GENERATION PDF INTELLIGENTE ---
+function generatePDF() {
+    const doc = new jsPDF();
+    const networkName = document.getElementById('network-name').value || "RESEAU";
+    const lineColor = document.getElementById('custom-color').value;
+    const lineNameText = document.getElementById('line-select').options[document.getElementById('line-select').selectedIndex].text;
+    const useCustomIcons = document.getElementById('custom-icons-check').checked;
+
+    drawHeader(doc, networkName, lineNameText, lineColor);
+
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(16);
+    doc.text("Plan de la ligne", 10, 35); // REMONTÉ
+
+    const stops = Array.from(document.querySelectorAll('.stop-name')).map(i => i.value);
+    const corres = Array.from(document.querySelectorAll('.stop-corres')).map(i => i.value);
+    
+    let xLine = 20;
+    let startY = 45; // REMONTÉ
+    let availableHeight = 230; // PLUS DE PLACE
+    let gap = 14; 
+    
+    if ((stops.length * gap) > availableHeight) {
+        gap = availableHeight / (stops.length - 1);
+    }
+
+    doc.setDrawColor(lineColor);
+    doc.setLineWidth(3.5); 
+    doc.line(xLine, startY, xLine, startY + ((stops.length - 1) * gap));
+
+    stops.forEach((stop, index) => {
+        let yPos = startY + (index * gap);
+        let radius = (index === 0 || index === stops.length - 1) ? 3 : 1.5; 
+        
+        doc.setFillColor(255, 255, 255);
+        doc.setDrawColor(lineColor);
+        doc.setLineWidth(1.5);
+        doc.circle(xLine, yPos, radius, 'FD');
+        
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.text(stop, xLine + 12, yPos, { baseline: 'middle' });
+
+        if(corres[index] && !useCustomIcons) {
+            let lines = corres[index].split(',').map(s => s.trim());
+            let xCor = xLine + 100; 
+            lines.forEach(l => {
+                if(!l) return;
+                let bubbleColor = getCorresColor(l);
+                doc.setFillColor(bubbleColor); 
+                doc.circle(xCor, yPos, 3.5, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(7);
+                doc.setFont("helvetica", "bold");
+                doc.text(l, xCor, yPos, { align: 'center', baseline: 'middle' });
+                xCor += 9;
+            });
+        }
+    });
+
+    // --- SCHEDULES ---
+    doc.addPage();
+    drawHeader(doc, networkName, "Horaires", lineColor);
+    let currentY = 30; // START HIGHER
+
+    generateAll(); // Refresh HTML
+    
+    const days = [ {id:'semaine', t:'Lundi-Vendredi'}, {id:'samedi', t:'Samedi'}, {id:'dimanche', t:'Dimanche'} ];
+
+    days.forEach(day => {
+        const container = document.getElementById('res-' + day.id);
+        const titles = container.getElementsByTagName('h4');
+        const tables = container.getElementsByTagName('table');
+        
+        for(let i=0; i<tables.length; i++) {
+            let table = tables[i];
+            let title = `${day.t} - ${titles[i] ? titles[i].innerText : ""}`;
+
+            // Check if space left (approx 50 units for header + 1 row)
+            if (currentY + 50 > 280) { 
+                doc.addPage();
+                drawHeader(doc, networkName, "Horaires", lineColor);
+                currentY = 30; 
+            }
+
+            doc.setTextColor(0,0,0);
+            doc.setFontSize(12);
+            doc.text(title, 14, currentY);
+
+            doc.autoTable({
+                html: table,
+                startY: currentY + 5,
+                theme: 'grid',
+                headStyles: { fillColor: lineColor, textColor: 255, fontSize: 8 },
+                bodyStyles: { fontSize: 7, cellPadding: 1 },
+                styles: { overflow: 'linebreak' },
+                margin: { bottom: 15 }
+            });
+
+            currentY = doc.lastAutoTable.finalY + 12; // REDUCED MARGIN
+        }
+    });
+
+    doc.save(`Fiche_${networkName}_${lineNameText}.pdf`);
+}
+
 function exportHTMLtoTXT() {
     const netName = document.getElementById('network-name').value || "Reseau";
     const lineName = document.getElementById('line-select').options[document.getElementById('line-select').selectedIndex].text || "Ligne";
@@ -333,131 +460,6 @@ function exportHTMLtoTXT() {
     
     const blob = new Blob([fullContent], { type: 'text/plain' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Tableaux_HTML_${netName}_${lineName}.txt`; a.click();
-}
-
-function getCorresColor(shortName) {
-    for (let lvl in tmData) { for (let line of tmData[lvl]) { if (line.n === shortName || line.n === "Ligne " + shortName) return line.c; } }
-    if(shortName === "A" || shortName === "B") return "#e84393"; 
-    if(shortName.startsWith("T")) return "#e67e22"; 
-    return "#505050"; 
-}
-
-function drawHeader(doc, networkName, lineNameText, lineColor) {
-    doc.setFillColor(lineColor);
-    doc.rect(0, 0, 210, 30, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(22);
-    doc.setFont("helvetica", "bold");
-    doc.text(networkName.toUpperCase(), 10, 20);
-    doc.text(lineNameText, 200, 20, { align: 'right' });
-}
-
-function generatePDF() {
-    const doc = new jsPDF();
-    const networkName = document.getElementById('network-name').value || "RESEAU";
-    const lineColor = document.getElementById('custom-color').value;
-    const lineNameText = document.getElementById('line-select').options[document.getElementById('line-select').selectedIndex].text;
-    const useCustomIcons = document.getElementById('custom-icons-check').checked;
-
-    drawHeader(doc, networkName, lineNameText, lineColor);
-
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(16);
-    doc.text("Plan de la ligne", 10, 45);
-
-    const stops = Array.from(document.querySelectorAll('.stop-name')).map(i => i.value);
-    const corres = Array.from(document.querySelectorAll('.stop-corres')).map(i => i.value);
-    
-    let xLine = 20;
-    let startY = 60;
-    let availableHeight = 217;
-    let gap = 14; 
-    
-    if ((stops.length * gap) > availableHeight) { gap = availableHeight / (stops.length - 1); }
-
-    doc.setDrawColor(lineColor);
-    doc.setLineWidth(3.5); 
-    doc.line(xLine, startY, xLine, startY + ((stops.length - 1) * gap));
-
-    stops.forEach((stop, index) => {
-        let yPos = startY + (index * gap);
-        let radius = (index === 0 || index === stops.length - 1) ? 3 : 1.5; 
-        
-        doc.setFillColor(255, 255, 255);
-        doc.setDrawColor(lineColor);
-        doc.setLineWidth(1.5);
-        doc.circle(xLine, yPos, radius, 'FD');
-        
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "normal");
-        doc.text(stop, xLine + 12, yPos, { baseline: 'middle' });
-
-        if(corres[index] && !useCustomIcons) {
-            let lines = corres[index].split(',').map(s => s.trim());
-            let xCor = xLine + 100; 
-            lines.forEach(l => {
-                if(!l) return;
-                let bubbleColor = getCorresColor(l);
-                doc.setFillColor(bubbleColor); 
-                doc.circle(xCor, yPos, 3.5, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(7);
-                doc.setFont("helvetica", "bold");
-                doc.text(l, xCor, yPos, { align: 'center', baseline: 'middle' });
-                xCor += 9;
-            });
-        }
-    });
-
-    generateAll(); 
-    const days = [ {id:'semaine', t:'Lundi-Vendredi'}, {id:'samedi', t:'Samedi'}, {id:'dimanche', t:'Dimanche'} ];
-
-    days.forEach(day => {
-        const container = document.getElementById('res-' + day.id);
-        const titles = container.getElementsByTagName('h4');
-        const tables = container.getElementsByTagName('table');
-        
-        for(let i=0; i<tables.length; i++) {
-            let table = tables[i];
-            let title = `${day.t} - ${titles[i] ? titles[i].innerText : ""}`;
-
-            // Check Space Logic
-            if (doc.lastAutoTable && doc.lastAutoTable.finalY > 240) {
-                doc.addPage();
-                drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
-                doc.lastAutoTable.finalY = 30; 
-            } else if (i === 0 && day.id === 'semaine') {
-                doc.addPage();
-                drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
-            } else if (i === 0) {
-                // Pour Samedi et Dimanche, si on est en haut de page, on met le header, sinon on continue
-                if(doc.lastAutoTable && doc.lastAutoTable.finalY > 200) {
-                     doc.addPage();
-                     drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
-                     doc.lastAutoTable.finalY = 30;
-                }
-            }
-
-            let startY = (doc.lastAutoTable && doc.lastAutoTable.finalY > 30) ? doc.lastAutoTable.finalY + 15 : 40;
-
-            doc.setTextColor(0,0,0);
-            doc.setFontSize(12);
-            doc.text(title, 14, startY);
-
-            doc.autoTable({
-                html: table,
-                startY: startY + 5,
-                theme: 'grid',
-                headStyles: { fillColor: lineColor, textColor: 255, fontSize: 8 },
-                bodyStyles: { fontSize: 7, cellPadding: 1 },
-                styles: { overflow: 'linebreak' },
-                margin: { bottom: 20 }
-            });
-        }
-    });
-
-    doc.save(`Fiche_${networkName}_${lineNameText}.pdf`);
 }
 
 window.onload = () => { uiStops(); ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = ''); addPeriod('semaine', '06:00', '22:00', '4'); addPeriod('samedi', '07:00', '20:00', '2'); addPeriod('dimanche', '08:00', '20:00', '1'); const savedName = localStorage.getItem('tm_network_name'); if(savedName) document.getElementById('network-name').value = savedName; };
