@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créateur de fiche horaire - Courses (C)</title>
+    <title>Calculateur TM - PDF Pro & Complet</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
     <style>
         :root { --primary: #1e272e; --accent: #05c46b; --tm-blue: #3c40c6; --bg: #f1f2f6; --line-color: #3c40c6; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
@@ -16,138 +20,108 @@
         }
         .header-nav h2 { margin: 0; grid-column: 1 / -1; color: white; font-size: 1.5em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
 
-        .main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
+        .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 20px; }
         .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         h3 { margin-top: 0; padding-bottom: 10px; border-bottom: 2px solid var(--bg); font-size: 1.1em; color: var(--primary); }
 
         label { display: block; font-size: 0.85em; font-weight: bold; margin: 10px 0 5px; color: #485460; }
-        select, input[type="text"], input[type="number"], input[type="time"] { 
-            width: 100%; padding: 12px; border: 2px solid #efefef; border-radius: 8px; box-sizing: border-box; font-size: 1em; 
-        }
-        select:focus, input:focus { border-color: var(--line-color); outline: none; }
+        select, input { width: 100%; padding: 10px; border: 2px solid #efefef; border-radius: 8px; box-sizing: border-box; }
         
         .color-picker-container { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 8px; }
         input[type="color"] { width: 50px; height: 40px; padding: 2px; cursor: pointer; border: none; background: none; }
-        #line-select { border-width: 3px; font-weight: bold; color: var(--primary); transition: 0.3s; }
 
-        .stops-list { display: grid; grid-template-columns: 1fr; gap: 8px; max-height: 400px; overflow-y: auto; margin-top: 10px; padding: 5px; background: #f9f9f9; border-radius: 8px; }
-        .stop-item { display: flex; align-items: center; gap: 5px; }
+        /* LISTE ARRETS AMELIOREE */
+        .stops-list { max-height: 500px; overflow-y: auto; margin-top: 10px; background: #f9f9f9; border-radius: 8px; padding: 5px; }
+        .stop-item { display: grid; grid-template-columns: 25px 1fr 90px; gap: 5px; align-items: center; margin-bottom: 5px; padding: 8px; background: white; border-bottom: 1px solid #eee; border-radius: 4px; }
+        .stop-item span { font-size: 0.8em; color: #888; font-weight: bold; }
+        .stop-item input { font-size: 0.9em; padding: 6px; }
+        .stop-corres { border: 1px dashed #ccc !important; text-align: center; }
 
+        /* ONGLETS */
         .tabs-header { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
         .tab-btn { border: none; background: #dfe4ea; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; color: #57606f; transition: 0.3s; }
         .tab-btn.active { background: var(--line-color); color: white; transform: scale(1.05); }
-        .tab-content { display: none; animation: fadeIn 0.3s; }
+        .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        .period-box { background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 5px solid var(--line-color); margin-bottom: 15px; position: relative; }
-        .period-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-        
-        .btn { border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; text-transform: uppercase; width: 100%; margin-top: 10px; }
-        .btn-calc { background: var(--line-color); color: white; font-size: 1.1em; margin-top: 20px; }
+        .period-box { background: #f8f9fa; padding: 10px; border-radius: 8px; border-left: 4px solid var(--line-color); margin-bottom: 10px; position: relative; }
+        .period-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
+        .btn-del { position: absolute; top: -5px; right: -5px; background: #ff5e57; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; }
+
+        .btn { border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; text-transform: uppercase; }
+        .btn-calc { background: var(--line-color); color: white; font-size: 1em; }
+        .btn-pdf { background: #e74c3c; color: white; font-size: 1.1em; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); margin-top: 20px; }
         .btn-add { background: #ced6e0; color: #2f3542; }
 
-        .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        table { border-collapse: collapse; width: 100%; font-size: 0.85em; }
-        th, td { border: 1px solid #eee; padding: 12px; text-align: center; min-width: 80px; }
-        th:first-child { position: sticky; left: 0; background: #f8f9fa !important; z-index: 10; border-right: 3px solid var(--line-color); color: var(--primary) !important; text-align: left; min-width: 160px; }
-        td:first-child { position: sticky; left: 0; background: #f8f9fa; z-index: 10; border-right: 3px solid var(--line-color); text-align: left; }
-        
-        .course-head { background: var(--line-color) !important; color: white !important; font-weight: bold; }
+        .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 20px; }
+        table { border-collapse: collapse; width: 100%; font-size: 0.8em; }
+        th, td { border: 1px solid #eee; padding: 8px; text-align: center; min-width: 60px; }
+        th:first-child, td:first-child { position: sticky; left: 0; background: #f8f9fa; z-index: 10; border-right: 2px solid var(--line-color); text-align: left; min-width: 140px; }
+        .course-head { background: var(--line-color); color: white; }
         .hf-zone { background: #fff9e6; font-style: italic; color: #d35400; font-weight: bold; }
-        .course-info { display: flex; flex-direction: column; font-size: 0.85em; }
-        .badge-int { font-size:0.8em; opacity:0.8; font-weight:normal; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-nav">
-        <h2>Configuration Réseau</h2>
-        
-        <div>
-            <label style="color:white;">Nom du Réseau</label>
-            <input type="text" id="network-name" placeholder="Ex: TCL, RATP..." oninput="saveNetworkName()">
-        </div>
-
-        <div>
-            <label style="color:white;">Niveau</label>
-            <select id="lvl-select" onchange="loadLines()">
-                <option value="">-- Niv --</option>
-                <option value="1">Niveau 1</option><option value="2">Niveau 2</option><option value="3">Niveau 3</option><option value="4">Niveau 4</option><option value="5">Niveau 5</option>
-            </select>
-        </div>
-        <div>
-            <label style="color:white;">Ligne</label>
-            <select id="line-select" onchange="applyLine()">
-                <option value="">-- Choisir --</option>
-            </select>
-        </div>
-        <div>
-            <label style="color:white;">Couleur Perso</label>
-            <div class="color-picker-container">
-                <input type="color" id="custom-color" oninput="applyManualColor(this.value)">
-                <span id="color-hex" style="font-size: 0.8em; font-family: monospace; color: white;">#3c40c6</span>
-            </div>
-        </div>
+        <h2>Configuration Complète</h2>
+        <div><label style="color:white;">Nom du Réseau</label><input type="text" id="network-name" placeholder="Ex: TCL" oninput="saveNetworkName()"></div>
+        <div><label style="color:white;">Niveau</label><select id="lvl-select" onchange="loadLines()"><option value="">-- Niv --</option><option value="1">Niveau 1</option><option value="2">Niveau 2</option><option value="3">Niveau 3</option><option value="4">Niveau 4</option><option value="5">Niveau 5</option></select></div>
+        <div><label style="color:white;">Ligne</label><select id="line-select" onchange="applyLine()"><option value="">-- Choisir --</option></select></div>
+        <div><label style="color:white;">Couleur</label><div class="color-picker-container"><input type="color" id="custom-color" oninput="applyManualColor(this.value)"></div></div>
     </div>
 
     <div class="main-grid">
         <div class="card">
-            <h3>Paramètres Route</h3>
-            <label>Temps Aller-Retour (min)</label>
-            <input type="number" id="totalTime" value="45">
-            <label>Pause Terminus (Total min)</label>
-            <input type="number" id="breakTime" value="15">
-            <label>Nombre d'arrêts</label>
-            <input type="number" id="nbStops" value="10" oninput="uiStops()">
-            <label>Arrêts</label>
+            <h3>1. Configuration Ligne</h3>
+            <label>Temps Aller-Retour (min)</label><input type="number" id="totalTime" value="45">
+            <label>Pause Terminus (min)</label><input type="number" id="breakTime" value="15">
+            <label>Nombre d'arrêts</label><input type="number" id="nbStops" value="10" oninput="uiStops()">
+            
+            <label>Liste des Arrêts & Correspondances</label>
+            <div style="font-size:0.75em; color:#666; margin-bottom:5px;">
+                Col 1: Nom de l'arrêt | Col 2: Correspondances (ex: "1, A, T1")
+            </div>
             <div id="stop-list" class="stops-list"></div>
         </div>
 
         <div class="card">
-            <h3>Planification</h3>
+            <h3>2. Grilles & Export</h3>
             <div class="tabs-header">
                 <button class="tab-btn active" onclick="switchInputTab(event, 'semaine')">Semaine</button>
                 <button class="tab-btn" onclick="switchInputTab(event, 'samedi')">Samedi</button>
                 <button class="tab-btn" onclick="switchInputTab(event, 'dimanche')">Dimanche</button>
             </div>
             
-            <div id="input-semaine" class="tab-content active">
-                <div id="container-semaine"></div>
-                <button class="btn btn-add" onclick="addPeriod('semaine')">+ Ajouter Période Semaine</button>
-            </div>
-            <div id="input-samedi" class="tab-content">
-                <div id="container-samedi"></div>
-                <button class="btn btn-add" onclick="addPeriod('samedi')">+ Ajouter Période Samedi</button>
-            </div>
-            <div id="input-dimanche" class="tab-content">
-                <div id="container-dimanche"></div>
-                <button class="btn btn-add" onclick="addPeriod('dimanche')">+ Ajouter Période Dimanche</button>
-            </div>
+            <div id="input-semaine" class="tab-content active"><div id="container-semaine"></div><button class="btn btn-add" onclick="addPeriod('semaine')">+ Période Semaine</button></div>
+            <div id="input-samedi" class="tab-content"><div id="container-samedi"></div><button class="btn btn-add" onclick="addPeriod('samedi')">+ Période Samedi</button></div>
+            <div id="input-dimanche" class="tab-content"><div id="container-dimanche"></div><button class="btn btn-add" onclick="addPeriod('dimanche')">+ Période Dimanche</button></div>
 
-            <button class="btn btn-calc" onclick="generateAll()">Générer les Horaires</button>
+            <button class="btn btn-calc" onclick="generateAll()">Générer HTML (Aperçu)</button>
+            
+            <div style="margin-top:15px; padding:10px; background:#f1f2f6; border-radius:8px;">
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+                    <input type="checkbox" id="custom-icons-check"> 
+                    Utiliser icônes perso (Non actif pour l'instant)
+                </label>
+            </div>
+            
+            <button class="btn btn-pdf" onclick="generatePDF()">📄 TÉLÉCHARGER LE PDF</button>
         </div>
     </div>
 
     <div id="results" style="display:none; margin-top: 30px;">
         <div class="card">
-            <div class="tabs-header">
-                <button class="tab-btn active" onclick="switchResultTab(event, 'res-semaine')">Semaine</button>
-                <button class="tab-btn" onclick="switchResultTab(event, 'res-samedi')">Samedi</button>
-                <button class="tab-btn" onclick="switchResultTab(event, 'res-dimanche')">Dimanche</button>
-            </div>
-            <div id="res-semaine" class="result-tab active"></div>
-            <div id="res-samedi" class="result-tab" style="display:none"></div>
-            <div id="res-dimanche" class="result-tab" style="display:none"></div>
-            <button class="btn" style="background:#2ecc71; color:white; margin-top:15px;" onclick="exportExcel()">📥 Tout Exporter (Excel)</button>
+            <div id="res-semaine"></div><div id="res-samedi"></div><div id="res-dimanche"></div>
         </div>
     </div>
 </div>
 
 <script>
-// --- DONNÉES AVEC ARRÊTS INTERMÉDIAIRES (L1-L5) ---
+const { jsPDF } = window.jspdf;
+
+// --- DONNÉES COMPLÈTES (N1 à N5 corrigées) ---
 const tmData = {
     "1": [
         {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}},
@@ -161,8 +135,8 @@ const tmData = {
         {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}},
         {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}},
         {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}},
-        {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Hôpital", 17:"Z.I. Sud"}},
-        {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Cimetière", 30:"Parc des Sports"}}
+        {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Hôpital", 8:"Place de l'Europe", 17:"Z.I. Sud"}},
+        {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Cimetière", 15:"Gare Centrale", 30:"Parc des Sports"}}
     ],
     "3": [
         {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}},
@@ -170,11 +144,11 @@ const tmData = {
         {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}},
         {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}},
         {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}},
-        {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Hôpital", 17:"Z.I. Sud"}},
-        {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Cimetière", 30:"Parc des Sports"}},
-        {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place du Palais", 27:"Z.I. Nord"}},
+        {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Hôpital", 8:"Place de l'Europe", 17:"Z.I. Sud"}},
+        {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Cimetière", 15:"Gare Centrale", 30:"Parc des Sports"}},
+        {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place du Palais", 14:"Gare de l'Ouest", 27:"Z.I. Nord"}},
         {n:"Ligne 9", t:36, s:12, c:"#0019a8", map: {1:"Gare de l'Est", 12:"Hôpital"}},
-        {n:"Ligne 10", t:60, s:20, c:"#ffce00", map: {1:"Mairie", 20:"Z.I. Sud"}},
+        {n:"Ligne 10", t:60, s:20, c:"#ffce00", map: {1:"Mairie", 10:"Gare Centrale", 20:"Z.I. Sud"}},
         {n:"Ligne 11", t:42, s:14, c:"#751056", map: {1:"Cimetière", 14:"Hôpital"}},
         {n:"Ligne 60", t:40, s:17, c:"#76d0bd", map: {1:"Gare Centrale", 17:"Z.I. Nord"}},
         {n:"Ligne 61", t:64, s:27, c:"#0019a8", map: {1:"Gare Centrale", 27:"Aéroport"}},
@@ -186,9 +160,9 @@ const tmData = {
         {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}},
         {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}},
         {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}},
-        {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Hôpital", 17:"Z.I. Sud"}},
-        {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Cimetière", 30:"Parc des Sports"}},
-        {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place du Palais", 27:"Z.I. Nord"}},
+        {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Hôpital", 8:"Place de l'Europe", 17:"Z.I. Sud"}},
+        {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Cimetière", 15:"Gare Centrale", 30:"Parc des Sports"}},
+        {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place du Palais", 14:"Gare de l'Ouest", 27:"Z.I. Nord"}},
         {n:"Ligne 9", t:36, s:12, c:"#0019a8", map: {1:"Gare de l'Est", 12:"Hôpital"}},
         {n:"Ligne 10", t:60, s:20, c:"#ffce00", map: {1:"Mairie", 20:"Z.I. Sud"}},
         {n:"Ligne 11", t:42, s:14, c:"#751056", map: {1:"Cimetière", 14:"Hôpital"}},
@@ -213,13 +187,13 @@ const tmData = {
         {n:"Ligne T1", t:92, s:44, c:"#e67e22", map: {1:"Gare Centrale", 44:"Technopole"}},
         {n:"Ligne 2", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}},
         {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}},
-        {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"Centre commercial Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}},
+        {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}},
         {n:"Ligne 5", t:74, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}},
-        {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Hôpital", 17:"Z.I. Sud"}},
-        {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Cimetière", 30:"Parc des Sports"}},
-        {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place du Palais", 27:"Z.I. Nord"}},
+        {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Hôpital", 8:"Place de l'Europe", 17:"Z.I. Sud"}},
+        {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Cimetière", 15:"Gare Centrale", 30:"Parc des Sports"}},
+        {n:"Ligne 8", t:64, s:27, c:"#d799af", map: {1:"Place du Palais", 14:"Gare de l'Ouest", 27:"Z.I. Nord"}},
         {n:"Ligne 9", t:36, s:12, c:"#0019a8", map: {1:"Gare de l'Est", 12:"Hôpital"}},
-        {n:"Ligne 10", t:66, s:24, c:"#ffce00", map: {1:"Mairie", 24:"Z.I. Sud"}},
+        {n:"Ligne 10", t:66, s:24, c:"#ffce00", map: {1:"Mairie", 12:"Gare Centrale", 24:"Z.I. Sud"}},
         {n:"Ligne 11", t:42, s:14, c:"#751056", map: {1:"Cimetière", 14:"Hôpital"}},
         {n:"Ligne 12", t:54, s:21, c:"#007229", map: {1:"Mairie", 21:"Z.I. Nord"}},
         {n:"Ligne 13", t:36, s:15, c:"#76d0bd", map: {1:"Parc des Sports", 15:"Gare de l'Est"}},
@@ -254,31 +228,16 @@ const tmData = {
     ]
 };
 
-// --- LOGIQUE SAUVEGARDE NOM RÉSEAU ---
-function saveNetworkName() {
-    localStorage.setItem('tm_network_name', document.getElementById('network-name').value);
-}
-
-function applyLineColor(color) {
-    document.documentElement.style.setProperty('--line-color', color);
-    document.getElementById('custom-color').value = color;
-    document.getElementById('color-hex').innerText = color.toUpperCase();
-}
-
-function applyManualColor(color) {
-    document.documentElement.style.setProperty('--line-color', color);
-    document.getElementById('color-hex').innerText = color.toUpperCase();
-}
+// --- FONCTIONS UI ---
+function saveNetworkName() { localStorage.setItem('tm_network_name', document.getElementById('network-name').value); }
+function applyLineColor(color) { document.documentElement.style.setProperty('--line-color', color); document.getElementById('custom-color').value = color; }
+function applyManualColor(color) { document.documentElement.style.setProperty('--line-color', color); }
 
 function loadLines() {
     const lvl = document.getElementById('lvl-select').value;
     const lSel = document.getElementById('line-select');
     lSel.innerHTML = '<option value="">-- Choisir --</option>';
-    if(tmData[lvl]) {
-        tmData[lvl].forEach((l, index) => {
-            lSel.innerHTML += `<option value="${index}">${l.n}</option>`;
-        });
-    }
+    if(tmData[lvl]) tmData[lvl].forEach((l, index) => lSel.innerHTML += `<option value="${index}">${l.n}</option>`);
 }
 
 function applyLine() {
@@ -289,8 +248,6 @@ function applyLine() {
         document.getElementById('totalTime').value = line.t;
         document.getElementById('nbStops').value = line.s;
         applyLineColor(line.c);
-        
-        // Configuration automatique des arrêts
         uiStops(line.map);
     }
 }
@@ -298,52 +255,33 @@ function applyLine() {
 function uiStops(stopMap = null) {
     const n = parseInt(document.getElementById('nbStops').value);
     const container = document.getElementById('stop-list');
-    
-    // On vérifie s'il y a déjà des noms saisis
-    let existing = Array.from(document.querySelectorAll('.stop-name')).map(i=>i.value);
+    let existingNames = Array.from(document.querySelectorAll('.stop-name')).map(i=>i.value);
+    let existingCorres = Array.from(document.querySelectorAll('.stop-corres')).map(i=>i.value);
     
     container.innerHTML = '';
     for(let i=1; i<=n; i++) {
         let val = `Arrêt ${i}`;
-        
-        // Logique : Priorité au mapping officiel, sinon conservation de la saisie utilisateur
         if(stopMap && stopMap[i]) val = stopMap[i];
-        else if(existing[i-1] && !stopMap) val = existing[i-1];
+        else if(existingNames[i-1] && !stopMap) val = existingNames[i-1];
+        let corr = existingCorres[i-1] || "";
 
-        container.innerHTML += `<div class="stop-item"><span>${i}.</span><input type="text" class="stop-name" value="${val}"></div>`;
+        container.innerHTML += `
+        <div class="stop-item">
+            <span>${i}.</span>
+            <input type="text" class="stop-name" value="${val}" placeholder="Nom de l'arrêt">
+            <input type="text" class="stop-corres" value="${corr}" placeholder="Ex: 1, A, T1">
+        </div>`;
     }
 }
 
-function switchInputTab(e, day) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.getElementById('input-'+day).classList.add('active');
-}
-
-function switchResultTab(e, id) {
-    document.querySelectorAll('#results .tab-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    document.querySelectorAll('.result-tab').forEach(c => c.style.display = 'none');
-    document.getElementById(id).style.display = 'block';
-}
-
-function addPeriod(day, s='06:00', e='22:00', b='4') {
-    const cont = document.getElementById('container-' + day);
-    const div = document.createElement('div');
-    div.className = 'period-box';
-    div.innerHTML = `<button style="position:absolute; right:5px; top:5px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; font-size:12px;" onclick="this.parentElement.remove()">×</button>
-        <div class="period-grid">
-            <div><label>Début</label><input type="time" class="p-start" value="${s}"></div>
-            <div><label>Fin</label><input type="time" class="p-end" value="${e}"></div>
-            <div><label>Bus</label><input type="number" class="p-bus" value="${b}"></div>
-        </div>`;
-    cont.appendChild(div);
-}
-
+// --- GESTION ONGLETS & PERIODES ---
+function switchInputTab(e, day) { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); e.target.classList.add('active'); document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); document.getElementById('input-'+day).classList.add('active'); }
+function switchResultTab(e, id) { document.querySelectorAll('#results .tab-btn').forEach(b => b.classList.remove('active')); e.target.classList.add('active'); document.querySelectorAll('.result-tab').forEach(c => c.style.display = 'none'); document.getElementById(id).style.display = 'block'; }
+function addPeriod(day, s='06:00', e='22:00', b='4') { const cont = document.getElementById('container-' + day); const div = document.createElement('div'); div.className = 'period-box'; div.innerHTML = `<button class="btn-del" onclick="this.parentElement.remove()">×</button><div class="period-grid"><div><label>Début</label><input type="time" class="p-start" value="${s}"></div><div><label>Fin</label><input type="time" class="p-end" value="${e}"></div><div><label>Bus</label><input type="number" class="p-bus" value="${b}"></div></div>`; cont.appendChild(div); }
 function timeToMin(s) { if(!s) return 0; const [h,m] = s.split(':').map(Number); return h*60+m; }
 function minToTime(m) { let h = Math.floor(m/60)%24, min = Math.floor(m%60); return `${h.toString().padStart(2,'0')}:${min.toString().padStart(2,'0')}`; }
 
+// --- GENERATION HTML ---
 function generateAll() {
     ['semaine', 'samedi', 'dimanche'].forEach(day => {
         document.getElementById('res-' + day).innerHTML = generateTableForDay(day);
@@ -353,7 +291,7 @@ function generateAll() {
 
 function generateTableForDay(dayId) {
     const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
-    if(periodsElements.length === 0) return "<p style='text-align:center; padding:20px;'>Aucune donnée pour ce jour.</p>";
+    if(periodsElements.length === 0) return "";
     
     const arTime = parseInt(document.getElementById('totalTime').value);
     const pause = parseInt(document.getElementById('breakTime').value);
@@ -377,69 +315,136 @@ function generateTableForDay(dayId) {
             allTrips.push({ id: count, time: cur, freq: p.freq });
             cur += p.freq; count++;
         }
-
         let renderGroups = [];
         allTrips.forEach(trip => {
             let lastGroup = renderGroups[renderGroups.length - 1];
             if(trip.freq <= 6) {
-                if(lastGroup && lastGroup.type === 'HF' && Math.round(lastGroup.freq) === Math.round(trip.freq)) {
-                    lastGroup.trips.push(trip);
-                } else {
-                    renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] });
-                }
-            } else {
-                renderGroups.push({ type: 'NORM', trip: trip });
-            }
+                if(lastGroup && lastGroup.type === 'HF' && Math.round(lastGroup.freq) === Math.round(trip.freq)) { lastGroup.trips.push(trip); } 
+                else { renderGroups.push({ type: 'HF', freq: trip.freq, trips: [trip] }); }
+            } else { renderGroups.push({ type: 'NORM', trip: trip }); }
         });
-
         let rows = Array(nbStops).fill("");
         for(let i=0; i<nbStops; i++) rows[i] = `<tr><td>${isRetour ? stopNames[nbStops-1-i] : stopNames[i]}</td>`;
         let header = `<tr><th>Arrêts</th>`;
-
         renderGroups.forEach(group => {
             if(group.type === 'NORM') {
-                header += `<th class="course-head">C${group.trip.id}<div class="badge-int">${Math.round(group.trip.freq)}m</div></th>`;
+                header += `<th class="course-head">C${group.trip.id}</th>`;
                 let base = isRetour ? group.trip.time + returnDelay : group.trip.time;
                 for(let i=0; i<nbStops; i++) rows[i] += `<td>${minToTime(Math.round(base + (i*gap)))}</td>`;
             } else {
                 let startT = minToTime(group.trips[0].time);
                 let lastTrip = group.trips[group.trips.length-1];
                 let endT = minToTime(lastTrip.time + group.freq);
-                header += `<th class="course-head">C${group.trips[0].id} à C${lastTrip.id}</th>`;
-                for(let i=0; i<nbStops; i++) {
-                    rows[i] += `<td class="hf-zone">De ${startT} à ${endT}<br>Toutes les ${Math.round(group.freq)} min</td>`;
-                }
+                header += `<th class="course-head">C${group.trips[0].id}-${lastTrip.id}</th>`;
+                for(let i=0; i<nbStops; i++) rows[i] += `<td class="hf-zone">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
             }
         });
         return `<table><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table>`;
     };
-
     return `<h4>Aller</h4><div class="table-container">${makeTable(false)}</div><h4>Retour</h4><div class="table-container">${makeTable(true)}</div>`;
 }
 
-function exportExcel() {
-    const netName = document.getElementById('network-name').value || "Réseau";
-    let content = `<html><head><meta charset="UTF-8"></head><body>
-        <h1>Horaires - ${netName}</h1>
-        <h2>Semaine</h2>${document.getElementById('res-semaine').innerHTML}
-        <br><hr><br>
-        <h2>Samedi</h2>${document.getElementById('res-samedi').innerHTML}
-        <br><hr><br>
-        <h2>Dimanche</h2>${document.getElementById('res-dimanche').innerHTML}
-        </body></html>`;
-    let url = URL.createObjectURL(new Blob([content], {type: 'application/vnd.ms-excel'}));
-    let a = document.createElement('a'); a.href = url; a.download = `Horaires_${netName}.xls`; a.click();
+// --- GENERATION PDF ---
+function generatePDF() {
+    const doc = new jsPDF();
+    const networkName = document.getElementById('network-name').value || "RESEAU";
+    const lineColor = document.getElementById('custom-color').value;
+    const lineNameText = document.getElementById('line-select').options[document.getElementById('line-select').selectedIndex].text;
+    const useCustomIcons = document.getElementById('custom-icons-check').checked;
+
+    // Header
+    doc.setFillColor(lineColor);
+    doc.rect(0, 0, 210, 30, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(22);
+    doc.setFont("helvetica", "bold");
+    doc.text(networkName.toUpperCase(), 10, 20);
+    doc.text(lineNameText, 200, 20, { align: 'right' });
+
+    // Thermomètre
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(16);
+    doc.text("Plan de la ligne", 10, 45);
+
+    const stops = Array.from(document.querySelectorAll('.stop-name')).map(i => i.value);
+    const corres = Array.from(document.querySelectorAll('.stop-corres')).map(i => i.value);
+    let startY = 60;
+    let xLine = 20;
+    let gap = 12; 
+    if(stops.length > 20) gap = 200 / stops.length; // Adaptation si trop d'arrêts
+
+    doc.setDrawColor(lineColor);
+    doc.setLineWidth(1.5);
+    doc.line(xLine, startY, xLine, startY + ((stops.length - 1) * gap));
+
+    stops.forEach((stop, index) => {
+        let yPos = startY + (index * gap);
+        doc.setFillColor(255, 255, 255);
+        doc.setDrawColor(lineColor);
+        doc.setLineWidth(1);
+        doc.circle(xLine, yPos, 2, 'FD');
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.text(stop, xLine + 10, yPos + 1);
+
+        if(corres[index] && !useCustomIcons) {
+            let lines = corres[index].split(',').map(s => s.trim());
+            let xCor = xLine + 90; 
+            lines.forEach(l => {
+                if(!l) return;
+                doc.setFillColor(50, 50, 50); 
+                doc.circle(xCor, yPos - 1, 3.5, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(7);
+                doc.setFont("helvetica", "bold");
+                doc.text(l, xCor, yPos + 1.5, { align: 'center' });
+                xCor += 9;
+            });
+        }
+    });
+
+    // Pages Horaires
+    generateAll(); 
+    const days = [ {id:'semaine', t:'Lundi-Vendredi'}, {id:'samedi', t:'Samedi'}, {id:'dimanche', t:'Dimanche'} ];
+
+    days.forEach(day => {
+        const container = document.getElementById('res-' + day.id);
+        const tables = container.getElementsByTagName('table');
+        if(tables.length > 0) {
+            doc.addPage();
+            doc.setFillColor(lineColor);
+            doc.rect(0, 0, 210, 20, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(14);
+            doc.text(`${lineNameText} - ${day.t}`, 105, 13, { align: 'center' });
+
+            doc.autoTable({
+                html: tables[0],
+                startY: 30,
+                theme: 'grid',
+                headStyles: { fillColor: lineColor, textColor: 255, fontSize: 8 },
+                bodyStyles: { fontSize: 7, cellPadding: 1 },
+                margin: { top: 30 }
+            });
+
+            if(tables[1]) {
+                doc.autoTable({
+                    html: tables[1],
+                    startY: doc.lastAutoTable.finalY + 10,
+                    theme: 'grid',
+                    headStyles: { fillColor: lineColor, textColor: 255, fontSize: 8 },
+                    bodyStyles: { fontSize: 7, cellPadding: 1 },
+                    showHead: 'firstPage'
+                });
+            }
+        }
+    });
+
+    doc.save(`Fiche_${networkName}_${lineNameText}.pdf`);
 }
 
-window.onload = () => { 
-    uiStops(); 
-    ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = '');
-    addPeriod('semaine', '06:00', '22:00', '4');
-    addPeriod('samedi', '07:00', '20:00', '2');
-    addPeriod('dimanche', '08:00', '20:00', '1');
-    const savedName = localStorage.getItem('tm_network_name');
-    if(savedName) document.getElementById('network-name').value = savedName;
-};
+window.onload = () => { uiStops(); ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = ''); addPeriod('semaine', '06:00', '22:00', '4'); addPeriod('samedi', '07:00', '20:00', '2'); addPeriod('dimanche', '08:00', '20:00', '1'); const savedName = localStorage.getItem('tm_network_name'); if(savedName) document.getElementById('network-name').value = savedName; };
 </script>
 </body>
 </html>
