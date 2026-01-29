@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur TM - Export PDF & TXT</title>
+    <title>Calculateur TM - PDF Pro Fluide</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -119,6 +119,7 @@
 <script>
 const { jsPDF } = window.jspdf;
 
+// --- DONNÉES COMPLÈTES (L1-L10 Détaillées + N1-N5) ---
 const tmData = {
     "1": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}} ],
     "2": [ {n:"Ligne 1", t:48, s:20, c:"#dc241f", map: {1:"Campus Alan Turing", 6:"Clinique Sainte Marie", 11:"Hôtel de région", 16:"Hôtel de ville", 20:"Gare centrale"}}, {n:"Ligne 2", t:80, s:34, c:"#9364cc", map: {1:"Aéroport", 2:"C.C. Iris", 9:"Hôtel de police", 18:"Place de l'Europe", 26:"Collège Victor Hugo", 31:"Palais des Beaux-Arts", 34:"Gare centrale"}}, {n:"Ligne 3", t:64, s:27, c:"#f1ab00", map: {1:"Gare centrale", 4:"Palais des Beaux-Arts", 12:"Lycée Caroline Herschel", 19:"Parc Jolimont", 26:"CHRU Marthe Gautier", 27:"Campus Marthe Gautier"}}, {n:"Ligne 4", t:56, s:24, c:"#00afad", map: {1:"Gare centrale", 4:"C.C. Tulipe", 15:"Clinique Saint Paul", 22:"Centre Régional de Transport Est", 24:"Gare de l'Est"}}, {n:"Ligne 5", t:80, s:34, c:"#e86a10", map: {1:"Musée d'Art Moderne", 8:"Science Po", 15:"Gare de l'Ouest", 27:"Hôtel de police", 34:"Pôle Luca Pacioli"}}, {n:"Ligne 6", t:40, s:17, c:"#894e24", map: {1:"Grand Palais", 4:"C.C. Tulipe", 13:"C.C. Lilas", 17:"Campus Maryse Esterle"}}, {n:"Ligne 7", t:36, s:30, c:"#007229", map: {1:"Port fluvial", 2:"Arena", 10:"Col. Rosa Luxemburg", 11:"Gare de l'Ouest", 18:"Préfecture", 25:"Col. Rosa Parks", 29:"Hôtel de ville", 30:"Grand Palais"}} ],
@@ -208,7 +209,7 @@ function generateTableForDay(dayId) {
             cur += p.freq; count++;
         }
 
-        // CHUNK 15
+        // --- SPLIT INTO CHUNKS OF 15 ---
         const CHUNK_SIZE = 15;
         let htmlOutput = "";
         
@@ -251,13 +252,19 @@ function generateTableForDay(dayId) {
     return `<div class="direction-block">${makeTable(false)}</div><div class="direction-block">${makeTable(true)}</div>`;
 }
 
+// --- HELPER COULEUR CORRESPONDANCE ---
 function getCorresColor(shortName) {
-    for (let lvl in tmData) { for (let line of tmData[lvl]) { if (line.n === shortName || line.n === "Ligne " + shortName) return line.c; } }
+    for (let lvl in tmData) {
+        for (let line of tmData[lvl]) {
+            if (line.n === shortName || line.n === "Ligne " + shortName) return line.c;
+        }
+    }
     if(shortName === "A" || shortName === "B") return "#e84393"; 
     if(shortName.startsWith("T")) return "#e67e22"; 
     return "#505050"; 
 }
 
+// --- HEADER DU PDF ---
 function drawHeader(doc, networkName, lineNameText, lineColor) {
     doc.setFillColor(lineColor);
     doc.rect(0, 0, 210, 30, 'F');
@@ -268,6 +275,7 @@ function drawHeader(doc, networkName, lineNameText, lineColor) {
     doc.text(lineNameText, 200, 20, { align: 'right' });
 }
 
+// --- GENERATION PDF INTELLIGENTE ---
 function generatePDF() {
     const doc = new jsPDF();
     const networkName = document.getElementById('network-name').value || "RESEAU";
@@ -289,7 +297,9 @@ function generatePDF() {
     let availableHeight = 217;
     let gap = 14; 
     
-    if ((stops.length * gap) > availableHeight) { gap = availableHeight / (stops.length - 1); }
+    if ((stops.length * gap) > availableHeight) {
+        gap = availableHeight / (stops.length - 1);
+    }
 
     doc.setDrawColor(lineColor);
     doc.setLineWidth(3.5); 
@@ -326,7 +336,13 @@ function generatePDF() {
         }
     });
 
-    generateAll(); 
+    // --- SCHEDULES : START NEW PAGE AFTER THERMOMETER ---
+    doc.addPage();
+    drawHeader(doc, networkName, "Horaires", lineColor);
+    let currentY = 45;
+
+    generateAll(); // Refresh HTML
+    
     const days = [ {id:'semaine', t:'Lundi-Vendredi'}, {id:'samedi', t:'Samedi'}, {id:'dimanche', t:'Dimanche'} ];
 
     days.forEach(day => {
@@ -334,38 +350,37 @@ function generatePDF() {
         const titles = container.getElementsByTagName('h4');
         const tables = container.getElementsByTagName('table');
         
+        // Loop through chunks
         for(let i=0; i<tables.length; i++) {
             let table = tables[i];
-            let title = titles[i] ? titles[i].innerText : "";
+            let title = `${day.t} - ${titles[i] ? titles[i].innerText : ""}`;
 
-            // Page Logic: Start new day OR if not enough space
-            if (i === 0) {
+            // --- CHECK SPACE LOGIC ---
+            // Title (10) + Header (20) + 1 Row (10) approx 40 units needed to start
+            if (currentY + 50 > 280) { 
                 doc.addPage();
-                drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
-            } else {
-                // If cursor is too low (> 240), adding a table will cut off -> New Page
-                if (doc.lastAutoTable && doc.lastAutoTable.finalY > 240) {
-                    doc.addPage();
-                    drawHeader(doc, networkName, `${lineNameText} - ${day.t}`, lineColor);
-                    doc.lastAutoTable.finalY = 30; // reset
-                }
+                drawHeader(doc, networkName, "Horaires", lineColor);
+                currentY = 45; // Reset Y
             }
 
-            let startY = (doc.lastAutoTable && doc.lastAutoTable.finalY > 30) ? doc.lastAutoTable.finalY + 15 : 40;
-
+            // Draw Title
             doc.setTextColor(0,0,0);
             doc.setFontSize(12);
-            doc.text(title, 14, startY);
+            doc.text(title, 14, currentY);
 
+            // Draw Table
             doc.autoTable({
                 html: table,
-                startY: startY + 5,
+                startY: currentY + 5,
                 theme: 'grid',
                 headStyles: { fillColor: lineColor, textColor: 255, fontSize: 8 },
                 bodyStyles: { fontSize: 7, cellPadding: 1 },
                 styles: { overflow: 'linebreak' },
                 margin: { bottom: 20 }
             });
+
+            // Update Cursor for next table (Previous table end + margin)
+            currentY = doc.lastAutoTable.finalY + 15;
         }
     });
 
