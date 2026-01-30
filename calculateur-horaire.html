@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de tableaux HTML</title>
+    <title>Générateur de fiche horaire</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -48,14 +48,20 @@
 
         .btn { border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; text-transform: uppercase; transition: 0.3s; }
         .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        
         .btn-action { background: var(--line-color); color: white; font-size: 1em; margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .btn-add { background: #ced6e0; color: #2f3542; }
         .btn-sm { font-size: 0.85em; padding: 8px 15px; width: auto; display: inline-block; margin-top: 5px; }
 
+        /* TABLEAUX ECRAN (Preview) */
         .table-container { overflow-x: auto; background: white; border-radius: 12px; margin-bottom: 30px; border: 1px solid #eee; max-width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         table { border-collapse: collapse; width: max-content; font-size: 0.75em; }
         th, td { border: 1px solid #eee; padding: 8px; text-align: center; min-width: 50px; }
-        th:first-child, td:first-child { position: sticky; left: 0; background: #f8f9fa; z-index: 10; border-right: 3px solid var(--line-color); text-align: left; min-width: 130px; font-weight: bold; color: var(--primary); }
+        th:first-child, td:first-child { 
+            position: sticky; left: 0; background: #f8f9fa; z-index: 10; 
+            border-right: 3px solid var(--line-color); text-align: left; min-width: 130px; 
+            font-weight: bold; color: var(--primary);
+        }
         .course-head { background: var(--line-color); color: white; }
         .hf-zone { background: #fff9e6; font-style: italic; color: #d35400; font-weight: bold; }
         .day-title { color: var(--primary); border-bottom: 3px solid var(--line-color); padding-bottom: 5px; margin-bottom: 20px; font-size: 1.4em; text-transform: uppercase; letter-spacing: 1px; }
@@ -65,6 +71,7 @@
         .icon-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
         .icon-list-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 5px; margin-bottom: 5px; border: 1px solid #eee; border-radius: 4px; }
         .icon-preview { max-width: 40px; max-height: 20px; object-fit: contain; margin-right: 10px; }
+
         #hidden-pdf-container { display: none; }
     </style>
 </head>
@@ -86,13 +93,13 @@
             <label>Pause Terminus en min</label><input type="number" id="breakTime" value="15">
             <label>Nombre d'arrêts</label><input type="number" id="nbStops" value="10" oninput="uiStops()">
             
-            <label>Liste des Arrêts & Correspondances</label>
+            <label>Liste des Arrêts et Correspondances</label>
             <div style="font-size:0.75em; color:#666; margin-bottom:5px;">Col 1: Nom | Col 2: Correspondances (ex: "1, 60, T1")</div>
             <div id="stop-list" class="stops-list"></div>
         </div>
 
         <div class="card">
-            <h3>2. Grilles & Export</h3>
+            <h3>2. Grilles et Exportation</h3>
             <div class="tabs-header">
                 <button class="tab-btn active" onclick="switchInputTab(event, 'semaine')">Semaine</button>
                 <button class="tab-btn" onclick="switchInputTab(event, 'samedi')">Samedi</button>
@@ -103,11 +110,11 @@
             <div id="input-samedi" class="tab-content"><div id="container-samedi"></div><button class="btn btn-add" onclick="addPeriod('samedi')">+ Période Samedi</button></div>
             <div id="input-dimanche" class="tab-content"><div id="container-dimanche"></div><button class="btn btn-add" onclick="addPeriod('dimanche')">+ Période Dimanche</button></div>
 
-            <button class="btn btn-action" onclick="generateAll()">Aperçue HTML + CSS</button>
+            <button class="btn btn-action" onclick="generateAll()">Aperçue HTML</button>
             
             <div style="margin-top:15px; padding:10px; background:#f1f2f6; border-radius:8px;">
                 <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:bold;">
-                    <input type="checkbox" id="custom-icons-check" checked> Activer les indices personnalisés
+                    <input type="checkbox" id="custom-icons-check" checked> Activer les indices personnalisés pour le PDF
                 </label>
                 <button class="btn btn-action btn-sm" onclick="toggleIconManager()">🖼️ Gérer les icônes</button>
                 
@@ -127,7 +134,7 @@
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:15px;">
                 <button class="btn btn-action" onclick="generatePDF()">📄 PDF</button>
                 <button class="btn btn-action" onclick="exportToExcel()">📊 EXCEL</button>
-                <button class="btn btn-action" style="grid-column: 1 / -1;" onclick="exportHTMLtoTXT()">💾 KIT TABLEPRESS (CSS + HTML)</button>
+                <button class="btn btn-action" style="grid-column: 1 / -1;" onclick="exportHTMLtoTXT()">💾 Code HTML et CSS (TXT)</button>
             </div>
         </div>
     </div>
@@ -280,7 +287,6 @@ function applyLine() {
 function uiStops(stopMap = null, corresMap = null) {
     const n = parseInt(document.getElementById('nbStops').value);
     const container = document.getElementById('stop-list');
-    
     let existingNames = Array.from(document.querySelectorAll('.stop-name')).map(i=>i.value);
     let existingCorres = Array.from(document.querySelectorAll('.stop-corres')).map(i=>i.value);
     
@@ -288,13 +294,10 @@ function uiStops(stopMap = null, corresMap = null) {
     for(let i=1; i<=n; i++) {
         let val = `Arrêt ${i}`;
         let corr = "";
-
         if(stopMap && stopMap[i]) val = stopMap[i];
         else if(existingNames[i-1] && !stopMap) val = existingNames[i-1];
-
         if(corresMap && corresMap[i]) corr = corresMap[i];
         else if(existingCorres[i-1] && !corresMap) corr = existingCorres[i-1];
-
         container.innerHTML += `<div class="stop-item"><span>${i}.</span><input type="text" class="stop-name" value="${val}" placeholder="Nom de l'arrêt"><input type="text" class="stop-corres" value="${corr}" placeholder="Ex: 1, A, T1"></div>`;
     }
 }
@@ -630,24 +633,29 @@ function exportHTMLtoTXT() {
     const firstStop = stopNames[0] || "Départ";
     const lastStop = stopNames[stopNames.length - 1] || "Arrivée";
 
-    // 1. GÉNÉRATION DU CSS SPÉCIAL TABLEPRESS (Adapté à la couleur)
+    // CSS TABLEPRESS + WRAPPER POUR SCROLL
     let cssTablePress = `
 /* ============================================================
    KIT D'INTÉGRATION WORDPRESS (TABLEPRESS)
+
+   remplacé VOTRE_ID par l'ID de votre tableaux, exemple tablepress-id-21
+   importé votre tableaux sur word presse soit en copiant collant les donné soit en important un fichier .xls (EXEL)
    ============================================================ */
 
-/* ------------------------------------------------------------
-   ÉTAPE 1 : COPIER CE CSS DANS "OPTIONS DE L'EXTENSION" 
-   (TablePress -> Options de l'extension -> CSS personnalisé)
-   
-   IMPORTANT : Remplacez ".tablepress-id-VOTRE_ID" par l'ID réel 
-   de votre tableau (ex: .tablepress-id-12)
-   ------------------------------------------------------------ */
+/* 1. Conteneur magique qui force le scroll horizontal */
+.tm-scroll-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
 
-/* Style général du tableau */
+/* 2. Style général du tableau */
 .tablepress-id-VOTRE_ID {
     border-collapse: collapse;
-    width: 100%;
+    width: max-content; /* IMPORTANT : Force le tableau à prendre sa largeur réelle */
+    min-width: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 13px;
 }
@@ -657,10 +665,10 @@ function exportHTMLtoTXT() {
     padding: 8px 12px;
     border: 1px solid #eee;
     text-align: center;
-    white-space: nowrap;
+    white-space: nowrap; /* Empêche le texte de revenir à la ligne */
 }
 
-/* Colonne 1 figée (Effet Thermomètre) */
+/* 3. Colonne 1 figée (Effet Thermomètre) */
 .tablepress-id-VOTRE_ID .column-1 {
     position: sticky;
     left: 0;
@@ -680,40 +688,25 @@ function exportHTMLtoTXT() {
     border-bottom: 2px solid #fff;
 }
 
-/* En-tête de la colonne figée */
 .tablepress-id-VOTRE_ID thead th.column-1 {
-    z-index: 3; /* Doit être au-dessus du scroll */
+    z-index: 3;
 }
 
-/* Style des Services (S1, S2...) */
-.tablepress-id-VOTRE_ID .column-1 {
-    /* Déjà géré au dessus */
-}
-
-/* Zone "Haut Fréquence" (Optionnel si présent dans le tableau) */
 .tablepress-id-VOTRE_ID td.hf-zone {
     background: #fff9e6;
     font-style: italic;
     color: #d35400;
     font-weight: bold;
 }
-    
-/* ------------------------------------------------------------
-   ÉTAPE 2 : IMPORTEZ LES DONNÉ
-   (COPIER COLLÉ LES DONNÉ DE L'APERCUE OU DU FICHIER .xls (EXEL) dans table press
-   ------------------------------------------------------------ */
 `;
 
     let htmlFallback = `
 /* ============================================================
-   (OPTIONNEL) CODE HTML BRUT
-   Si vous n'utilisez PAS TablePress et préférez un bloc HTML pur.
-
-   Attention le CSS est suprimé sur word press si inclue dans une page.
+   CODE HTML (A COPIER DANS UN BLOC HTML OU SHORTCODE)
+   IMPORTANT : Le conteneur "tm-scroll-wrapper" est inclus.
    ============================================================ */
 `;
 
-    // Génération du HTML de secours
     const generateHtmlForDirection = (dayId, isRetour, title) => {
         const periodsElements = document.getElementById('container-' + dayId).querySelectorAll('.period-box');
         if(periodsElements.length === 0) return null;
@@ -759,7 +752,9 @@ function exportHTMLtoTXT() {
                 for(let j=0; j<nbStops; j++) rows[j] += `<td style="background:#fff9e6;color:#d35400">De ${startT} à ${endT}<br>${Math.round(group.freq)} min</td>`;
             }
         });
-        return `<h3>${title}</h3><div style="overflow-x:auto"><table border="1" style="border-collapse:collapse;width:100%"><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table></div>`;
+        
+        // LE WRAPPER EST AJOUTÉ ICI
+        return `<h3>${title}</h3><div class="tm-scroll-wrapper"><table border="1" style="border-collapse:collapse;width:max-content;min-width:100%"><thead>${header}</thead><tbody>${rows.join('</tr>')}</tbody></table></div>`;
     };
 
     const days = [{id:'semaine', t:'SEMAINE'}, {id:'samedi', t:'SAMEDI'}, {id:'dimanche', t:'DIMANCHE'}];
@@ -795,7 +790,7 @@ function exportToExcel() {
     a.click();
 }
 
-window.onload = () => { uiStops(); ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = ''); addPeriod('semaine', '06:00', '19:30', '4'); addPeriod('samedi', '07:00', '09:30', '2'); addPeriod('dimanche', '08:00', '09:30', '1'); const savedName = localStorage.getItem('tm_network_name'); if(savedName) document.getElementById('network-name').value = savedName; };
+window.onload = () => { uiStops(); ['semaine', 'samedi', 'dimanche'].forEach(d => document.getElementById('container-'+d).innerHTML = ''); addPeriod('semaine', '06:00', '09:30', '4'); addPeriod('samedi', '07:00', '09:30', '2'); addPeriod('dimanche', '08:00', '09:30', '1'); const savedName = localStorage.getItem('tm_network_name'); if(savedName) document.getElementById('network-name').value = savedName; };
 </script>
 </body>
 </html>
