@@ -80,10 +80,10 @@
 <div class="container">
     <div class="header-nav">
         <h2>Configuration</h2>
-        <div><label style="color:white;">Nom du Réseau</label><input type="text" id="network-name" placeholder="Ex: TCL" oninput="saveNetworkName()"></div>
+        <div><label style="color:white;">Nom du Réseau</label><input type="text" id="network-name" placeholder="Ex: TCRR" oninput="saveNetworkName()"></div>
         <div><label style="color:white;">Niveau</label><select id="lvl-select" onchange="loadLines()"><option value="">-- Niv --</option><option value="1">Niveau 1</option><option value="2">Niveau 2</option><option value="3">Niveau 3</option><option value="4">Niveau 4</option><option value="5">Niveau 5</option></select></div>
         <div><label style="color:white;">Ligne</label><select id="line-select" onchange="applyLine()"><option value="">-- Choisir --</option></select></div>
-        <div><label style="color:white;">Couleur</label><div class="color-picker-container"><input type="color" id="custom-color" oninput="applyManualColor(this.value)"></div></div>
+        <div><label style="color:white;">Couleur personalisé</label><div class="color-picker-container"><input type="color" id="custom-color" oninput="applyManualColor(this.value)"></div></div>
     </div>
 
     <div class="main-grid">
