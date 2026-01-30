@@ -79,7 +79,7 @@
 
 <div class="container">
     <div class="header-nav">
-        <h2>Configuration Complète</h2>
+        <h2>Configuration</h2>
         <div><label style="color:white;">Nom du Réseau</label><input type="text" id="network-name" placeholder="Ex: TCL" oninput="saveNetworkName()"></div>
         <div><label style="color:white;">Niveau</label><select id="lvl-select" onchange="loadLines()"><option value="">-- Niv --</option><option value="1">Niveau 1</option><option value="2">Niveau 2</option><option value="3">Niveau 3</option><option value="4">Niveau 4</option><option value="5">Niveau 5</option></select></div>
         <div><label style="color:white;">Ligne</label><select id="line-select" onchange="applyLine()"><option value="">-- Choisir --</option></select></div>
@@ -88,18 +88,18 @@
 
     <div class="main-grid">
         <div class="card">
-            <h3>1. Configuration Ligne</h3>
-            <label>Temps Aller-Retour (min)</label><input type="number" id="totalTime" value="45">
-            <label>Pause Terminus (min)</label><input type="number" id="breakTime" value="15">
+            <h3>1. Configuration de la Ligne</h3>
+            <label>Temps Aller-Retour en min</label><input type="number" id="totalTime" value="45">
+            <label>Pause Terminus en min</label><input type="number" id="breakTime" value="15">
             <label>Nombre d'arrêts</label><input type="number" id="nbStops" value="10" oninput="uiStops()">
             
-            <label>Liste des Arrêts & Correspondances</label>
-            <div style="font-size:0.75em; color:#666; margin-bottom:5px;">Col 1: Nom | Col 2: Correspondances (ex: "1, A, T1")</div>
+            <label>Liste des Arrêts et Correspondances</label>
+            <div style="font-size:0.75em; color:#666; margin-bottom:5px;">Col 1: Nom | Col 2: Correspondances (ex: "1, PL1, 60")</div>
             <div id="stop-list" class="stops-list"></div>
         </div>
 
         <div class="card">
-            <h3>2. Grilles & Export</h3>
+            <h3>2. Plage horaire & Export</h3>
             <div class="tabs-header">
                 <button class="tab-btn active" onclick="switchInputTab(event, 'semaine')">Semaine</button>
                 <button class="tab-btn" onclick="switchInputTab(event, 'samedi')">Samedi</button>
@@ -110,18 +110,18 @@
             <div id="input-samedi" class="tab-content"><div id="container-samedi"></div><button class="btn btn-add" onclick="addPeriod('samedi')">+ Période Samedi</button></div>
             <div id="input-dimanche" class="tab-content"><div id="container-dimanche"></div><button class="btn btn-add" onclick="addPeriod('dimanche')">+ Période Dimanche</button></div>
 
-            <button class="btn btn-action" onclick="generateAll()">Générer HTML (Aperçu)</button>
+            <button class="btn btn-action" onclick="generateAll()">Aperçue Tableaux HTML</button>
             
             <div style="margin-top:15px; padding:10px; background:#f1f2f6; border-radius:8px;">
                 <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:bold;">
-                    <input type="checkbox" id="custom-icons-check" checked> Activer indices personnalisés
+                    <input type="checkbox" id="custom-icons-check" checked> Activer les indices personnalisés
                 </label>
-                <button class="btn btn-action btn-sm" onclick="toggleIconManager()">🖼️ Gérer les icônes</button>
+                <button class="btn btn-action btn-sm" onclick="toggleIconManager()">🖼️ Gérer les indice</button>
                 
                 <div id="icon-manager">
                     <label>Ajouter un indice</label>
                     <div class="icon-row">
-                        <input type="text" id="new-icon-name" placeholder="Nom (ex: T1, A)">
+                        <input type="text" id="new-icon-name" placeholder="Nom (ex: 1, 60)">
                         <input type="file" id="new-icon-file" accept="image/*">
                     </div>
                     <div style="font-size:0.7em; color:#666; margin-bottom:5px;">Supporte SVG, PNG, JPG.</div>
@@ -134,7 +134,7 @@
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:15px;">
                 <button class="btn btn-action" onclick="generatePDF()">📄 PDF</button>
                 <button class="btn btn-action" onclick="exportToExcel()">📊 EXCEL</button>
-                <button class="btn btn-action" style="grid-column: 1 / -1;" onclick="exportHTMLtoTXT()">💾 EXPORTER HTML (TXT)</button>
+                <button class="btn btn-action" style="grid-column: 1 / -1;" onclick="exportHTMLtoTXT()">💾 EXPORTER le tableaux HTML (TXT)</button>
             </div>
         </div>
     </div>
@@ -151,7 +151,7 @@
 <script>
 const { jsPDF } = window.jspdf;
 
-// --- DONNÉES COMPLÈTES RESTAURÉES (COULEURS CORRECTES + CORRESPONDANCES) ---
+// --- DONNÉES Préconfiguration ---
 const tmData = {
     "1": [ 
         {n: "Ligne 1", t: 48, s: 20, c: "#dc241f", map: {1: "Campus Alan Turing", 7: "Clinique Sainte Marie", 12: "Hôtel de région", 16: "Hôtel de ville", 20: "Gare Centrale"}, corres: {20: "2, 3, 4"}}, 
