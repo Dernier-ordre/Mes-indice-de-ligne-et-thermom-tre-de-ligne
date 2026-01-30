@@ -642,33 +642,38 @@ function exportHTMLtoTXT() {
    importé votre tableaux sur word presse soit en copiant collant les donné soit en important un fichier .xls (EXEL)
    ============================================================ */
 
-/* 1. Conteneur magique qui force le scroll horizontal */
 .tm-scroll-wrapper {
-    overflow-x: auto;
-    width: 100%;
-    -webkit-overflow-scrolling: touch;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
+    display: block;
+    width: 100% !important; /* Force la largeur du conteneur */
+    overflow-x: auto;       /* Scroll Horizontal */
+    overflow-y: hidden;     /* Cache le scroll vertical inutile */
+    border-radius: 15px;    /* Arrondi du cadre global */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08); /* Ombre douce */
+    background-color: #ffffff;
+    margin-bottom: 35px;
+    border: 1px solid #f0f0f0; /* Bordure fine pour la propreté */
+    -webkit-overflow-scrolling: touch; /* Fluidité sur mobile */
 }
 
-/* 2. Style général du tableau */
+/* 2. STYLE DU TABLEAU (S'adapte au contenu) */
 .tablepress-id-VOTRE_ID {
     border-collapse: collapse;
-    width: max-content; /* IMPORTANT : Force le tableau à prendre sa largeur réelle */
+    width: max-content; /* IMPORTANT: Force le tableau à prendre toute sa largeur */
     min-width: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 13px;
+    margin: 0; /* Pas de marge externe, gérée par le wrapper */
 }
 
 .tablepress-id-VOTRE_ID th, 
 .tablepress-id-VOTRE_ID td {
-    padding: 8px 12px;
+    padding: 10px 15px; /* Un peu plus d'espace */
     border: 1px solid #eee;
     text-align: center;
-    white-space: nowrap; /* Empêche le texte de revenir à la ligne */
+    white-space: nowrap;
 }
 
-/* 3. Colonne 1 figée (Effet Thermomètre) */
+/* 3. COLONNE 1 FIGÉE (Effet Thermomètre) */
 .tablepress-id-VOTRE_ID .column-1 {
     position: sticky;
     left: 0;
@@ -678,7 +683,8 @@ function exportHTMLtoTXT() {
     text-align: left;
     font-weight: bold;
     color: #2c3e50;
-    min-width: 130px;
+    min-width: 140px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05); /* Petite ombre de séparation */
 }
 
 /* En-tête (Header) */
@@ -686,19 +692,22 @@ function exportHTMLtoTXT() {
     background-color: ${lineColor} !important;
     color: white !important;
     border-bottom: 2px solid #fff;
+    text-transform: uppercase;
+    font-weight: 700;
 }
 
 .tablepress-id-VOTRE_ID thead th.column-1 {
     z-index: 3;
 }
 
+/* Zone "Haut Fréquence" */
 .tablepress-id-VOTRE_ID td.hf-zone {
     background: #fff9e6;
     font-style: italic;
     color: #d35400;
     font-weight: bold;
 }
-`;
+';
 
     let htmlFallback = `
 /* ============================================================
