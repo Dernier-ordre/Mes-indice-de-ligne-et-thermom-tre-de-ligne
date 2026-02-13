@@ -15,7 +15,7 @@
    inkscape:export-filename="..\test 2.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
-   inkscape:export-batch-path="..\Thermomètre TM"
+   inkscape:export-batch-path="C:\Users\thoma\OneDrive\Bureau"
    inkscape:export-batch-name=""
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -31,20 +31,20 @@
    inkscape:pagecheckerboard="0"
    inkscape:deskcolor="#d1d1d1"
    inkscape:document-units="mm"
-   inkscape:zoom="1.28"
-   inkscape:cx="2303.5156"
-   inkscape:cy="21485.547"
+   inkscape:zoom="0.32"
+   inkscape:cx="1084.375"
+   inkscape:cy="13201.562"
    inkscape:window-width="1920"
    inkscape:window-height="1057"
    inkscape:window-x="-8"
    inkscape:window-y="-8"
    inkscape:window-maximized="1"
-   inkscape:current-layer="g242"
+   inkscape:current-layer="svg17"
    showgrid="true"><inkscape:grid
      id="grid1"
      units="mm"
      originx="-1.2807129e-06"
-     originy="-243954.65"
+     originy="-523931.02"
      spacingx="99.999998"
      spacingy="100"
      empcolor="#0099e5"
@@ -202746,15 +202746,7 @@
           <path
    d="M 0,0 H 2449 V 1399 H 0 Z"
    id="path14-55-8-1-9-6-4" />
-         </clipPath><inkscape:path-effect
-     effect="powerclip"
-     message=""
-     id="path-effect79-4-0-6-0-4-3-4-98-2"
-     is_visible="true"
-     lpeversion="1"
-     inverse="true"
-     flatten="false"
-     hide_clip="false" /><linearGradient
+         </clipPath><linearGradient
      inkscape:collect="always"
      xlink:href="#linearGradient337"
      id="linearGradient733-2-9"
@@ -202791,22 +202783,7 @@
      lpeversion="1"
      inverse="true"
      flatten="false"
-     hide_clip="false" /><clipPath
-     id="presentation_clip_path-91-7-5-136-8"
-     clipPathUnits="userSpaceOnUse">
-   <rect
-   x="0"
-   y="0"
-   width="2450"
-   height="1400"
-   id="rect1-35-9-4-3-1" />
-  </clipPath><clipPath
-     id="clip_path_1-78-5-6-7-7"
-     clipPathUnits="userSpaceOnUse">
-          <path
-   d="M 0,0 H 2449 V 1399 H 0 Z"
-   id="path14-3-5-7-15-9" />
-         </clipPath><inkscape:path-effect
+     hide_clip="false" /><inkscape:path-effect
      effect="powerclip"
      message=""
      id="path-effect154-6-76-9-8-3-0-6"
@@ -202815,19 +202792,6 @@
      inverse="true"
      flatten="false"
      hide_clip="false" /><clipPath
-     clipPathUnits="userSpaceOnUse"
-     id="clipath_lpe_path-effect79-4-0-6-0-4-3-4-98-2"><rect
-       style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
-       id="rect1038"
-       width="1270.9302"
-       height="1148.0061"
-       x="27749.107"
-       y="2890.4697"
-       d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" /><path
-       id="lpe_path-effect79-4-0-6-0-4-3-4-98-2"
-       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
-       class="powerclip"
-       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><clipPath
      clipPathUnits="userSpaceOnUse"
      id="clipath_lpe_path-effect154-6-2-4-9-8-6"><rect
        style="display:none;fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
@@ -203016,7 +202980,49 @@
      x1="59655.949"
      y1="41230.789"
      x2="60363.059"
-     y2="41937.898" /></defs>
+     y2="41937.898" /><clipPath
+     clipPathUnits="userSpaceOnUse"
+     id="clipath_lpe_path-effect826-73"><rect
+       style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       id="rect826-44"
+       width="1270.9302"
+       height="1148.0061"
+       x="27749.107"
+       y="2890.4697"
+       d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" /><path
+       id="lpe_path-effect826-91"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       class="powerclip"
+       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><inkscape:path-effect
+     effect="powerclip"
+     message=""
+     id="path-effect826-73"
+     is_visible="true"
+     lpeversion="1"
+     inverse="true"
+     flatten="false"
+     hide_clip="false" /><clipPath
+     clipPathUnits="userSpaceOnUse"
+     id="clipath_lpe_path-effect79-4-0-6-0-4-3-59-3"><rect
+       style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       id="rect642-5"
+       width="1270.9302"
+       height="1148.0061"
+       x="27749.107"
+       y="2890.4697"
+       d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" /><path
+       id="lpe_path-effect79-4-0-6-0-4-3-59-4"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       class="powerclip"
+       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><inkscape:path-effect
+     effect="powerclip"
+     message=""
+     id="path-effect79-4-0-6-0-4-3-59-4"
+     is_visible="true"
+     lpeversion="1"
+     inverse="true"
+     flatten="false"
+     hide_clip="false" /></defs>
  <defs
    class="TextShapeIndex"
    id="defs3" />
@@ -203096,39 +203102,6 @@
    </g>
   </g>
  </g><g
-     id="g116-0-7-4-6"
-     transform="matrix(0.6317551,0,0,0.63171428,-6963.1232,30698.424)"><path
-       style="fill:#737373;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
-       id="rect77-9-5-5-2-2-0-3-54-3"
-       width="2450"
-       height="1400"
-       x="26696.5"
-       y="2764.8999"
-       clip-path="url(#clipath_lpe_path-effect79-4-0-6-0-4-3-4-98-2)"
-       inkscape:path-effect="#path-effect79-4-0-6-0-4-3-4-98-2"
-       sodipodi:type="rect"
-       d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
-       transform="translate(-1e-4,1561.0374)" /><text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
-       x="26685.164"
-       y="5521.9321"
-       id="text79-2-6-7-2-6-4-4-4-9"><tspan
-         sodipodi:role="line"
-         id="tspan79-0-7-7-3-0-8-94-8-9"
-         style="fill:#ffffff;fill-opacity:1;stroke-width:0"
-         x="26685.164"
-         y="5521.9321">R</tspan></text><text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#737373;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
-       x="28042.244"
-       y="5451.2998"
-       id="text80-7-3-4-6-6-3-5-0-5"><tspan
-         sodipodi:role="line"
-         style="fill:#737373;fill-opacity:1;stroke-width:0"
-         x="28042.244"
-         y="5451.2998"
-         id="tspan97-57-7-1-0-6-9-1">2</tspan></text></g><g
      id="g433-4-5-1"
      transform="matrix(1.4906122,0,0,1.4906428,-34112.279,16561.854)"><path
        style="fill:url(#linearGradient1040);fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
@@ -203157,7 +203130,45 @@
      width="44584.418"
      height="1.1178213"
      x="1668.8517"
-     y="31754.717" /><text
+     y="31754.717" /><g
+     id="g671-48"
+     transform="matrix(0.63171427,0,0,0.63171427,-16017.128,31660.165)"
+     inkscape:export-filename="..\S1.svg"
+     inkscape:export-xdpi="96"
+     inkscape:export-ydpi="96"
+     style="fill:#08bf00;fill-opacity:1"
+     inkscape:label="Ligne P1"><path
+       style="opacity:1;fill:#ff0004;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       id="path668-182"
+       width="2450"
+       height="1400"
+       x="26696.5"
+       y="2764.8999"
+       clip-path="url(#clipath_lpe_path-effect826-73)"
+       inkscape:path-effect="#path-effect826-73"
+       sodipodi:type="rect"
+       d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
+       transform="translate(-6.3427384e-5,-1521.3542)" /><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="26761.801"
+       y="2446.1836"
+       id="text668-2"><tspan
+         sodipodi:role="line"
+         id="tspan668-1"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;fill-opacity:1;stroke-width:0"
+         x="26761.801"
+         y="2446.1836">P</tspan></text><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;opacity:1;fill:#ff0004;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="28042.24"
+       y="2368.9082"
+       id="text669-46"><tspan
+         sodipodi:role="line"
+         id="tspan669-69"
+         style="fill:#ff0004;fill-opacity:1;stroke-width:0"
+         x="28042.24"
+         y="2368.9082">1</tspan></text></g><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:264.565px;line-height:0.9;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif';text-align:start;letter-spacing:6.88972px;word-spacing:1.37794px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:2669.39;display:inline;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
      x="-10591.565"
@@ -203221,72 +203232,7 @@
        id="tspan6"><tspan
          dx="0 0 0 0 0 -1.3779048 1.3779268 0 -1.3779048 1.3779879 -0.00010967255 -1.3779048 1.3779879 0 0 0 -1.37792"
          style="fill:#000000"
-         id="tspan5">Place de la Paix  </tspan></tspan></text><g
-     class="SlideGroup"
-     id="g278-1-1"
-     transform="matrix(0.63172555,0,0,0.6317865,847.41782,32445.68)"
-     style="fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round">
-  <g
-   id="g277-0-6">
-   <g
-   id="g276-2-8">
-    <g
-   id="g275-50-9"
-   class="Slide"
-   clip-path="url(#presentation_clip_path-91-7-5-136-8)">
-     <g
-   class="Page"
-   id="g274-10-5">
-      <g
-   class="Graphic"
-   id="g273-73-7">
-       <g
-   id="g272-4-6">
-        <rect
-   class="BoundingBox"
-   stroke="none"
-   fill="none"
-   x="0"
-   y="0"
-   width="2450"
-   height="1400"
-   id="rect261-3-3" />
-        <defs
-   id="defs265-1-8" />
-        <g
-   clip-path="url(#clip_path_1-78-5-6-7-7)"
-   id="g270-9-4">
-         <path
-   fill="none"
-   stroke="#ff0004"
-   stroke-width="125"
-   stroke-linejoin="miter"
-   d="M 62,62 H 2387 V 1337 H 62 Z"
-   id="path266-05-5" />
-        </g>
-        <text
-   class="SVGTextShape"
-   id="text272-92-4"><tspan
-     class="TextParagraph"
-     id="tspan272-12-0"><tspan
-       class="TextPosition"
-       x="881"
-       y="1128"
-       id="tspan271-03-9"><tspan
-         font-family="'Liberation Sans', sans-serif"
-         font-size="1235px"
-         font-weight="700"
-         fill="#ff0000"
-         stroke="none"
-         style="white-space:pre"
-         id="tspan270-4-1">1</tspan></tspan></tspan></text>
-       </g>
-      </g>
-     </g>
-    </g>
-   </g>
-  </g>
- </g><ellipse
+         id="tspan5">Place de la Paix  </tspan></tspan></text><ellipse
      style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#0b3051;stroke-width:192.704;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
      id="ellipse158-4-3-8-7-9-4-1"
      ry="408.37735"
@@ -203501,4 +203447,38 @@
          id="tspan141-1-1-3-9-2-86-4-2-2-1-4"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Constantia;-inkscape-font-specification:Constantia;fill:#ffffff;stroke-width:0"
          x="56687.832"
-         y="43678.172">S</tspan></text></g></g></svg>
+         y="43678.172">S</tspan></text></g><g
+     id="g116-0-1-5"
+     transform="matrix(0.6317551,0,0,0.63171428,-6963.1232,30698.424)"
+     inkscape:label="Ligne R2"><path
+       style="fill:#737373;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       id="rect77-9-5-5-2-2-0-34-6"
+       width="2450"
+       height="1400"
+       x="26696.5"
+       y="2764.8999"
+       clip-path="url(#clipath_lpe_path-effect79-4-0-6-0-4-3-59-3)"
+       sodipodi:type="rect"
+       transform="translate(-1e-4,1561.0374)"
+       d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
+       inkscape:path-effect="#path-effect79-4-0-6-0-4-3-59-4" /><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="26725.137"
+       y="5521.9321"
+       id="text79-2-6-7-2-6-4-7-6"><tspan
+         sodipodi:role="line"
+         id="tspan79-0-7-7-3-0-8-1-9"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;fill-opacity:1;stroke-width:0"
+         x="26725.137"
+         y="5521.9321">R</tspan></text><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#737373;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="28042.244"
+       y="5451.2998"
+       id="text80-7-3-4-6-6-3-37-0"><tspan
+         sodipodi:role="line"
+         style="fill:#737373;fill-opacity:1;stroke-width:0"
+         x="28042.244"
+         y="5451.2998"
+         id="tspan97-57-7-1-0-1-7">2</tspan></text></g></g></svg>
