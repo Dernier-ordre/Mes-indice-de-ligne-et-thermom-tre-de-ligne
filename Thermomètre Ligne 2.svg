@@ -15,7 +15,7 @@
    inkscape:export-filename="..\test 2.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
-   inkscape:export-batch-path="..\Thermomètre TM"
+   inkscape:export-batch-path="C:\Users\thoma\OneDrive\Bureau"
    inkscape:export-batch-name=""
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -31,20 +31,20 @@
    inkscape:pagecheckerboard="0"
    inkscape:deskcolor="#d1d1d1"
    inkscape:document-units="mm"
-   inkscape:zoom="1.28"
-   inkscape:cx="2303.5156"
-   inkscape:cy="21485.547"
+   inkscape:zoom="0.32"
+   inkscape:cx="1084.375"
+   inkscape:cy="13201.562"
    inkscape:window-width="1920"
    inkscape:window-height="1057"
    inkscape:window-x="-8"
    inkscape:window-y="-8"
    inkscape:window-maximized="1"
-   inkscape:current-layer="g242"
+   inkscape:current-layer="svg17"
    showgrid="true"><inkscape:grid
      id="grid1"
      units="mm"
-     originx="0"
-     originy="-766463.21"
+     originx="-0.00030751676"
+     originy="-1162833.5"
      spacingx="99.999998"
      spacingy="100"
      empcolor="#0099e5"
@@ -860,36 +860,6 @@
    d="M 71,0 L 71,195 C 108,276 160,354 228,431 295,508 380,588 483,671 582,751 651,817 691,869 730,921 750,972 750,1022 750,1145 688,1206 565,1206 505,1206 459,1190 428,1158 396,1125 375,1077 366,1012 L 83,1028 C 99,1159 148,1258 230,1327 311,1396 422,1430 563,1430 715,1430 832,1395 913,1326 994,1257 1035,1159 1035,1034 1035,968 1022,908 996,855 970,802 937,753 896,708 855,663 810,620 761,581 711,542 663,503 616,466 569,429 527,391 489,353 450,315 422,274 403,231 L 1057,231 1057,0 71,0 Z "
    id="glyph2-6" />
   </font><clipPath
-     id="presentation_clip_path-4-5-0-1"
-     clipPathUnits="userSpaceOnUse">
-   <rect
-   x="0"
-   y="0"
-   width="2450"
-   height="1400"
-   id="rect1-06-5-3-6" />
-  </clipPath><clipPath
-     id="clip_path_1-2-6-5-6"
-     clipPathUnits="userSpaceOnUse">
-          <path
-   d="M 0,0 H 2449 V 1399 H 0 Z"
-   id="path14-8-0-2-7" />
-         </clipPath><clipPath
-     id="presentation_clip_path-91-7-5-0-2-7"
-     clipPathUnits="userSpaceOnUse">
-   <rect
-   x="0"
-   y="0"
-   width="2450"
-   height="1400"
-   id="rect1-35-9-4-2-2-5" />
-  </clipPath><clipPath
-     id="clip_path_1-78-5-6-2-9-6"
-     clipPathUnits="userSpaceOnUse">
-          <path
-   d="M 0,0 H 2449 V 1399 H 0 Z"
-   id="path14-3-5-7-1-0-4" />
-         </clipPath><clipPath
      id="presentation_clip_path-41-1-5-5-7-7"
      clipPathUnits="userSpaceOnUse">
    <rect
@@ -202903,13 +202873,7 @@
        id="lpe_path-effect79-4-0-5-7-2-0-3-8-30-2"
        style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
        class="powerclip"
-       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><clipPath
-     id="clip_path_1-76-4-5-2-8-6-2-5-6-5"
-     clipPathUnits="userSpaceOnUse">
-          <path
-   d="M 0,0 H 2449 V 1399 H 0 Z"
-   id="path14-93-8-2-82-4-3-6-6-18-2" />
-         </clipPath><inkscape:path-effect
+       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><inkscape:path-effect
      effect="powerclip"
      message=""
      id="path-effect79-4-2-9-2-17-2-0-32"
@@ -202980,25 +202944,7 @@
        id="lpe_path-effect79-4-0-6-02-0-6-9-6-8-8-5-3"
        style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
        class="powerclip"
-       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><clipPath
-     id="clip_path_1-76-4-5-2-8-6-2-5-6-5-5"
-     clipPathUnits="userSpaceOnUse">
-          <path
-   d="M 0,0 H 2449 V 1399 H 0 Z"
-   id="path14-93-8-2-82-4-3-6-6-18-2-7" />
-         </clipPath><clipPath
-     id="clip_path_1-76-4-5-2-8-6-2-5-6-5-9"
-     clipPathUnits="userSpaceOnUse">
-          <path
-   d="M 0,0 H 2449 V 1399 H 0 Z"
-   id="path14-93-8-2-82-4-3-6-6-18-2-1" />
-         </clipPath><clipPath
-     id="clip_path_1-76-4-5-2-8-6-2-5-6-5-3"
-     clipPathUnits="userSpaceOnUse">
-          <path
-   d="M 0,0 H 2449 V 1399 H 0 Z"
-   id="path14-93-8-2-82-4-3-6-6-18-2-0" />
-         </clipPath><inkscape:path-effect
+       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><inkscape:path-effect
      effect="powerclip"
      message=""
      id="path-effect79-4-0-6-02-0-6-9-6-8-8-5-3-1"
@@ -203276,7 +203222,133 @@
        id="lpe_path-effect326-0-6-53"
        style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
        class="powerclip"
-       d="m 16580.409,10219.395 h 2142.811 v 2142.811 h -2142.811 z m 2390.383,917.057 a 977.53833,977.53833 0 0 0 -977.538,-977.538 977.53833,977.53833 0 0 0 -977.538,977.538 977.53833,977.53833 0 0 0 977.538,977.538 977.53833,977.53833 0 0 0 977.538,-977.538 z" /></clipPath></defs>
+       d="m 16580.409,10219.395 h 2142.811 v 2142.811 h -2142.811 z m 2390.383,917.057 a 977.53833,977.53833 0 0 0 -977.538,-977.538 977.53833,977.53833 0 0 0 -977.538,977.538 977.53833,977.53833 0 0 0 977.538,977.538 977.53833,977.53833 0 0 0 977.538,-977.538 z" /></clipPath><clipPath
+     clipPathUnits="userSpaceOnUse"
+     id="clipath_lpe_path-effect828-2"><rect
+       style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       id="rect828-1"
+       width="1270.9302"
+       height="1148.0061"
+       x="27749.107"
+       y="2890.4697"
+       d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" /><path
+       id="lpe_path-effect828-7"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       class="powerclip"
+       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><clipPath
+     clipPathUnits="userSpaceOnUse"
+     id="clipath_lpe_path-effect830-9"><rect
+       style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       id="rect830-25"
+       width="1270.9302"
+       height="1148.0061"
+       x="27749.107"
+       y="2890.4697"
+       d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" /><path
+       id="lpe_path-effect830-4"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       class="powerclip"
+       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><inkscape:path-effect
+     effect="powerclip"
+     message=""
+     id="path-effect826-14"
+     is_visible="true"
+     lpeversion="1"
+     inverse="true"
+     flatten="false"
+     hide_clip="false" /><inkscape:path-effect
+     effect="powerclip"
+     message=""
+     id="path-effect828-2"
+     is_visible="true"
+     lpeversion="1"
+     inverse="true"
+     flatten="false"
+     hide_clip="false" /><inkscape:path-effect
+     effect="powerclip"
+     message=""
+     id="path-effect830-9"
+     is_visible="true"
+     lpeversion="1"
+     inverse="true"
+     flatten="false"
+     hide_clip="false" /><clipPath
+     clipPathUnits="userSpaceOnUse"
+     id="clipath_lpe_path-effect826-14"><rect
+       style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       id="rect856"
+       width="1270.9302"
+       height="1148.0061"
+       x="27749.107"
+       y="2890.4697"
+       d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" /><path
+       id="lpe_path-effect826-14"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       class="powerclip"
+       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><inkscape:path-effect
+     effect="powerclip"
+     message=""
+     id="path-effect830-18"
+     is_visible="true"
+     lpeversion="1"
+     inverse="true"
+     flatten="false"
+     hide_clip="false" /><clipPath
+     clipPathUnits="userSpaceOnUse"
+     id="clipath_lpe_path-effect830-18"><rect
+       style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       id="rect862"
+       width="1270.9302"
+       height="1148.0061"
+       x="27749.107"
+       y="2890.4697"
+       d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" /><path
+       id="lpe_path-effect830-18"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       class="powerclip"
+       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><clipPath
+     clipPathUnits="userSpaceOnUse"
+     id="clipath_lpe_path-effect830-2"><rect
+       style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       id="rect830-3"
+       width="1270.9302"
+       height="1148.0061"
+       x="27749.107"
+       y="2890.4697"
+       d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" /><path
+       id="lpe_path-effect830-43"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       class="powerclip"
+       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath><inkscape:path-effect
+     effect="powerclip"
+     message=""
+     id="path-effect830-43"
+     is_visible="true"
+     lpeversion="1"
+     inverse="true"
+     flatten="false"
+     hide_clip="false" /><inkscape:path-effect
+     effect="powerclip"
+     message=""
+     id="path-effect830-94-4"
+     is_visible="true"
+     lpeversion="1"
+     inverse="true"
+     flatten="false"
+     hide_clip="false" /><clipPath
+     clipPathUnits="userSpaceOnUse"
+     id="clipath_lpe_path-effect830-94-4"><rect
+       style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       id="rect956"
+       width="1270.9302"
+       height="1148.0061"
+       x="27749.107"
+       y="2890.4697"
+       d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" /><path
+       id="lpe_path-effect830-94-4"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+       class="powerclip"
+       d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" /></clipPath></defs>
  <defs
    class="TextShapeIndex"
    id="defs3" />
@@ -203290,7 +203362,7 @@
 <g
    id="g108"
    inkscape:label="Thermomètre Ligne 2"
-   transform="translate(0,-768918.55)"><g
+   transform="translate(-3.0751675e-4,-768918.55)"><g
      id="g167-4-1"
      transform="matrix(1.5374,0,0,1.5374,-7864.5934,703178.26)"><rect
        style="fill:url(#linearGradient53);fill-rule:evenodd;stroke:#44a2b4;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
@@ -203625,286 +203697,6 @@
          x="28105.152"
          y="748.38831"
          id="tspan97-57-8-3-9-5-89-3">4</tspan></text></g><g
-     style="fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round"
-     id="g66-82-8-50-0-4-8-5"
-     transform="matrix(0.6317144,0,0,0.63178584,63174.385,779118.4)"
-     inkscape:export-filename="..\L3.svg"
-     inkscape:export-xdpi="96"
-     inkscape:export-ydpi="96"><g
-       id="g13-2-4-8-4-1-5-0-0">
-  <g
-   id="id2-55-5-9-4-5-38-1-34"
-   class="Master_Slide">
-   <g
-   id="bg-id2-49-5-1-0-4-2-7-0"
-   class="Background" />
-   <g
-   id="bo-id2-1-1-9-51-1-39-5-1"
-   class="BackgroundObjects" />
-  </g>
- </g><g
-       class="SlideGroup"
-       id="g20-2-7-8-1-3-4-0-5">
-  <g
-   id="id3-6-6-0-5-7-85-5-34">
-        <rect
-   class="BoundingBox"
-   stroke="none"
-   fill="none"
-   x="0"
-   y="0"
-   width="2450"
-   height="1400"
-   id="rect13-79-1-5-9-3-13-9-2" />
-        <defs
-   id="defs14-9-42-0-08-5-28-0-3" />
-        
-        <g
-   id="g247-0-72-6-4-5-4"><g
-     clip-path="url(#clip_path_1-76-4-5-2-8-6-2-5-6-5)"
-     id="g15-57-1-2-6-90-67-4-9"
-     style="stroke:#e6db00;stroke-opacity:1">
-         <path
-   fill="none"
-   stroke="#fff200"
-   stroke-width="125"
-   stroke-linejoin="miter"
-   d="M 62,62 H 2387 V 1337 H 62 Z"
-   id="path15-6-6-2-9-8-79-2-2"
-   style="stroke:#e0d61f;stroke-opacity:1" />
-        </g><text
-     class="SVGTextShape"
-     id="text17-6-8-9-38-9-6-7-4"
-     style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-       class="TextParagraph"
-       id="tspan17-5-5-2-1-3-4-2-90"
-       style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-         class="TextPosition"
-         x="881"
-         y="1128"
-         id="tspan16-82-7-6-0-6-1-6-4"
-         style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-           font-family="'Liberation Sans', sans-serif"
-           font-size="1235px"
-           font-weight="700"
-           fill="#fff200"
-           stroke="none"
-           style="white-space:pre;fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"
-           id="tspan15-5-6-7-3-0-9-7-4">3</tspan></tspan></tspan></text></g>
-       </g>
-   
-  
- </g></g><g
-     style="fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round"
-     id="g66-82-8-50-0-4-8-5-2"
-     transform="matrix(0.6317144,0,0,0.63178584,65253.989,779118.4)"
-     inkscape:export-filename="..\L3.svg"
-     inkscape:export-xdpi="96"
-     inkscape:export-ydpi="96"><g
-       id="g13-2-4-8-4-1-5-0-0-2">
-  <g
-   id="id2-55-5-9-4-5-38-1-34-2"
-   class="Master_Slide">
-   <g
-   id="bg-id2-49-5-1-0-4-2-7-0-0"
-   class="Background" />
-   <g
-   id="bo-id2-1-1-9-51-1-39-5-1-02"
-   class="BackgroundObjects" />
-  </g>
- </g><g
-       class="SlideGroup"
-       id="g20-2-7-8-1-3-4-0-5-3">
-  <g
-   id="id3-6-6-0-5-7-85-5-34-1">
-        <rect
-   class="BoundingBox"
-   stroke="none"
-   fill="none"
-   x="0"
-   y="0"
-   width="2450"
-   height="1400"
-   id="rect13-79-1-5-9-3-13-9-2-6" />
-        <defs
-   id="defs14-9-42-0-08-5-28-0-3-8" />
-        
-        <g
-   id="g247-0-72-6-4-5-4-2"><g
-     clip-path="url(#clip_path_1-76-4-5-2-8-6-2-5-6-5-5)"
-     id="g15-57-1-2-6-90-67-4-9-8"
-     style="stroke:#e6db00;stroke-opacity:1">
-         <path
-   fill="none"
-   stroke="#fff200"
-   stroke-width="125"
-   stroke-linejoin="miter"
-   d="M 62,62 H 2387 V 1337 H 62 Z"
-   id="path15-6-6-2-9-8-79-2-2-7"
-   style="stroke:#e0d61f;stroke-opacity:1" />
-        </g><text
-     class="SVGTextShape"
-     id="text17-6-8-9-38-9-6-7-4-9"
-     style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-       class="TextParagraph"
-       id="tspan17-5-5-2-1-3-4-2-90-5"
-       style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-         class="TextPosition"
-         x="881"
-         y="1128"
-         id="tspan16-82-7-6-0-6-1-6-4-9"
-         style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-           font-family="'Liberation Sans', sans-serif"
-           font-size="1235px"
-           font-weight="700"
-           fill="#fff200"
-           stroke="none"
-           style="white-space:pre;fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"
-           id="tspan15-5-6-7-3-0-9-7-4-2">3</tspan></tspan></tspan></text></g>
-       </g>
-   
-  
- </g></g><g
-     style="fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round"
-     id="g66-82-8-50-0-4-8-5-0"
-     transform="matrix(0.6317144,0,0,0.63178584,67333.598,779118.4)"
-     inkscape:export-filename="..\L3.svg"
-     inkscape:export-xdpi="96"
-     inkscape:export-ydpi="96"><g
-       id="g13-2-4-8-4-1-5-0-0-8">
-  <g
-   id="id2-55-5-9-4-5-38-1-34-1"
-   class="Master_Slide">
-   <g
-   id="bg-id2-49-5-1-0-4-2-7-0-9"
-   class="Background" />
-   <g
-   id="bo-id2-1-1-9-51-1-39-5-1-2"
-   class="BackgroundObjects" />
-  </g>
- </g><g
-       class="SlideGroup"
-       id="g20-2-7-8-1-3-4-0-5-0">
-  <g
-   id="id3-6-6-0-5-7-85-5-34-2">
-        <rect
-   class="BoundingBox"
-   stroke="none"
-   fill="none"
-   x="0"
-   y="0"
-   width="2450"
-   height="1400"
-   id="rect13-79-1-5-9-3-13-9-2-4" />
-        <defs
-   id="defs14-9-42-0-08-5-28-0-3-7" />
-        
-        <g
-   id="g247-0-72-6-4-5-4-1"><g
-     clip-path="url(#clip_path_1-76-4-5-2-8-6-2-5-6-5-9)"
-     id="g15-57-1-2-6-90-67-4-9-0"
-     style="stroke:#e6db00;stroke-opacity:1">
-         <path
-   fill="none"
-   stroke="#fff200"
-   stroke-width="125"
-   stroke-linejoin="miter"
-   d="M 62,62 H 2387 V 1337 H 62 Z"
-   id="path15-6-6-2-9-8-79-2-2-0"
-   style="stroke:#e0d61f;stroke-opacity:1" />
-        </g><text
-     class="SVGTextShape"
-     id="text17-6-8-9-38-9-6-7-4-7"
-     style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-       class="TextParagraph"
-       id="tspan17-5-5-2-1-3-4-2-90-1"
-       style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-         class="TextPosition"
-         x="881"
-         y="1128"
-         id="tspan16-82-7-6-0-6-1-6-4-6"
-         style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-           font-family="'Liberation Sans', sans-serif"
-           font-size="1235px"
-           font-weight="700"
-           fill="#fff200"
-           stroke="none"
-           style="white-space:pre;fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"
-           id="tspan15-5-6-7-3-0-9-7-4-9">3</tspan></tspan></tspan></text></g>
-       </g>
-   
-  
- </g></g><g
-     style="fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round"
-     id="g66-82-8-50-0-4-8-5-7"
-     transform="matrix(0.6317144,0,0,0.63178584,69551.621,780082.92)"
-     inkscape:export-filename="..\L3.svg"
-     inkscape:export-xdpi="96"
-     inkscape:export-ydpi="96"><g
-       id="g13-2-4-8-4-1-5-0-0-3">
-  <g
-   id="id2-55-5-9-4-5-38-1-34-0"
-   class="Master_Slide">
-   <g
-   id="bg-id2-49-5-1-0-4-2-7-0-4"
-   class="Background" />
-   <g
-   id="bo-id2-1-1-9-51-1-39-5-1-3"
-   class="BackgroundObjects" />
-  </g>
- </g><g
-       class="SlideGroup"
-       id="g20-2-7-8-1-3-4-0-5-2">
-  <g
-   id="id3-6-6-0-5-7-85-5-34-3">
-        <rect
-   class="BoundingBox"
-   stroke="none"
-   fill="none"
-   x="0"
-   y="0"
-   width="2450"
-   height="1400"
-   id="rect13-79-1-5-9-3-13-9-2-10" />
-        <defs
-   id="defs14-9-42-0-08-5-28-0-3-2" />
-        
-        <g
-   id="g247-0-72-6-4-5-4-3"><g
-     clip-path="url(#clip_path_1-76-4-5-2-8-6-2-5-6-5-3)"
-     id="g15-57-1-2-6-90-67-4-9-07"
-     style="stroke:#e6db00;stroke-opacity:1">
-         <path
-   fill="none"
-   stroke="#fff200"
-   stroke-width="125"
-   stroke-linejoin="miter"
-   d="M 62,62 H 2387 V 1337 H 62 Z"
-   id="path15-6-6-2-9-8-79-2-2-03"
-   style="stroke:#e0d61f;stroke-opacity:1" />
-        </g><text
-     class="SVGTextShape"
-     id="text17-6-8-9-38-9-6-7-4-6"
-     style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-       class="TextParagraph"
-       id="tspan17-5-5-2-1-3-4-2-90-3"
-       style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-         class="TextPosition"
-         x="881"
-         y="1128"
-         id="tspan16-82-7-6-0-6-1-6-4-1"
-         style="fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"><tspan
-           font-family="'Liberation Sans', sans-serif"
-           font-size="1235px"
-           font-weight="700"
-           fill="#fff200"
-           stroke="none"
-           style="white-space:pre;fill:#e0d61f;fill-opacity:1;stroke:none;stroke-opacity:1"
-           id="tspan15-5-6-7-3-0-9-7-4-95">3</tspan></tspan></tspan></text></g>
-       </g>
-   
-  
- </g></g><g
      id="g99-8-20-3-6-9"
      transform="matrix(0.63175515,0,0,0.63171413,44573.867,781198.53)"
      style="fill:#08bf00;fill-opacity:1"
@@ -204104,153 +203896,7 @@
          id="tspan145"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';fill:#59c0d5;fill-opacity:1;stroke-width:0"
          x="13680.528"
-         y="15211.203">13</tspan></text></g><g
-     style="fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round"
-     id="g175"
-     transform="matrix(1.4906122,0,0,1.4906429,0,769137.79)"
-     inkscape:export-filename="..\L2.svg"
-     inkscape:export-xdpi="96"
-     inkscape:export-ydpi="96"><g
-       id="g151">
-  <g
-   id="g149"
-   class="Master_Slide">
-   <g
-   id="g147"
-   class="Background" />
-   <g
-   id="g148"
-   class="BackgroundObjects" />
-  </g>
- </g><g
-       class="SlideGroup"
-       id="g174">
-  <g
-   id="g173">
-   <g
-   id="g172">
-    <g
-   id="g171"
-   class="Slide"
-   clip-path="url(#presentation_clip_path-4-5-0-1)">
-     <g
-   class="Page"
-   id="g170">
-      <g
-   class="Graphic"
-   id="g169">
-       <g
-   id="g168">
-        <rect
-   class="BoundingBox"
-   stroke="none"
-   fill="none"
-   x="0"
-   y="0"
-   width="2450"
-   height="1400"
-   id="rect158" />
-        <defs
-   id="defs158" />
-        <g
-   clip-path="url(#clip_path_1-2-6-5-6)"
-   id="g166">
-         <path
-   fill="none"
-   stroke="#7e05a4"
-   stroke-width="125"
-   stroke-linejoin="miter"
-   d="M 62,62 H 2387 V 1337 H 62 Z"
-   id="path166" />
-        </g>
-        <text
-   class="SVGTextShape"
-   id="text168"><tspan
-     class="TextParagraph"
-     id="tspan168"><tspan
-       class="TextPosition"
-       x="881"
-       y="1128"
-       id="tspan167"><tspan
-         font-family="'Liberation Sans', sans-serif"
-         font-size="1235px"
-         font-weight="700"
-         fill="#7e05a4"
-         stroke="none"
-         style="white-space:pre"
-         id="tspan166">2</tspan></tspan></tspan></text>
-       </g>
-      </g>
-     </g>
-    </g>
-   </g>
-  </g>
- </g></g><g
-     class="SlideGroup"
-     id="g210"
-     transform="matrix(0.63172551,0,0,0.63178663,69551.608,779118.4)"
-     style="fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round">
-  <g
-   id="g209">
-   <g
-   id="g208">
-    <g
-   id="g207"
-   class="Slide"
-   clip-path="url(#presentation_clip_path-91-7-5-0-2-7)">
-     <g
-   class="Page"
-   id="g206">
-      <g
-   class="Graphic"
-   id="g205">
-       <g
-   id="g204">
-        <rect
-   class="BoundingBox"
-   stroke="none"
-   fill="none"
-   x="0"
-   y="0"
-   width="2450"
-   height="1400"
-   id="rect175" />
-        <defs
-   id="defs183" />
-        <g
-   clip-path="url(#clip_path_1-78-5-6-2-9-6)"
-   id="g202">
-         <path
-   fill="none"
-   stroke="#ff0004"
-   stroke-width="125"
-   stroke-linejoin="miter"
-   d="M 62,62 H 2387 V 1337 H 62 Z"
-   id="path190" />
-        </g>
-        <text
-   class="SVGTextShape"
-   id="text204"><tspan
-     class="TextParagraph"
-     id="tspan204"><tspan
-       class="TextPosition"
-       x="881"
-       y="1128"
-       id="tspan203"><tspan
-         font-family="'Liberation Sans', sans-serif"
-         font-size="1235px"
-         font-weight="700"
-         fill="#ff0000"
-         stroke="none"
-         style="white-space:pre"
-         id="tspan202">1</tspan></tspan></tspan></text>
-       </g>
-      </g>
-     </g>
-    </g>
-   </g>
-  </g>
- </g><text
+         y="15211.203">13</tspan></text></g><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:790.034px;line-height:0.9;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif';text-align:start;letter-spacing:20.5738px;word-spacing:4.11475px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:7418.88;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
      x="-27482.338"
@@ -204662,6 +204308,187 @@
      x="1740.4319"
      y="378986.34"
      transform="translate(-271.03345,399458.07)" /><g
+     id="g671-9"
+     transform="matrix(0.63171427,0,0,0.63171427,52687.062,778332.89)"
+     inkscape:export-filename="..\S1.svg"
+     inkscape:export-xdpi="96"
+     inkscape:export-ydpi="96"
+     style="fill:#08bf00;fill-opacity:1"
+     inkscape:label="Ligne P1"><path
+       style="opacity:1;fill:#ff0004;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       id="path668-4"
+       width="2450"
+       height="1400"
+       x="26696.5"
+       y="2764.8999"
+       clip-path="url(#clipath_lpe_path-effect826-14)"
+       inkscape:path-effect="#path-effect826-14"
+       sodipodi:type="rect"
+       d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
+       transform="translate(-6.3427384e-5,-1521.3542)" /><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="26761.801"
+       y="2446.1836"
+       id="text668-50"><tspan
+         sodipodi:role="line"
+         id="tspan668-5"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;fill-opacity:1;stroke-width:0"
+         x="26761.801"
+         y="2446.1836">P</tspan></text><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;opacity:1;fill:#ff0004;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="28042.24"
+       y="2368.9082"
+       id="text669-88"><tspan
+         sodipodi:role="line"
+         id="tspan669-01"
+         style="fill:#ff0004;fill-opacity:1;stroke-width:0"
+         x="28042.24"
+         y="2368.9082">1</tspan></text></g><g
+     id="g712-3"
+     transform="matrix(1.4906122,0,0,1.4906428,-43880.695,767267.23)"
+     inkscape:export-filename="..\S2.svg"
+     inkscape:export-xdpi="96"
+     inkscape:export-ydpi="96"
+     style="fill:#08bf00;fill-opacity:1"
+     inkscape:label="Ligne P2"><path
+       style="fill:#7e05a4;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       id="path678-22"
+       width="2450"
+       height="1400"
+       x="26696.5"
+       y="2764.8999"
+       clip-path="url(#clipath_lpe_path-effect828-2)"
+       inkscape:path-effect="#path-effect828-2"
+       sodipodi:type="rect"
+       d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
+       transform="translate(2741.5358,-1510.0331)" /><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="29503.336"
+       y="2457.5046"
+       id="text711-27"><tspan
+         sodipodi:role="line"
+         id="tspan711-0"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;fill-opacity:1;stroke-width:0"
+         x="29503.336"
+         y="2457.5046">P</tspan></text><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#7e05a4;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="30783.777"
+       y="2380.2292"
+       id="text712-3"><tspan
+         sodipodi:role="line"
+         id="tspan712-13"
+         style="fill:#7e05a4;fill-opacity:1;stroke-width:0"
+         x="30783.777"
+         y="2380.2292">2</tspan></text></g><g
+     id="g825-3"
+     transform="matrix(0.63171427,0,0,0.63171427,50952.356,780234.04)"
+     style="fill:#08bf00;fill-opacity:1"
+     inkscape:label="Ligne P3"><path
+       style="fill:#e6db00;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       id="path712-7"
+       width="2450"
+       height="1400"
+       x="26696.5"
+       y="2764.8999"
+       clip-path="url(#clipath_lpe_path-effect830-9)"
+       inkscape:path-effect="#path-effect830-9"
+       sodipodi:type="rect"
+       d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
+       transform="translate(2746.028,-3004.036)" /><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="29507.828"
+       y="963.50177"
+       id="text824-09"><tspan
+         sodipodi:role="line"
+         id="tspan824-55"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;fill-opacity:1;stroke-width:0"
+         x="29507.828"
+         y="963.50177">P</tspan></text><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#e6db00;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="30788.27"
+       y="886.22638"
+       id="text825-8"><tspan
+         sodipodi:role="line"
+         style="fill:#e6db00;fill-opacity:1;stroke-width:0"
+         x="30788.27"
+         y="886.22638"
+         id="tspan825-3">3</tspan></text></g><g
+     id="g825-83"
+     transform="matrix(0.63171427,0,0,0.63171427,48734.333,779269.52)"
+     style="fill:#08bf00;fill-opacity:1"
+     inkscape:label="Ligne P3"><path
+       style="fill:#e6db00;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       id="path712-9"
+       width="2450"
+       height="1400"
+       x="26696.5"
+       y="2764.8999"
+       clip-path="url(#clipath_lpe_path-effect830-18)"
+       inkscape:path-effect="#path-effect830-18"
+       sodipodi:type="rect"
+       d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
+       transform="translate(2746.028,-3004.036)" /><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="29507.828"
+       y="963.50177"
+       id="text824-4"><tspan
+         sodipodi:role="line"
+         id="tspan824-8"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;fill-opacity:1;stroke-width:0"
+         x="29507.828"
+         y="963.50177">P</tspan></text><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#e6db00;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="30788.27"
+       y="886.22638"
+       id="text825-3"><tspan
+         sodipodi:role="line"
+         style="fill:#e6db00;fill-opacity:1;stroke-width:0"
+         x="30788.27"
+         y="886.22638"
+         id="tspan825-97">3</tspan></text></g><g
+     id="g825-1"
+     transform="matrix(0.63171427,0,0,0.63171427,44575.12,779269.52)"
+     style="fill:#08bf00;fill-opacity:1"
+     inkscape:label="Ligne P3"><path
+       style="fill:#e6db00;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       id="path712-98"
+       width="2450"
+       height="1400"
+       x="26696.5"
+       y="2764.8999"
+       clip-path="url(#clipath_lpe_path-effect830-2)"
+       inkscape:path-effect="#path-effect830-43"
+       sodipodi:type="rect"
+       d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
+       transform="translate(2746.028,-3004.036)" /><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="29507.828"
+       y="963.50177"
+       id="text824-2"><tspan
+         sodipodi:role="line"
+         id="tspan824-3"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;fill-opacity:1;stroke-width:0"
+         x="29507.828"
+         y="963.50177">P</tspan></text><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#e6db00;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="30788.27"
+       y="886.22638"
+       id="text825-4"><tspan
+         sodipodi:role="line"
+         style="fill:#e6db00;fill-opacity:1;stroke-width:0"
+         x="30788.27"
+         y="886.22638"
+         id="tspan825-0">3</tspan></text></g><g
      id="g139-2"
      inkscape:label="Ligne PL1"
      transform="matrix(0.63171428,0,0,0.63178571,40970.504,782881.95)"><path
@@ -205137,4 +204964,39 @@
        id="tspan432"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1399.03px;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';letter-spacing:36.4333px;fill:#000000;fill-opacity:1;stroke-width:0;stroke-dasharray:none"
        x="4463.4199"
-       y="371923.41">Gare Part-Dieu V.Merle</tspan></text></g></svg>
+       y="371923.41">Gare Part-Dieu V.Merle</tspan></text><g
+     id="g825-21-6"
+     transform="matrix(0.63171427,0,0,0.63171427,46654.726,779269.52)"
+     style="fill:#08bf00;fill-opacity:1"
+     inkscape:label="Ligne P3"><path
+       style="fill:#e6db00;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       id="path712-4-6"
+       width="2450"
+       height="1400"
+       x="26696.5"
+       y="2764.8999"
+       clip-path="url(#clipath_lpe_path-effect830-94-4)"
+       inkscape:path-effect="#path-effect830-94-4"
+       sodipodi:type="rect"
+       d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
+       transform="translate(2746.028,-3004.036)" /><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="29507.828"
+       y="963.50177"
+       id="text824-3-8"><tspan
+         sodipodi:role="line"
+         id="tspan824-26-13"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;fill-opacity:1;stroke-width:0"
+         x="29507.828"
+         y="963.50177">P</tspan></text><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#e6db00;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+       x="30788.27"
+       y="886.22638"
+       id="text825-0-31"><tspan
+         sodipodi:role="line"
+         style="fill:#e6db00;fill-opacity:1;stroke-width:0"
+         x="30788.27"
+         y="886.22638"
+         id="tspan825-5-0">3</tspan></text></g></g></svg>
