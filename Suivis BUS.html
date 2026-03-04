@@ -3,245 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion de Parc Pro - Transport Manager</title>
+    <title>Gestion Parc - Transport Manager Pro</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; }
-        .container { max-width: 1200px; margin: auto; }
-        .form-container, .table-container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h1, h2 { color: #1a73e8; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; color: #1c1e21; }
+        h1, h2 { color: #2c3e50; }
         
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-        input, select, button { padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
-        button { background-color: #1a73e8; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background-color: #1557b0; }
+        /* Alertes CT */
+        .ct-alert-section { background: #fff; border-left: 5px solid #e74c3c; padding: 15px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .ct-warning { background-color: #fff3cd !important; } /* Jaune */
+        .ct-danger { background-color: #ffe5d0 !important; border: 2px solid #ff8c00 !important; } /* Orange */
+        .ct-expired { background-color: #f8d7da !important; color: #721c24 !important; font-weight: bold; } /* Rouge */
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; border: 1px solid #eee; text-align: left; }
-        th { background-color: #f8f9fa; color: #555; }
-
-        /* Couleurs d'alerte CT */
-        .ct-urgent { background-color: #ffcc00 !important; } /* Jaune (-12 jours) */
-        .ct-critique { background-color: #ff8c00 !important; color: white !important; } /* Orange (-6 jours) */
-        .ct-critique select, .ct-critique input { color: black; }
-
-        .ligne-img { height: 25px; vertical-align: middle; margin-right: 5px; }
-        .option-badge { background: #e8f0fe; padding: 2px 5px; border-radius: 3px; font-size: 0.8em; margin-right: 2px; border: 1px solid #c2d7ff; }
+        .form-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
         
-        .btn-action { width: auto; padding: 5px 10px; font-size: 0.8em; margin: 2px; }
-        .btn-del { background-color: #d93025; }
-        .btn-rap { background-color: #f29900; }
+        table { width: 100%; border-collapse: collapse; background: #fff; margin-bottom: 30px; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px; border: 1px solid #dee2e6; text-align: left; }
+        th { background-color: #34495e; color: white; }
+        
+        .btn-edit { cursor: pointer; margin-left: 8px; font-size: 0.9em; opacity: 0.7; }
+        .btn-edit:hover { opacity: 1; color: #3498db; }
+        
+        .ligne-img { height: 28px; vertical-align: middle; }
+        .option-icon { font-size: 1.2em; margin-right: 5px; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 1000; }
-        .modal-content { background: white; padding: 25px; border-radius: 10px; width: 500px; }
-        textarea { width: 100%; height: 150px; margin-top: 10px; font-family: monospace; }
+        /* Modale simple */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 25px; border-radius: 8px; width: 400px; position: relative; }
+        
+        input, select, button { padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
+        button { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; }
+        .btn-cancel { background: #95a5a6; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🚍 Transport Manager - Gestion de Parc</h1>
+    <h1>🚌 Parc Transport Manager</h1>
+
+    <div id="ct-alerts" style="display: none;">
+        <h2>⚠️ Alertes Contrôle Technique</h2>
+        <table style="border: 2px solid #e74c3c;">
+            <thead>
+                <tr>
+                    <th>N° Parc</th>
+                    <th>Véhicule</th>
+                    <th>Date d'expiration</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody id="ct-alerts-body"></tbody>
+        </table>
+    </div>
 
     <div class="form-container">
-        <h2>Ajouter des véhicules</h2>
+        <h3>➕ Ajouter une série de véhicules</h3>
         <form id="bus-form">
             <div class="form-grid">
-                <input type="number" id="qty" placeholder="Qté" value="1" min="1">
-                <input type="text" id="nparc" placeholder="N° Parc (ex: 1103)" required>
+                <input type="number" id="qty" placeholder="Qté" value="1">
+                <input type="text" id="parc" placeholder="N° Parc début" required>
                 <input type="text" id="marque" placeholder="Marque" required>
                 <input type="text" id="modele" placeholder="Modèle" required>
-                <input type="text" id="immat" placeholder="Immatriculation" required>
-                <select id="ligne-select"></select> <input type="date" id="ct-date" title="Date d'expiration CT">
+                <input type="text" id="immat" placeholder="ID Plaque (chiffres)">
+                <select id="ligne">
+                    <option value="Non affecté">Ligne...</option>
+                    <option value="L4">L4</option><option value="P1">P1</option><option value="S1">S1</option>
+                    <option value="N73">N73</option><option value="A">A</option><option value="RS">RS</option>
+                </select>
             </div>
-            <div style="margin-top:10px;">
-                <strong>Options :</strong>
-                <label><input type="checkbox" class="opt-check" value="Clim"> ❄️ Clim</label>
-                <label><input type="checkbox" class="opt-check" value="PMR"> ♿ PMR</label>
-                <label><input type="checkbox" class="opt-check" value="WiFi"> 📶 WiFi</label>
-                <label><input type="checkbox" class="opt-check" value="Vidéo"> 📹 Vidéo</label>
-            </div>
-            <button type="submit" style="margin-top:15px;">➕ Ajouter à la flotte</button>
+            <button type="submit">Ajouter au système</button>
         </form>
     </div>
 
-    <div class="table-container">
-        <h2>État du Parc</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>N°</th>
-                    <th>Véhicule</th>
-                    <th>Ligne Affectée</th>
-                    <th>Immatriculation</th>
-                    <th>Expiration CT</th>
-                    <th>Options</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="fleet-body"></tbody>
-        </table>
+    <table>
+        <thead>
+            <tr>
+                <th>N° Parc</th>
+                <th>Marque & Modèle</th>
+                <th>Ligne</th>
+                <th>Immatriculation</th>
+                <th>Options</th>
+                <th>Expiration CT</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="main-table-body"></tbody>
+    </table>
+
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Modifier</h3>
+            <div id="modal-body"></div>
+            <button onclick="saveEdit()">Enregistrer</button>
+            <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+        </div>
     </div>
-</div>
 
-<div id="modal-rap" class="modal">
-    <div class="modal-content">
-        <h3>Rapport de Panne Automatique</h3>
-        <select id="panne-motif" onchange="genRapport()">
-            <option value="Accident de circulation avec corporel">Accident avec corporel</option>
-            <option value="Panne moteur">Panne moteur</option>
-            <option value="Problème de freins">Problème de freins</option>
-            <option value="Vandalisme">Vandalisme</option>
-        </select>
-        <textarea id="txt-rap" readonly></textarea>
-        <button onclick="copyRap()">📋 Copier le rapport</button>
-        <button onclick="closeMod()" style="background:#666; margin-top:5px;">Fermer</button>
-    </div>
-</div>
+    <script>
+        let flotte = JSON.parse(localStorage.getItem('flotte_tm')) || [];
+        let currentEditIndex = null;
+        let currentEditType = null;
 
-<script>
-    // Configuration des lignes
-    const lignesDispo = ["Non affecté", "L4", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
-    let flotte = JSON.parse(localStorage.getItem('maFlotteTM')) || [];
-    let currentBusIdx = null;
+        // Configuration
+        const indicesLignes = ["L4", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
+        const optionsDispo = { "clim": "❄️ Clim", "pmr": "♿ PMR", "wifi": "📶 Wi-Fi", "video": "📷 Vidéo" };
 
-    // Remplir les menus déroulants des lignes
-    function fillLigneSelects() {
-        const select = document.getElementById('ligne-select');
-        lignesDispo.forEach(l => {
-            let opt = document.createElement('option');
-            opt.value = l; opt.innerText = l;
-            select.appendChild(opt);
-        });
-    }
-
-    function render() {
-        const body = document.getElementById('fleet-body');
-        body.innerHTML = "";
-
-        // Calculer l'urgence et Trier : CT plus proche en premier
-        const aujourdhui = new Date();
-        
-        flotte.sort((a, b) => {
-            if (!a.ct) return 1;
-            if (!b.ct) return -1;
-            return new Date(a.ct) - new Date(b.ct);
-        });
-
-        flotte.forEach((bus, idx) => {
-            const dateCT = bus.ct ? new Date(bus.ct) : null;
-            const diffJours = dateCT ? Math.ceil((dateCT - aujourdhui) / (1000 * 60 * 60 * 24)) : 999;
+        function updateUI() {
+            const mainBody = document.getElementById('main-table-body');
+            const alertBody = document.getElementById('ct-alerts-body');
+            const alertSection = document.getElementById('ct-alerts');
             
-            let classeAlerte = "";
-            if (diffJours <= 6) classeAlerte = "ct-critique";
-            else if (diffJours <= 12) classeAlerte = "ct-urgent";
+            mainBody.innerHTML = '';
+            alertBody.innerHTML = '';
+            let hasAlerts = false;
 
-            const row = document.createElement('tr');
-            row.className = classeAlerte;
+            // Trier par date de CT
+            flotte.sort((a, b) => new Date(a.ct) - new Date(b.ct));
 
-            // Construction HTML de la ligne avec modification en direct
-            row.innerHTML = `
-                <td><strong>${bus.nparc}</strong></td>
-                <td>${bus.marque} ${bus.modele}</td>
-                <td>
-                    <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" onerror="this.style.display='none'">
-                    <select onchange="updateBus(${idx}, 'ligne', this.value)">
-                        ${lignesDispo.map(l => `<option value="${l}" ${bus.ligne === l ? 'selected' : ''}>${l}</option>`).join('')}
-                    </select>
-                </td>
-                <td><input type="text" value="${bus.immat}" onchange="updateBus(${idx}, 'immat', this.value)"></td>
-                <td><input type="date" value="${bus.ct || ''}" onchange="updateBus(${idx}, 'ct', this.value)"></td>
-                <td>
-                    <button class="btn-action" onclick="editOptions(${idx})">⚙️ (${bus.options.length})</button>
-                    <div style="font-size:0.7em">${bus.options.join(', ')}</div>
-                </td>
-                <td>
-                    <select onchange="updateBus(${idx}, 'statut', this.value)">
-                        <option ${bus.statut==='🟢'?'selected':''}>🟢 En service</option>
-                        <option ${bus.statut==='🟠'?'selected':''}>🟠 Maintenance</option>
-                        <option ${bus.statut==='🔴'?'selected':''}>🔴 En panne</option>
-                    </select>
-                </td>
-                <td>
-                    <button class="btn-action btn-rap" onclick="openRap(${idx})">📝 Rap.</button>
-                    <button class="btn-action btn-del" onclick="delBus(${idx})">🗑️</button>
-                </td>
-            `;
-            body.appendChild(row);
-        });
-        localStorage.setItem('maFlotteTM', JSON.stringify(flotte));
-    }
+            flotte.forEach((bus, index) => {
+                const daysLeft = calculateDaysLeft(bus.ct);
+                let ctClass = '';
+                
+                // Logique de couleur CT
+                if (bus.ct) {
+                    if (daysLeft < 0) ctClass = 'ct-expired';
+                    else if (daysLeft <= 6) ctClass = 'ct-danger';
+                    else if (daysLeft <= 12) ctClass = 'ct-warning';
+                }
 
-    // Ajouter un ou plusieurs bus
-    document.getElementById('bus-form').onsubmit = function(e) {
-        e.preventDefault();
-        const qte = parseInt(document.getElementById('qty').value);
-        const baseParc = parseInt(document.getElementById('nparc').value);
-        const opts = Array.from(document.querySelectorAll('.opt-check:checked')).map(cb => cb.value);
+                if (bus.ct && daysLeft <= 12) {
+                    hasAlerts = true;
+                    alertBody.innerHTML += `<tr class="${ctClass}">
+                        <td>${bus.numParc}</td>
+                        <td>${bus.marque} ${bus.modele}</td>
+                        <td>${formatDate(bus.ct)}</td>
+                        <td>${daysLeft < 0 ? 'EXPIRÉ' : 'Expire dans ' + daysLeft + 'j'}</td>
+                    </tr>`;
+                }
 
-        for(let i=0; i<qte; i++) {
-            flotte.push({
-                nparc: isNaN(baseParc) ? document.getElementById('nparc').value : baseParc + i,
-                marque: document.getElementById('marque').value,
-                modele: document.getElementById('modele').value,
-                immat: document.getElementById('immat').value,
-                ligne: document.getElementById('ligne-select').value,
-                ct: document.getElementById('ct-date').value,
-                options: [...opts],
-                statut: "🟢"
+                const row = document.createElement('tr');
+                row.className = ctClass;
+                row.innerHTML = `
+                    <td><strong>${bus.numParc}</strong></td>
+                    <td>${bus.marque} ${bus.modele}</td>
+                    <td>
+                        <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" onerror="this.style.display='none'">
+                        ${bus.ligne} <span class="btn-edit" onclick="openEdit(${index}, 'ligne')">✏️</span>
+                    </td>
+                    <td>${bus.immat}</td>
+                    <td>
+                        ${bus.options.map(o => optionsDispo[o].split(' ')[0]).join(' ')}
+                        <span class="btn-edit" onclick="openEdit(${index}, 'options')">✏️</span>
+                    </td>
+                    <td>
+                        <input type="date" value="${bus.ct}" onchange="updateField(${index}, 'ct', this.value)">
+                    </td>
+                    <td>
+                        <select onchange="updateField(${index}, 'statut', this.value)">
+                            <option ${bus.statut === '🟢' ? 'selected' : ''}>🟢</option>
+                            <option ${bus.statut === '🟠' ? 'selected' : ''}>🟠</option>
+                            <option ${bus.statut === '🔴' ? 'selected' : ''}>🔴</option>
+                        </select>
+                    </td>
+                    <td><button onclick="deleteBus(${index})" style="background:#e74c3c; width:auto;">🗑️</button></td>
+                `;
+                mainBody.appendChild(row);
             });
+
+            alertSection.style.display = hasAlerts ? 'block' : 'none';
+            localStorage.setItem('flotte_tm', JSON.stringify(flotte));
         }
-        render();
-        this.reset();
-    };
 
-    window.updateBus = (idx, field, val) => { flotte[idx][field] = val; render(); };
-    window.delBus = (idx) => { if(confirm("Supprimer ce véhicule ?")) { flotte.splice(idx,1); render(); } };
-
-    // Modifier les options après ajout
-    window.editOptions = (idx) => {
-        const newOpts = prompt("Modifier les options (séparées par une virgule) :", flotte[idx].options.join(', '));
-        if (newOpts !== null) {
-            flotte[idx].options = newOpts.split(',').map(s => s.trim()).filter(s => s !== "");
-            render();
+        function calculateDaysLeft(dateStr) {
+            if (!dateStr) return 999;
+            const diff = new Date(dateStr) - new Date();
+            return Math.ceil(diff / (1000 * 60 * 60 * 24));
         }
-    };
 
-    // Rapport de panne
-    window.openRap = (idx) => {
-        currentBusIdx = idx;
-        document.getElementById('modal-rap').style.display = 'flex';
-        genRapport();
-    };
+        function formatDate(dateStr) {
+            if (!dateStr) return "-";
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('fr-FR');
+        }
 
-    window.genRapport = () => {
-        const bus = flotte[currentBusIdx];
-        const motif = document.getElementById('panne-motif').value;
-        const immatDigits = bus.immat.replace(/[^0-9]/g, '');
+        // --- GESTION DES MODIFICATIONS (CRAYON) ---
+        function openEdit(index, type) {
+            currentEditIndex = index;
+            currentEditType = type;
+            const modal = document.getElementById('edit-modal');
+            const body = document.getElementById('modal-body');
+            const title = document.getElementById('modal-title');
+            
+            body.innerHTML = '';
+            modal.style.display = 'flex';
+
+            if (type === 'ligne') {
+                title.innerText = "Changer la ligne";
+                let html = '<select id="edit-val">';
+                indicesLignes.forEach(l => {
+                    html += `<option value="${l}" ${flotte[index].ligne === l ? 'selected' : ''}>${l}</option>`;
+                });
+                body.innerHTML = html + '</select>';
+            } else if (type === 'options') {
+                title.innerText = "Modifier les équipements";
+                for (let key in optionsDispo) {
+                    const checked = flotte[index].options.includes(key) ? 'checked' : '';
+                    body.innerHTML += `<label style="display:block; margin:10px 0;">
+                        <input type="checkbox" class="opt-check" value="${key}" ${checked}> ${optionsDispo[key]}
+                    </label>`;
+                }
+            }
+        }
+
+        function saveEdit() {
+            const bus = flotte[currentEditIndex];
+            if (currentEditType === 'ligne') {
+                bus.ligne = document.getElementById('edit-val').value;
+            } else if (currentEditType === 'options') {
+                bus.options = Array.from(document.querySelectorAll('.opt-check:checked')).map(cb => cb.value);
+            }
+            closeModal();
+            updateUI();
+        }
+
+        // --- ACTIONS DE BASE ---
+        document.getElementById('bus-form').onsubmit = function(e) {
+            e.preventDefault();
+            const qty = parseInt(document.getElementById('qty').value);
+            const startNum = parseInt(document.getElementById('parc').value);
+            
+            for(let i=0; i<qty; i++) {
+                flotte.push({
+                    numParc: isNaN(startNum) ? document.getElementById('parc').value : (startNum + i),
+                    marque: document.getElementById('marque').value,
+                    modele: document.getElementById('modele').value,
+                    immat: document.getElementById('immat').value,
+                    ligne: document.getElementById('ligne').value,
+                    options: [],
+                    ct: '',
+                    statut: '🟢'
+                });
+            }
+            updateUI();
+            this.reset();
+        };
+
+        function updateField(index, field, val) {
+            flotte[index][field] = val;
+            updateUI();
+        }
+
+        function deleteBus(index) {
+            if(confirm("Supprimer ce véhicule ?")) {
+                flotte.splice(index, 1);
+                updateUI();
+            }
+        }
+
+        function closeModal() { document.getElementById('edit-modal').style.display = 'none'; }
         
-        document.getElementById('txt-rap').value = `bonjour,
-
-si joint le rapport de panne de mon (${bus.modele} n°${bus.nparc}).
-
-Immatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=(${immatDigits})[/img]
-Problème rencontré : (${motif})
-Je souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : Non
-
-bonne journée cordialement`;
-    };
-
-    window.copyRap = () => {
-        document.getElementById('txt-rap').select();
-        document.execCommand('copy');
-        alert("Copié !");
-        closeMod();
-    };
-
-    window.closeMod = () => { document.getElementById('modal-rap').style.display = 'none'; };
-
-    // Initialisation
-    fillLigneSelects();
-    render();
-</script>
-
+        updateUI();
+    </script>
 </body>
 </html>
