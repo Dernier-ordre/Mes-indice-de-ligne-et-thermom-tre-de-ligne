@@ -75,7 +75,7 @@
                 </select>
                 <select id="ligne">
                     <option value="Non affecté">Ligne...</option>
-                    <option value="L4">L4</option><option value="P1">P1</option><option value="P2">P2</option>
+                    <option value="L4">L4</option><option value="L5">L5</option><option value="L6">L6</option><option value="L7">L7</option><option value="L8">L8</option><option value="L9">L9</option><option value="L10">L10</option><option value="L11">L11</option><option value="L12">L12</option><option value="P1">P1</option><option value="P2">P2</option>
                     <option value="P3">P3</option><option value="S1">S1</option><option value="S2">S2</option>
                     <option value="S3">S3</option><option value="S4">S4</option><option value="S5">S5</option>
                     <option value="PL1">PL1</option><option value="PL2">PL2</option><option value="PL3">PL3</option>
@@ -118,8 +118,42 @@
             <h3>📝 Rapport de Panne</h3>
             <select id="panne-motif" onchange="genererTexteRapport()">
                 <option value="Accident de circulation avec corporel">Accident avec corporel</option>
-                <option value="Panne moteur">Panne moteur</option>
-                <option value="Problème de freins">Problème de freins</option>
+                <option value="Cassure Moteur">Cassure Moteur</option>
+                <option value="Problème de freins">Freins défaillants</option>
+                <option value="Usure excessive des coussins d’air">Usure excessive des coussins d’air</option>
+                <option value="Accident de circulation avec corporel">Accident de circulation avec corporel</option>
+                <option value="Fuite d'air au circuit de freinage">Fuite d'air au circuit de freinage</option>
+                <option value="Pneu crevé">Pneu crevé</option>
+                <option value="Frein de parc non fonctionnel">Frein de parc non fonctionnel</option>
+                <option value="Hausse importante de température">Hausse importante de température</option>
+                <option value="Batterie HS">Batterie HS</option>
+                <option value="Durite d'huile percée">Durite d'huile percée</option>
+                <option value="Durite d'eau percée">Durite d'eau percée</option>
+                <option value="Vitre cassée">Vitre cassée</option>
+                <option value="Démarreur HS">Démarreur HS</option>
+                <option value="Feux grillé">Feux grillé</option>
+                <option value="Conduites de gaz obstruées">Conduites de gaz obstruées</option>
+                <option value="Girouette HS">Girouette HS</option>
+                <option value="Fuite d'huile">Fuite d'huile</option>
+                <option value="Pare-brise fissuré">Pare-brise fissuré</option>
+                <option value="Freins défectueux">Freins défectueux</option>
+                <option value="Jeu excessif dans la direction">Jeu excessif dans la direction</option>
+                <option value="Dégradation">Dégradation</option>
+                <option value="Accident de circulation">Accident de circulation</option>
+                <option value="Ventilateur Moteur HS">Ventilateur Moteur HS</option>
+                <option value="Capteur de sécurité de réservoir HS">Capteur de sécurité de réservoir HS</option>
+                <option value="Niveau de liquide de refroidissement trop bas">Niveau de liquide de refroidissement trop bas</option>
+                <option value="Défaut portes">Défaut portes</option>
+                <option value="Pneus lisses">Pneus lisses</option>
+                <option value="Turbo HS">Turbo HS</option>
+                <option value="Pompe d'alimentation HS">Pompe d'alimentation HS</option>
+                <option value="Usure anormale des bougies">Usure anormale des bougies</option>
+                <option value="Problèmes de suspensions">Problèmes de suspensions</option>
+                <option value="Alternateur HS">Alternateur HS</option>
+                <option value="Plaquettes de freins trop usées">Plaquettes de freins trop usées</option>
+                <option value="Convertisseur HS">Convertisseur HS</option>
+                <option value="Boîte de vitesse HS">Boîte de vitesse HS</option>
+                <option value="Système de contrôle des émissions défaillant">Système de contrôle des émissions défaillant</option>
                 <option value="Vandalisme / Vitre brisée">Vandalisme</option>
             </select>
             <textarea id="texte-rapport" readonly></textarea>
@@ -133,9 +167,9 @@
         let currentEditId = null;
         let currentEditType = null;
 
-        const listLignes = ["L4", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
+        const listLignes = ["L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
         const listMoteurs = ["Diesel", "Diesel MH", "GNV", "GNV MH", "Électrique"];
-        const optionsDispo = { "clim": "❄️ Clim", "pmr": "♿ PMR", "wifi": "📶 Wi-Fi", "video": "📷 Vidéo" };
+        const optionsDispo = { "clim": "❄️ Clim", "pmr": "🦽 PMR", "wifi": "🛜 Wi-Fi", "wifi": "🛜 Wi-Fi", "wifi": "🛜 Wi-Fi", "wifi": "🛜 Wi-Fi", "wifi": "🛜 Wi-Fi", "wifi": "🛜 Wi-Fi", "video": "📷 Vidéo" };
 
         function updateUI() {
             const mainBody = document.getElementById('main-table-body');
@@ -191,9 +225,9 @@
                     <td><input type="date" value="${bus.ct}" onchange="updateField('${bus.id}', 'ct', this.value)"></td>
                     <td>
                         <select onchange="updateField('${bus.id}', 'statut', this.value)">
-                            <option ${bus.statut === '🟢' ? 'selected' : ''}>🟢</option>
-                            <option ${bus.statut === '🟠' ? 'selected' : ''}>🟠</option>
-                            <option ${bus.statut === '🔴' ? 'selected' : ''}>🔴</option>
+                            <option ${bus.statut === '🟢' En Service 'selected' : ''}>🟢</option>
+                            <option ${bus.statut === '🟠' Immobilisé 'selected' : ''}>🟠</option>
+                            <option ${bus.statut === '🔴' Réformé 'selected' : ''}>🔴</option>
                         </select>
                     </td>
                     <td>
@@ -301,10 +335,10 @@
             
             const texte = `bonjour,
 
-ci joint le rapport de panne de mon (${bus.marque} ${bus.modele} n°${bus.numParc}).
+ci joint le rapport de panne de mon ${bus.marque} ${bus.modele} n°${bus.numParc}.
 
-Immatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=(${immatPure})[/img]
-Problème rencontré : (${motif})
+Immatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=${immatPure}[/img]
+Problème rencontré : ${motif}
 Je souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : Non
 
 bonne journée cordialement`;
