@@ -8,30 +8,34 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; color: #1c1e21; }
         h1, h2 { color: #2c3e50; }
         
-        .ct-alert-section { background: #fff; border-left: 5px solid #e74c3c; padding: 15px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        /* Couleurs CT */
         .ct-warning { background-color: #fff3cd !important; }
         .ct-danger { background-color: #ffe5d0 !important; border: 2px solid #ff8c00 !important; }
         .ct-expired { background-color: #f8d7da !important; color: #721c24 !important; font-weight: bold; }
 
         .form-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
         
-        table { width: 100%; border-collapse: collapse; background: #fff; margin-bottom: 30px; border-radius: 8px; overflow: hidden; font-size: 0.9em;}
-        th, td { padding: 10px; border: 1px solid #dee2e6; text-align: left; vertical-align: middle;}
+        table { width: 100%; border-collapse: collapse; background: #fff; margin-bottom: 30px; border-radius: 8px; overflow: hidden; font-size: 0.85em;}
+        th, td { padding: 8px; border: 1px solid #dee2e6; text-align: left; vertical-align: middle;}
         th { background-color: #34495e; color: white; }
         
         .btn-edit { cursor: pointer; color: #3498db; font-size: 1.1em; margin-left: 5px;}
         .btn-edit:hover { color: #2980b9; }
         
-        .ligne-img { height: 35px; vertical-align: middle; display: block; margin: 0 auto;}
-        .motor-badge { padding: 3px 7px; border-radius: 4px; font-size: 0.8em; font-weight: bold; background: #ecf0f1;}
+        .ligne-img { height: 32px; vertical-align: middle; display: block; margin: 0 auto;}
+        .motor-badge { padding: 2px 5px; border-radius: 4px; font-size: 0.75em; font-weight: bold; background: #ecf0f1; border: 1px solid #bdc3c7;}
 
+        /* Fenêtres Modales */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-content { background: white; padding: 25px; border-radius: 8px; width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
+        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto;}
         
-        input, select, button { padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
+        input, select, button, textarea { padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
         button { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; }
-        .btn-cancel { background: #95a5a6; margin-top: 5px; }
+        .btn-delete { background: #e74c3c; width: auto; padding: 5px 10px; }
+        .btn-rapport { background: #f39c12; width: auto; padding: 5px 10px; margin-top: 5px;}
+        .btn-cancel { background: #95a5a6; }
+        textarea { height: 120px; font-family: monospace; font-size: 0.9em;}
     </style>
 </head>
 <body>
@@ -39,14 +43,14 @@
     <h1>🚌 Parc Transport Manager</h1>
 
     <div id="ct-alerts" style="display: none;">
-        <h2>⚠️ Alertes Contrôle Technique (J-12)</h2>
+        <h2>⚠️ Alertes CT (Priorité)</h2>
         <table>
             <thead>
                 <tr>
                     <th>N° Parc</th>
                     <th>Véhicule</th>
                     <th>Date d'expiration</th>
-                    <th>Statut</th>
+                    <th>Urgence</th>
                 </tr>
             </thead>
             <tbody id="ct-alerts-body"></tbody>
@@ -71,8 +75,12 @@
                 </select>
                 <select id="ligne">
                     <option value="Non affecté">Ligne...</option>
-                    <option value="L4">L4</option><option value="P1">P1</option><option value="S1">S1</option>
-                    <option value="N73">N73</option><option value="A">A</option><option value="RS">RS</option>
+                    <option value="L4">L4</option><option value="P1">P1</option><option value="P2">P2</option>
+                    <option value="P3">P3</option><option value="S1">S1</option><option value="S2">S2</option>
+                    <option value="S3">S3</option><option value="S4">S4</option><option value="S5">S5</option>
+                    <option value="PL1">PL1</option><option value="PL2">PL2</option><option value="PL3">PL3</option>
+                    <option value="N73">N73</option><option value="A">A</option><option value="R">R</option>
+                    <option value="RS">RS</option><option value="L">L</option><option value="C">C</option>
                 </select>
             </div>
             <button type="submit">Ajouter au parc</button>
@@ -105,9 +113,24 @@
         </div>
     </div>
 
+    <div id="modal-rapport" class="modal">
+        <div class="modal-content">
+            <h3>📝 Rapport de Panne</h3>
+            <select id="panne-motif" onchange="genererTexteRapport()">
+                <option value="Accident de circulation avec corporel">Accident avec corporel</option>
+                <option value="Panne moteur">Panne moteur</option>
+                <option value="Problème de freins">Problème de freins</option>
+                <option value="Vandalisme / Vitre brisée">Vandalisme</option>
+            </select>
+            <textarea id="texte-rapport" readonly></textarea>
+            <button onclick="copierRapport()">📋 Copier le texte</button>
+            <button class="btn-cancel" onclick="closeModal()">Fermer</button>
+        </div>
+    </div>
+
     <script>
-        let flotte = JSON.parse(localStorage.getItem('flotte_tm_v2')) || [];
-        let currentEditIndex = null;
+        let flotte = JSON.parse(localStorage.getItem('flotte_tm_v3')) || [];
+        let currentEditId = null;
         let currentEditType = null;
 
         const listLignes = ["L4", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
@@ -123,23 +146,22 @@
             alertBody.innerHTML = '';
             let hasAlerts = false;
 
-            // Tri par date CT
-            flotte.sort((a, b) => {
-                if (!a.ct) return 1;
-                if (!b.ct) return -1;
+            // Tri pour les alertes seulement
+            let flotteTriee = [...flotte].sort((a, b) => {
+                if (!a.ct) return 1; if (!b.ct) return -1;
                 return new Date(a.ct) - new Date(b.ct);
             });
 
-            flotte.forEach((bus, index) => {
+            flotteTriee.forEach((bus) => {
                 const daysLeft = calculateDaysLeft(bus.ct);
                 let ctClass = '';
-                
                 if (bus.ct) {
                     if (daysLeft < 0) ctClass = 'ct-expired';
                     else if (daysLeft <= 6) ctClass = 'ct-danger';
                     else if (daysLeft <= 12) ctClass = 'ct-warning';
                 }
 
+                // Remplissage du tableau d'alerte
                 if (bus.ct && daysLeft <= 12) {
                     hasAlerts = true;
                     alertBody.innerHTML += `<tr class="${ctClass}">
@@ -150,73 +172,78 @@
                     </tr>`;
                 }
 
+                // Remplissage du tableau principal
                 const row = document.createElement('tr');
                 row.className = ctClass;
                 row.innerHTML = `
                     <td><strong>${bus.numParc}</strong></td>
                     <td>${bus.marque} ${bus.modele}</td>
-                    <td><span class="motor-badge">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit(${index}, 'moteur')">✏️</span></td>
-                    <td style="text-align:center;">
-                        <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" onerror="this.style.display='none'">
-                        <span class="btn-edit" onclick="openEdit(${index}, 'ligne')">✏️</span>
-                    </td>
-                    <td>${bus.immat} <span class="btn-edit" onclick="openEdit(${index}, 'immat')">✏️</span></td>
+                    <td><span class="motor-badge">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
                     <td>
-                        ${bus.options.map(o => optionsDispo[o].split(' ')[0]).join(' ')}
-                        <span class="btn-edit" onclick="openEdit(${index}, 'options')">✏️</span>
+                        <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" title="${bus.ligne}" onerror="this.style.display='none'">
+                        <div style="text-align:center"><span class="btn-edit" onclick="openEdit('${bus.id}', 'ligne')">✏️</span></div>
                     </td>
-                    <td><input type="date" value="${bus.ct}" onchange="updateField(${index}, 'ct', this.value)"></td>
+                    <td>${bus.immat} <span class="btn-edit" onclick="openEdit('${bus.id}', 'immat')">✏️</span></td>
                     <td>
-                        <select onchange="updateField(${index}, 'statut', this.value)">
+                        ${bus.options.map(o => optionsDispo[o] ? optionsDispo[o].split(' ')[0] : '').join(' ')}
+                        <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span>
+                    </td>
+                    <td><input type="date" value="${bus.ct}" onchange="updateField('${bus.id}', 'ct', this.value)"></td>
+                    <td>
+                        <select onchange="updateField('${bus.id}', 'statut', this.value)">
                             <option ${bus.statut === '🟢' ? 'selected' : ''}>🟢</option>
                             <option ${bus.statut === '🟠' ? 'selected' : ''}>🟠</option>
                             <option ${bus.statut === '🔴' ? 'selected' : ''}>🔴</option>
                         </select>
                     </td>
-                    <td><button onclick="deleteBus(${index})" style="background:#e74c3c; width:auto;">🗑️</button></td>
+                    <td>
+                        <button onclick="deleteBus('${bus.id}')" class="btn-delete">🗑️</button>
+                        <button onclick="ouvrirRapport('${bus.id}')" class="btn-rapport">📋</button>
+                    </td>
                 `;
                 mainBody.appendChild(row);
             });
 
             alertSection.style.display = hasAlerts ? 'block' : 'none';
-            localStorage.setItem('flotte_tm_v2', JSON.stringify(flotte));
+            localStorage.setItem('flotte_tm_v3', JSON.stringify(flotte));
         }
 
-        function openEdit(index, type) {
-            currentEditIndex = index;
+        function openEdit(id, type) {
+            currentEditId = id;
             currentEditType = type;
+            const bus = flotte.find(b => b.id === id);
             const body = document.getElementById('modal-body');
             const title = document.getElementById('modal-title');
             body.innerHTML = '';
             document.getElementById('edit-modal').style.display = 'flex';
 
             if (type === 'ligne') {
-                title.innerText = "Changer la ligne";
+                title.innerText = "Affectation Ligne";
                 let html = '<select id="edit-val">';
-                listLignes.forEach(l => html += `<option value="${l}" ${flotte[index].ligne === l ? 'selected' : ''}>${l}</option>`);
+                listLignes.forEach(l => html += `<option value="${l}" ${bus.ligne === l ? 'selected' : ''}>${l}</option>`);
                 body.innerHTML = html + '</select>';
             } 
             else if (type === 'moteur') {
-                title.innerText = "Changer la motorisation";
+                title.innerText = "Type de Motorisation";
                 let html = '<select id="edit-val">';
-                listMoteurs.forEach(m => html += `<option value="${m}" ${flotte[index].moteur === m ? 'selected' : ''}>${m}</option>`);
+                listMoteurs.forEach(m => html += `<option value="${m}" ${bus.moteur === m ? 'selected' : ''}>${m}</option>`);
                 body.innerHTML = html + '</select>';
             }
             else if (type === 'immat') {
-                title.innerText = "Modifier l'immatriculation";
-                body.innerHTML = `<input type="text" id="edit-val" value="${flotte[index].immat}">`;
+                title.innerText = "Modifier Immatriculation";
+                body.innerHTML = `<input type="text" id="edit-val" value="${bus.immat}">`;
             }
             else if (type === 'options') {
                 title.innerText = "Équipements";
                 for (let key in optionsDispo) {
-                    const checked = flotte[index].options.includes(key) ? 'checked' : '';
+                    const checked = bus.options.includes(key) ? 'checked' : '';
                     body.innerHTML += `<label style="display:block; margin:8px 0;"><input type="checkbox" class="opt-check" value="${key}" ${checked}> ${optionsDispo[key]}</label>`;
                 }
             }
         }
 
         function saveEdit() {
-            const bus = flotte[currentEditIndex];
+            const bus = flotte.find(b => b.id === currentEditId);
             if (currentEditType === 'options') {
                 bus.options = Array.from(document.querySelectorAll('.opt-check:checked')).map(cb => cb.value);
             } else {
@@ -226,20 +253,27 @@
             updateUI();
         }
 
-        // Fonctions utilitaires (CT, Date, Suppression)
+        function updateField(id, field, val) {
+            const bus = flotte.find(b => b.id === id);
+            bus[field] = val;
+            localStorage.setItem('flotte_tm_v3', JSON.stringify(flotte));
+            // On ne rafraîchit pas tout le UI immédiatement pour le CT pour éviter le saut de ligne
+            if(field !== 'ct') updateUI();
+        }
+
         function calculateDaysLeft(dateStr) { if (!dateStr) return 999; const diff = new Date(dateStr) - new Date(); return Math.ceil(diff / (1000 * 60 * 60 * 24)); }
         function formatDate(dateStr) { if (!dateStr) return "-"; return new Date(dateStr).toLocaleDateString('fr-FR'); }
-        function updateField(i, f, v) { flotte[i][f] = v; updateUI(); }
-        function deleteBus(i) { if(confirm("Supprimer ?")) { flotte.splice(i, 1); updateUI(); } }
-        function closeModal() { document.getElementById('edit-modal').style.display = 'none'; }
+        function deleteBus(id) { if(confirm("Supprimer ?")) { flotte = flotte.filter(b => b.id !== id); updateUI(); } }
+        function closeModal() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
 
-        // Ajout Formulaire
+        // Ajout
         document.getElementById('bus-form').onsubmit = function(e) {
             e.preventDefault();
             const qty = parseInt(document.getElementById('qty').value);
             const startNum = parseInt(document.getElementById('parc').value);
             for(let i=0; i<qty; i++) {
                 flotte.push({
+                    id: Date.now().toString() + i,
                     numParc: isNaN(startNum) ? document.getElementById('parc').value : (startNum + i),
                     marque: document.getElementById('marque').value,
                     modele: document.getElementById('modele').value,
@@ -252,6 +286,38 @@
             updateUI();
             this.reset();
         };
+
+        // Rapport de panne
+        function ouvrirRapport(id) {
+            currentEditId = id;
+            document.getElementById('modal-rapport').style.display = 'flex';
+            genererTexteRapport();
+        }
+
+        function genererTexteRapport() {
+            const bus = flotte.find(b => b.id === currentEditId);
+            const motif = document.getElementById('panne-motif').value;
+            const immatPure = bus.immat.replace(/[^0-9]/g, '');
+            
+            const texte = `bonjour,
+
+ci joint le rapport de panne de mon (${bus.marque} ${bus.modele} n°${bus.numParc}).
+
+Immatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=(${immatPure})[/img]
+Problème rencontré : (${motif})
+Je souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : Non
+
+bonne journée cordialement`;
+            
+            document.getElementById('texte-rapport').value = texte;
+        }
+
+        function copierRapport() {
+            const area = document.getElementById('texte-rapport');
+            area.select();
+            document.execCommand('copy');
+            alert("Texte copié !");
+        }
 
         updateUI();
     </script>
