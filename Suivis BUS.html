@@ -225,9 +225,9 @@
                     <td><input type="date" value="${bus.ct}" onchange="updateField('${bus.id}', 'ct', this.value)"></td>
                     <td>
                         <select onchange="updateField('${bus.id}', 'statut', this.value)">
-                            <option ${bus.statut === '🟢' En Service 'selected' : ''}>🟢</option>
-                            <option ${bus.statut === '🟠' Immobilisé 'selected' : ''}>🟠</option>
-                            <option ${bus.statut === '🔴' Réformé 'selected' : ''}>🔴</option>
+                            <option ${bus.statut === '🟢' ? 'selected' : ''}>🟢En Service</option>
+                            <option ${bus.statut === '🟠' ? 'selected' : ''}>🟠Immobilisé</option>
+                            <option ${bus.statut === '🔴' ? 'selected' : ''}>🔴Réformé</option>
                         </select>
                     </td>
                     <td>
