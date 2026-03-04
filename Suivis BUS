@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi du Parc de Véhicules</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        .form-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 5px 5px 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #0056b3;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #004494;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #0056b3;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            padding: 5px 10px;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🚌 Suivi du Parc - Transport Manager</h1>
+
+    <div class="form-container">
+        <h3>Ajouter un nouveau véhicule</h3>
+        <form id="add-bus-form">
+            <input type="text" id="num-parc" placeholder="N° de Parc (ex: 101)" required>
+            <input type="text" id="modele" placeholder="Modèle (ex: Citaro C2)" required>
+            <input type="text" id="immatriculation" placeholder="Plaque (ex: AB-123-CD)" required>
+            <select id="statut">
+                <option value="🟢 En service">🟢 En service</option>
+                <option value="🟠 En maintenance">🟠 En maintenance</option>
+                <option value="🔴 En panne">🔴 En panne</option>
+            </select>
+            <button type="submit">Ajouter au parc</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>N° Parc</th>
+                <th>Modèle</th>
+                <th>Immatriculation</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="fleet-table-body">
+            </tbody>
+    </table>
+
+    <script>
+        // 1. On charge les données depuis la mémoire du navigateur, ou on crée un tableau vide
+        let flotte = JSON.parse(localStorage.getItem('maFlotte')) || [];
+
+        const form = document.getElementById('add-bus-form');
+        const tableBody = document.getElementById('fleet-table-body');
+
+        // 2. Fonction pour afficher le tableau
+        function afficherFlotte() {
+            tableBody.innerHTML = ''; // On vide le tableau avant de le re-remplir
+            
+            flotte.forEach((bus, index) => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td><strong>${bus.numParc}</strong></td>
+                    <td>${bus.modele}</td>
+                    <td>${bus.immatriculation}</td>
+                    <td>
+                        <select onchange="changerStatut(${index}, this.value)">
+                            <option value="🟢 En service" ${bus.statut === '🟢 En service' ? 'selected' : ''}>🟢 En service</option>
+                            <option value="🟠 En maintenance" ${bus.statut === '🟠 En maintenance' ? 'selected' : ''}>🟠 En maintenance</option>
+                            <option value="🔴 En panne" ${bus.statut === '🔴 En panne' ? 'selected' : ''}>🔴 En panne</option>
+                        </select>
+                    </td>
+                    <td><button class="btn-delete" onclick="supprimerBus(${index})">Retirer</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // 3. Fonction pour sauvegarder dans la mémoire
+        function sauvegarderFlotte() {
+            localStorage.setItem('maFlotte', JSON.stringify(flotte));
+            afficherFlotte();
+        }
+
+        // 4. Action quand on soumet le formulaire
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Empêche la page de recharger
+            
+            const nouveauBus = {
+                numParc: document.getElementById('num-parc').value,
+                modele: document.getElementById('modele').value,
+                immatriculation: document.getElementById('immatriculation').value,
+                statut: document.getElementById('statut').value
+            };
+
+            flotte.push(nouveauBus); // Ajoute le bus au tableau
+            sauvegarderFlotte(); // Sauvegarde et met à jour l'affichage
+            form.reset(); // Vide le formulaire
+        });
+
+        // 5. Fonction pour changer le statut d'un bus
+        window.changerStatut = function(index, nouveauStatut) {
+            flotte[index].statut = nouveauStatut;
+            sauvegarderFlotte();
+        };
+
+        // 6. Fonction pour supprimer un bus
+        window.supprimerBus = function(index) {
+            if(confirm("Êtes-vous sûr de vouloir retirer ce véhicule du parc ?")) {
+                flotte.splice(index, 1); // Enlève 1 élément à l'index donné
+                sauvegarderFlotte();
+            }
+        };
+
+        // Affichage initial au chargement de la page
+        afficherFlotte();
+    </script>
+</body>
+</html>
