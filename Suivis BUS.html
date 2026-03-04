@@ -3,60 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suivi du Parc de Véhicules</title>
+    <title>Suivi du Parc de Véhicules - Transport Manager</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
+        h1 { color: #2c3e50; }
+        .form-container, .modal-content {
+            background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px;
         }
-        h1 {
-            color: #333;
-        }
-        .form-container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        input, select, button {
-            padding: 10px;
-            margin: 5px 5px 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #0056b3;
-            color: white;
-            cursor: pointer;
-            border: none;
-        }
-        button:hover {
-            background-color: #004494;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #0056b3;
-            color: white;
-        }
-        .btn-delete {
-            background-color: #dc3545;
-            padding: 5px 10px;
-        }
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        input, select, button { padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%; box-sizing: border-box;}
+        button { background-color: #3498db; color: white; cursor: pointer; border: none; font-weight: bold; margin-top: 10px;}
+        button:hover { background-color: #2980b9; }
+        .btn-delete { background-color: #e74c3c; width: auto; padding: 5px 10px;}
+        .btn-delete:hover { background-color: #c0392b; }
+        .btn-rapport { background-color: #f39c12; width: auto; padding: 5px 10px; margin-left: 5px;}
+        .btn-rapport:hover { background-color: #d68910; }
+        table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 0.9em;}
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; vertical-align: middle; }
+        th { background-color: #2c3e50; color: white; }
+        .ligne-img { height: 30px; vertical-align: middle; }
+        .options-list { display: flex; gap: 10px; margin-top: 10px; align-items: center;}
+        .option-icon { width: 24px; height: 24px; font-size: 20px; }
+        /* Style de la modale (fenêtre pop-up) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; }
+        .modal-content { width: 600px; max-width: 90%; }
+        textarea { width: 100%; height: 150px; font-family: monospace; margin-top: 10px; resize: none;}
+        .close-modal { float: right; cursor: pointer; font-size: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -64,102 +36,237 @@
     <h1>🚌 Suivi du Parc - Transport Manager</h1>
 
     <div class="form-container">
-        <h3>Ajouter un nouveau véhicule</h3>
+        <h3>Ajouter un ou plusieurs véhicules</h3>
         <form id="add-bus-form">
-            <input type="text" id="num-parc" placeholder="N° de Parc (ex: 101)" required>
-            <input type="text" id="modele" placeholder="Modèle (ex: Citaro C2)" required>
-            <input type="text" id="immatriculation" placeholder="Plaque (ex: AB-123-CD)" required>
-            <select id="statut">
-                <option value="🟢 En service">🟢 En service</option>
-                <option value="🟠 En maintenance">🟠 En maintenance</option>
-                <option value="🔴 En panne">🔴 En panne</option>
-            </select>
-            <button type="submit">Ajouter au parc</button>
+            <div class="form-grid">
+                <div>
+                    <label>Quantité (ajout en masse)</label>
+                    <input type="number" id="quantite" value="1" min="1" required>
+                </div>
+                <div>
+                    <label>N° de Parc (départ)</label>
+                    <input type="text" id="num-parc" placeholder="ex: 1103" required>
+                </div>
+                <div>
+                    <label>Marque</label>
+                    <input type="text" id="marque" placeholder="ex: Irisbus" required>
+                </div>
+                <div>
+                    <label>Modèle</label>
+                    <input type="text" id="modele" placeholder="ex: Agora S" required>
+                </div>
+                <div>
+                    <label>Immatriculation / Plaque ID TM</label>
+                    <input type="text" id="immatriculation" placeholder="ex: 94484 ou AB-123-CD" required>
+                </div>
+                <div>
+                    <label>Ligne</label>
+                    <select id="ligne">
+                        <option value="Non affecté">Aucune</option>
+                        <option value="L4">L4</option>
+                        <option value="P1">P1</option>
+                        <option value="S1">S1</option>
+                        <option value="A">A</option>
+                        <option value="N73">N73</option>
+                        </select>
+                </div>
+            </div>
+            
+            <div class="options-list">
+                <strong>Options :</strong>
+                <label><input type="checkbox" name="options" value="clim"> Clim</label>
+                <label><input type="checkbox" name="options" value="pmr"> PMR</label>
+                <label><input type="checkbox" name="options" value="wifi"> Wi-Fi</label>
+            </div>
+
+            <button type="submit">➕ Ajouter au parc</button>
         </form>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>N° Parc</th>
-                <th>Modèle</th>
-                <th>Immatriculation</th>
-                <th>Statut</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="fleet-table-body">
-            </tbody>
-    </table>
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>N° Parc</th>
+                    <th>Marque & Modèle</th>
+                    <th>Ligne</th>
+                    <th>Immatriculation</th>
+                    <th>Prochain CT</th>
+                    <th>Options</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="fleet-table-body">
+                </tbody>
+        </table>
+    </div>
+
+    <div id="modal-rapport" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fermerModal()">&times;</span>
+            <h3>📝 Générer un rapport de panne</h3>
+            <label>Sélectionner le problème :</label>
+            <select id="panne-motif" onchange="mettreAJourRapport()">
+                <option value="Accident de circulation avec corporel">Accident avec corporel</option>
+                <option value="Panne moteur">Panne moteur</option>
+                <option value="Problème de portes">Problème de portes</option>
+                <option value="Vandalisme">Vandalisme</option>
+            </select>
+            <textarea id="texte-rapport" readonly></textarea>
+            <button onclick="copierRapport()">📋 Copier le rapport</button>
+        </div>
+    </div>
 
     <script>
-        // 1. On charge les données depuis la mémoire du navigateur, ou on crée un tableau vide
         let flotte = JSON.parse(localStorage.getItem('maFlotte')) || [];
+        let indexBusActuel = null; // Pour savoir quel bus est concerné par le rapport
+
+        // Dictionnaire des images d'options (Remplace les emojis par tes balises <img src="..."> plus tard)
+        const optionImages = {
+            'clim': '❄️',
+            'pmr': '♿',
+            'wifi': '📶'
+        };
 
         const form = document.getElementById('add-bus-form');
         const tableBody = document.getElementById('fleet-table-body');
 
-        // 2. Fonction pour afficher le tableau
         function afficherFlotte() {
-            tableBody.innerHTML = ''; // On vide le tableau avant de le re-remplir
-            
+            tableBody.innerHTML = ''; 
             flotte.forEach((bus, index) => {
+                // Gestion de l'image de la ligne
+                let ligneHtml = bus.ligne === "Non affecté" 
+                    ? "Non affecté" 
+                    : `<img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" alt="${bus.ligne}">`;
+
+                // Gestion des options (affichage des images/emojis)
+                let optionsHtml = bus.options.map(opt => `<span class="option-icon">${optionImages[opt]}</span>`).join(' ');
+
                 const row = document.createElement('tr');
-                
                 row.innerHTML = `
                     <td><strong>${bus.numParc}</strong></td>
-                    <td>${bus.modele}</td>
-                    <td>${bus.immatriculation}</td>
+                    <td>${bus.marque} ${bus.modele}</td>
+                    <td>${ligneHtml}</td>
                     <td>
-                        <select onchange="changerStatut(${index}, this.value)">
+                        <input type="text" value="${bus.immatriculation}" onchange="modifierChamp(${index}, 'immatriculation', this.value)" style="width: 120px;">
+                    </td>
+                    <td>
+                        <input type="date" value="${bus.prochainCT || ''}" onchange="modifierChamp(${index}, 'prochainCT', this.value)">
+                    </td>
+                    <td>${optionsHtml}</td>
+                    <td>
+                        <select onchange="modifierChamp(${index}, 'statut', this.value)">
                             <option value="🟢 En service" ${bus.statut === '🟢 En service' ? 'selected' : ''}>🟢 En service</option>
                             <option value="🟠 En maintenance" ${bus.statut === '🟠 En maintenance' ? 'selected' : ''}>🟠 En maintenance</option>
                             <option value="🔴 En panne" ${bus.statut === '🔴 En panne' ? 'selected' : ''}>🔴 En panne</option>
                         </select>
                     </td>
-                    <td><button class="btn-delete" onclick="supprimerBus(${index})">Retirer</button></td>
+                    <td>
+                        <button class="btn-delete" onclick="supprimerBus(${index})">Retirer</button>
+                        <button class="btn-rapport" onclick="ouvrirModalRapport(${index})">Rapport</button>
+                    </td>
                 `;
                 tableBody.appendChild(row);
             });
         }
 
-        // 3. Fonction pour sauvegarder dans la mémoire
         function sauvegarderFlotte() {
             localStorage.setItem('maFlotte', JSON.stringify(flotte));
             afficherFlotte();
         }
 
-        // 4. Action quand on soumet le formulaire
         form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Empêche la page de recharger
+            e.preventDefault();
             
-            const nouveauBus = {
-                numParc: document.getElementById('num-parc').value,
-                modele: document.getElementById('modele').value,
-                immatriculation: document.getElementById('immatriculation').value,
-                statut: document.getElementById('statut').value
-            };
+            let quantite = parseInt(document.getElementById('quantite').value);
+            let parcDepartStr = document.getElementById('num-parc').value;
+            let parcDepartNum = parseInt(parcDepartStr);
+            let estNumerique = !isNaN(parcDepartNum);
 
-            flotte.push(nouveauBus); // Ajoute le bus au tableau
-            sauvegarderFlotte(); // Sauvegarde et met à jour l'affichage
-            form.reset(); // Vide le formulaire
+            // Récupérer les options cochées
+            let optionsCochees = [];
+            document.querySelectorAll('input[name="options"]:checked').forEach(cb => optionsCochees.push(cb.value));
+
+            for(let i = 0; i < quantite; i++) {
+                let numParcActuel = estNumerique ? (parcDepartNum + i).toString() : (i === 0 ? parcDepartStr : parcDepartStr + "-" + i);
+                
+                flotte.push({
+                    numParc: numParcActuel,
+                    marque: document.getElementById('marque').value,
+                    modele: document.getElementById('modele').value,
+                    immatriculation: document.getElementById('immatriculation').value,
+                    ligne: document.getElementById('ligne').value,
+                    options: optionsCochees,
+                    prochainCT: '',
+                    statut: '🟢 En service'
+                });
+            }
+
+            sauvegarderFlotte();
+            form.reset();
         });
 
-        // 5. Fonction pour changer le statut d'un bus
-        window.changerStatut = function(index, nouveauStatut) {
-            flotte[index].statut = nouveauStatut;
+        window.modifierChamp = function(index, champ, valeur) {
+            flotte[index][champ] = valeur;
             sauvegarderFlotte();
         };
 
-        // 6. Fonction pour supprimer un bus
         window.supprimerBus = function(index) {
-            if(confirm("Êtes-vous sûr de vouloir retirer ce véhicule du parc ?")) {
-                flotte.splice(index, 1); // Enlève 1 élément à l'index donné
+            if(confirm("Êtes-vous sûr de vouloir retirer ce véhicule ?")) {
+                flotte.splice(index, 1);
                 sauvegarderFlotte();
             }
         };
 
-        // Affichage initial au chargement de la page
+        /* ---- GESTION DU RAPPORT DE PANNE ---- */
+        window.ouvrirModalRapport = function(index) {
+            indexBusActuel = index;
+            document.getElementById('modal-rapport').style.display = 'flex';
+            mettreAJourRapport();
+        };
+
+        window.fermerModal = function() {
+            document.getElementById('modal-rapport').style.display = 'none';
+        };
+
+        window.mettreAJourRapport = function() {
+            if (indexBusActuel === null) return;
+            
+            const bus = flotte[indexBusActuel];
+            const motif = document.getElementById('panne-motif').value;
+            
+            // Ne garder que les chiffres de l'immatriculation
+            const chiffresImmat = bus.immatriculation.replace(/[^0-9]/g, '');
+
+            const texte = `bonjour,
+
+ci-joint le rapport de panne de mon (${bus.modele} n°${bus.numParc}).
+
+Immatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=(${chiffresImmat})[/img]
+Problème rencontré : (${motif})
+Je souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : Non
+
+bonne journée cordialement`;
+
+            document.getElementById('texte-rapport').value = texte;
+        };
+
+        window.copierRapport = function() {
+            const textarea = document.getElementById('texte-rapport');
+            textarea.select();
+            document.execCommand('copy');
+            alert("Le rapport a été copié dans le presse-papier !");
+            fermerModal();
+        };
+
+        // Fermer la modale si on clique en dehors
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('modal-rapport')) {
+                fermerModal();
+            }
+        }
+
         afficherFlotte();
     </script>
 </body>
