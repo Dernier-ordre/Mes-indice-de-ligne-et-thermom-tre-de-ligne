@@ -25,6 +25,9 @@
         
         .ligne-img { height: 32px; vertical-align: middle; display: block; margin: 0 auto;}
         .motor-badge { padding: 2px 5px; border-radius: 4px; font-size: 0.75em; font-weight: bold; background: #ecf0f1; border: 1px solid #bdc3c7;}
+        
+        /* Nouvelle classe pour tes propres images d'options */
+        .option-img { height: 24px; width: 24px; vertical-align: middle; margin-right: 4px; object-fit: contain; }
 
         /* Fenêtres Modales */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
@@ -172,23 +175,25 @@
 
         const listLignes = ["L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
         const listMoteurs = ["Diesel", "Diesel MH", "GNV", "GNV MH", "Électrique"];
+        
+        // 🚨 REMPLACE LES "lien_vers_image_..." PAR TES PROPRES URL (Github, Imgur, ou liens locaux)
         const optionsDispo = { 
-            "clim": "❄️ Clim", 
-            "pmr": "🦽 PMR", 
-            "wifi": "🛜 Wi-Fi", 
-            "Plateforme Rétractable": "🪜 Plateforme Rétractable", 
-            "Boutons arrêts demandés supplémentaires": "🔔 Boutons arrêts supplémentaires", 
-            "Téléphone radio": "📞 Téléphone radio", 
-            "Pupitre conducteur": "🖥️ Pupitre conducteur", 
-            "Bandeau d'information": "📟 Bandeau d'information", 
-            "Écran Dynamique": "📺 Écran Dynamique", 
-            "Haut-parleurs": "📢 Haut-parleurs", 
-            "Balise priorité au feux": "🚦 Balise priorité au feux", 
-            "caméra vidéo surveillance": "📹 Caméra vidéo surveillance", 
-            "Radio FM": "📻 Radio FM", 
-            "Boutons self-service": "🔘 Boutons self-service", 
-            "Éthylotest Anti-Démarrage": "🌬️ Éthylotest Anti-Démarrage", 
-            "Ports USB": "🔌 Ports USB" 
+            "clim": "lien_vers_image_clim.png", 
+            "pmr": "lien_vers_image_pmr.png", 
+            "wifi": "lien_vers_image_wifi.png", 
+            "Plateforme Rétractable": "lien_vers_image_plateforme.png", 
+            "Boutons arrêts demandés supplémentaires": "lien_vers_image_boutons_arrets.png", 
+            "Téléphone radio": "lien_vers_image_telephone.png", 
+            "Pupitre conducteur": "lien_vers_image_pupitre.png", 
+            "Bandeau d'information": "lien_vers_image_bandeau.png", 
+            "Écran Dynamique": "lien_vers_image_ecran.png", 
+            "Haut-parleurs": "lien_vers_image_haut_parleurs.png", 
+            "Balise priorité au feux": "lien_vers_image_balise.png", 
+            "caméra vidéo surveillance": "lien_vers_image_camera.png", 
+            "Radio FM": "lien_vers_image_radio.png", 
+            "Boutons self-service": "lien_vers_image_self_service.png", 
+            "Éthylotest Anti-Démarrage": "lien_vers_image_ethylotest.png", 
+            "Ports USB": "lien_vers_image_usb.png" 
         };
 
         function updateUI() {
@@ -200,13 +205,31 @@
             alertBody.innerHTML = '';
             let hasAlerts = false;
 
-            // Tri pour les alertes seulement
-            let flotteTriee = [...flotte].sort((a, b) => {
-                if (!a.ct) return 1; if (!b.ct) return -1;
-                return new Date(a.ct) - new Date(b.ct);
+            // 1. GESTION DES ALERTES (Triées par date de CT)
+            let flotteAlertes = [...flotte].filter(b => b.ct).sort((a, b) => new Date(a.ct) - new Date(b.ct));
+
+            flotteAlertes.forEach((bus) => {
+                const daysLeft = calculateDaysLeft(bus.ct);
+                if (daysLeft <= 12) {
+                    hasAlerts = true;
+                    let ctClass = daysLeft < 0 ? 'ct-expired' : (daysLeft <= 6 ? 'ct-danger' : 'ct-warning');
+                    
+                    alertBody.innerHTML += `<tr class="${ctClass}">
+                        <td>${bus.numParc}</td>
+                        <td>${bus.marque} ${bus.modele}</td>
+                        <td>${formatDate(bus.ct)}</td>
+                        <td>${daysLeft < 0 ? 'EXPIRÉ' : 'J-' + daysLeft}</td>
+                    </tr>`;
+                }
             });
 
-            flotteTriee.forEach((bus) => {
+            // 2. GESTION DU TABLEAU PRINCIPAL (Trié par Numéro de Parc)
+            flotte.sort((a, b) => {
+                // Tri intelligent pour gérer les chiffres et les lettres (ex: 1, 2, 10, A1, B2)
+                return String(a.numParc).localeCompare(String(b.numParc), undefined, {numeric: true});
+            });
+
+            flotte.forEach((bus) => {
                 const daysLeft = calculateDaysLeft(bus.ct);
                 let ctClass = '';
                 if (bus.ct) {
@@ -215,20 +238,14 @@
                     else if (daysLeft <= 12) ctClass = 'ct-warning';
                 }
 
-                // Remplissage du tableau d'alerte
-                if (bus.ct && daysLeft <= 12) {
-                    hasAlerts = true;
-                    alertBody.innerHTML += `<tr class="${ctClass}">
-                        <td>${bus.numParc}</td>
-                        <td>${bus.marque} ${bus.modele}</td>
-                        <td>${formatDate(bus.ct)}</td>
-                        <td>${daysLeft < 0 ? 'EXPIRÉ' : 'J-' + daysLeft}</td>
-                    </tr>`;
-                }
-
-                // Remplissage du tableau principal
                 const row = document.createElement('tr');
                 row.className = ctClass;
+                
+                // Rendu des images d'options
+                let optionsHtml = bus.options.map(opt => {
+                    return `<img src="${optionsDispo[opt]}" alt="${opt}" title="${opt}" class="option-img" onerror="this.style.display='none'">`;
+                }).join('');
+
                 row.innerHTML = `
                     <td><strong>${bus.numParc}</strong></td>
                     <td>${bus.marque} ${bus.modele}</td>
@@ -239,15 +256,15 @@
                     </td>
                     <td>${bus.immat} <span class="btn-edit" onclick="openEdit('${bus.id}', 'immat')">✏️</span></td>
                     <td>
-                        ${bus.options.map(o => optionsDispo[o] ? optionsDispo[o].split(' ')[0] : '').join(' ')}
+                        ${optionsHtml}
                         <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span>
                     </td>
                     <td><input type="date" value="${bus.ct}" onchange="updateField('${bus.id}', 'ct', this.value)"></td>
                     <td>
                         <select onchange="updateField('${bus.id}', 'statut', this.value)">
-                            <option ${bus.statut === '🟢' ? 'selected' : ''}>🟢En Service</option>
-                            <option ${bus.statut === '🟠' ? 'selected' : ''}>🟠Immobilisé</option>
-                            <option ${bus.statut === '🔴' ? 'selected' : ''}>🔴Réformé</option>
+                            <option ${bus.statut === '🟢En Service' ? 'selected' : ''}>🟢En Service</option>
+                            <option ${bus.statut === '🟠Immobilisé' ? 'selected' : ''}>🟠Immobilisé</option>
+                            <option ${bus.statut === '🔴Réformé' ? 'selected' : ''}>🔴Réformé</option>
                         </select>
                     </td>
                     <td>
@@ -291,7 +308,11 @@
                 title.innerText = "Équipements";
                 for (let key in optionsDispo) {
                     const checked = bus.options.includes(key) ? 'checked' : '';
-                    body.innerHTML += `<label style="display:block; margin:8px 0;"><input type="checkbox" class="opt-check" value="${key}" ${checked}> ${optionsDispo[key]}</label>`;
+                    // Affiche l'image et le nom du texte dans la modale d'édition
+                    body.innerHTML += `<label style="display:flex; align-items:center; margin:8px 0; cursor:pointer;">
+                        <input type="checkbox" class="opt-check" value="${key}" ${checked} style="width:auto; margin-right:10px;">
+                        <img src="${optionsDispo[key]}" class="option-img" onerror="this.style.display='none'"> ${key}
+                    </label>`;
                 }
             }
         }
@@ -311,7 +332,6 @@
             const bus = flotte.find(b => b.id === id);
             bus[field] = val;
             localStorage.setItem('flotte_tm_v3', JSON.stringify(flotte));
-            // On ne rafraîchit pas tout le UI immédiatement pour le CT pour éviter le saut de ligne
             if(field !== 'ct') updateUI();
         }
 
@@ -320,7 +340,6 @@
         function deleteBus(id) { if(confirm("Supprimer ?")) { flotte = flotte.filter(b => b.id !== id); updateUI(); } }
         function closeModal() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
 
-        // Ajout
         document.getElementById('bus-form').onsubmit = function(e) {
             e.preventDefault();
             const qty = parseInt(document.getElementById('qty').value);
@@ -334,14 +353,13 @@
                     moteur: document.getElementById('moteur').value,
                     immat: document.getElementById('immat').value,
                     ligne: document.getElementById('ligne').value,
-                    options: [], ct: '', statut: '🟢'
+                    options: [], ct: '', statut: '🟢En Service'
                 });
             }
             updateUI();
             this.reset();
         };
 
-        // Rapport de panne
         function ouvrirRapport(id) {
             currentEditId = id;
             document.getElementById('modal-rapport').style.display = 'flex';
