@@ -44,6 +44,11 @@
 <body>
 
     <h1>🚌 Parc Transport Manager</h1>
+    <div style="margin-bottom: 20px;">
+        <button onclick="exporterDonnees()" style="background-color: #27ae60; width: auto; padding: 8px 15px;">💾 Exporter (Sauvegarde)</button>
+        <button onclick="document.getElementById('import-file').click()" style="background-color: #8e44ad; width: auto; padding: 8px 15px;">📂 Importer</button>
+        <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importerDonnees(event)">
+    </div>
 
     <div id="ct-alerts" style="display: none;">
         <h2>⚠️ Alertes CT (Priorité)</h2>
@@ -390,7 +395,68 @@ bonne journée cordialement`;
             document.execCommand('copy');
             alert("Texte copié !");
         }
+// --- FONCTIONS D'EXPORT / IMPORT ---
 
+        function exporterDonnees() {
+            if (flotte.length === 0) {
+                alert("Il n'y a aucune donnée à exporter.");
+                return;
+            }
+            
+            // 1. Convertir les données en texte JSON formaté
+            const dataStr = JSON.stringify(flotte, null, 2);
+            
+            // 2. Créer un "Blob" (un objet fichier virtuel)
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            // 3. Créer un lien temporaire pour forcer le téléchargement
+            const a = document.createElement('a');
+            a.href = url;
+            // Nom du fichier avec la date du jour
+            const date = new Date().toLocaleDateString('fr-FR').replace(/\//g, '-');
+            a.download = `sauvegarde_flotte_${date}.json`;
+            
+            // 4. Simuler le clic et nettoyer
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importerDonnees(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    // Tenter de décoder le fichier JSON
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    // Vérifier si c'est bien un tableau (comme notre variable flotte)
+                    if (Array.isArray(importedData)) {
+                        if(confirm("⚠️ Attention, cela va remplacer votre flotte actuelle par celle du fichier. Voulez-vous continuer ?")) {
+                            flotte = importedData;
+                            localStorage.setItem('flotte_tm_v3', JSON.stringify(flotte));
+                            updateUI();
+                            alert("✅ Importation réussie !");
+                        }
+                    } else {
+                        alert("❌ Le fichier ne contient pas des données valides pour cette application.");
+                    }
+                } catch (error) {
+                    alert("❌ Erreur lors de la lecture du fichier. Assurez-vous qu'il s'agit bien d'un fichier JSON valide.");
+                }
+            };
+            
+            // Lancer la lecture du fichier
+            reader.readAsText(file);
+            
+            // Réinitialiser l'input pour permettre de réimporter le même fichier si besoin
+            event.target.value = '';
+        }
         updateUI();
     </script>
 </body>
