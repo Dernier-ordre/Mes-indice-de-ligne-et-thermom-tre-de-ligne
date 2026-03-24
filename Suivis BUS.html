@@ -11,22 +11,22 @@
         
         /* Onglets */
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #dee2e6; padding-bottom: 10px; }
-        .tab-btn { padding: 10px 20px; cursor: pointer; border: none; background: #ddd; border-radius: 5px; font-weight: bold; }
+        .tab-btn { padding: 10px 25px; cursor: pointer; border: none; background: #ddd; border-radius: 8px; font-weight: bold; transition: 0.3s; }
         .tab-btn.active { background: #34495e; color: white; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Badges Motorisation (Style Image) */
-        .badge-motor { 
-            display: inline-block; padding: 6px 15px; border-radius: 20px; 
-            color: white; font-weight: bold; font-size: 0.8em; text-transform: uppercase;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        /* Pastilles Motorisation (Style Image) */
+        .motor-badge { 
+            display: inline-block; padding: 6px 20px; border-radius: 50px; 
+            color: white; font-weight: bold; font-size: 0.85em; text-align: center;
+            min-width: 80px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .bg-diesel { background: linear-gradient(to right, #ff4e50, #f9d423); } /* Orange/Rouge */
-        .bg-gnv { background: linear-gradient(to right, #11998e, #38ef7d); }    /* Vert */
-        .bg-elec { background: linear-gradient(to right, #2193b0, #6dd5ed); }   /* Bleu */
+        .bg-diesel { background: linear-gradient(to right, #FF4B2B, #FF416C); } /* Orange/Rouge */
+        .bg-gnv { background: linear-gradient(to right, #00b09b, #96c93d); }    /* Vert GNV */
+        .bg-elec { background: linear-gradient(to right, #2193b0, #6dd5ed); }   /* Bleu Elec */
 
-        /* Alertes CT */
+        /* Couleurs CT */
         .ct-warning { background-color: #fff3cd !important; }
         .ct-danger { background-color: #ffe5d0 !important; border: 2px solid #ff8c00 !important; }
         .ct-expired { background-color: #f8d7da !important; color: #721c24 !important; font-weight: bold; }
@@ -35,21 +35,25 @@
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
         
         table { width: 100%; border-collapse: collapse; background: #fff; margin-bottom: 30px; border-radius: 8px; overflow: hidden; font-size: 0.85em;}
-        th, td { padding: 8px; border: 1px solid #dee2e6; text-align: left; vertical-align: middle;}
+        th, td { padding: 10px; border: 1px solid #dee2e6; text-align: left; vertical-align: middle;}
         th { background-color: #34495e; color: white; }
         
         .btn-edit { cursor: pointer; color: #3498db; font-size: 1.1em; margin-left: 5px;}
         .ligne-img { height: 32px; vertical-align: middle; display: block; margin: 0 auto;}
-        
+        .option-img { height: 24px; width: 24px; vertical-align: middle; margin-right: 4px; object-fit: contain; }
+
+        /* Fenêtres Modales */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 450px; max-height: 90vh; overflow-y: auto;}
+        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto;}
         
         input, select, button, textarea { padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
         button { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; }
         .btn-delete { background: #e74c3c; width: auto; padding: 5px 10px; }
-        .btn-rapport { background: #f39c12; width: auto; padding: 5px 10px; }
+        .btn-rapport { background: #f39c12; width: auto; padding: 5px 10px; margin-top: 5px;}
+        .btn-cancel { background: #95a5a6; }
+        textarea { height: 120px; font-family: monospace; font-size: 0.9em;}
         
-        #chart-container { width: 400px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; }
+        #chart-wrap { max-width: 500px; margin: 20px auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
@@ -57,8 +61,8 @@
     <h1>🚌 Parc Transport Manager</h1>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('tab-flotte', this)">📋 Ma Flotte</button>
-        <button class="tab-btn" onclick="showTab('tab-stats', this)">📊 Statistiques</button>
+        <button class="tab-btn active" onclick="switchTab('tab-flotte', this)">📋 Ma Flotte</button>
+        <button class="tab-btn" onclick="switchTab('tab-stats', this)">📊 Répartition</button>
     </div>
 
     <div id="tab-flotte" class="tab-content active">
@@ -75,9 +79,9 @@
                     <tr>
                         <th>N° Parc</th>
                         <th>Véhicule</th>
-                        <th>Date d'expiration</th>
+                        <th>Date Expiration</th>
                         <th>Urgence</th>
-                        <th>Action Rapide</th>
+                        <th style="width: 150px;">Mise à jour CT</th>
                     </tr>
                 </thead>
                 <tbody id="ct-alerts-body"></tbody>
@@ -102,11 +106,12 @@
                     </select>
                     <select id="ligne">
                         <option value="Non affecté">Ligne...</option>
+                        <option value="P1">P1</option><option value="P2">P2</option><option value="P3">P3</option>
+                        <option value="L4">L1</option><option value="L4">L2</option><option value="L4">L3</option>
                         <option value="L4">L4</option><option value="L5">L5</option><option value="L6">L6</option>
                         <option value="L7">L7</option><option value="L8">L8</option><option value="L9">L9</option>
                         <option value="L10">L10</option><option value="L11">L11</option><option value="L12">L12</option>
-                        <option value="L13">L13</option><option value="P1">P1</option><option value="P2">P2</option>
-                        <option value="P3">P3</option><option value="S1">S1</option><option value="S2">S2</option>
+                        <option value="L13">L13</option><option value="S1">S1</option><option value="S2">S2</option>
                         <option value="S3">S3</option><option value="S4">S4</option><option value="S5">S5</option>
                         <option value="PL1">PL1</option><option value="PL2">PL2</option><option value="PL3">PL3</option>
                         <option value="N73">N73</option><option value="A">A</option><option value="R">R</option>
@@ -136,9 +141,8 @@
     </div>
 
     <div id="tab-stats" class="tab-content">
-        <h2>Répartition par Motorisation</h2>
-        <p style="font-style: italic; color: #666;">(Excluant les véhicules en état "Livraison")</p>
-        <div id="chart-container">
+        <h2 style="text-align:center">Répartition des Motorisations</h2>
+        <div id="chart-wrap">
             <canvas id="motorChart"></canvas>
         </div>
     </div>
@@ -152,21 +156,74 @@
         </div>
     </div>
 
+    <div id="modal-rapport" class="modal">
+        <div class="modal-content">
+            <h3>📝 Rapport de Panne</h3>
+            <select id="panne-motif" onchange="genererTexteRapport()">
+                <option value="Accident de circulation">Accident de circulation</option>
+<option value="Accident avec corporel">Accident avec corporel</option>
+<option value="Accident de circulation avec corporel">Accident de circulation avec corporel</option>
+<option value="Alternateur HS">Alternateur HS</option>
+<option value="Batterie HS">Batterie HS</option>
+<option value="Boîte de vitesse HS">Boîte de vitesse HS</option>
+<option value="Capteur de sécurité de réservoir HS">Capteur de sécurité de réservoir HS</option>
+<option value="Cassure Moteur">Cassure Moteur</option>
+<option value="Conduites de gaz obstruées">Conduites de gaz obstruées</option>
+<option value="Convertisseur HS">Convertisseur HS</option>
+<option value="Défaut portes">Défaut portes</option>
+<option value="Dégradation">Dégradation</option>
+<option value="Démarreur HS">Démarreur HS</option>
+<option value="Durite d'eau percée">Durite d'eau percée</option>
+<option value="Durite d'huile percée">Durite d'huile percée</option>
+<option value="Feux grillé">Feux grillé</option>
+<option value="Frein de parc non fonctionnel">Frein de parc non fonctionnel</option>
+<option value="Freins défectueux">Freins défectueux</option>
+<option value="Fuite d'air au circuit de freinage">Fuite d'air au circuit de freinage</option>
+<option value="Fuite d'huile">Fuite d'huile</option>
+<option value="Girouette HS">Girouette HS</option>
+<option value="Hausse importante de température">Hausse importante de température</option>
+<option value="Jeu excessif dans la direction">Jeu excessif dans la direction</option>
+<option value="Niveau de liquide de refroidissement trop bas">Niveau de liquide de refroidissement trop bas</option>
+<option value="Pare-brise fissuré">Pare-brise fissuré</option>
+<option value="Plaquettes de freins trop usées">Plaquettes de freins trop usées</option>
+<option value="Pneu crevé">Pneu crevé</option>
+<option value="Pneus lisses">Pneus lisses</option>
+<option value="Pompe d'alimentation HS">Pompe d'alimentation HS</option>
+<option value="Problème de freins">Freins défaillants</option>
+<option value="Problèmes de suspensions">Problèmes de suspensions</option>
+<option value="Système de contrôle des émissions défaillant">Système de contrôle des émissions défaillant</option>
+<option value="Turbo HS">Turbo HS</option>
+<option value="Usure anormale des bougies">Usure anormale des bougies</option>
+<option value="Usure excessive des coussins d’air">Usure excessive des coussins d’air</option>
+<option value="Ventilateur Moteur HS">Ventilateur Moteur HS</option>
+<option value="Vitre cassée">Vitre cassée</option>
+            </select>
+            <textarea id="texte-rapport" readonly></textarea>
+            <button onclick="copierRapport()">📋 Copier le texte</button>
+            <button class="btn-cancel" onclick="closeModal()">Fermer</button>
+        </div>
+    </div>
+
     <script>
         let flotte = JSON.parse(localStorage.getItem('flotte_tm_v3')) || [];
-        let motorChart = null;
+        let currentEditId = null;
+        let currentEditType = null;
+        let myChart = null;
 
-        const listLignes = ["L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
+        const listLignes = ["L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "R1", "R2", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
         const listMoteurs = ["Diesel", "Diesel MH", "GNV", "GNV MH", "Électrique"];
         const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔴Réformé", "🚚Livraison", "🛠️Équipement"];
+        
+        const optionsDispo = { 
+            "clim": "https://cdn-icons-png.flaticon.com/512/927/927567.png", 
+            "pmr": "https://cdn-icons-png.flaticon.com/512/706/706132.png", 
+            "wifi": "https://cdn-icons-png.flaticon.com/512/93/93158.png",
+            "Radio FM": "https://cdn-icons-png.flaticon.com/512/27/27445.png",
+            "Ports USB": "https://cdn-icons-png.flaticon.com/512/82/82402.png"
+        };
 
-        function getMotorClass(moteur) {
-            if (moteur.includes("Diesel")) return "bg-diesel";
-            if (moteur.includes("GNV")) return "bg-gnv";
-            return "bg-elec";
-        }
-
-        function showTab(tabId, btn) {
+        // Navigation onglets
+        function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
@@ -174,15 +231,22 @@
             if(tabId === 'tab-stats') updateChart();
         }
 
+        // Classe pour les pastilles dégradées
+        function getBadgeClass(motor) {
+            if(motor.includes("Diesel")) return "bg-diesel";
+            if(motor.includes("GNV")) return "bg-gnv";
+            return "bg-elec";
+        }
+
         function updateUI() {
             const mainBody = document.getElementById('main-table-body');
             const alertBody = document.getElementById('ct-alerts-body');
             const alertSection = document.getElementById('ct-alerts');
-            
             mainBody.innerHTML = '';
             alertBody.innerHTML = '';
             let hasAlerts = false;
 
+            // Tri
             flotte.sort((a, b) => String(a.numParc).localeCompare(String(b.numParc), undefined, {numeric: true}));
 
             flotte.forEach((bus) => {
@@ -194,33 +258,44 @@
                     else if (daysLeft <= 12) ctClass = 'ct-warning';
                 }
 
+                // Tableau Alertes CT (Haut de page)
                 if (bus.ct && daysLeft <= 12) {
                     hasAlerts = true;
                     alertBody.innerHTML += `<tr class="${ctClass}">
                         <td>${bus.numParc}</td>
-                        <td>${bus.marque}</td>
+                        <td>${bus.marque} ${bus.modele}</td>
                         <td>${formatDate(bus.ct)}</td>
                         <td>${daysLeft < 0 ? 'EXPIRÉ' : 'J-' + daysLeft}</td>
-                        <td><input type="date" value="${bus.ct}" onchange="updateField('${bus.id}', 'ct', this.value)"></td>
+                        <td><input type="date" value="${bus.ct}" onchange="updateField('${bus.id}', 'ct', this.value)" style="padding:4px"></td>
                     </tr>`;
                 }
 
+                // Tableau Principal
                 const row = document.createElement('tr');
                 row.className = ctClass;
+                
+                let optsHtml = bus.options.map(opt => `<img src="${optionsDispo[opt]}" title="${opt}" class="option-img" onerror="this.style.display='none'">`).join('');
+
                 row.innerHTML = `
                     <td><strong>${bus.numParc}</strong></td>
                     <td>${bus.marque} ${bus.modele}</td>
-                    <td><span class="badge-motor ${getMotorClass(bus.moteur)}">${bus.moteur}</span></td>
-                    <td><img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" onerror="this.style.display='none'"></td>
-                    <td>${bus.immat}</td>
-                    <td>${bus.options.length} équip. <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span></td>
+                    <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
+                    <td>
+                        <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" title="${bus.ligne}" onerror="this.style.display='none'">
+                        <div style="text-align:center"><span class="btn-edit" onclick="openEdit('${bus.id}', 'ligne')">✏️</span></div>
+                    </td>
+                    <td>${bus.immat} <span class="btn-edit" onclick="openEdit('${bus.id}', 'immat')">✏️</span></td>
+                    <td>${optsHtml} <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span></td>
                     <td><input type="date" value="${bus.ct}" onchange="updateField('${bus.id}', 'ct', this.value)"></td>
                     <td>
                         <select onchange="updateField('${bus.id}', 'statut', this.value)">
                             ${listStatuts.map(s => `<option value="${s}" ${bus.statut === s ? 'selected' : ''}>${s}</option>`).join('')}
                         </select>
                     </td>
-                    <td><button onclick="deleteBus('${bus.id}')" class="btn-delete">🗑️</button></td>
+                    <td>
+                        <button onclick="deleteBus('${bus.id}')" class="btn-delete">🗑️</button>
+                        <button onclick="ouvrirRapport('${bus.id}')" class="btn-rapport">📋</button>
+                    </td>
                 `;
                 mainBody.appendChild(row);
             });
@@ -229,21 +304,75 @@
             localStorage.setItem('flotte_tm_v3', JSON.stringify(flotte));
         }
 
+        // --- GESTION ÉDITION ---
+        function openEdit(id, type) {
+            currentEditId = id;
+            currentEditType = type;
+            const bus = flotte.find(b => b.id === id);
+            const body = document.getElementById('modal-body');
+            const title = document.getElementById('modal-title');
+            body.innerHTML = '';
+            document.getElementById('edit-modal').style.display = 'flex';
+
+            if (type === 'ligne') {
+                title.innerText = "Changer Ligne";
+                let html = '<select id="edit-val">';
+                listLignes.forEach(l => html += `<option value="${l}" ${bus.ligne === l ? 'selected' : ''}>${l}</option>`);
+                body.innerHTML = html + '</select>';
+            } else if (type === 'moteur') {
+                title.innerText = "Changer Motorisation";
+                let html = '<select id="edit-val">';
+                listMoteurs.forEach(m => html += `<option value="${m}" ${bus.moteur === m ? 'selected' : ''}>${m}</option>`);
+                body.innerHTML = html + '</select>';
+            } else if (type === 'immat') {
+                title.innerText = "Modifier Plaque";
+                body.innerHTML = `<input type="text" id="edit-val" value="${bus.immat}">`;
+            } else if (type === 'options') {
+                title.innerText = "Équipements";
+                for (let key in optionsDispo) {
+                    const checked = bus.options.includes(key) ? 'checked' : '';
+                    body.innerHTML += `<label style="display:flex; align-items:center; margin:5px 0;"><input type="checkbox" class="opt-check" value="${key}" ${checked} style="width:auto; margin-right:10px;"> ${key}</label>`;
+                }
+            }
+        }
+
+        function saveEdit() {
+            const bus = flotte.find(b => b.id === currentEditId);
+            if (currentEditType === 'options') {
+                bus.options = Array.from(document.querySelectorAll('.opt-check:checked')).map(cb => cb.value);
+            } else {
+                bus[currentEditType] = document.getElementById('edit-val').value;
+            }
+            closeModal();
+            updateUI();
+        }
+
+        function updateField(id, field, val) {
+            const bus = flotte.find(b => b.id === id);
+            bus[field] = val;
+            updateUI();
+        }
+
+        // --- STATISTIQUES (CHART) ---
         function updateChart() {
             const ctx = document.getElementById('motorChart').getContext('2d');
-            const dataCounts = listMoteurs.map(m => 
-                flotte.filter(b => b.moteur === m && b.statut !== "🚚Livraison").length
-            );
+            
+            // On ignore les véhicules en livraison pour le compte
+            const filteredFlotte = flotte.filter(b => b.statut !== "🚚Livraison");
+            
+            const counts = listMoteurs.map(m => filteredFlotte.filter(b => b.moteur === m).length);
+            const total = counts.reduce((a, b) => a + b, 0);
 
-            if (motorChart) motorChart.destroy();
+            if (myChart) myChart.destroy();
 
-            motorChart = new Chart(ctx, {
+            myChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: listMoteurs,
                     datasets: [{
-                        data: dataCounts,
-                        backgroundColor: ['#ff4e50', '#ff9f43', '#11998e', '#38ef7d', '#2193b0']
+                        data: counts,
+                        backgroundColor: ['#FF4B2B', '#FF9F43', '#00b09b', '#96c93d', '#2193b0'],
+                        borderWidth: 2
                     }]
                 },
                 options: {
@@ -251,9 +380,7 @@
                         legend: { position: 'bottom' },
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
-                                    return ` ${context.label}: ${context.raw} véhicules`;
-                                }
+                                label: (item) => ` ${item.label}: ${item.raw} bus (Total: ${total})`
                             }
                         }
                     }
@@ -261,16 +388,31 @@
             });
         }
 
-        function updateField(id, field, val) {
-            const bus = flotte.find(b => b.id === id);
-            if(bus) bus[field] = val;
-            updateUI();
+        // --- RAPPORT PANNE ---
+        function ouvrirRapport(id) {
+            currentEditId = id;
+            document.getElementById('modal-rapport').style.display = 'flex';
+            genererTexteRapport();
         }
 
+        function genererTexteRapport() {
+            const bus = flotte.find(b => b.id === currentEditId);
+            const motif = document.getElementById('panne-motif').value;
+            const immatPure = bus.immat.replace(/[^0-9]/g, '');
+            document.getElementById('texte-rapport').value = `Bonjour,\n\nRapport de panne sur le ${bus.marque} ${bus.modele} n°${bus.numParc}.\nImmatriculation : ${bus.immat}\nProblème : ${motif}\n\nCordialement.`;
+        }
+
+        function copierRapport() {
+            document.getElementById('texte-rapport').select();
+            document.execCommand('copy');
+            alert("Copié !");
+        }
+
+        // Utilitaires
         function calculateDaysLeft(dateStr) { if (!dateStr) return 999; const diff = new Date(dateStr) - new Date(); return Math.ceil(diff / (1000 * 60 * 60 * 24)); }
         function formatDate(dateStr) { if (!dateStr) return "-"; return new Date(dateStr).toLocaleDateString('fr-FR'); }
-        function deleteBus(id) { if(confirm("Supprimer ?")) { flotte = flotte.filter(b => b.id !== id); updateUI(); } }
-        function closeModal() { document.getElementById('edit-modal').style.display = 'none'; }
+        function deleteBus(id) { if(confirm("Supprimer ce bus ?")) { flotte = flotte.filter(b => b.id !== id); updateUI(); } }
+        function closeModal() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
 
         document.getElementById('bus-form').onsubmit = function(e) {
             e.preventDefault();
@@ -292,9 +434,9 @@
             this.reset();
         };
 
-        // Fonctions Export/Import identiques au code original...
-        function exporterDonnees() { const dataStr = JSON.stringify(flotte, null, 2); const blob = new Blob([dataStr], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `parc_bus.json`; a.click(); }
-        function importerDonnees(event) { const reader = new FileReader(); reader.onload = function(e) { flotte = JSON.parse(e.target.result); updateUI(); }; reader.readAsText(event.target.files[0]); }
+        // Export/Import
+        function exporterDonnees() { const blob = new Blob([JSON.stringify(flotte)], {type: "application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "sauvegarde_parc.json"; a.click(); }
+        function importerDonnees(event) { const reader = new FileReader(); reader.onload = (e) => { flotte = JSON.parse(e.target.result); updateUI(); }; reader.readAsText(event.target.files[0]); }
 
         updateUI();
     </script>
