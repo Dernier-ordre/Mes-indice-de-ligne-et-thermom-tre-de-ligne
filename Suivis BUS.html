@@ -215,11 +215,22 @@
         const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔴Réformé", "🚚Livraison", "🛠️Équipement"];
         
         const optionsDispo = { 
-            "clim": "https://cdn-icons-png.flaticon.com/512/927/927567.png", 
-            "pmr": "https://cdn-icons-png.flaticon.com/512/706/706132.png", 
-            "wifi": "https://cdn-icons-png.flaticon.com/512/93/93158.png",
-            "Radio FM": "https://cdn-icons-png.flaticon.com/512/27/27445.png",
-            "Ports USB": "https://cdn-icons-png.flaticon.com/512/82/82402.png"
+            "clim": "lien_vers_image_clim.png", 
+            "pmr": "lien_vers_image_pmr.png", 
+            "wifi": "lien_vers_image_wifi.png", 
+            "Plateforme Rétractable": "lien_vers_image_plateforme.png", 
+            "Boutons arrêts demandés supplémentaires": "lien_vers_image_boutons_arrets.png", 
+            "Téléphone radio": "lien_vers_image_telephone.png", 
+            "Pupitre conducteur": "lien_vers_image_pupitre.png", 
+            "Bandeau d'information": "lien_vers_image_bandeau.png", 
+            "Écran Dynamique": "lien_vers_image_ecran.png", 
+            "Haut-parleurs": "lien_vers_image_haut_parleurs.png", 
+            "Balise priorité au feux": "lien_vers_image_balise.png", 
+            "caméra vidéo surveillance": "lien_vers_image_camera.png", 
+            "Radio FM": "lien_vers_image_radio.png", 
+            "Boutons self-service": "lien_vers_image_self_service.png", 
+            "Éthylotest Anti-Démarrage": "lien_vers_image_ethylotest.png", 
+            "Ports USB": "lien_vers_image_usb.png"
         };
 
         // Navigation onglets
@@ -399,7 +410,15 @@
             const bus = flotte.find(b => b.id === currentEditId);
             const motif = document.getElementById('panne-motif').value;
             const immatPure = bus.immat.replace(/[^0-9]/g, '');
-            document.getElementById('texte-rapport').value = `Bonjour,\n\nRapport de panne sur le ${bus.marque} ${bus.modele} n°${bus.numParc}.\nImmatriculation : ${bus.immat}\nProblème : ${motif}\n\nCordialement.`;
+            document.getElementById('texte-rapport').value = `bonjour,
+
+ci joint le rapport de panne de mon ${bus.marque} ${bus.modele} n°${bus.numParc}.
+
+Immatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=${immatPure}[/img]
+Problème rencontré : ${motif}
+Je souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : Non
+
+bonne journée cordialement`;
         }
 
         function copierRapport() {
