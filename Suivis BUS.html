@@ -316,96 +316,97 @@
 
         // 2. FONCTION PRINCIPALE DE MISE A JOUR UI
         function updateUI() {
-            const mainBody = document.getElementById('main-table-body');
-            const alertBody = document.getElementById('ct-alerts-body');
-            const venteBody = document.getElementById('vente-table-body');
-            const alertSection = document.getElementById('ct-alerts');
-            
-            mainBody.innerHTML = ''; alertBody.innerHTML = ''; venteBody.innerHTML = '';
-            let hasAlerts = false;
+    const mainBody = document.getElementById('main-table-body');
+    const alertBody = document.getElementById('ct-alerts-body');
+    const venteBody = document.getElementById('vente-table-body');
+    const alertSection = document.getElementById('ct-alerts');
+    
+    let mainHtml = '';
+    let alertHtml = '';
+    let venteHtml = '';
+    let hasAlerts = false;
 
-            flotte.sort((a, b) => String(a.numParc).localeCompare(String(b.numParc), undefined, {numeric: true}));
+    // On ne trie qu'une seule fois au début
+    flotte.sort((a, b) => String(a.numParc).localeCompare(String(b.numParc), undefined, {numeric: true}));
 
-            flotte.forEach((bus) => {
-                // Assurer que les nouveaux champs existent
-                bus.portes = bus.portes || "3";
-                
-                const daysLeft = calculateDaysLeft(bus.ct);
-                let ctClass = '';
-                if (bus.ct) {
-                    if (daysLeft < 0) ctClass = 'ct-expired';
-                    else if (daysLeft <= 6) ctClass = 'ct-danger';
-                    else if (daysLeft <= 12) ctClass = 'ct-warning';
-                }
-
-                // ALERTES CT (OnBlur utilisé pour ne pas perdre le focus en tapant)
-                if (bus.ct && daysLeft <= 12) {
-                    hasAlerts = true;
-                    alertBody.innerHTML += `<tr class="${ctClass}">
-                        <td>${bus.numParc}</td>
-                        <td>${bus.marque} ${bus.modele}</td>
-                        <td>${formatDate(bus.ct)}</td>
-                        <td>${daysLeft < 0 ? 'EXPIRÉ' : 'J-' + daysLeft}</td>
-                        <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
-                    </tr>`;
-                }
-
-                // TABLEAU PRINCIPAL (Affiche tout)
-                let optsHtml = bus.options.map(opt => `<img src="${optionsDispo[opt]}" title="${opt}" class="option-img" onerror="this.style.display='none'">`).join('');
-                
-                mainBody.innerHTML += `
-                    <tr class="${ctClass}">
-                        <td><strong>${bus.numParc}</strong></td>
-                        <td>${bus.marque} ${bus.modele}</td>
-                        <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
-                        <td>${bus.portes} <span class="btn-edit" onclick="openEdit('${bus.id}', 'portes')">✏️</span></td>
-                        <td>
-                            <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" title="${bus.ligne}" onerror="this.style.display='none'">
-                            <div style="text-align:center"><span class="btn-edit" onclick="openEdit('${bus.id}', 'ligne')">✏️</span></div>
-                        </td>
-                        <td>${bus.immat} <span class="btn-edit" onclick="openEdit('${bus.id}', 'immat')">✏️</span></td>
-                        <td>${optsHtml} <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span></td>
-                        <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
-                        <td>
-                            <select onchange="updateField('${bus.id}', 'statut', this.value)">
-                                ${listStatuts.map(s => `<option value="${s}" ${bus.statut === s ? 'selected' : ''}>${s}</option>`).join('')}
-                            </select>
-                        </td>
-                        <td>
-                            <button onclick="deleteBus('${bus.id}')" class="btn-delete">🗑️</button>
-                            <button onclick="ouvrirRapport('${bus.id}')" class="btn-rapport">📋</button>
-                        </td>
-                    </tr>
-                `;
-
-                // TABLEAU VENTE (Uniquement les bus "💲En Vente")
-                if (bus.statut === "💲En Vente") {
-                    venteBody.innerHTML += `
-                        <tr>
-                            <td><strong>${bus.numParc}</strong></td>
-                            <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span></td>
-                            <td>${bus.portes}</td>
-                            <td>${bus.immat}</td>
-                            <td>${formatDate(bus.ct)}</td>
-                            <td><select onchange="updateVenteField('${bus.id}','v_pub',this.value)"><option></option><option ${bus.v_pub==='Oui'?'selected':''}>Oui</option><option ${bus.v_pub==='Non'?'selected':''}>Non</option></select></td>
-                            <td><select onchange="updateVenteField('${bus.id}','v_baie',this.value)"><option></option><option ${bus.v_baie==='Oui'?'selected':''}>Oui</option><option ${bus.v_baie==='Non'?'selected':''}>Non</option></select></td>
-                            <td><select onchange="updateVenteField('${bus.id}','v_teinte',this.value)"><option></option><option ${bus.v_teinte==='Oui'?'selected':''}>Oui</option><option ${bus.v_teinte==='Non'?'selected':''}>Non</option></select></td>
-                            <td><select onchange="updateVenteField('${bus.id}','v_antiag',this.value)"><option></option><option ${bus.v_antiag==='Oui'?'selected':''}>Oui</option><option ${bus.v_antiag==='Non'?'selected':''}>Non</option></select></td>
-                            <td><input type="text" value="${bus.v_tech||''}" onblur="updateVenteField('${bus.id}','v_tech',this.value)" placeholder="ex: Bon"></td>
-                            <td><input type="text" value="${bus.v_revet||''}" onblur="updateVenteField('${bus.id}','v_revet',this.value)" placeholder="ex: Neuf"></td>
-                            <td><input type="text" value="${bus.v_girouette||''}" onblur="updateVenteField('${bus.id}','v_girouette',this.value)" placeholder="Marque/Type"></td>
-                            <td><input type="text" value="${bus.v_colonne||''}" onblur="updateVenteField('${bus.id}','v_colonne',this.value)" placeholder="Techno"></td>
-                            <td><select onchange="updateVenteField('${bus.id}','v_precablage',this.value)"><option></option><option ${bus.v_precablage==='Oui'?'selected':''}>Oui</option><option ${bus.v_precablage==='Non'?'selected':''}>Non</option></select></td>
-                            <td><input type="number" value="${bus.v_km||''}" onblur="updateVenteField('${bus.id}','v_km',this.value)" placeholder="Km"></td>
-                            <td><input type="text" value="${bus.v_pseudo||''}" onblur="updateVenteField('${bus.id}','v_pseudo',this.value)" placeholder="Pseudo"></td>
-                        </tr>
-                    `;
-                }
-            });
-
-            alertSection.style.display = hasAlerts ? 'block' : 'none';
-            localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
+    flotte.forEach((bus) => {
+        const daysLeft = calculateDaysLeft(bus.ct);
+        let ctClass = '';
+        if (bus.ct) {
+            if (daysLeft < 0) ctClass = 'ct-expired';
+            else if (daysLeft <= 6) ctClass = 'ct-danger';
+            else if (daysLeft <= 12) ctClass = 'ct-warning';
         }
+
+        // --- Construction Alertes CT ---
+        if (bus.ct && daysLeft <= 12) {
+            hasAlerts = true;
+            alertHtml += `<tr class="${ctClass}">
+                <td>${bus.numParc}</td>
+                <td>${bus.marque} ${bus.modele}</td>
+                <td>${formatDate(bus.ct)}</td>
+                <td>${daysLeft < 0 ? 'EXPIRÉ' : 'J-' + daysLeft}</td>
+                <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
+            </tr>`;
+        }
+
+        // --- Construction Tableau Principal ---
+        let optsHtml = (bus.options || []).map(opt => `<img src="${optionsDispo[opt]}" title="${opt}" class="option-img" onerror="this.style.display='none'">`).join('');
+        
+        mainHtml += `<tr class="${ctClass}">
+            <td><strong>${bus.numParc}</strong></td>
+            <td>${bus.marque} ${bus.modele}</td>
+            <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
+            <td>${bus.portes || 3} <span class="btn-edit" onclick="openEdit('${bus.id}', 'portes')">✏️</span></td>
+            <td>
+                <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" title="${bus.ligne}" onerror="this.style.display='none'">
+                <div style="text-align:center"><span class="btn-edit" onclick="openEdit('${bus.id}', 'ligne')">✏️</span></div>
+            </td>
+            <td>${bus.immat} <span class="btn-edit" onclick="openEdit('${bus.id}', 'immat')">✏️</span></td>
+            <td>${optsHtml} <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span></td>
+            <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
+            <td>
+                <select onchange="updateField('${bus.id}', 'statut', this.value)">
+                    ${listStatuts.map(s => `<option value="${s}" ${bus.statut === s ? 'selected' : ''}>${s}</option>`).join('')}
+                </select>
+            </td>
+            <td>
+                <button onclick="deleteBus('${bus.id}')" class="btn-delete">🗑️</button>
+                <button onclick="ouvrirRapport('${bus.id}')" class="btn-rapport">📋</button>
+            </td>
+        </tr>`;
+
+        // --- Construction Tableau Vente ---
+        if (bus.statut === "💲En Vente") {
+            venteHtml += `<tr>
+                <td><strong>${bus.numParc}</strong></td>
+                <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span></td>
+                <td>${bus.portes || 3}</td>
+                <td>${bus.immat}</td>
+                <td>${formatDate(bus.ct)}</td>
+                <td><select onchange="updateVenteField('${bus.id}','v_pub',this.value)"><option></option><option ${bus.v_pub==='Oui'?'selected':''}>Oui</option><option ${bus.v_pub==='Non'?'selected':''}>Non</option></select></td>
+                <td><select onchange="updateVenteField('${bus.id}','v_baie',this.value)"><option></option><option ${bus.v_baie==='Oui'?'selected':''}>Oui</option><option ${bus.v_baie==='Non'?'selected':''}>Non</option></select></td>
+                <td><select onchange="updateVenteField('${bus.id}','v_teinte',this.value)"><option></option><option ${bus.v_teinte==='Oui'?'selected':''}>Oui</option><option ${bus.v_teinte==='Non'?'selected':''}>Non</option></select></td>
+                <td><select onchange="updateVenteField('${bus.id}','v_antiag',this.value)"><option></option><option ${bus.v_antiag==='Oui'?'selected':''}>Oui</option><option ${bus.v_antiag==='Non'?'selected':''}>Non</option></select></td>
+                <td><input type="text" value="${bus.v_tech||''}" onblur="updateVenteField('${bus.id}','v_tech',this.value)"></td>
+                <td><input type="text" value="${bus.v_revet||''}" onblur="updateVenteField('${bus.id}','v_revet',this.value)"></td>
+                <td><input type="text" value="${bus.v_girouette||''}" onblur="updateVenteField('${bus.id}','v_girouette',this.value)"></td>
+                <td><input type="text" value="${bus.v_colonne||''}" onblur="updateVenteField('${bus.id}','v_colonne',this.value)"></td>
+                <td><select onchange="updateVenteField('${bus.id}','v_precablage',this.value)"><option></option><option ${bus.v_precablage==='Oui'?'selected':''}>Oui</option><option ${bus.v_precablage==='Non'?'selected':''}>Non</option></select></td>
+                <td><input type="number" value="${bus.v_km||''}" onblur="updateVenteField('${bus.id}','v_km',this.value)"></td>
+                <td><input type="text" value="${bus.v_pseudo||''}" onblur="updateVenteField('${bus.id}','v_pseudo',this.value)"></td>
+            </tr>`;
+        }
+    });
+
+    // Injection massive dans le DOM (une seule opération par tableau)
+    mainBody.innerHTML = mainHtml;
+    alertBody.innerHTML = alertHtml;
+    venteBody.innerHTML = venteHtml;
+    alertSection.style.display = hasAlerts ? 'block' : 'none';
+    
+    localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
+}
 
         // --- 3. GESTION DES CONTRATS PUB ---
         document.getElementById('contract-form').onsubmit = function(e) {
@@ -518,9 +519,18 @@
         }
 
         function updateField(id, field, val) {
-            const bus = flotte.find(b => b.id === id);
-            if(bus) { bus[field] = val; updateUI(); }
+    const bus = flotte.find(b => b.id === id);
+    if(bus) { 
+        bus[field] = val; 
+        // On ne rafraîchit l'interface que pour les champs qui impactent le tri ou l'affichage des alertes
+        if (field === 'statut' || field === 'ct') {
+            updateUI(); 
+        } else {
+            // Pour le reste, on sauvegarde juste sans tout re-calculer
+            localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
         }
+    }
+}
 
         function updateVenteField(id, field, val) {
             const bus = flotte.find(b => b.id === id);
