@@ -358,7 +358,7 @@
                         <td><strong>${bus.numParc}</strong></td>
                         <td>${bus.marque} ${bus.modele}</td>
                         <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
-                        <td>${bus.portes}</td>
+                        <td>${bus.portes} <span class="btn-edit" onclick="openEdit('${bus.id}', 'portes')">✏️</span></td>
                         <td>
                             <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" title="${bus.ligne}" onerror="this.style.display='none'">
                             <div style="text-align:center"><span class="btn-edit" onclick="openEdit('${bus.id}', 'ligne')">✏️</span></div>
@@ -495,6 +495,9 @@
             } else if (type === 'immat') {
                 title.innerText = "Modifier Plaque";
                 body.innerHTML = `<input type="text" id="edit-val" value="${bus.immat}">`;
+            } else if (type === 'portes') {
+                title.innerText = "Modifier Nombre de Portes";
+                body.innerHTML = `<input type="number" id="edit-val" value="${bus.portes}" min="1" max="6">`;
             } else if (type === 'options') {
                 title.innerText = "Équipements";
                 for (let key in optionsDispo) {
