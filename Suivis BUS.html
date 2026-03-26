@@ -7,24 +7,26 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; color: #1c1e21; }
-        h1, h2 { color: #2c3e50; }
+        h1, h2, h3 { color: #2c3e50; }
         
         /* Onglets */
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #dee2e6; padding-bottom: 10px; }
-        .tab-btn { padding: 10px 25px; cursor: pointer; border: none; background: #ddd; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #dee2e6; padding-bottom: 10px; }
+        .tab-btn { padding: 10px 20px; cursor: pointer; border: none; background: #ddd; border-radius: 8px; font-weight: bold; transition: 0.3s; }
         .tab-btn.active { background: #34495e; color: white; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Pastilles Motorisation (Style Image) */
+        /* Pastilles Motorisation */
         .motor-badge { 
-            display: inline-block; padding: 6px 20px; border-radius: 50px; 
+            display: inline-block; padding: 6px 15px; border-radius: 50px; 
             color: white; font-weight: bold; font-size: 0.85em; text-align: center;
             min-width: 80px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .bg-diesel { background: linear-gradient(to right, #FF4B2B, #FF416C); } /* Orange/Rouge */
-        .bg-gnv { background: linear-gradient(to right, #00b09b, #96c93d); }    /* Vert GNV */
-        .bg-elec { background: linear-gradient(to right, #2193b0, #6dd5ed); }   /* Bleu Elec */
+        .bg-diesel { background: linear-gradient(to right, #FF4B2B, #FF416C); } /* Rouge/Orange */
+        .bg-diesel-mh { background: linear-gradient(to right, #e65c00, #F9D423); } /* Orange/Jaune */
+        .bg-gnv { background: linear-gradient(to right, #00b09b, #96c93d); }    /* Vert Forêt */
+        .bg-gnv-mh { background: linear-gradient(to right, #11998e, #38ef7d); } /* Vert Menthe */
+        .bg-elec { background: linear-gradient(to right, #2193b0, #6dd5ed); }   /* Bleu */
 
         /* Couleurs CT */
         .ct-warning { background-color: #fff3cd !important; }
@@ -32,9 +34,10 @@
         .ct-expired { background-color: #f8d7da !important; color: #721c24 !important; font-weight: bold; }
 
         .form-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
         
-        table { width: 100%; border-collapse: collapse; background: #fff; margin-bottom: 30px; border-radius: 8px; overflow: hidden; font-size: 0.85em;}
+        .table-responsive { overflow-x: auto; margin-bottom: 30px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85em; white-space: nowrap; }
         th, td { padding: 10px; border: 1px solid #dee2e6; text-align: left; vertical-align: middle;}
         th { background-color: #34495e; color: white; }
         
@@ -42,11 +45,11 @@
         .ligne-img { height: 32px; vertical-align: middle; display: block; margin: 0 auto;}
         .option-img { height: 24px; width: 24px; vertical-align: middle; margin-right: 4px; object-fit: contain; }
 
-        /* Fenêtres Modales */
+        /* Modales */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
         .modal-content { background: white; padding: 20px; border-radius: 8px; width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto;}
         
-        input, select, button, textarea { padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
+        input, select, button, textarea { padding: 8px; margin: 4px 0; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
         button { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; }
         .btn-delete { background: #e74c3c; width: auto; padding: 5px 10px; }
         .btn-rapport { background: #f39c12; width: auto; padding: 5px 10px; margin-top: 5px;}
@@ -54,6 +57,7 @@
         textarea { height: 120px; font-family: monospace; font-size: 0.9em;}
         
         #chart-wrap { max-width: 500px; margin: 20px auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .total-row { background-color: #e8f4f8; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -63,40 +67,46 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('tab-flotte', this)">📋 Ma Flotte</button>
         <button class="tab-btn" onclick="switchTab('tab-stats', this)">📊 Répartition</button>
+        <button class="tab-btn" onclick="switchTab('tab-contrats', this)">💶 Contrats Pub</button>
+        <button class="tab-btn" onclick="switchTab('tab-archives', this)">🗄️ Archives Pub</button>
+        <button class="tab-btn" onclick="switchTab('tab-vente', this)" style="background-color:#d35400; color:white;">💲 Vente</button>
     </div>
 
     <div id="tab-flotte" class="tab-content active">
         <div style="margin-bottom: 20px;">
-            <button onclick="exporterDonnees()" style="background-color: #27ae60; width: auto; padding: 8px 15px;">💾 Exporter</button>
-            <button onclick="document.getElementById('import-file').click()" style="background-color: #8e44ad; width: auto; padding: 8px 15px;">📂 Importer</button>
+            <button onclick="exporterDonnees()" style="background-color: #27ae60; width: auto; padding: 8px 15px;">💾 Exporter (JSON)</button>
+            <button onclick="document.getElementById('import-file').click()" style="background-color: #8e44ad; width: auto; padding: 8px 15px;">📂 Importer (JSON)</button>
             <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importerDonnees(event)">
         </div>
 
         <div id="ct-alerts" style="display: none;">
             <h2>⚠️ Alertes CT (Priorité)</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>N° Parc</th>
-                        <th>Véhicule</th>
-                        <th>Date Expiration</th>
-                        <th>Urgence</th>
-                        <th style="width: 150px;">Mise à jour CT</th>
-                    </tr>
-                </thead>
-                <tbody id="ct-alerts-body"></tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>N° Parc</th>
+                            <th>Véhicule</th>
+                            <th>Date Expiration</th>
+                            <th>Urgence</th>
+                            <th style="width: 150px;">Mise à jour CT</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ct-alerts-body"></tbody>
+                </table>
+            </div>
         </div>
 
         <div class="form-container">
             <h3>➕ Ajouter des véhicules</h3>
             <form id="bus-form">
                 <div class="form-grid">
-                    <input type="number" id="qty" placeholder="Qté" value="1">
+                    <input type="number" id="qty" placeholder="Qté" value="1" min="1">
                     <input type="text" id="parc" placeholder="N° Parc" required>
                     <input type="text" id="marque" placeholder="Marque" required>
                     <input type="text" id="modele" placeholder="Modèle" required>
                     <input type="text" id="immat" placeholder="ID Plaque">
+                    <input type="number" id="portes" placeholder="Nbr Portes" value="3" min="1" max="6">
                     <select id="moteur">
                         <option value="Diesel">Diesel</option>
                         <option value="Diesel MH">Diesel MH</option>
@@ -107,7 +117,7 @@
                     <select id="ligne">
                         <option value="Non affecté">Ligne...</option>
                         <option value="P1">P1</option><option value="P2">P2</option><option value="P3">P3</option>
-                        <option value="L4">L1</option><option value="L4">L2</option><option value="L4">L3</option>
+                        <option value="L1">L1</option><option value="L2">L2</option><option value="L3">L3</option>
                         <option value="L4">L4</option><option value="L5">L5</option><option value="L6">L6</option>
                         <option value="L7">L7</option><option value="L8">L8</option><option value="L9">L9</option>
                         <option value="L10">L10</option><option value="L11">L11</option><option value="L12">L12</option>
@@ -122,28 +132,80 @@
             </form>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>N° Parc</th>
-                    <th>Marque & Modèle</th>
-                    <th>Moteur</th>
-                    <th>Ligne</th>
-                    <th>Immatriculation</th>
-                    <th>Options</th>
-                    <th>Expiration CT</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="main-table-body"></tbody>
-        </table>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>N° Parc</th>
+                        <th>Marque & Modèle</th>
+                        <th>Moteur</th>
+                        <th>Portes</th>
+                        <th>Ligne</th>
+                        <th>Immatriculation</th>
+                        <th>Options</th>
+                        <th>Expiration CT</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="main-table-body"></tbody>
+            </table>
+        </div>
     </div>
 
     <div id="tab-stats" class="tab-content">
         <h2 style="text-align:center">Répartition des Motorisations</h2>
+        <p style="text-align:center; font-style:italic;">(Exclut Livraison, Équipement et Vente)</p>
         <div id="chart-wrap">
             <canvas id="motorChart"></canvas>
+        </div>
+    </div>
+
+    <div id="tab-contrats" class="tab-content">
+        <div class="form-container">
+            <h3>💶 Ajouter un contrat publicitaire</h3>
+            <form id="contract-form" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <input type="text" id="c-nom" placeholder="Nom du contrat" required style="flex:1;">
+                <input type="date" id="c-fin" required style="flex:1;">
+                <input type="number" id="c-gain" placeholder="Gains (€)" step="0.01" required style="flex:1;">
+                <button type="submit" style="width: auto; padding: 0 20px;">Ajouter</button>
+            </form>
+        </div>
+        <div id="contracts-container"></div>
+    </div>
+
+    <div id="tab-archives" class="tab-content">
+        <h2>🗄️ Archives des mois passés</h2>
+        <div id="archives-container"></div>
+    </div>
+
+    <div id="tab-vente" class="tab-content">
+        <h2>💲 Véhicules en vente</h2>
+        <p>Gérez ici les détails techniques des véhicules destinés à la revente.</p>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>N° Parc</th>
+                        <th>Moteur</th>
+                        <th>Portes</th>
+                        <th>Immat.</th>
+                        <th>CT</th>
+                        <th>Emplacement Pub</th>
+                        <th>Baie Basse</th>
+                        <th>Vitres Teintées</th>
+                        <th>Anti-agression</th>
+                        <th>État Technique</th>
+                        <th>État Revêtement</th>
+                        <th>Girouette</th>
+                        <th>Col. Portes (Techno)</th>
+                        <th>Pré-câblage Self</th>
+                        <th>Kilométrage</th>
+                        <th>Pseudo Acheteur</th>
+                    </tr>
+                </thead>
+                <tbody id="vente-table-body"></tbody>
+            </table>
         </div>
     </div>
 
@@ -161,42 +223,42 @@
             <h3>📝 Rapport de Panne</h3>
             <select id="panne-motif" onchange="genererTexteRapport()">
                 <option value="Accident de circulation">Accident de circulation</option>
-<option value="Accident avec corporel">Accident avec corporel</option>
-<option value="Accident de circulation avec corporel">Accident de circulation avec corporel</option>
-<option value="Alternateur HS">Alternateur HS</option>
-<option value="Batterie HS">Batterie HS</option>
-<option value="Boîte de vitesse HS">Boîte de vitesse HS</option>
-<option value="Capteur de sécurité de réservoir HS">Capteur de sécurité de réservoir HS</option>
-<option value="Cassure Moteur">Cassure Moteur</option>
-<option value="Conduites de gaz obstruées">Conduites de gaz obstruées</option>
-<option value="Convertisseur HS">Convertisseur HS</option>
-<option value="Défaut portes">Défaut portes</option>
-<option value="Dégradation">Dégradation</option>
-<option value="Démarreur HS">Démarreur HS</option>
-<option value="Durite d'eau percée">Durite d'eau percée</option>
-<option value="Durite d'huile percée">Durite d'huile percée</option>
-<option value="Feux grillé">Feux grillé</option>
-<option value="Frein de parc non fonctionnel">Frein de parc non fonctionnel</option>
-<option value="Freins défectueux">Freins défectueux</option>
-<option value="Fuite d'air au circuit de freinage">Fuite d'air au circuit de freinage</option>
-<option value="Fuite d'huile">Fuite d'huile</option>
-<option value="Girouette HS">Girouette HS</option>
-<option value="Hausse importante de température">Hausse importante de température</option>
-<option value="Jeu excessif dans la direction">Jeu excessif dans la direction</option>
-<option value="Niveau de liquide de refroidissement trop bas">Niveau de liquide de refroidissement trop bas</option>
-<option value="Pare-brise fissuré">Pare-brise fissuré</option>
-<option value="Plaquettes de freins trop usées">Plaquettes de freins trop usées</option>
-<option value="Pneu crevé">Pneu crevé</option>
-<option value="Pneus lisses">Pneus lisses</option>
-<option value="Pompe d'alimentation HS">Pompe d'alimentation HS</option>
-<option value="Problème de freins">Freins défaillants</option>
-<option value="Problèmes de suspensions">Problèmes de suspensions</option>
-<option value="Système de contrôle des émissions défaillant">Système de contrôle des émissions défaillant</option>
-<option value="Turbo HS">Turbo HS</option>
-<option value="Usure anormale des bougies">Usure anormale des bougies</option>
-<option value="Usure excessive des coussins d’air">Usure excessive des coussins d’air</option>
-<option value="Ventilateur Moteur HS">Ventilateur Moteur HS</option>
-<option value="Vitre cassée">Vitre cassée</option>
+                <option value="Accident avec corporel">Accident avec corporel</option>
+                <option value="Accident de circulation avec corporel">Accident de circulation avec corporel</option>
+                <option value="Alternateur HS">Alternateur HS</option>
+                <option value="Batterie HS">Batterie HS</option>
+                <option value="Boîte de vitesse HS">Boîte de vitesse HS</option>
+                <option value="Capteur de sécurité de réservoir HS">Capteur de sécurité de réservoir HS</option>
+                <option value="Cassure Moteur">Cassure Moteur</option>
+                <option value="Conduites de gaz obstruées">Conduites de gaz obstruées</option>
+                <option value="Convertisseur HS">Convertisseur HS</option>
+                <option value="Défaut portes">Défaut portes</option>
+                <option value="Dégradation">Dégradation</option>
+                <option value="Démarreur HS">Démarreur HS</option>
+                <option value="Durite d'eau percée">Durite d'eau percée</option>
+                <option value="Durite d'huile percée">Durite d'huile percée</option>
+                <option value="Feux grillé">Feux grillé</option>
+                <option value="Frein de parc non fonctionnel">Frein de parc non fonctionnel</option>
+                <option value="Freins défectueux">Freins défectueux</option>
+                <option value="Fuite d'air au circuit de freinage">Fuite d'air au circuit de freinage</option>
+                <option value="Fuite d'huile">Fuite d'huile</option>
+                <option value="Girouette HS">Girouette HS</option>
+                <option value="Hausse importante de température">Hausse importante de température</option>
+                <option value="Jeu excessif dans la direction">Jeu excessif dans la direction</option>
+                <option value="Niveau de liquide de refroidissement trop bas">Niveau de liquide de refroidissement trop bas</option>
+                <option value="Pare-brise fissuré">Pare-brise fissuré</option>
+                <option value="Plaquettes de freins trop usées">Plaquettes de freins trop usées</option>
+                <option value="Pneu crevé">Pneu crevé</option>
+                <option value="Pneus lisses">Pneus lisses</option>
+                <option value="Pompe d'alimentation HS">Pompe d'alimentation HS</option>
+                <option value="Problème de freins">Freins défaillants</option>
+                <option value="Problèmes de suspensions">Problèmes de suspensions</option>
+                <option value="Système de contrôle des émissions défaillant">Système de contrôle des émissions défaillant</option>
+                <option value="Turbo HS">Turbo HS</option>
+                <option value="Usure anormale des bougies">Usure anormale des bougies</option>
+                <option value="Usure excessive des coussins d’air">Usure excessive des coussins d’air</option>
+                <option value="Ventilateur Moteur HS">Ventilateur Moteur HS</option>
+                <option value="Vitre cassée">Vitre cassée</option>
             </select>
             <textarea id="texte-rapport" readonly></textarea>
             <button onclick="copierRapport()">📋 Copier le texte</button>
@@ -205,14 +267,17 @@
     </div>
 
     <script>
-        let flotte = JSON.parse(localStorage.getItem('flotte_tm_v3')) || [];
+        // 1. INITIALISATION DES DONNÉES
+        let flotte = JSON.parse(localStorage.getItem('flotte_tm_v4')) || [];
+        let contrats = JSON.parse(localStorage.getItem('contrats_tm_v1')) || [];
+        
         let currentEditId = null;
         let currentEditType = null;
         let myChart = null;
 
-        const listLignes = ["L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "P1", "P2", "P3", "S1", "S2", "S3", "S4", "S5", "R1", "R2", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
+        const listLignes = ["P1", "P2", "P3", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "S1", "S2", "S3", "S4", "S5", "R1", "R2", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
         const listMoteurs = ["Diesel", "Diesel MH", "GNV", "GNV MH", "Électrique"];
-        const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔴Réformé", "🚚Livraison", "🛠️Équipement"];
+        const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔴Réformé", "🚚Livraison", "🛠️Équipement", "💲En Vente"];
         
         const optionsDispo = { 
             "clim": "https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/Climatisation.svg", 
@@ -232,34 +297,39 @@
             "Ports USB": "https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/Ports USB.svg"
         };
 
-        // Navigation onglets
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
             if(tabId === 'tab-stats') updateChart();
+            if(tabId === 'tab-contrats' || tabId === 'tab-archives') renderContracts();
         }
 
-        // Classe pour les pastilles dégradées
         function getBadgeClass(motor) {
-            if(motor.includes("Diesel")) return "bg-diesel";
-            if(motor.includes("GNV")) return "bg-gnv";
+            if(motor === "Diesel") return "bg-diesel";
+            if(motor === "Diesel MH") return "bg-diesel-mh";
+            if(motor === "GNV") return "bg-gnv";
+            if(motor === "GNV MH") return "bg-gnv-mh";
             return "bg-elec";
         }
 
+        // 2. FONCTION PRINCIPALE DE MISE A JOUR UI
         function updateUI() {
             const mainBody = document.getElementById('main-table-body');
             const alertBody = document.getElementById('ct-alerts-body');
+            const venteBody = document.getElementById('vente-table-body');
             const alertSection = document.getElementById('ct-alerts');
-            mainBody.innerHTML = '';
-            alertBody.innerHTML = '';
+            
+            mainBody.innerHTML = ''; alertBody.innerHTML = ''; venteBody.innerHTML = '';
             let hasAlerts = false;
 
-            // Tri
             flotte.sort((a, b) => String(a.numParc).localeCompare(String(b.numParc), undefined, {numeric: true}));
 
             flotte.forEach((bus) => {
+                // Assurer que les nouveaux champs existent
+                bus.portes = bus.portes || "3";
+                
                 const daysLeft = calculateDaysLeft(bus.ct);
                 let ctClass = '';
                 if (bus.ct) {
@@ -268,7 +338,7 @@
                     else if (daysLeft <= 12) ctClass = 'ct-warning';
                 }
 
-                // Tableau Alertes CT (Haut de page)
+                // ALERTES CT (OnBlur utilisé pour ne pas perdre le focus en tapant)
                 if (bus.ct && daysLeft <= 12) {
                     hasAlerts = true;
                     alertBody.innerHTML += `<tr class="${ctClass}">
@@ -276,53 +346,141 @@
                         <td>${bus.marque} ${bus.modele}</td>
                         <td>${formatDate(bus.ct)}</td>
                         <td>${daysLeft < 0 ? 'EXPIRÉ' : 'J-' + daysLeft}</td>
-                        <td><input type="date" value="${bus.ct}" onchange="updateField('${bus.id}', 'ct', this.value)" style="padding:4px"></td>
+                        <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
                     </tr>`;
                 }
 
-                // Tableau Principal
-                const row = document.createElement('tr');
-                row.className = ctClass;
-                
+                // TABLEAU PRINCIPAL (Affiche tout)
                 let optsHtml = bus.options.map(opt => `<img src="${optionsDispo[opt]}" title="${opt}" class="option-img" onerror="this.style.display='none'">`).join('');
-
-                row.innerHTML = `
-                    <td><strong>${bus.numParc}</strong></td>
-                    <td>${bus.marque} ${bus.modele}</td>
-                    <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
-                    <td>
-                        <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" title="${bus.ligne}" onerror="this.style.display='none'">
-                        <div style="text-align:center"><span class="btn-edit" onclick="openEdit('${bus.id}', 'ligne')">✏️</span></div>
-                    </td>
-                    <td>${bus.immat} <span class="btn-edit" onclick="openEdit('${bus.id}', 'immat')">✏️</span></td>
-                    <td>${optsHtml} <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span></td>
-                    <td><input type="date" value="${bus.ct}" onchange="updateField('${bus.id}', 'ct', this.value)"></td>
-                    <td>
-                        <select onchange="updateField('${bus.id}', 'statut', this.value)">
-                            ${listStatuts.map(s => `<option value="${s}" ${bus.statut === s ? 'selected' : ''}>${s}</option>`).join('')}
-                        </select>
-                    </td>
-                    <td>
-                        <button onclick="deleteBus('${bus.id}')" class="btn-delete">🗑️</button>
-                        <button onclick="ouvrirRapport('${bus.id}')" class="btn-rapport">📋</button>
-                    </td>
+                
+                mainBody.innerHTML += `
+                    <tr class="${ctClass}">
+                        <td><strong>${bus.numParc}</strong></td>
+                        <td>${bus.marque} ${bus.modele}</td>
+                        <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
+                        <td>${bus.portes}</td>
+                        <td>
+                            <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" title="${bus.ligne}" onerror="this.style.display='none'">
+                            <div style="text-align:center"><span class="btn-edit" onclick="openEdit('${bus.id}', 'ligne')">✏️</span></div>
+                        </td>
+                        <td>${bus.immat} <span class="btn-edit" onclick="openEdit('${bus.id}', 'immat')">✏️</span></td>
+                        <td>${optsHtml} <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span></td>
+                        <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
+                        <td>
+                            <select onchange="updateField('${bus.id}', 'statut', this.value)">
+                                ${listStatuts.map(s => `<option value="${s}" ${bus.statut === s ? 'selected' : ''}>${s}</option>`).join('')}
+                            </select>
+                        </td>
+                        <td>
+                            <button onclick="deleteBus('${bus.id}')" class="btn-delete">🗑️</button>
+                            <button onclick="ouvrirRapport('${bus.id}')" class="btn-rapport">📋</button>
+                        </td>
+                    </tr>
                 `;
-                mainBody.appendChild(row);
+
+                // TABLEAU VENTE (Uniquement les bus "💲En Vente")
+                if (bus.statut === "💲En Vente") {
+                    venteBody.innerHTML += `
+                        <tr>
+                            <td><strong>${bus.numParc}</strong></td>
+                            <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span></td>
+                            <td>${bus.portes}</td>
+                            <td>${bus.immat}</td>
+                            <td>${formatDate(bus.ct)}</td>
+                            <td><select onchange="updateVenteField('${bus.id}','v_pub',this.value)"><option></option><option ${bus.v_pub==='Oui'?'selected':''}>Oui</option><option ${bus.v_pub==='Non'?'selected':''}>Non</option></select></td>
+                            <td><select onchange="updateVenteField('${bus.id}','v_baie',this.value)"><option></option><option ${bus.v_baie==='Oui'?'selected':''}>Oui</option><option ${bus.v_baie==='Non'?'selected':''}>Non</option></select></td>
+                            <td><select onchange="updateVenteField('${bus.id}','v_teinte',this.value)"><option></option><option ${bus.v_teinte==='Oui'?'selected':''}>Oui</option><option ${bus.v_teinte==='Non'?'selected':''}>Non</option></select></td>
+                            <td><select onchange="updateVenteField('${bus.id}','v_antiag',this.value)"><option></option><option ${bus.v_antiag==='Oui'?'selected':''}>Oui</option><option ${bus.v_antiag==='Non'?'selected':''}>Non</option></select></td>
+                            <td><input type="text" value="${bus.v_tech||''}" onblur="updateVenteField('${bus.id}','v_tech',this.value)" placeholder="ex: Bon"></td>
+                            <td><input type="text" value="${bus.v_revet||''}" onblur="updateVenteField('${bus.id}','v_revet',this.value)" placeholder="ex: Neuf"></td>
+                            <td><input type="text" value="${bus.v_girouette||''}" onblur="updateVenteField('${bus.id}','v_girouette',this.value)" placeholder="Marque/Type"></td>
+                            <td><input type="text" value="${bus.v_colonne||''}" onblur="updateVenteField('${bus.id}','v_colonne',this.value)" placeholder="Techno"></td>
+                            <td><select onchange="updateVenteField('${bus.id}','v_precablage',this.value)"><option></option><option ${bus.v_precablage==='Oui'?'selected':''}>Oui</option><option ${bus.v_precablage==='Non'?'selected':''}>Non</option></select></td>
+                            <td><input type="number" value="${bus.v_km||''}" onblur="updateVenteField('${bus.id}','v_km',this.value)" placeholder="Km"></td>
+                            <td><input type="text" value="${bus.v_pseudo||''}" onblur="updateVenteField('${bus.id}','v_pseudo',this.value)" placeholder="Pseudo"></td>
+                        </tr>
+                    `;
+                }
             });
 
             alertSection.style.display = hasAlerts ? 'block' : 'none';
-            localStorage.setItem('flotte_tm_v3', JSON.stringify(flotte));
+            localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
         }
 
-        // --- GESTION ÉDITION ---
+        // --- 3. GESTION DES CONTRATS PUB ---
+        document.getElementById('contract-form').onsubmit = function(e) {
+            e.preventDefault();
+            contrats.push({
+                id: Date.now().toString(),
+                nom: document.getElementById('c-nom').value,
+                fin: document.getElementById('c-fin').value,
+                gain: parseFloat(document.getElementById('c-gain').value)
+            });
+            localStorage.setItem('contrats_tm_v1', JSON.stringify(contrats));
+            this.reset();
+            renderContracts();
+        };
+
+        function deleteContract(id) {
+            if(confirm("Supprimer ce contrat ?")) {
+                contrats = contrats.filter(c => c.id !== id);
+                localStorage.setItem('contrats_tm_v1', JSON.stringify(contrats));
+                renderContracts();
+            }
+        }
+
+        function renderContracts() {
+            const contActive = document.getElementById('contracts-container');
+            const contArchive = document.getElementById('archives-container');
+            contActive.innerHTML = ''; contArchive.innerHTML = '';
+            
+            const grouped = {};
+            const currentDate = new Date();
+            const currentMonthKey = currentDate.getFullYear() + '-' + String(currentDate.getMonth()+1).padStart(2,'0');
+
+            contrats.forEach(c => {
+                const d = new Date(c.fin);
+                const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+                const label = d.toLocaleDateString('fr-FR', {month: 'long', year: 'numeric'}).toUpperCase();
+                if(!grouped[key]) grouped[key] = { label: label, items: [], total: 0 };
+                grouped[key].items.push(c);
+                grouped[key].total += c.gain;
+            });
+
+            Object.keys(grouped).sort().forEach(key => {
+                const group = grouped[key];
+                let tableHtml = `
+                    <div class="table-responsive" style="margin-bottom:20px;">
+                        <h4 style="margin: 10px; color:#2c3e50;">📅 ${group.label}</h4>
+                        <table>
+                            <thead><tr><th>Nom du contrat</th><th>Date de fin</th><th>Gains</th><th>Action</th></tr></thead>
+                            <tbody>
+                `;
+                group.items.forEach(c => {
+                    tableHtml += `<tr><td>${c.nom}</td><td>${formatDate(c.fin)}</td><td>${c.gain.toFixed(2)} €</td>
+                    <td><button class="btn-delete" onclick="deleteContract('${c.id}')">🗑️</button></td></tr>`;
+                });
+                tableHtml += `<tr class="total-row"><td colspan="2" style="text-align:right;">TOTAL DU MOIS :</td><td>${group.total.toFixed(2)} €</td><td></td></tr></tbody></table></div>`;
+
+                // Si la date (Année-Mois) est strictement inférieure au mois actuel => Archive
+                if (key < currentMonthKey) {
+                    contArchive.innerHTML += tableHtml;
+                } else {
+                    contActive.innerHTML += tableHtml;
+                }
+            });
+
+            if(contArchive.innerHTML === '') contArchive.innerHTML = '<p>Aucun contrat archivé.</p>';
+            if(contActive.innerHTML === '') contActive.innerHTML = '<p>Aucun contrat en cours.</p>';
+        }
+
+        // --- 4. GESTION DES MODIFICATIONS ---
         function openEdit(id, type) {
-            currentEditId = id;
-            currentEditType = type;
+            currentEditId = id; currentEditType = type;
             const bus = flotte.find(b => b.id === id);
             const body = document.getElementById('modal-body');
             const title = document.getElementById('modal-title');
-            body.innerHTML = '';
-            document.getElementById('edit-modal').style.display = 'flex';
+            body.innerHTML = ''; document.getElementById('edit-modal').style.display = 'flex';
 
             if (type === 'ligne') {
                 title.innerText = "Changer Ligne";
@@ -353,62 +511,49 @@
             } else {
                 bus[currentEditType] = document.getElementById('edit-val').value;
             }
-            closeModal();
-            updateUI();
+            closeModal(); updateUI();
         }
 
         function updateField(id, field, val) {
             const bus = flotte.find(b => b.id === id);
-            bus[field] = val;
-            updateUI();
+            if(bus) { bus[field] = val; updateUI(); }
         }
 
-        // --- STATISTIQUES (CHART) ---
+        function updateVenteField(id, field, val) {
+            const bus = flotte.find(b => b.id === id);
+            if(bus) { bus[field] = val; localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte)); }
+            // Pas de updateUI() ici pour ne pas perdre le focus quand on tape du texte dans le tableau Vente
+        }
+
+        // --- 5. GRAPHIQUE ---
         function updateChart() {
             const ctx = document.getElementById('motorChart').getContext('2d');
-            
-            // On ignore les véhicules en livraison pour le compte
-            const filteredFlotte = flotte.filter(b => b.statut !== "🚚Livraison");
-            
-            const counts = listMoteurs.map(m => filteredFlotte.filter(b => b.moteur === m).length);
+            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "🛠️Équipement" && b.statut !== "💲En Vente");
+            const counts = listMoteurs.map(m => filtered.filter(b => b.moteur === m).length);
             const total = counts.reduce((a, b) => a + b, 0);
 
             if (myChart) myChart.destroy();
-
             myChart = new Chart(ctx, {
-                type: 'pie',
+                type: 'doughnut',
                 data: {
                     labels: listMoteurs,
                     datasets: [{
                         data: counts,
-                        backgroundColor: ['#FF4B2B', '#FF9F43', '#00b09b', '#96c93d', '#2193b0'],
+                        backgroundColor: ['#FF4B2B', '#f5af19', '#00b09b', '#38ef7d', '#2193b0'],
                         borderWidth: 2
                     }]
                 },
-                options: {
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: {
-                            callbacks: {
-                                label: (item) => ` ${item.label}: ${item.raw} bus (Total: ${total})`
-                            }
-                        }
-                    }
-                }
+                options: { plugins: { tooltip: { callbacks: { label: (item) => ` ${item.label}: ${item.raw} bus (Total Parc: ${total})` } } } }
             });
         }
 
-        // --- RAPPORT PANNE ---
+        // --- 6. RAPPORT PANNE ---
         function ouvrirRapport(id) {
-            currentEditId = id;
-            document.getElementById('modal-rapport').style.display = 'flex';
-            genererTexteRapport();
+            currentEditId = id; document.getElementById('modal-rapport').style.display = 'flex'; genererTexteRapport();
         }
-
         function genererTexteRapport() {
             const bus = flotte.find(b => b.id === currentEditId);
             const motif = document.getElementById('panne-motif').value;
-            const immatPure = bus.immat.replace(/[^0-9]/g, '');
             document.getElementById('texte-rapport').value = `bonjour,
 
 ci joint le rapport de panne de mon ${bus.marque} ${bus.modele} n°${bus.numParc}.
@@ -419,16 +564,11 @@ Je souhaite un véhicule de prêt durant la durée des réparations si panne 3 j
 
 bonne journée cordialement`;
         }
+        function copierRapport() { document.getElementById('texte-rapport').select(); document.execCommand('copy'); alert("Copié !"); }
 
-        function copierRapport() {
-            document.getElementById('texte-rapport').select();
-            document.execCommand('copy');
-            alert("Copié !");
-        }
-
-        // Utilitaires
-        function calculateDaysLeft(dateStr) { if (!dateStr) return 999; const diff = new Date(dateStr) - new Date(); return Math.ceil(diff / (1000 * 60 * 60 * 24)); }
-        function formatDate(dateStr) { if (!dateStr) return "-"; return new Date(dateStr).toLocaleDateString('fr-FR'); }
+        // --- 7. UTILITAIRES & FORMULAIRE ---
+        function calculateDaysLeft(d) { if(!d) return 999; return Math.ceil((new Date(d) - new Date()) / 86400000); }
+        function formatDate(d) { if(!d) return "-"; return new Date(d).toLocaleDateString('fr-FR'); }
         function deleteBus(id) { if(confirm("Supprimer ce bus ?")) { flotte = flotte.filter(b => b.id !== id); updateUI(); } }
         function closeModal() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
 
@@ -443,19 +583,31 @@ bonne journée cordialement`;
                     marque: document.getElementById('marque').value,
                     modele: document.getElementById('modele').value,
                     moteur: document.getElementById('moteur').value,
+                    portes: document.getElementById('portes').value,
                     immat: document.getElementById('immat').value,
                     ligne: document.getElementById('ligne').value,
                     options: [], ct: '', statut: '🟢En Service'
                 });
             }
-            updateUI();
-            this.reset();
+            updateUI(); this.reset();
         };
 
-        // Export/Import
-        function exporterDonnees() { const blob = new Blob([JSON.stringify(flotte)], {type: "application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "sauvegarde_parc.json"; a.click(); }
-        function importerDonnees(event) { const reader = new FileReader(); reader.onload = (e) => { flotte = JSON.parse(e.target.result); updateUI(); }; reader.readAsText(event.target.files[0]); }
+        function exporterDonnees() { const data = { flotte, contrats }; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type: "application/json"})); a.download = "sauvegarde_complete.json"; a.click(); }
+        function importerDonnees(e) { 
+            const reader = new FileReader(); 
+            reader.onload = (ev) => { 
+                const data = JSON.parse(ev.target.result); 
+                if(data.flotte) { flotte = data.flotte; contrats = data.contrats || []; } 
+                else { flotte = data; } // Rétrocompatibilité ancienne sauvegarde
+                updateUI(); renderContracts(); 
+            }; 
+            reader.readAsText(e.target.files[0]); 
+        }
 
+        updateUI(); renderContracts();
+    </script>
+</body>
+</html>
         updateUI();
     </script>
 </body>
