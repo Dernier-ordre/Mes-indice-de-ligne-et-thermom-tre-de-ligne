@@ -572,7 +572,7 @@
             const motif = document.getElementById('panne-motif').value;
             
             // CORRECTION : Création de l'immatriculation pure (sans tirets ni espaces pour le lien image)
-            const immatPure = bus.immat ? bus.immat.replace(/[\s-]/g, '') : 'SANS_PLAQUE';
+            const immatPure = bus.immat ? bus.immat.replace(/\D/g, '') : 'SANS_PLAQUE';
 
             document.getElementById('texte-rapport').value = `bonjour,
 
