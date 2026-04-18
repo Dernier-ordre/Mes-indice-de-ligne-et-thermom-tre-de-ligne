@@ -308,6 +308,7 @@
                 <option value="Feux grillé">Feux grillé</option>
                 <option value="Frein de parc non fonctionnel">Frein de parc non fonctionnel</option>
                 <option value="Freins défectueux">Freins défectueux</option>
+                <option value="Freins défaillants">Freins défectueux</option>
                 <option value="Fuite d'air au circuit de freinage">Fuite d'air au circuit de freinage</option>
                 <option value="Fuite d'huile">Fuite d'huile</option>
                 <option value="Girouette HS">Girouette HS</option>
@@ -722,14 +723,27 @@
 
         // --- RAPPORT PANNE ---
         function ouvrirRapport(id) {
-            currentEditId = id; document.getElementById('modal-rapport').style.display = 'flex'; genererTexteRapport();
+            currentEditId = id; 
+            document.getElementById('modal-rapport').style.display = 'flex'; 
+            genererTexteRapport();
         }
+
         function genererTexteRapport() {
             const bus = flotte.find(b => b.id === currentEditId);
             const motif = document.getElementById('panne-motif').value;
-            const immatPure = bus.immat ? bus.immat.replace(/\D/g, '') : 'SANS_PLAQUE';
             
-            document.getElementById('texte-rapport').value = `bonjour,\n\nci joint le rapport de panne de mon ${bus.marque} ${bus.modele} n°${bus.numParc}.\n\nImmatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=${immatPure}[/img]\nProblème rencontré : ${motif}\nJe souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : Non\n\nbonne journée cordialement`;
+            // CORRECTION : Création de l'immatriculation pure (sans tirets ni espaces pour le lien image)
+            const immatPure = bus.immat ? bus.immat.replace(/\D/g, '') : 'SANS_PLAQUE';
+
+            document.getElementById('texte-rapport').value = `bonjour,
+
+ci joint le rapport de panne de mon ${bus.marque} ${bus.modele} n°${bus.numParc}.
+
+Immatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=${immatPure}[/img]
+Problème rencontré : ${motif}
+Je souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : Non
+
+bonne journée cordialement`;
         }
         function copierRapport() { document.getElementById('texte-rapport').select(); document.execCommand('copy'); alert("Copié !"); }
 
