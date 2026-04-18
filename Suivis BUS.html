@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion Parc - Transport Manager Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; color: #1c1e21; }
         h1, h2, h3 { color: #2c3e50; }
@@ -22,11 +23,11 @@
             color: white; font-weight: bold; font-size: 0.85em; text-align: center;
             min-width: 80px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .bg-diesel { background: linear-gradient(to right, #FF4B2B, #FF416C); } /* Rouge/Orange */
-        .bg-diesel-mh { background: linear-gradient(to right, #e65c00, #F9D423); } /* Orange/Jaune */
-        .bg-gnv { background: linear-gradient(to right, #00b09b, #96c93d); }    /* Vert Forêt */
-        .bg-gnv-mh { background: linear-gradient(to right, #11998e, #38ef7d); } /* Vert Menthe */
-        .bg-elec { background: linear-gradient(to right, #2193b0, #6dd5ed); }   /* Bleu */
+        .bg-diesel { background: linear-gradient(to right, #FF4B2B, #FF416C); } 
+        .bg-diesel-mh { background: linear-gradient(to right, #e65c00, #F9D423); } 
+        .bg-gnv { background: linear-gradient(to right, #00b09b, #96c93d); }    
+        .bg-gnv-mh { background: linear-gradient(to right, #11998e, #38ef7d); } 
+        .bg-elec { background: linear-gradient(to right, #2193b0, #6dd5ed); }   
 
         /* Couleurs CT */
         .ct-warning { background-color: #fff3cd !important; }
@@ -58,6 +59,9 @@
         
         #chart-wrap { max-width: 500px; margin: 20px auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .total-row { background-color: #e8f4f8; font-weight: bold; }
+
+        /* Barre d'action en masse */
+        #bulk-action-bar { background: #e8f4f8; padding: 10px 20px; border-radius: 8px; margin-bottom: 10px; display: none; align-items: center; gap: 15px; border: 1px solid #bce8f1; }
     </style>
 </head>
 <body>
@@ -132,10 +136,24 @@
             </form>
         </div>
 
+        <div style="display: flex; gap: 15px; margin-bottom: 10px; align-items: center;">
+            <strong>Filtre Série :</strong>
+            <select id="filter-series" onchange="updateUI()" style="width: 250px;">
+                <option value="ALL">Toutes les séries</option>
+            </select>
+        </div>
+
+        <div id="bulk-action-bar">
+            <span id="bulk-count" style="font-weight:bold;">0 sélectionné(s)</span>
+            <button onclick="openBulkEdit()" style="width:auto; padding:5px 15px;">✏️ Modifier la sélection</button>
+            <button onclick="clearBulkSelection()" class="btn-cancel" style="width:auto; padding:5px 15px;">Annuler</button>
+        </div>
+
         <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="check-all" onchange="toggleAll(this)"></th>
                         <th>N° Parc</th>
                         <th>Marque & Modèle</th>
                         <th>Moteur</th>
@@ -218,6 +236,56 @@
         </div>
     </div>
 
+    <div id="bulk-edit-modal" class="modal">
+        <div class="modal-content">
+            <h3>✏️ Modification en masse</h3>
+            <p style="font-size:0.85em; color:#666;">Laissez vide (ou sur "Ne pas modifier") les éléments que vous souhaitez conserver.</p>
+            <label>Moteur :</label>
+            <select id="bulk-moteur">
+                <option value="">-- Ne pas modifier --</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Diesel MH">Diesel MH</option>
+                <option value="GNV">GNV</option>
+                <option value="GNV MH">GNV MH</option>
+                <option value="Électrique">Électrique</option>
+            </select>
+            <label>Ligne :</label>
+            <select id="bulk-ligne">
+                <option value="">-- Ne pas modifier --</option>
+                <option value="Non affecté">Non affecté</option>
+                <option value="P1">P1</option><option value="P2">P2</option><option value="P3">P3</option>
+                <option value="L1">L1</option><option value="L2">L2</option><option value="L3">L3</option>
+                <option value="L4">L4</option><option value="L5">L5</option><option value="L6">L6</option>
+                <option value="L7">L7</option><option value="L8">L8</option><option value="L9">L9</option>
+                <option value="L10">L10</option><option value="L11">L11</option><option value="L12">L12</option>
+                <option value="L13">L13</option><option value="S1">S1</option><option value="S2">S2</option>
+                <option value="S3">S3</option><option value="S4">S4</option><option value="S5">S5</option>
+                <option value="PL1">PL1</option><option value="PL2">PL2</option><option value="PL3">PL3</option>
+                <option value="N73">N73</option><option value="A">A</option><option value="R">R</option>
+                <option value="RS">RS</option><option value="L">L</option><option value="C">C</option>
+            </select>
+            <label>Statut :</label>
+            <select id="bulk-statut">
+                <option value="">-- Ne pas modifier --</option>
+                <option value="🟢En Service">🟢En Service</option>
+                <option value="🟠Immobilisé">🟠Immobilisé</option>
+                <option value="🔴Réformé">🔴Réformé</option>
+                <option value="🚚Livraison">🚚Livraison</option>
+                <option value="🛠️Équipement">🛠️Équipement</option>
+                <option value="💲En Vente">💲En Vente</option>
+            </select>
+            <label>Expiration CT :</label>
+            <input type="date" id="bulk-ct">
+            
+            <hr style="margin:15px 0;">
+            <strong>Options :</strong> (⚠️ Cocher remplacera toutes les options actuelles)
+            <div id="bulk-options-container" style="max-height: 150px; overflow-y:auto; border:1px solid #eee; padding:5px;"></div>
+            
+            <button onclick="applyBulkEdit()">✅ Appliquer à la sélection</button>
+            <button class="btn-cancel" onclick="closeModal()">❌ Annuler</button>
+        </div>
+    </div>
+
     <div id="modal-rapport" class="modal">
         <div class="modal-content">
             <h3>📝 Rapport de Panne</h3>
@@ -240,7 +308,6 @@
                 <option value="Feux grillé">Feux grillé</option>
                 <option value="Frein de parc non fonctionnel">Frein de parc non fonctionnel</option>
                 <option value="Freins défectueux">Freins défectueux</option>
-                <option value="Freins défaillants">Freins défectueux</option>
                 <option value="Fuite d'air au circuit de freinage">Fuite d'air au circuit de freinage</option>
                 <option value="Fuite d'huile">Fuite d'huile</option>
                 <option value="Girouette HS">Girouette HS</option>
@@ -268,7 +335,9 @@
     </div>
 
     <script>
-        // 1. INITIALISATION DES DONNÉES
+        // Enregistrement du plugin ChartDataLabels pour afficher les pourcentages
+        Chart.register(ChartDataLabels);
+
         let flotte = JSON.parse(localStorage.getItem('flotte_tm_v4')) || [];
         let contrats = JSON.parse(localStorage.getItem('contrats_tm_v1')) || [];
         
@@ -315,101 +384,176 @@
             return "bg-elec";
         }
 
-        // 2. FONCTION PRINCIPALE DE MISE A JOUR UI
+        // MAJ de l'UI avec le Filtre
         function updateUI() {
-    const mainBody = document.getElementById('main-table-body');
-    const alertBody = document.getElementById('ct-alerts-body');
-    const venteBody = document.getElementById('vente-table-body');
-    const alertSection = document.getElementById('ct-alerts');
-    
-    let mainHtml = '';
-    let alertHtml = '';
-    let venteHtml = '';
-    let hasAlerts = false;
+            const mainBody = document.getElementById('main-table-body');
+            const alertBody = document.getElementById('ct-alerts-body');
+            const venteBody = document.getElementById('vente-table-body');
+            const alertSection = document.getElementById('ct-alerts');
+            const filterSelect = document.getElementById('filter-series');
+            
+            let mainHtml = ''; let alertHtml = ''; let venteHtml = '';
+            let hasAlerts = false;
 
-    // On ne trie qu'une seule fois au début
-    flotte.sort((a, b) => String(a.numParc).localeCompare(String(b.numParc), undefined, {numeric: true}));
+            // 1. Remplir les options du filtre de série sans effacer le choix actuel
+            const currentFilter = filterSelect.value;
+            let seriesSet = new Set();
+            flotte.forEach(b => seriesSet.add(b.marque + ' ' + b.modele));
+            let optionsHtml = '<option value="ALL">Toutes les séries</option>';
+            Array.from(seriesSet).sort().forEach(serie => {
+                optionsHtml += `<option value="${serie}" ${currentFilter === serie ? 'selected' : ''}>${serie}</option>`;
+            });
+            filterSelect.innerHTML = optionsHtml;
 
-    flotte.forEach((bus) => {
-        const daysLeft = calculateDaysLeft(bus.ct);
-        let ctClass = '';
-        if (bus.ct) {
-            if (daysLeft < 0) ctClass = 'ct-expired';
-            else if (daysLeft <= 6) ctClass = 'ct-danger';
-            else if (daysLeft <= 12) ctClass = 'ct-warning';
+            // 2. Trier et filtrer la flotte
+            flotte.sort((a, b) => String(a.numParc).localeCompare(String(b.numParc), undefined, {numeric: true}));
+            
+            let flotteToDisplay = flotte;
+            if (filterSelect.value !== "ALL") {
+                flotteToDisplay = flotte.filter(b => (b.marque + ' ' + b.modele) === filterSelect.value);
+            }
+
+            flotteToDisplay.forEach((bus) => {
+                const daysLeft = calculateDaysLeft(bus.ct);
+                let ctClass = '';
+                if (bus.ct) {
+                    if (daysLeft < 0) ctClass = 'ct-expired';
+                    else if (daysLeft <= 6) ctClass = 'ct-danger';
+                    else if (daysLeft <= 12) ctClass = 'ct-warning';
+                }
+
+                // Alertes
+                if (bus.ct && daysLeft <= 12) {
+                    hasAlerts = true;
+                    alertHtml += `<tr class="${ctClass}">
+                        <td>${bus.numParc}</td>
+                        <td>${bus.marque} ${bus.modele}</td>
+                        <td>${formatDate(bus.ct)}</td>
+                        <td>${daysLeft < 0 ? 'EXPIRÉ' : 'J-' + daysLeft}</td>
+                        <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
+                    </tr>`;
+                }
+
+                // Principal
+                let optsHtml = (bus.options || []).map(opt => `<img src="${optionsDispo[opt]}" title="${opt}" class="option-img" onerror="this.style.display='none'">`).join('');
+                mainHtml += `<tr class="${ctClass}">
+                    <td><input type="checkbox" class="row-checkbox" value="${bus.id}" onchange="updateBulkActionBar()"></td>
+                    <td><strong>${bus.numParc}</strong></td>
+                    <td>${bus.marque} ${bus.modele}</td>
+                    <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
+                    <td>${bus.portes || 3} <span class="btn-edit" onclick="openEdit('${bus.id}', 'portes')">✏️</span></td>
+                    <td>
+                        <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" title="${bus.ligne}" onerror="this.style.display='none'">
+                        <div style="text-align:center"><span class="btn-edit" onclick="openEdit('${bus.id}', 'ligne')">✏️</span></div>
+                    </td>
+                    <td>${bus.immat} <span class="btn-edit" onclick="openEdit('${bus.id}', 'immat')">✏️</span></td>
+                    <td>${optsHtml} <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span></td>
+                    <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
+                    <td>
+                        <select onchange="updateField('${bus.id}', 'statut', this.value)">
+                            ${listStatuts.map(s => `<option value="${s}" ${bus.statut === s ? 'selected' : ''}>${s}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="deleteBus('${bus.id}')" class="btn-delete">🗑️</button>
+                        <button onclick="ouvrirRapport('${bus.id}')" class="btn-rapport">📋</button>
+                    </td>
+                </tr>`;
+
+                // Vente
+                if (bus.statut === "💲En Vente") {
+                    venteHtml += `<tr>
+                        <td><strong>${bus.numParc}</strong></td>
+                        <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span></td>
+                        <td>${bus.portes || 3}</td>
+                        <td>${bus.immat}</td>
+                        <td>${formatDate(bus.ct)}</td>
+                        <td><select onchange="updateVenteField('${bus.id}','v_pub',this.value)"><option></option><option ${bus.v_pub==='Oui'?'selected':''}>Oui</option><option ${bus.v_pub==='Non'?'selected':''}>Non</option></select></td>
+                        <td><select onchange="updateVenteField('${bus.id}','v_baie',this.value)"><option></option><option ${bus.v_baie==='Oui'?'selected':''}>Oui</option><option ${bus.v_baie==='Non'?'selected':''}>Non</option></select></td>
+                        <td><select onchange="updateVenteField('${bus.id}','v_teinte',this.value)"><option></option><option ${bus.v_teinte==='Oui'?'selected':''}>Oui</option><option ${bus.v_teinte==='Non'?'selected':''}>Non</option></select></td>
+                        <td><select onchange="updateVenteField('${bus.id}','v_antiag',this.value)"><option></option><option ${bus.v_antiag==='Oui'?'selected':''}>Oui</option><option ${bus.v_antiag==='Non'?'selected':''}>Non</option></select></td>
+                        <td><input type="text" value="${bus.v_tech||''}" onblur="updateVenteField('${bus.id}','v_tech',this.value)"></td>
+                        <td><input type="text" value="${bus.v_revet||''}" onblur="updateVenteField('${bus.id}','v_revet',this.value)"></td>
+                        <td><input type="text" value="${bus.v_girouette||''}" onblur="updateVenteField('${bus.id}','v_girouette',this.value)"></td>
+                        <td><input type="text" value="${bus.v_colonne||''}" onblur="updateVenteField('${bus.id}','v_colonne',this.value)"></td>
+                        <td><select onchange="updateVenteField('${bus.id}','v_precablage',this.value)"><option></option><option ${bus.v_precablage==='Oui'?'selected':''}>Oui</option><option ${bus.v_precablage==='Non'?'selected':''}>Non</option></select></td>
+                        <td><input type="number" value="${bus.v_km||''}" onblur="updateVenteField('${bus.id}','v_km',this.value)"></td>
+                        <td><input type="text" value="${bus.v_pseudo||''}" onblur="updateVenteField('${bus.id}','v_pseudo',this.value)"></td>
+                    </tr>`;
+                }
+            });
+
+            mainBody.innerHTML = mainHtml;
+            alertBody.innerHTML = alertHtml;
+            venteBody.innerHTML = venteHtml;
+            alertSection.style.display = hasAlerts ? 'block' : 'none';
+            document.getElementById('check-all').checked = false;
+            updateBulkActionBar(); // Réinitialiser la barre en masse
+            
+            localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
         }
 
-        // --- Construction Alertes CT ---
-        if (bus.ct && daysLeft <= 12) {
-            hasAlerts = true;
-            alertHtml += `<tr class="${ctClass}">
-                <td>${bus.numParc}</td>
-                <td>${bus.marque} ${bus.modele}</td>
-                <td>${formatDate(bus.ct)}</td>
-                <td>${daysLeft < 0 ? 'EXPIRÉ' : 'J-' + daysLeft}</td>
-                <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
-            </tr>`;
+        // --- GESTION EN MASSE (BULK) ---
+        function toggleAll(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionBar();
         }
 
-        // --- Construction Tableau Principal ---
-        let optsHtml = (bus.options || []).map(opt => `<img src="${optionsDispo[opt]}" title="${opt}" class="option-img" onerror="this.style.display='none'">`).join('');
-        
-        mainHtml += `<tr class="${ctClass}">
-            <td><strong>${bus.numParc}</strong></td>
-            <td>${bus.marque} ${bus.modele}</td>
-            <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
-            <td>${bus.portes || 3} <span class="btn-edit" onclick="openEdit('${bus.id}', 'portes')">✏️</span></td>
-            <td>
-                <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" title="${bus.ligne}" onerror="this.style.display='none'">
-                <div style="text-align:center"><span class="btn-edit" onclick="openEdit('${bus.id}', 'ligne')">✏️</span></div>
-            </td>
-            <td>${bus.immat} <span class="btn-edit" onclick="openEdit('${bus.id}', 'immat')">✏️</span></td>
-            <td>${optsHtml} <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span></td>
-            <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
-            <td>
-                <select onchange="updateField('${bus.id}', 'statut', this.value)">
-                    ${listStatuts.map(s => `<option value="${s}" ${bus.statut === s ? 'selected' : ''}>${s}</option>`).join('')}
-                </select>
-            </td>
-            <td>
-                <button onclick="deleteBus('${bus.id}')" class="btn-delete">🗑️</button>
-                <button onclick="ouvrirRapport('${bus.id}')" class="btn-rapport">📋</button>
-            </td>
-        </tr>`;
-
-        // --- Construction Tableau Vente ---
-        if (bus.statut === "💲En Vente") {
-            venteHtml += `<tr>
-                <td><strong>${bus.numParc}</strong></td>
-                <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span></td>
-                <td>${bus.portes || 3}</td>
-                <td>${bus.immat}</td>
-                <td>${formatDate(bus.ct)}</td>
-                <td><select onchange="updateVenteField('${bus.id}','v_pub',this.value)"><option></option><option ${bus.v_pub==='Oui'?'selected':''}>Oui</option><option ${bus.v_pub==='Non'?'selected':''}>Non</option></select></td>
-                <td><select onchange="updateVenteField('${bus.id}','v_baie',this.value)"><option></option><option ${bus.v_baie==='Oui'?'selected':''}>Oui</option><option ${bus.v_baie==='Non'?'selected':''}>Non</option></select></td>
-                <td><select onchange="updateVenteField('${bus.id}','v_teinte',this.value)"><option></option><option ${bus.v_teinte==='Oui'?'selected':''}>Oui</option><option ${bus.v_teinte==='Non'?'selected':''}>Non</option></select></td>
-                <td><select onchange="updateVenteField('${bus.id}','v_antiag',this.value)"><option></option><option ${bus.v_antiag==='Oui'?'selected':''}>Oui</option><option ${bus.v_antiag==='Non'?'selected':''}>Non</option></select></td>
-                <td><input type="text" value="${bus.v_tech||''}" onblur="updateVenteField('${bus.id}','v_tech',this.value)"></td>
-                <td><input type="text" value="${bus.v_revet||''}" onblur="updateVenteField('${bus.id}','v_revet',this.value)"></td>
-                <td><input type="text" value="${bus.v_girouette||''}" onblur="updateVenteField('${bus.id}','v_girouette',this.value)"></td>
-                <td><input type="text" value="${bus.v_colonne||''}" onblur="updateVenteField('${bus.id}','v_colonne',this.value)"></td>
-                <td><select onchange="updateVenteField('${bus.id}','v_precablage',this.value)"><option></option><option ${bus.v_precablage==='Oui'?'selected':''}>Oui</option><option ${bus.v_precablage==='Non'?'selected':''}>Non</option></select></td>
-                <td><input type="number" value="${bus.v_km||''}" onblur="updateVenteField('${bus.id}','v_km',this.value)"></td>
-                <td><input type="text" value="${bus.v_pseudo||''}" onblur="updateVenteField('${bus.id}','v_pseudo',this.value)"></td>
-            </tr>`;
+        function updateBulkActionBar() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+            const actionBar = document.getElementById('bulk-action-bar');
+            document.getElementById('bulk-count').innerText = checkedBoxes.length + " sélectionné(s)";
+            actionBar.style.display = checkedBoxes.length > 0 ? 'flex' : 'none';
         }
-    });
 
-    // Injection massive dans le DOM (une seule opération par tableau)
-    mainBody.innerHTML = mainHtml;
-    alertBody.innerHTML = alertHtml;
-    venteBody.innerHTML = venteHtml;
-    alertSection.style.display = hasAlerts ? 'block' : 'none';
-    
-    localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
-}
+        function clearBulkSelection() {
+            document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = false);
+            document.getElementById('check-all').checked = false;
+            updateBulkActionBar();
+        }
 
-        // --- 3. GESTION DES CONTRATS PUB ---
+        function openBulkEdit() {
+            // Remplir les options dans la modale de masse
+            const optsContainer = document.getElementById('bulk-options-container');
+            optsContainer.innerHTML = '';
+            for (let key in optionsDispo) {
+                optsContainer.innerHTML += `<label style="display:flex; align-items:center; margin:2px 0;"><input type="checkbox" class="bulk-opt-check" value="${key}" style="width:auto; margin-right:10px;"> ${key}</label>`;
+            }
+            document.getElementById('bulk-edit-modal').style.display = 'flex';
+        }
+
+        function applyBulkEdit() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+            const newMoteur = document.getElementById('bulk-moteur').value;
+            const newLigne = document.getElementById('bulk-ligne').value;
+            const newStatut = document.getElementById('bulk-statut').value;
+            const newCT = document.getElementById('bulk-ct').value;
+            const selectedOptions = Array.from(document.querySelectorAll('.bulk-opt-check:checked')).map(cb => cb.value);
+            const hasOptionsSelected = selectedOptions.length > 0;
+
+            checkedBoxes.forEach(cb => {
+                const bus = flotte.find(b => b.id === cb.value);
+                if(bus) {
+                    if(newMoteur) bus.moteur = newMoteur;
+                    if(newLigne) bus.ligne = newLigne;
+                    if(newStatut) bus.statut = newStatut;
+                    if(newCT) bus.ct = newCT;
+                    if(hasOptionsSelected) bus.options = selectedOptions;
+                }
+            });
+
+            closeModal();
+            updateUI();
+            
+            // Réinitialiser les champs de la modale
+            document.getElementById('bulk-moteur').value = "";
+            document.getElementById('bulk-ligne').value = "";
+            document.getElementById('bulk-statut').value = "";
+            document.getElementById('bulk-ct').value = "";
+        }
+
+        // --- CONTRATS PUB ---
         document.getElementById('contract-form').onsubmit = function(e) {
             e.preventDefault();
             contrats.push({
@@ -451,6 +595,10 @@
 
             Object.keys(grouped).sort().forEach(key => {
                 const group = grouped[key];
+                
+                // Tri par date de fin à l'intérieur du mois
+                group.items.sort((a, b) => new Date(a.fin) - new Date(b.fin));
+
                 let tableHtml = `
                     <div class="table-responsive" style="margin-bottom:20px;">
                         <h4 style="margin: 10px; color:#2c3e50;">📅 ${group.label}</h4>
@@ -464,7 +612,6 @@
                 });
                 tableHtml += `<tr class="total-row"><td colspan="2" style="text-align:right;">TOTAL DU MOIS :</td><td>${group.total.toFixed(2)} €</td><td></td></tr></tbody></table></div>`;
 
-                // Si la date (Année-Mois) est strictement inférieure au mois actuel => Archive
                 if (key < currentMonthKey) {
                     contArchive.innerHTML += tableHtml;
                 } else {
@@ -476,7 +623,7 @@
             if(contActive.innerHTML === '') contActive.innerHTML = '<p>Aucun contrat en cours.</p>';
         }
 
-        // --- 4. GESTION DES MODIFICATIONS ---
+        // --- GESTION ÉDITION INDIVIDUELLE ---
         function openEdit(id, type) {
             currentEditId = id; currentEditType = type;
             const bus = flotte.find(b => b.id === id);
@@ -499,11 +646,11 @@
                 body.innerHTML = `<input type="text" id="edit-val" value="${bus.immat}">`;
             } else if (type === 'portes') {
                 title.innerText = "Modifier Nombre de Portes";
-                body.innerHTML = `<input type="number" id="edit-val" value="${bus.portes}" min="1" max="6">`;
+                body.innerHTML = `<input type="number" id="edit-val" value="${bus.portes || 3}" min="1" max="6">`;
             } else if (type === 'options') {
                 title.innerText = "Équipements";
                 for (let key in optionsDispo) {
-                    const checked = bus.options.includes(key) ? 'checked' : '';
+                    const checked = (bus.options || []).includes(key) ? 'checked' : '';
                     body.innerHTML += `<label style="display:flex; align-items:center; margin:5px 0;"><input type="checkbox" class="opt-check" value="${key}" ${checked} style="width:auto; margin-right:10px;"> ${key}</label>`;
                 }
             }
@@ -520,35 +667,29 @@
         }
 
         function updateField(id, field, val) {
-    const bus = flotte.find(b => b.id === id);
-    if(bus) { 
-        bus[field] = val; 
-        // On ne rafraîchit l'interface que pour les champs qui impactent le tri ou l'affichage des alertes
-        if (field === 'statut' || field === 'ct') {
-            updateUI(); 
-        } else {
-            // Pour le reste, on sauvegarde juste sans tout re-calculer
-            localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
+            const bus = flotte.find(b => b.id === id);
+            if(bus) { 
+                bus[field] = val; 
+                if (field === 'statut' || field === 'ct') updateUI(); 
+                else localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
+            }
         }
-    }
-}
 
         function updateVenteField(id, field, val) {
             const bus = flotte.find(b => b.id === id);
             if(bus) { bus[field] = val; localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte)); }
-            // Pas de updateUI() ici pour ne pas perdre le focus quand on tape du texte dans le tableau Vente
         }
 
-        // --- 5. GRAPHIQUE ---
+        // --- GRAPHIQUE (PIE AVEC POURCENTAGES) ---
         function updateChart() {
             const ctx = document.getElementById('motorChart').getContext('2d');
-            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "💲En Vente");
+            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "🛠️Équipement" && b.statut !== "💲En Vente");
             const counts = listMoteurs.map(m => filtered.filter(b => b.moteur === m).length);
             const total = counts.reduce((a, b) => a + b, 0);
 
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
-                type: 'doughnut',
+                type: 'pie',
                 data: {
                     labels: listMoteurs,
                     datasets: [{
@@ -557,42 +698,42 @@
                         borderWidth: 2
                     }]
                 },
-                options: { plugins: { tooltip: { callbacks: { label: (item) => ` ${item.label}: ${item.raw} bus (Total Parc: ${total})` } } } }
+                options: { 
+                    plugins: { 
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                if(value === 0) return '';
+                                let sum = 0;
+                                let dataArr = ctx.chart.data.datasets[0].data;
+                                dataArr.map(data => { sum += data; });
+                                let percentage = (value * 100 / sum).toFixed(1) + "%";
+                                return percentage;
+                            },
+                            color: '#fff',
+                            font: { weight: 'bold', size: 14 },
+                            textStrokeColor: 'rgba(0,0,0,0.5)',
+                            textStrokeWidth: 3
+                        },
+                        tooltip: { callbacks: { label: (item) => ` ${item.label}: ${item.raw} bus (Total Parc: ${total})` } } 
+                    } 
+                }
             });
         }
 
-        // --- 6. RAPPORT PANNE ---
+        // --- RAPPORT PANNE ---
         function ouvrirRapport(id) {
-            currentEditId = id; 
-            document.getElementById('modal-rapport').style.display = 'flex'; 
-            genererTexteRapport();
+            currentEditId = id; document.getElementById('modal-rapport').style.display = 'flex'; genererTexteRapport();
         }
-
         function genererTexteRapport() {
             const bus = flotte.find(b => b.id === currentEditId);
             const motif = document.getElementById('panne-motif').value;
-            
-            // CORRECTION : Création de l'immatriculation pure (sans tirets ni espaces pour le lien image)
             const immatPure = bus.immat ? bus.immat.replace(/\D/g, '') : 'SANS_PLAQUE';
-
-            document.getElementById('texte-rapport').value = `bonjour,
-
-ci joint le rapport de panne de mon ${bus.marque} ${bus.modele} n°${bus.numParc}.
-
-Immatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=${immatPure}[/img]
-Problème rencontré : ${motif}
-Je souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : Non
-
-bonne journée cordialement`;
+            
+            document.getElementById('texte-rapport').value = `bonjour,\n\nci joint le rapport de panne de mon ${bus.marque} ${bus.modele} n°${bus.numParc}.\n\nImmatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=${immatPure}[/img]\nProblème rencontré : ${motif}\nJe souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : Non\n\nbonne journée cordialement`;
         }
+        function copierRapport() { document.getElementById('texte-rapport').select(); document.execCommand('copy'); alert("Copié !"); }
 
-        function copierRapport() { 
-            document.getElementById('texte-rapport').select(); 
-            document.execCommand('copy'); 
-            alert("Copié !"); 
-        }
-
-        // --- 7. UTILITAIRES & FORMULAIRE ---
+        // --- UTILITAIRES & FORMULAIRE ---
         function calculateDaysLeft(d) { if(!d) return 999; return Math.ceil((new Date(d) - new Date()) / 86400000); }
         function formatDate(d) { if(!d) return "-"; return new Date(d).toLocaleDateString('fr-FR'); }
         function deleteBus(id) { if(confirm("Supprimer ce bus ?")) { flotte = flotte.filter(b => b.id !== id); updateUI(); } }
@@ -624,17 +765,13 @@ bonne journée cordialement`;
             reader.onload = (ev) => { 
                 const data = JSON.parse(ev.target.result); 
                 if(data.flotte) { flotte = data.flotte; contrats = data.contrats || []; } 
-                else { flotte = data; } // Rétrocompatibilité ancienne sauvegarde
+                else { flotte = data; } 
                 updateUI(); renderContracts(); 
             }; 
             reader.readAsText(e.target.files[0]); 
         }
 
         updateUI(); renderContracts();
-    </script>
-</body>
-</html>
-        updateUI();
     </script>
 </body>
 </html>
