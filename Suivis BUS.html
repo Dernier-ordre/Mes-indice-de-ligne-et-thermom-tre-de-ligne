@@ -272,6 +272,7 @@
                 <option value="🟢En Service">🟢En Service</option>
                 <option value="🟠Immobilisé">🟠Immobilisé</option>
                 <option value="🔴Réformé">🔴Réformé</option>
+                <option value="🔵Réserve">🔵Réserve</option>
                 <option value="🚚Livraison">🚚Livraison</option>
                 <option value="🛠️Équipement">🛠️Équipement</option>
                 <option value="💲En Vente">💲En Vente</option>
@@ -350,7 +351,7 @@
 
         const listLignes = ["P1", "P2", "P3", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "S1", "S2", "S3", "S4", "S5", "R1", "R2", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
         const listMoteurs = ["Diesel", "Diesel MH", "GNV", "GNV MH", "Électrique"];
-        const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔴Réformé", "🚚Livraison", "🛠️Équipement", "💲En Vente"];
+        const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔵Réserve", "🔴Réformé", "🚚Livraison", "🛠️Équipement", "💲En Vente"];
         
         const optionsDispo = { 
             "clim": "https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/Climatisation.svg", 
@@ -686,7 +687,7 @@
         // --- GRAPHIQUE (PIE AVEC POURCENTAGES) ---
         function updateChart() {
             const ctx = document.getElementById('motorChart').getContext('2d');
-            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "🔴Réformé" && b.statut !== "💲En Vente");
+            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "🔴Réformé" && b.statut !== "🔵Réserve" && b.statut !== "💲En Vente");
             const counts = listMoteurs.map(m => filtered.filter(b => b.moteur === m).length);
             const total = counts.reduce((a, b) => a + b, 0);
 
