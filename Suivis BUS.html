@@ -610,10 +610,25 @@
                             <thead><tr><th>Nom du contrat</th><th>Date de fin</th><th>Gains</th><th>Action</th></tr></thead>
                             <tbody>
                 `;
+                
+                // On prépare la date d'aujourd'hui (à minuit pile) pour comparer proprement
+                const today = new Date();
+                today.setHours(0,0,0,0);
+
                 group.items.forEach(c => {
-                    tableHtml += `<tr><td>${c.nom}</td><td>${formatDate(c.fin)}</td><td>${c.gain.toFixed(2)} €</td>
-                    <td><button class="btn-delete" onclick="deleteContract('${c.id}')">🗑️</button></td></tr>`;
+                    // On vérifie si la date du contrat est passée
+                    const dateFinContrat = new Date(c.fin);
+                    const isTermine = dateFinContrat < today;
+                    const icone = isTermine ? '✅' : '⏳'; // Coche si passé, Horloge si en cours ou futur
+
+                    tableHtml += `<tr>
+                        <td>${icone} ${c.nom}</td>
+                        <td>${formatDate(c.fin)}</td>
+                        <td>${c.gain.toFixed(2)} €</td>
+                        <td><button class="btn-delete" onclick="deleteContract('${c.id}')">🗑️</button></td>
+                    </tr>`;
                 });
+                
                 tableHtml += `<tr class="total-row"><td colspan="2" style="text-align:right;">TOTAL DU MOIS :</td><td>${group.total.toFixed(2)} €</td><td></td></tr></tbody></table></div>`;
 
                 if (key < currentMonthKey) {
