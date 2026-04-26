@@ -3,74 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion Parc - Transport Manager Pro</title>
+    <title>Gestion Parc – TCRR Transport Manager</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; color: #1c1e21; }
-        h1, h2, h3 { color: #2c3e50; }
-        
-        /* Onglets */
-        .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #dee2e6; padding-bottom: 10px; }
-        .tab-btn { padding: 10px 20px; cursor: pointer; border: none; background: #ddd; border-radius: 8px; font-weight: bold; transition: 0.3s; }
-        .tab-btn.active { background: #34495e; color: white; }
+        /* ── VARIABLES ── */
+        :root {
+            --noir:        #0c0c0c;
+            --noir-card:   #131313;
+            --noir-input:  #1a1a1a;
+            --gris-bord:   #2a2a2a;
+            --gris-row:    #181818;
+            --gris-row2:   #151515;
+            --gris-hover:  #202020;
+            --rouge:       #c0000a;
+            --rouge-vif:   #e8000d;
+            --rouge-sombre:#6b0005;
+            --texte:       #d4d4d4;
+            --texte-doux:  #999;
+            --blanc:       #f0f0f0;
+        }
+
+        /* ── BASE ── */
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            font-family: 'Barlow', sans-serif;
+            margin: 0;
+            background-color: var(--noir);
+            color: var(--texte);
+            font-size: 0.9em;
+        }
+        h2, h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            color: var(--blanc);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 12px 0 8px;
+        }
+        p { color: var(--texte-doux); font-size: 0.88em; margin: 0 0 10px; }
+        hr { border: none; border-top: 1px solid var(--gris-bord); margin: 14px 0; }
+
+        /* ── HEADER ── */
+        .site-header {
+            background: var(--noir-card);
+            border-bottom: 3px solid var(--rouge);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 0;
+        }
+        .site-header .logo-box {
+            background: #0a0a0a;
+            border: 2px solid var(--rouge-sombre);
+            padding: 4px 12px;
+            display: flex; align-items: center;
+        }
+        .site-header .logo-text {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--rouge-vif), var(--rouge-sombre));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .site-header .header-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--blanc);
+        }
+        .site-header .header-sub {
+            font-size: 0.72rem;
+            color: var(--texte-doux);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ── CONTENU PRINCIPAL ── */
+        .main-wrap { padding: 20px 24px; }
+
+        /* ── ONGLETS ── */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--rouge);
+            padding-bottom: 0;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-bottom: 3px solid transparent;
+            background: var(--gris-row);
+            color: var(--texte-doux);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            margin-bottom: -2px;
+        }
+        .tab-btn:hover { background: var(--gris-hover); color: var(--texte); }
+        .tab-btn.active {
+            background: var(--noir-card);
+            color: var(--blanc);
+            border-bottom: 3px solid var(--rouge);
+        }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Pastilles Motorisation */
-        .motor-badge { 
-            display: inline-block; padding: 6px 15px; border-radius: 50px; 
-            color: white; font-weight: bold; font-size: 0.85em; text-align: center;
-            min-width: 80px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        /* ── PASTILLES MOTORISATION ── */
+        .motor-badge {
+            display: inline-block; padding: 4px 12px;
+            border-radius: 3px;
+            color: white; font-weight: 700; font-size: 0.8em;
+            text-align: center; min-width: 80px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            font-family: 'Barlow Condensed', sans-serif;
+            letter-spacing: 0.5px;
         }
-        .bg-diesel { background: linear-gradient(135deg,#f12711,#f5af19); } 
-        .bg-diesel-mh { background: linear-gradient(135deg,#f12711,#2193b0); } 
-        .bg-gnv { background: linear-gradient(135deg,#11998e,#38ef7d); }    
-        .bg-gnv-mh { background: linear-gradient(135deg,#11998e,#2193b0); } 
-        .bg-elec { background: linear-gradient(135deg,#2193b0,#6dd5ed); }   
+        .bg-diesel     { background: linear-gradient(135deg,#f12711,#f5af19); }
+        .bg-diesel-mh  { background: linear-gradient(135deg,#f12711,#2193b0); }
+        .bg-gnv        { background: linear-gradient(135deg,#11998e,#38ef7d); }
+        .bg-gnv-mh     { background: linear-gradient(135deg,#11998e,#2193b0); }
+        .bg-elec       { background: linear-gradient(135deg,#2193b0,#6dd5ed); }
 
-        /* Couleurs CT */
-        .ct-warning { background-color: #fff3cd !important; }
-        .ct-danger { background-color: #ffe5d0 !important; border: 2px solid #ff8c00 !important; }
-        .ct-expired { background-color: #f8d7da !important; color: #721c24 !important; font-weight: bold; }
-        /* Nouvelle couleur pour Contre-Visite */
-        .ct-cv { background-color: #e2e3e5 !important; border: 2px solid #383d41 !important; color: #1c1e21 !important; font-weight: bold; }
+        /* ── ALERTES CT (adaptées dark) ── */
+        .ct-warning  { background-color: #1f1a00 !important; border-left: 3px solid #d4a000 !important; }
+        .ct-danger   { background-color: #1f0e00 !important; border-left: 3px solid #e07000 !important; }
+        .ct-expired  { background-color: #1f0000 !important; color: #ff8a8a !important; font-weight: bold; border-left: 3px solid var(--rouge) !important; }
+        .ct-cv       { background-color: #1a1a2a !important; border-left: 3px solid #7a7aff !important; color: #b0b0ff !important; font-weight: bold; }
 
-        .form-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        /* ── FORMULAIRE ── */
+        .form-container {
+            background: var(--noir-card);
+            border: 1px solid var(--gris-bord);
+            border-top: 3px solid var(--rouge);
+            padding: 18px 20px;
+            margin-bottom: 20px;
+        }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
-        
-        .table-responsive { overflow-x: auto; margin-bottom: 30px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+        /* ── TABLEAUX ── */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 24px;
+            border: 1px solid var(--gris-bord);
+            border-top: 2px solid var(--rouge-sombre);
+        }
         table { width: 100%; border-collapse: collapse; font-size: 0.85em; white-space: nowrap; }
-        th, td { padding: 10px; border: 1px solid #dee2e6; text-align: left; vertical-align: middle;}
-        th { background-color: #34495e; color: white; }
-        
-        .btn-edit { cursor: pointer; color: #3498db; font-size: 1.1em; margin-left: 5px;}
-        .ligne-img { height: 32px; vertical-align: middle; display: block; margin: 0 auto;}
-        .option-img { height: 24px; width: 24px; vertical-align: middle; margin-right: 4px; object-fit: contain; }
+        th, td { padding: 9px 11px; border: 1px solid var(--gris-bord); text-align: left; vertical-align: middle; }
+        th {
+            background-color: #1a1a1a;
+            color: var(--blanc);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--rouge-sombre);
+        }
+        tbody tr { background: var(--gris-row2); }
+        tbody tr:nth-child(even) { background: var(--gris-row); }
+        tbody tr:hover { background: var(--gris-hover); }
 
-        /* Modales */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto;}
-        
-        input, select, button, textarea { padding: 8px; margin: 4px 0; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
-        button { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; }
-        .btn-delete { background: #e74c3c; width: auto; padding: 5px 10px; }
-        .btn-rapport { background: #f39c12; width: auto; padding: 5px 10px; margin-top: 5px;}
-        .btn-immo { background: #e67e22; width: auto; padding: 5px 10px; }
-        .btn-cancel { background: #95a5a6; }
-        textarea { height: 120px; font-family: monospace; font-size: 0.9em;}
-        
-        #chart-wrap { max-width: 500px; margin: 20px auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .total-row { background-color: #e8f4f8; font-weight: bold; }
+        .btn-edit { cursor: pointer; color: #5b9bd5; font-size: 1.0em; margin-left: 4px; opacity: 0.7; }
+        .btn-edit:hover { opacity: 1; }
+        .ligne-img { height: 32px; vertical-align: middle; display: block; margin: 0 auto; }
+        .option-img { height: 24px; width: 24px; vertical-align: middle; margin-right: 3px; object-fit: contain; filter: brightness(0.9); }
 
-        /* Barre d'action en masse */
-        #bulk-action-bar { background: #e8f4f8; padding: 10px 20px; border-radius: 8px; margin-bottom: 10px; display: none; align-items: center; gap: 15px; border: 1px solid #bce8f1; }
+        /* ── INPUTS / SELECTS ── */
+        input, select, textarea {
+            padding: 7px 10px;
+            margin: 3px 0;
+            border: 1px solid var(--gris-bord);
+            border-radius: 0;
+            background: var(--noir-input);
+            color: var(--texte);
+            width: 100%;
+            box-sizing: border-box;
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.88em;
+            transition: border-color 0.15s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--rouge);
+            background: #1e1e1e;
+        }
+        input::placeholder { color: #444; }
+        select option { background: #1a1a1a; }
+        textarea { height: 120px; font-family: monospace; font-size: 0.88em; resize: vertical; }
+
+        /* ── BOUTONS ── */
+        button {
+            background: var(--rouge);
+            color: white;
+            border: none;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            padding: 8px 14px;
+            transition: background 0.15s;
+            border-radius: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button:hover { background: var(--rouge-vif); }
+        .btn-delete  { background: #8b1a1a; width: auto; padding: 5px 10px; }
+        .btn-delete:hover { background: #c0392b; }
+        .btn-rapport { background: #7a5a00; width: auto; padding: 5px 10px; margin-top: 4px; }
+        .btn-rapport:hover { background: #b07d00; }
+        .btn-immo    { background: #7a3d00; width: auto; padding: 5px 10px; }
+        .btn-cancel  { background: #333; color: var(--texte-doux); }
+        .btn-cancel:hover { background: #444; color: var(--texte); }
+
+        /* ── MODALES ── */
+        .modal {
+            display: none; position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--noir-card);
+            border: 1px solid var(--gris-bord);
+            border-top: 3px solid var(--rouge);
+            padding: 22px;
+            width: 470px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1rem;
+            color: var(--blanc);
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+        label {
+            display: block;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--texte-doux);
+            margin-top: 10px;
+            margin-bottom: 2px;
+        }
+
+        /* ── GRAPHIQUE ── */
+        #chart-wrap {
+            max-width: 500px; margin: 20px auto;
+            background: var(--noir-card);
+            border: 1px solid var(--gris-bord);
+            border-top: 3px solid var(--rouge);
+            padding: 24px;
+        }
+
+        /* ── TOTAL ROW ── */
+        .total-row {
+            background-color: #1a1a00 !important;
+            font-weight: bold;
+            color: #d4c060 !important;
+        }
+
+        /* ── BARRE SÉLECTION MASSE ── */
+        #bulk-action-bar {
+            background: #131820;
+            padding: 10px 18px;
+            margin-bottom: 10px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #1e2a3a;
+            border-left: 4px solid #3498db;
+        }
+        #bulk-action-bar button { width: auto; padding: 5px 15px; }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--noir); }
+        ::-webkit-scrollbar-thumb { background: var(--rouge-sombre); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--rouge); }
     </style>
 </head>
 <body>
 
-    <h1>🚌 Parc Transport Manager</h1>
+    <header class="site-header">
+        <div class="logo-box"><span class="logo-text">TCR</span></div>
+        <div>
+            <div class="header-title">🚌 Parc Transport Manager</div>
+            <div class="header-sub">Gestion de flotte — Transport Manager Pro</div>
+        </div>
+    </header>
 
+    <div class="main-wrap">
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('tab-flotte', this)">📋 Ma Flotte</button>
         <button class="tab-btn" onclick="switchTab('tab-immo', this)">🔧 Immobilisés</button>
@@ -268,7 +512,7 @@
     <div id="bulk-edit-modal" class="modal">
         <div class="modal-content">
             <h3>✏️ Modification en masse</h3>
-            <p style="font-size:0.85em; color:#666;">Laissez vide (ou sur "Ne pas modifier") les éléments que vous souhaitez conserver.</p>
+            <p style="font-size:0.85em; color:#888;">Laissez vide (ou sur "Ne pas modifier") les éléments que vous souhaitez conserver.</p>
             <label>Dépôt :</label>
             <select id="bulk-depot">
                 <option value="">-- Ne pas modifier --</option>
@@ -314,7 +558,7 @@
             
             <hr style="margin:15px 0;">
             <strong>Options :</strong> (⚠️ Cocher remplacera toutes les options actuelles)
-            <div id="bulk-options-container" style="max-height: 150px; overflow-y:auto; border:1px solid #eee; padding:5px;"></div>
+            <div id="bulk-options-container" style="max-height: 150px; overflow-y:auto; border:1px solid #2a2a2a; padding:5px; background:#111;"></div>
             
             <button onclick="applyBulkEdit()">✅ Appliquer à la sélection</button>
             <button class="btn-cancel" onclick="closeModal()">❌ Annuler</button>
@@ -374,7 +618,7 @@
                 <option value="Oui">Oui</option>
             </select>
 
-            <label style="display:flex; align-items:center; margin-top:15px; color:#c0392b; font-weight:bold;">
+            <label style="display:flex; align-items:center; margin-top:15px; color:#ff8080; font-weight:bold;">
                 <input type="checkbox" id="panne-ct-refuse" style="width:auto; margin-right:10px;">
                 Cocher si CT refusé
             </label>
@@ -688,7 +932,7 @@
                 group.items.sort((a, b) => new Date(a.fin) - new Date(b.fin));
 
                 let tableHtml = `<div class="table-responsive" style="margin-bottom:20px;">
-                        <h4 style="margin: 10px; color:#2c3e50;">📅 ${group.label}</h4>
+                        <h4 style="margin: 10px; color:#c8c8c8; font-family:'Barlow Condensed',sans-serif; letter-spacing:1px;">📅 ${group.label}</h4>
                         <table><thead><tr><th>Nom du contrat</th><th>Date de fin</th><th>Gains</th><th>Action</th></tr></thead><tbody>`;
                 
                 const today = new Date();
@@ -792,7 +1036,8 @@
                     datasets: [{
                         data: counts,
                         backgroundColor: ['#FF4B2B', '#f5af19', '#00b09b', '#38ef7d', '#2193b0'],
-                        borderWidth: 2
+                        borderWidth: 2,
+                        borderColor: '#0c0c0c'
                     }]
                 },
                 options: { 
@@ -902,5 +1147,6 @@
 
         updateUI(); renderContracts();
     </script>
+    </div><!-- /main-wrap -->
 </body>
 </html>
