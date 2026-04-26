@@ -33,6 +33,8 @@
         .ct-warning { background-color: #fff3cd !important; }
         .ct-danger { background-color: #ffe5d0 !important; border: 2px solid #ff8c00 !important; }
         .ct-expired { background-color: #f8d7da !important; color: #721c24 !important; font-weight: bold; }
+        /* Nouvelle couleur pour Contre-Visite */
+        .ct-cv { background-color: #e2e3e5 !important; border: 2px solid #383d41 !important; color: #1c1e21 !important; font-weight: bold; }
 
         .form-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
@@ -54,6 +56,7 @@
         button { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; }
         .btn-delete { background: #e74c3c; width: auto; padding: 5px 10px; }
         .btn-rapport { background: #f39c12; width: auto; padding: 5px 10px; margin-top: 5px;}
+        .btn-immo { background: #e67e22; width: auto; padding: 5px 10px; }
         .btn-cancel { background: #95a5a6; }
         textarea { height: 120px; font-family: monospace; font-size: 0.9em;}
         
@@ -70,6 +73,7 @@
 
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('tab-flotte', this)">📋 Ma Flotte</button>
+        <button class="tab-btn" onclick="switchTab('tab-immo', this)">🔧 Immobilisés</button>
         <button class="tab-btn" onclick="switchTab('tab-stats', this)">📊 Répartition</button>
         <button class="tab-btn" onclick="switchTab('tab-contrats', this)">💶 Contrats Pub</button>
         <button class="tab-btn" onclick="switchTab('tab-archives', this)">🗄️ Archives Pub</button>
@@ -111,6 +115,9 @@
                     <input type="text" id="modele" placeholder="Modèle" required>
                     <input type="text" id="immat" placeholder="ID Plaque">
                     <input type="number" id="portes" placeholder="Nbr Portes" value="3" min="1" max="6">
+                    <select id="depot-add" required>
+                        <option value="">-- Dépôt --</option>
+                        </select>
                     <select id="moteur">
                         <option value="Diesel">Diesel</option>
                         <option value="Diesel MH">Diesel MH</option>
@@ -157,6 +164,7 @@
                         <th><input type="checkbox" id="check-all" onchange="toggleAll(this)"></th>
                         <th>N° Parc</th>
                         <th>Marque & Modèle</th>
+                        <th>Dépôt</th>
                         <th>Moteur</th>
                         <th>Portes</th>
                         <th>Ligne</th>
@@ -168,6 +176,26 @@
                     </tr>
                 </thead>
                 <tbody id="main-table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="tab-immo" class="tab-content">
+        <h2>🔧 Véhicules Immobilisés</h2>
+        <p>Retrouvez ici tous les véhicules nécessitant une réparation pour les remettre en service rapidement.</p>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>N° Parc</th>
+                        <th>Marque & Modèle</th>
+                        <th>Dépôt</th>
+                        <th>Immat.</th>
+                        <th>Statut actuel</th>
+                        <th>Action rapide</th>
+                    </tr>
+                </thead>
+                <tbody id="immo-table-body"></tbody>
             </table>
         </div>
     </div>
@@ -241,6 +269,10 @@
         <div class="modal-content">
             <h3>✏️ Modification en masse</h3>
             <p style="font-size:0.85em; color:#666;">Laissez vide (ou sur "Ne pas modifier") les éléments que vous souhaitez conserver.</p>
+            <label>Dépôt :</label>
+            <select id="bulk-depot">
+                <option value="">-- Ne pas modifier --</option>
+                </select>
             <label>Moteur :</label>
             <select id="bulk-moteur">
                 <option value="">-- Ne pas modifier --</option>
@@ -335,14 +367,27 @@
                 <option value="Ventilateur Moteur HS">Ventilateur Moteur HS</option>
                 <option value="Vitre cassée">Vitre cassée</option>
             </select>
-            <textarea id="texte-rapport" readonly></textarea>
-            <button onclick="copierRapport()">📋 Copier le texte</button>
-            <button class="btn-cancel" onclick="closeModal()">Fermer</button>
+            
+            <label style="display:block; margin-top:10px;">Demander un véhicule de prêt ?</label>
+            <select id="panne-pret" onchange="genererTexteRapport()">
+                <option value="Non">Non</option>
+                <option value="Oui">Oui</option>
+            </select>
+
+            <label style="display:flex; align-items:center; margin-top:15px; color:#c0392b; font-weight:bold;">
+                <input type="checkbox" id="panne-ct-refuse" style="width:auto; margin-right:10px;">
+                Cocher si CT refusé (Passe le véhicule en Contre-Visite)
+            </label>
+
+            <textarea id="texte-rapport" readonly style="margin-top:10px;"></textarea>
+            
+            <button onclick="validerEtCopierRapport()" style="width:100%; background-color:#e67e22; margin-top:5px;">📋 Copier & Immobiliser le bus</button>
+            <button class="btn-cancel" onclick="closeModal()">Annuler</button>
         </div>
     </div>
 
     <script>
-        // Enregistrement du plugin ChartDataLabels pour afficher les pourcentages
+        // Enregistrement ChartDataLabels
         Chart.register(ChartDataLabels);
 
         let flotte = JSON.parse(localStorage.getItem('flotte_tm_v4')) || [];
@@ -352,6 +397,8 @@
         let currentEditType = null;
         let myChart = null;
 
+        // --- LISTES DE CONFIGURATION ---
+        const listDepots = ["Dépôt Principal", "Dépôt Nord", "Dépôt Sud"]; // <-- Tu peux modifier tes dépôts ici
         const listLignes = ["P1", "P2", "P3", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "S1", "S2", "S3", "S4", "S5", "R1", "R2", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
         const listMoteurs = ["Diesel", "Diesel MH", "GNV", "GNV MH", "Électrique"];
         const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔵Réserve", "🔴Réformé", "🚚Livraison", "🛠️Équipement", "💲En Vente"];
@@ -374,6 +421,16 @@
             "Ports USB": "https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/Ports USB.svg"
         };
 
+        // Remplir les listes de dépôts dynamiquement
+        window.onload = () => {
+            const selectAdd = document.getElementById('depot-add');
+            const selectBulk = document.getElementById('bulk-depot');
+            listDepots.forEach(d => {
+                selectAdd.innerHTML += `<option value="${d}">${d}</option>`;
+                selectBulk.innerHTML += `<option value="${d}">${d}</option>`;
+            });
+        };
+
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -391,18 +448,19 @@
             return "bg-elec";
         }
 
-        // MAJ de l'UI avec le Filtre
+        // MAJ de l'UI avec Filtre, Dépôts et Contre-visite
         function updateUI() {
             const mainBody = document.getElementById('main-table-body');
             const alertBody = document.getElementById('ct-alerts-body');
             const venteBody = document.getElementById('vente-table-body');
+            const immoBody = document.getElementById('immo-table-body');
             const alertSection = document.getElementById('ct-alerts');
             const filterSelect = document.getElementById('filter-series');
             
-            let mainHtml = ''; let alertHtml = ''; let venteHtml = '';
+            let mainHtml = ''; let alertHtml = ''; let venteHtml = ''; let immoHtml = '';
             let hasAlerts = false;
 
-            // 1. Remplir les options du filtre de série sans effacer le choix actuel
+            // Remplir les options du filtre
             const currentFilter = filterSelect.value;
             let seriesSet = new Set();
             flotte.forEach(b => seriesSet.add(b.marque + ' ' + b.modele));
@@ -412,41 +470,50 @@
             });
             filterSelect.innerHTML = optionsHtml;
 
-            // 2. Trier et filtrer la flotte
+            // Trier et filtrer
             flotte.sort((a, b) => String(a.numParc).localeCompare(String(b.numParc), undefined, {numeric: true}));
-            
             let flotteToDisplay = flotte;
             if (filterSelect.value !== "ALL") {
                 flotteToDisplay = flotte.filter(b => (b.marque + ' ' + b.modele) === filterSelect.value);
             }
 
             flotteToDisplay.forEach((bus) => {
-                const daysLeft = calculateDaysLeft(bus.ct);
+                // Gestion des états CT
                 let ctClass = '';
-                if (bus.ct) {
-                    if (daysLeft < 0) ctClass = 'ct-expired';
-                    else if (daysLeft <= 6) ctClass = 'ct-danger';
-                    else if (daysLeft <= 12) ctClass = 'ct-warning';
+                let ctUrgenceText = '';
+                
+                if (bus.contre_visite) {
+                    ctClass = 'ct-cv';
+                    ctUrgenceText = 'CONTRE-VISITE';
+                    hasAlerts = true;
+                } else if (bus.ct) {
+                    const daysLeft = calculateDaysLeft(bus.ct);
+                    if (daysLeft < 0) { ctClass = 'ct-expired'; ctUrgenceText = 'EXPIRÉ'; }
+                    else if (daysLeft <= 6) { ctClass = 'ct-danger'; ctUrgenceText = 'J-' + daysLeft; }
+                    else if (daysLeft <= 12) { ctClass = 'ct-warning'; ctUrgenceText = 'J-' + daysLeft; }
+                    else { ctUrgenceText = 'J-' + daysLeft; }
+                    
+                    if (daysLeft <= 12) hasAlerts = true;
                 }
 
-                // Alertes
-                if (bus.ct && daysLeft <= 12) {
-                    hasAlerts = true;
+                // Affichage Alertes
+                if ((bus.ct && calculateDaysLeft(bus.ct) <= 12) || bus.contre_visite) {
                     alertHtml += `<tr class="${ctClass}">
                         <td>${bus.numParc}</td>
                         <td>${bus.marque} ${bus.modele}</td>
                         <td>${formatDate(bus.ct)}</td>
-                        <td>${daysLeft < 0 ? 'EXPIRÉ' : 'J-' + daysLeft}</td>
+                        <td>${ctUrgenceText}</td>
                         <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
                     </tr>`;
                 }
 
-                // Principal
+                // Affichage Principal
                 let optsHtml = (bus.options || []).map(opt => `<img src="${optionsDispo[opt]}" title="${opt}" class="option-img" onerror="this.style.display='none'">`).join('');
                 mainHtml += `<tr class="${ctClass}">
                     <td><input type="checkbox" class="row-checkbox" value="${bus.id}" onchange="updateBulkActionBar()"></td>
                     <td><strong>${bus.numParc}</strong></td>
                     <td>${bus.marque} ${bus.modele}</td>
+                    <td>${bus.depot || 'Non affecté'} <span class="btn-edit" onclick="openEdit('${bus.id}', 'depot')">✏️</span></td>
                     <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
                     <td>${bus.portes || 3} <span class="btn-edit" onclick="openEdit('${bus.id}', 'portes')">✏️</span></td>
                     <td>
@@ -467,7 +534,21 @@
                     </td>
                 </tr>`;
 
-                // Vente
+                // Affichage Immobilisés
+                if (bus.statut === "🟠Immobilisé") {
+                    immoHtml += `<tr>
+                        <td><strong>${bus.numParc}</strong></td>
+                        <td>${bus.marque} ${bus.modele}</td>
+                        <td>${bus.depot || 'Non affecté'}</td>
+                        <td>${bus.immat}</td>
+                        <td><strong>${bus.statut}</strong></td>
+                        <td>
+                            <button onclick="updateField('${bus.id}', 'statut', '🟢En Service')" style="background-color: #27ae60;">✅ Remettre en Service</button>
+                        </td>
+                    </tr>`;
+                }
+
+                // Affichage Vente
                 if (bus.statut === "💲En Vente") {
                     venteHtml += `<tr>
                         <td><strong>${bus.numParc}</strong></td>
@@ -493,9 +574,10 @@
             mainBody.innerHTML = mainHtml;
             alertBody.innerHTML = alertHtml;
             venteBody.innerHTML = venteHtml;
+            immoBody.innerHTML = immoHtml === '' ? '<tr><td colspan="6" style="text-align:center;">Aucun véhicule immobilisé actuellement.</td></tr>' : immoHtml;
             alertSection.style.display = hasAlerts ? 'block' : 'none';
             document.getElementById('check-all').checked = false;
-            updateBulkActionBar(); // Réinitialiser la barre en masse
+            updateBulkActionBar(); 
             
             localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
         }
@@ -521,7 +603,6 @@
         }
 
         function openBulkEdit() {
-            // Remplir les options dans la modale de masse
             const optsContainer = document.getElementById('bulk-options-container');
             optsContainer.innerHTML = '';
             for (let key in optionsDispo) {
@@ -532,6 +613,7 @@
 
         function applyBulkEdit() {
             const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+            const newDepot = document.getElementById('bulk-depot').value;
             const newMoteur = document.getElementById('bulk-moteur').value;
             const newLigne = document.getElementById('bulk-ligne').value;
             const newStatut = document.getElementById('bulk-statut').value;
@@ -542,10 +624,11 @@
             checkedBoxes.forEach(cb => {
                 const bus = flotte.find(b => b.id === cb.value);
                 if(bus) {
+                    if(newDepot) bus.depot = newDepot;
                     if(newMoteur) bus.moteur = newMoteur;
                     if(newLigne) bus.ligne = newLigne;
                     if(newStatut) bus.statut = newStatut;
-                    if(newCT) bus.ct = newCT;
+                    if(newCT) { bus.ct = newCT; bus.contre_visite = false; }
                     if(hasOptionsSelected) bus.options = selectedOptions;
                 }
             });
@@ -553,7 +636,7 @@
             closeModal();
             updateUI();
             
-            // Réinitialiser les champs de la modale
+            document.getElementById('bulk-depot').value = "";
             document.getElementById('bulk-moteur').value = "";
             document.getElementById('bulk-ligne').value = "";
             document.getElementById('bulk-statut').value = "";
@@ -602,43 +685,27 @@
 
             Object.keys(grouped).sort().forEach(key => {
                 const group = grouped[key];
-                
-                // Tri par date de fin à l'intérieur du mois
                 group.items.sort((a, b) => new Date(a.fin) - new Date(b.fin));
 
-                let tableHtml = `
-                    <div class="table-responsive" style="margin-bottom:20px;">
+                let tableHtml = `<div class="table-responsive" style="margin-bottom:20px;">
                         <h4 style="margin: 10px; color:#2c3e50;">📅 ${group.label}</h4>
-                        <table>
-                            <thead><tr><th>Nom du contrat</th><th>Date de fin</th><th>Gains</th><th>Action</th></tr></thead>
-                            <tbody>
-                `;
+                        <table><thead><tr><th>Nom du contrat</th><th>Date de fin</th><th>Gains</th><th>Action</th></tr></thead><tbody>`;
                 
-                // On prépare la date d'aujourd'hui (à minuit pile) pour comparer proprement
                 const today = new Date();
                 today.setHours(0,0,0,0);
 
                 group.items.forEach(c => {
-                    // On vérifie si la date du contrat est passée
                     const dateFinContrat = new Date(c.fin);
                     const isTermine = dateFinContrat < today;
-                    const icone = isTermine ? '✅' : '⏳'; // Coche si passé, Horloge si en cours ou futur
+                    const icone = isTermine ? '✅' : '⏳';
 
-                    tableHtml += `<tr>
-                        <td>${icone} ${c.nom}</td>
-                        <td>${formatDate(c.fin)}</td>
-                        <td>${c.gain.toFixed(2)} €</td>
-                        <td><button class="btn-delete" onclick="deleteContract('${c.id}')">🗑️</button></td>
-                    </tr>`;
+                    tableHtml += `<tr><td>${icone} ${c.nom}</td><td>${formatDate(c.fin)}</td><td>${c.gain.toFixed(2)} €</td>
+                    <td><button class="btn-delete" onclick="deleteContract('${c.id}')">🗑️</button></td></tr>`;
                 });
-                
                 tableHtml += `<tr class="total-row"><td colspan="2" style="text-align:right;">TOTAL DU MOIS :</td><td>${group.total.toFixed(2)} €</td><td></td></tr></tbody></table></div>`;
 
-                if (key < currentMonthKey) {
-                    contArchive.innerHTML += tableHtml;
-                } else {
-                    contActive.innerHTML += tableHtml;
-                }
+                if (key < currentMonthKey) contArchive.innerHTML += tableHtml;
+                else contActive.innerHTML += tableHtml;
             });
 
             if(contArchive.innerHTML === '') contArchive.innerHTML = '<p>Aucun contrat archivé.</p>';
@@ -653,7 +720,12 @@
             const title = document.getElementById('modal-title');
             body.innerHTML = ''; document.getElementById('edit-modal').style.display = 'flex';
 
-            if (type === 'ligne') {
+            if (type === 'depot') {
+                title.innerText = "Changer Dépôt";
+                let html = '<select id="edit-val">';
+                listDepots.forEach(d => html += `<option value="${d}" ${bus.depot === d ? 'selected' : ''}>${d}</option>`);
+                body.innerHTML = html + '</select>';
+            } else if (type === 'ligne') {
                 title.innerText = "Changer Ligne";
                 let html = '<select id="edit-val">';
                 listLignes.forEach(l => html += `<option value="${l}" ${bus.ligne === l ? 'selected' : ''}>${l}</option>`);
@@ -692,6 +764,9 @@
             const bus = flotte.find(b => b.id === id);
             if(bus) { 
                 bus[field] = val; 
+                // Si on change la date de CT manuellement, ça annule l'état "Contre-visite"
+                if (field === 'ct') bus.contre_visite = false; 
+
                 if (field === 'statut' || field === 'ct') updateUI(); 
                 else localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
             }
@@ -705,7 +780,7 @@
         // --- GRAPHIQUE (PIE AVEC POURCENTAGES) ---
         function updateChart() {
             const ctx = document.getElementById('motorChart').getContext('2d');
-            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "🔴Réformé" && b.statut !== "🔵Réserve" && b.statut !== "💲En Vente");
+            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "🛠️Équipement" && b.statut !== "💲En Vente");
             const counts = listMoteurs.map(m => filtered.filter(b => b.moteur === m).length);
             const total = counts.reduce((a, b) => a + b, 0);
 
@@ -728,8 +803,7 @@
                                 let sum = 0;
                                 let dataArr = ctx.chart.data.datasets[0].data;
                                 dataArr.map(data => { sum += data; });
-                                let percentage = (value * 100 / sum).toFixed(1) + "%";
-                                return percentage;
+                                return (value * 100 / sum).toFixed(1) + "%";
                             },
                             color: '#fff',
                             font: { weight: 'bold', size: 14 },
@@ -742,9 +816,11 @@
             });
         }
 
-        // --- RAPPORT PANNE ---
+        // --- RAPPORT PANNE & AUTO-IMMOBILISATION ---
         function ouvrirRapport(id) {
             currentEditId = id; 
+            // Réinitialiser la case à cocher
+            document.getElementById('panne-ct-refuse').checked = false;
             document.getElementById('modal-rapport').style.display = 'flex'; 
             genererTexteRapport();
         }
@@ -752,21 +828,37 @@
         function genererTexteRapport() {
             const bus = flotte.find(b => b.id === currentEditId);
             const motif = document.getElementById('panne-motif').value;
-            
-            // CORRECTION : Création de l'immatriculation pure (sans tirets ni espaces pour le lien image)
+            const pret = document.getElementById('panne-pret').value;
             const immatPure = bus.immat ? bus.immat.replace(/\D/g, '') : 'SANS_PLAQUE';
-
-            document.getElementById('texte-rapport').value = `bonjour,
-
-ci joint le rapport de panne de mon ${bus.marque} ${bus.modele} n°${bus.numParc}.
-
-Immatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=${immatPure}[/img]
-Problème rencontré : ${motif}
-Je souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : Non
-
-bonne journée cordialement`;
+            
+            document.getElementById('texte-rapport').value = `bonjour,\n\nci joint le rapport de panne de mon ${bus.marque} ${bus.modele} n°${bus.numParc}.\n\nImmatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=${immatPure}[/img]\nProblème rencontré : ${motif}\nJe souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : ${pret}\n\nbonne journée cordialement`;
         }
-        function copierRapport() { document.getElementById('texte-rapport').select(); document.execCommand('copy'); alert("Copié !"); }
+
+        function validerEtCopierRapport() {
+            const bus = flotte.find(b => b.id === currentEditId);
+            if(bus) {
+                // Immobilisation auto
+                bus.statut = "🟠Immobilisé";
+                // CT Refusé (Contre-visite)
+                if(document.getElementById('panne-ct-refuse').checked) {
+                    bus.contre_visite = true;
+                }
+                
+                // Copie du texte
+                document.getElementById('texte-rapport').select(); 
+                document.execCommand('copy'); 
+                
+                alert("Texte copié ! Le véhicule a été basculé en statut Immobilisé.");
+                closeModal();
+                updateUI(); // Rafraîchit l'interface pour voir le changement de tableau
+            }
+        }
+
+        function copierRapport() { 
+            document.getElementById('texte-rapport').select(); 
+            document.execCommand('copy'); 
+            alert("Copié !"); 
+        }
 
         // --- UTILITAIRES & FORMULAIRE ---
         function calculateDaysLeft(d) { if(!d) return 999; return Math.ceil((new Date(d) - new Date()) / 86400000); }
@@ -784,11 +876,13 @@ bonne journée cordialement`;
                     numParc: isNaN(startNum) ? document.getElementById('parc').value : (startNum + i),
                     marque: document.getElementById('marque').value,
                     modele: document.getElementById('modele').value,
+                    depot: document.getElementById('depot-add').value,
                     moteur: document.getElementById('moteur').value,
                     portes: document.getElementById('portes').value,
                     immat: document.getElementById('immat').value,
                     ligne: document.getElementById('ligne').value,
-                    options: [], ct: '', statut: '🟢En Service'
+                    options: [], ct: '', statut: '🟢En Service',
+                    contre_visite: false
                 });
             }
             updateUI(); this.reset();
