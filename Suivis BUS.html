@@ -7,13 +7,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; color: #1c1e21; }
-        h1, h2, h3 { color: #2c3e50; }
+        /* PALETTE MODE SOMBRE */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #18191a; color: #e4e6eb; }
+        h1, h2, h3, h4 { color: #e4e6eb; }
         
         /* Onglets */
-        .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #dee2e6; padding-bottom: 10px; }
-        .tab-btn { padding: 10px 20px; cursor: pointer; border: none; background: #ddd; border-radius: 8px; font-weight: bold; transition: 0.3s; }
-        .tab-btn.active { background: #34495e; color: white; }
+        .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #3a3b3c; padding-bottom: 10px; }
+        .tab-btn { padding: 10px 20px; cursor: pointer; border: none; background: #3a3b3c; color: #b0b3b8; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .tab-btn:hover { background: #4e4f50; color: #e4e6eb; }
+        .tab-btn.active { background: #3498db; color: white; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
@@ -21,7 +23,7 @@
         .motor-badge { 
             display: inline-block; padding: 6px 15px; border-radius: 50px; 
             color: white; font-weight: bold; font-size: 0.85em; text-align: center;
-            min-width: 80px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-width: 80px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
         .bg-diesel { background: linear-gradient(135deg,#f12711,#f5af19); } 
         .bg-diesel-mh { background: linear-gradient(135deg,#f12711,#2193b0); } 
@@ -29,42 +31,51 @@
         .bg-gnv-mh { background: linear-gradient(135deg,#11998e,#2193b0); } 
         .bg-elec { background: linear-gradient(135deg,#2193b0,#6dd5ed); }   
 
-        /* Couleurs CT */
-        .ct-warning { background-color: #fff3cd !important; }
-        .ct-danger { background-color: #ffe5d0 !important; border: 2px solid #ff8c00 !important; }
-        .ct-expired { background-color: #f8d7da !important; color: #721c24 !important; font-weight: bold; }
-        /* Nouvelle couleur pour Contre-Visite */
-        .ct-cv { background-color: #e2e3e5 !important; border: 2px solid #383d41 !important; color: #1c1e21 !important; font-weight: bold; }
+        /* Couleurs CT (Adaptées au mode sombre) */
+        .ct-warning { background-color: rgba(243, 156, 18, 0.15) !important; }
+        .ct-danger { background-color: rgba(231, 76, 60, 0.15) !important; border: 2px solid #e74c3c !important; }
+        .ct-expired { background-color: rgba(192, 57, 43, 0.4) !important; color: #ffcccc !important; font-weight: bold; }
+        .ct-cv { background-color: rgba(149, 165, 166, 0.15) !important; border: 2px solid #95a5a6 !important; color: #e4e6eb !important; font-weight: bold; }
 
-        .form-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        /* Conteneurs */
+        .form-container { background: #242526; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); margin-bottom: 20px; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
         
-        .table-responsive { overflow-x: auto; margin-bottom: 30px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        /* Tableaux */
+        .table-responsive { overflow-x: auto; margin-bottom: 30px; background: #242526; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         table { width: 100%; border-collapse: collapse; font-size: 0.85em; white-space: nowrap; }
-        th, td { padding: 10px; border: 1px solid #dee2e6; text-align: left; vertical-align: middle;}
-        th { background-color: #34495e; color: white; }
+        th, td { padding: 10px; border: 1px solid #3a3b3c; text-align: left; vertical-align: middle;}
+        th { background-color: #3a3b3c; color: #e4e6eb; }
         
         .btn-edit { cursor: pointer; color: #3498db; font-size: 1.1em; margin-left: 5px;}
         .ligne-img { height: 32px; vertical-align: middle; display: block; margin: 0 auto;}
-        .option-img { height: 24px; width: 24px; vertical-align: middle; margin-right: 4px; object-fit: contain; }
+        
+        /* Filtre pour inverser les icônes noires en blanc */
+        .option-img { height: 24px; width: 24px; vertical-align: middle; margin-right: 4px; object-fit: contain; filter: invert(1) opacity(0.8); }
 
         /* Modales */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto;}
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: #242526; padding: 20px; border-radius: 8px; width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto; border: 1px solid #3a3b3c; }
         
-        input, select, button, textarea { padding: 8px; margin: 4px 0; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
-        button { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; }
+        /* Champs de saisie */
+        input, select, button, textarea { background: #3a3b3c; color: #e4e6eb; padding: 8px; margin: 4px 0; border: 1px solid #555; border-radius: 5px; width: 100%; box-sizing: border-box; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #3498db; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+        
+        /* Boutons */
+        button { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { filter: brightness(1.1); }
         .btn-delete { background: #e74c3c; width: auto; padding: 5px 10px; }
-        .btn-rapport { background: #f39c12; width: auto; padding: 5px 10px; margin-top: 5px;}
-        .btn-immo { background: #e67e22; width: auto; padding: 5px 10px; }
-        .btn-cancel { background: #95a5a6; }
+        .btn-rapport { background: #f39c12; width: auto; padding: 5px 10px; margin-top: 5px; color: #18191a; }
+        .btn-immo { background: #e67e22; width: auto; padding: 5px 10px; color: #18191a;}
+        .btn-cancel { background: #555; }
         textarea { height: 120px; font-family: monospace; font-size: 0.9em;}
         
-        #chart-wrap { max-width: 500px; margin: 20px auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .total-row { background-color: #e8f4f8; font-weight: bold; }
+        #chart-wrap { max-width: 500px; margin: 20px auto; background: #242526; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid #3a3b3c; }
+        .total-row { background-color: #3a3b3c; font-weight: bold; }
 
         /* Barre d'action en masse */
-        #bulk-action-bar { background: #e8f4f8; padding: 10px 20px; border-radius: 8px; margin-bottom: 10px; display: none; align-items: center; gap: 15px; border: 1px solid #bce8f1; }
+        #bulk-action-bar { background: #2c3e50; padding: 10px 20px; border-radius: 8px; margin-bottom: 10px; display: none; align-items: center; gap: 15px; border: 1px solid #34495e; color: white;}
     </style>
 </head>
 <body>
@@ -81,6 +92,7 @@
     </div>
 
     <div id="tab-flotte" class="tab-content active">
+       
         <div style="margin-bottom: 20px;">
             <button onclick="exporterDonnees()" style="background-color: #27ae60; width: auto; padding: 8px 15px;">💾 Exporter (JSON)</button>
             <button onclick="document.getElementById('import-file').click()" style="background-color: #8e44ad; width: auto; padding: 8px 15px;">📂 Importer (JSON)</button>
@@ -202,7 +214,7 @@
 
     <div id="tab-stats" class="tab-content">
         <h2 style="text-align:center">Répartition des Motorisations</h2>
-        <p style="text-align:center; font-style:italic;">(Exclut Livraison, Équipement et Vente)</p>
+        <p style="text-align:center; font-style:italic; color:#a0a0a0;">(Exclut Livraison, Équipement et Vente)</p>
         <div id="chart-wrap">
             <canvas id="motorChart"></canvas>
         </div>
@@ -258,7 +270,7 @@
 
     <div id="edit-modal" class="modal">
         <div class="modal-content">
-            <h3 id="modal-title">Modifier</h3>
+            <h3 id="modal-title" style="margin-top:0;">Modifier</h3>
             <div id="modal-body"></div>
             <button onclick="saveEdit()">✅ Enregistrer</button>
             <button class="btn-cancel" onclick="closeModal()">❌ Annuler</button>
@@ -267,8 +279,8 @@
 
     <div id="bulk-edit-modal" class="modal">
         <div class="modal-content">
-            <h3>✏️ Modification en masse</h3>
-            <p style="font-size:0.85em; color:#666;">Laissez vide (ou sur "Ne pas modifier") les éléments que vous souhaitez conserver.</p>
+            <h3 style="margin-top:0;">✏️ Modification en masse</h3>
+            <p style="font-size:0.85em; color:#a0a0a0;">Laissez vide (ou sur "Ne pas modifier") les éléments que vous souhaitez conserver.</p>
             <label>Dépôt :</label>
             <select id="bulk-depot">
                 <option value="">-- Ne pas modifier --</option>
@@ -312,9 +324,9 @@
             <label>Expiration CT :</label>
             <input type="date" id="bulk-ct">
             
-            <hr style="margin:15px 0;">
-            <strong>Options :</strong> (⚠️ Cocher remplacera toutes les options actuelles)
-            <div id="bulk-options-container" style="max-height: 150px; overflow-y:auto; border:1px solid #eee; padding:5px;"></div>
+            <hr style="margin:15px 0; border-color: #3a3b3c;">
+            <strong>Options :</strong> <span style="color:#e74c3c;">(⚠️ Cocher remplacera toutes les options actuelles)</span>
+            <div id="bulk-options-container" style="max-height: 150px; overflow-y:auto; border:1px solid #555; padding:5px; background: #3a3b3c; border-radius:4px; margin-top:5px;"></div>
             
             <button onclick="applyBulkEdit()">✅ Appliquer à la sélection</button>
             <button class="btn-cancel" onclick="closeModal()">❌ Annuler</button>
@@ -323,7 +335,7 @@
 
     <div id="modal-rapport" class="modal">
         <div class="modal-content">
-            <h3>📝 Rapport de Panne</h3>
+            <h3 style="margin-top:0;">📝 Rapport de Panne</h3>
             <select id="panne-motif" onchange="genererTexteRapport()">
                 <option value="Accident de circulation">Accident de circulation</option>
                 <option value="Accident avec corporel">Accident avec corporel</option>
@@ -374,14 +386,14 @@
                 <option value="Oui">Oui</option>
             </select>
 
-            <label style="display:flex; align-items:center; margin-top:15px; color:#c0392b; font-weight:bold;">
+            <label style="display:flex; align-items:center; margin-top:15px; color:#e74c3c; font-weight:bold; cursor:pointer;">
                 <input type="checkbox" id="panne-ct-refuse" style="width:auto; margin-right:10px;">
                 Cocher si CT refusé
             </label>
 
             <textarea id="texte-rapport" readonly style="margin-top:10px;"></textarea>
             
-            <button onclick="validerEtCopierRapport()" style="width:100%; background-color:#e67e22; margin-top:5px;">📋 Copier & Immobiliser le bus</button>
+            <button onclick="validerEtCopierRapport()" style="width:100%; background-color:#e67e22; margin-top:5px; color:#18191a;">📋 Copier & Immobiliser le bus</button>
             <button class="btn-cancel" onclick="closeModal()">Annuler</button>
         </div>
     </div>
@@ -399,10 +411,9 @@
 
         // --- LISTES DE CONFIGURATION ---
         const listDepots = ["Unité de Transport d'Oullins", "Unité de Transport de Perrache"]; // <-- Tu peux modifier tes dépôts ici
-        const listLignes = ["P1", "P2", "P3", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "S1", "S2", "S3", "S4", "S5", "R1", "R2", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C"];
+        const listLignes = ["P1", "P2", "P3", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "S1", "S2", "S3", "S4", "S5", "R1", "R2", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C", "RF"];
         const listMoteurs = ["Diesel", "Diesel MH", "GNV", "GNV MH", "Électrique"];
         const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔵Réserve", "🔴Réformé", "🚚Livraison", "🛠️Équipement", "💲En Vente"];
-        
         const optionsDispo = { 
             "clim": "https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/Climatisation.svg", 
             "pmr": "https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/PMR.svg", 
@@ -420,7 +431,6 @@
             "Éthylotest Anti-Démarrage": "https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/Éthylotest Anti-Démarrage.svg", 
             "Ports USB": "https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/Ports USB.svg"
         };
-
         // Remplir les listes de dépôts dynamiquement
         window.onload = () => {
             const selectAdd = document.getElementById('depot-add');
@@ -456,10 +466,8 @@
             const immoBody = document.getElementById('immo-table-body');
             const alertSection = document.getElementById('ct-alerts');
             const filterSelect = document.getElementById('filter-series');
-            
             let mainHtml = ''; let alertHtml = ''; let venteHtml = ''; let immoHtml = '';
             let hasAlerts = false;
-
             // Remplir les options du filtre
             const currentFilter = filterSelect.value;
             let seriesSet = new Set();
@@ -482,26 +490,32 @@
                 let ctClass = '';
                 let ctUrgenceText = '';
                 
+            
                 if (bus.contre_visite) {
                     ctClass = 'ct-cv';
                     ctUrgenceText = 'CONTRE-VISITE';
                     hasAlerts = true;
                 } else if (bus.ct) {
+        
                     const daysLeft = calculateDaysLeft(bus.ct);
                     if (daysLeft < 0) { ctClass = 'ct-expired'; ctUrgenceText = 'EXPIRÉ'; }
                     else if (daysLeft <= 6) { ctClass = 'ct-danger'; ctUrgenceText = 'J-' + daysLeft; }
+                    
                     else if (daysLeft <= 12) { ctClass = 'ct-warning'; ctUrgenceText = 'J-' + daysLeft; }
                     else { ctUrgenceText = 'J-' + daysLeft; }
                     
                     if (daysLeft <= 12) hasAlerts = true;
+             
                 }
 
                 // Affichage Alertes
-                if ((bus.ct && calculateDaysLeft(bus.ct) <= 12) || bus.contre_visite) {
+                if ((bus.ct && calculateDaysLeft(bus.ct) <= 12) ||
+                    bus.contre_visite) {
                     alertHtml += `<tr class="${ctClass}">
                         <td>${bus.numParc}</td>
                         <td>${bus.marque} ${bus.modele}</td>
                         <td>${formatDate(bus.ct)}</td>
+   
                         <td>${ctUrgenceText}</td>
                         <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
                     </tr>`;
@@ -513,37 +527,45 @@
                     <td><input type="checkbox" class="row-checkbox" value="${bus.id}" onchange="updateBulkActionBar()"></td>
                     <td><strong>${bus.numParc}</strong></td>
                     <td>${bus.marque} ${bus.modele}</td>
-                    <td>${bus.depot || 'Non affecté'} <span class="btn-edit" onclick="openEdit('${bus.id}', 'depot')">✏️</span></td>
+                    <td>${bus.depot ||
+                    'Non affecté'} <span class="btn-edit" onclick="openEdit('${bus.id}', 'depot')">✏️</span></td>
                     <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span> <span class="btn-edit" onclick="openEdit('${bus.id}', 'moteur')">✏️</span></td>
-                    <td>${bus.portes || 3} <span class="btn-edit" onclick="openEdit('${bus.id}', 'portes')">✏️</span></td>
+                    <td>${bus.portes ||
+                    3} <span class="btn-edit" onclick="openEdit('${bus.id}', 'portes')">✏️</span></td>
                     <td>
                         <img src="https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/${bus.ligne}.svg" class="ligne-img" title="${bus.ligne}" onerror="this.style.display='none'">
                         <div style="text-align:center"><span class="btn-edit" onclick="openEdit('${bus.id}', 'ligne')">✏️</span></div>
+                    
                     </td>
                     <td>${bus.immat} <span class="btn-edit" onclick="openEdit('${bus.id}', 'immat')">✏️</span></td>
                     <td>${optsHtml} <span class="btn-edit" onclick="openEdit('${bus.id}', 'options')">✏️</span></td>
                     <td><input type="date" value="${bus.ct}" onblur="updateField('${bus.id}', 'ct', this.value)"></td>
                     <td>
+       
                         <select onchange="updateField('${bus.id}', 'statut', this.value)">
-                            ${listStatuts.map(s => `<option value="${s}" ${bus.statut === s ? 'selected' : ''}>${s}</option>`).join('')}
+                            ${listStatuts.map(s => `<option value="${s}" ${bus.statut === s ?
+                            'selected' : ''}>${s}</option>`).join('')}
                         </select>
                     </td>
                     <td>
                         <button onclick="deleteBus('${bus.id}')" class="btn-delete">🗑️</button>
+        
                         <button onclick="ouvrirRapport('${bus.id}')" class="btn-rapport">📋</button>
                     </td>
                 </tr>`;
-
                 // Affichage Immobilisés
                 if (bus.statut === "🟠Immobilisé") {
                     immoHtml += `<tr>
                         <td><strong>${bus.numParc}</strong></td>
                         <td>${bus.marque} ${bus.modele}</td>
-                        <td>${bus.depot || 'Non affecté'}</td>
+       
+                        <td>${bus.depot ||
+                        'Non affecté'}</td>
                         <td>${bus.immat}</td>
-                        <td><strong>${bus.statut}</strong></td>
+                        <td><strong style="color:#e67e22;">${bus.statut}</strong></td>
                         <td>
-                            <button onclick="updateField('${bus.id}', 'statut', '🟢En Service')" style="background-color: #27ae60;">✅ Remettre en Service</button>
+                           
+                            <button onclick="updateField('${bus.id}', 'statut', '🟢En Service')" style="background-color: #27ae60; color: white;">✅ Remettre en Service</button>
                         </td>
                     </tr>`;
                 }
@@ -552,19 +574,24 @@
                 if (bus.statut === "💲En Vente") {
                     venteHtml += `<tr>
                         <td><strong>${bus.numParc}</strong></td>
+               
                         <td><span class="motor-badge ${getBadgeClass(bus.moteur)}">${bus.moteur}</span></td>
-                        <td>${bus.portes || 3}</td>
+                        <td>${bus.portes ||
+                        3}</td>
                         <td>${bus.immat}</td>
                         <td>${formatDate(bus.ct)}</td>
                         <td><select onchange="updateVenteField('${bus.id}','v_pub',this.value)"><option></option><option ${bus.v_pub==='Oui'?'selected':''}>Oui</option><option ${bus.v_pub==='Non'?'selected':''}>Non</option></select></td>
-                        <td><select onchange="updateVenteField('${bus.id}','v_baie',this.value)"><option></option><option ${bus.v_baie==='Oui'?'selected':''}>Oui</option><option ${bus.v_baie==='Non'?'selected':''}>Non</option></select></td>
+                        <td><select 
+                        onchange="updateVenteField('${bus.id}','v_baie',this.value)"><option></option><option ${bus.v_baie==='Oui'?'selected':''}>Oui</option><option ${bus.v_baie==='Non'?'selected':''}>Non</option></select></td>
                         <td><select onchange="updateVenteField('${bus.id}','v_teinte',this.value)"><option></option><option ${bus.v_teinte==='Oui'?'selected':''}>Oui</option><option ${bus.v_teinte==='Non'?'selected':''}>Non</option></select></td>
                         <td><select onchange="updateVenteField('${bus.id}','v_antiag',this.value)"><option></option><option ${bus.v_antiag==='Oui'?'selected':''}>Oui</option><option ${bus.v_antiag==='Non'?'selected':''}>Non</option></select></td>
                         <td><input type="text" value="${bus.v_tech||''}" onblur="updateVenteField('${bus.id}','v_tech',this.value)"></td>
+                 
                         <td><input type="text" value="${bus.v_revet||''}" onblur="updateVenteField('${bus.id}','v_revet',this.value)"></td>
                         <td><input type="text" value="${bus.v_girouette||''}" onblur="updateVenteField('${bus.id}','v_girouette',this.value)"></td>
                         <td><input type="text" value="${bus.v_colonne||''}" onblur="updateVenteField('${bus.id}','v_colonne',this.value)"></td>
                         <td><select onchange="updateVenteField('${bus.id}','v_precablage',this.value)"><option></option><option ${bus.v_precablage==='Oui'?'selected':''}>Oui</option><option ${bus.v_precablage==='Non'?'selected':''}>Non</option></select></td>
+         
                         <td><input type="number" value="${bus.v_km||''}" onblur="updateVenteField('${bus.id}','v_km',this.value)"></td>
                         <td><input type="text" value="${bus.v_pseudo||''}" onblur="updateVenteField('${bus.id}','v_pseudo',this.value)"></td>
                     </tr>`;
@@ -620,17 +647,18 @@
             const newCT = document.getElementById('bulk-ct').value;
             const selectedOptions = Array.from(document.querySelectorAll('.bulk-opt-check:checked')).map(cb => cb.value);
             const hasOptionsSelected = selectedOptions.length > 0;
-
             checkedBoxes.forEach(cb => {
                 const bus = flotte.find(b => b.id === cb.value);
                 if(bus) {
                     if(newDepot) bus.depot = newDepot;
                     if(newMoteur) bus.moteur = newMoteur;
+            
                     if(newLigne) bus.ligne = newLigne;
                     if(newStatut) bus.statut = newStatut;
                     if(newCT) { bus.ct = newCT; bus.contre_visite = false; }
                     if(hasOptionsSelected) bus.options = selectedOptions;
-                }
+               
+                 }
             });
 
             closeModal();
@@ -678,28 +706,31 @@
                 const d = new Date(c.fin);
                 const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
                 const label = d.toLocaleDateString('fr-FR', {month: 'long', year: 'numeric'}).toUpperCase();
-                if(!grouped[key]) grouped[key] = { label: label, items: [], total: 0 };
+                if(!grouped[key]) grouped[key] = { label: label, items: [], 
+                total: 0 };
                 grouped[key].items.push(c);
                 grouped[key].total += c.gain;
             });
-
             Object.keys(grouped).sort().forEach(key => {
                 const group = grouped[key];
                 group.items.sort((a, b) => new Date(a.fin) - new Date(b.fin));
 
                 let tableHtml = `<div class="table-responsive" style="margin-bottom:20px;">
-                        <h4 style="margin: 10px; color:#2c3e50;">📅 ${group.label}</h4>
-                        <table><thead><tr><th>Nom du contrat</th><th>Date de fin</th><th>Gains</th><th>Action</th></tr></thead><tbody>`;
+                        <h4 style="margin: 10px; color:#e4e6eb;">📅 ${group.label}</h4>
+       
+                         <table><thead><tr><th>Nom du contrat</th><th>Date de fin</th><th>Gains</th><th>Action</th></tr></thead><tbody>`;
                 
                 const today = new Date();
                 today.setHours(0,0,0,0);
 
                 group.items.forEach(c => {
+         
                     const dateFinContrat = new Date(c.fin);
                     const isTermine = dateFinContrat < today;
                     const icone = isTermine ? '✅' : '⏳';
 
                     tableHtml += `<tr><td>${icone} ${c.nom}</td><td>${formatDate(c.fin)}</td><td>${c.gain.toFixed(2)} €</td>
+         
                     <td><button class="btn-delete" onclick="deleteContract('${c.id}')">🗑️</button></td></tr>`;
                 });
                 tableHtml += `<tr class="total-row"><td colspan="2" style="text-align:right;">TOTAL DU MOIS :</td><td>${group.total.toFixed(2)} €</td><td></td></tr></tbody></table></div>`;
@@ -714,7 +745,8 @@
 
         // --- GESTION ÉDITION INDIVIDUELLE ---
         function openEdit(id, type) {
-            currentEditId = id; currentEditType = type;
+            currentEditId = id;
+            currentEditType = type;
             const bus = flotte.find(b => b.id === id);
             const body = document.getElementById('modal-body');
             const title = document.getElementById('modal-title');
@@ -744,7 +776,8 @@
             } else if (type === 'options') {
                 title.innerText = "Équipements";
                 for (let key in optionsDispo) {
-                    const checked = (bus.options || []).includes(key) ? 'checked' : '';
+                    const checked = (bus.options || []).includes(key) ?
+                    'checked' : '';
                     body.innerHTML += `<label style="display:flex; align-items:center; margin:5px 0;"><input type="checkbox" class="opt-check" value="${key}" ${checked} style="width:auto; margin-right:10px;"> ${key}</label>`;
                 }
             }
@@ -761,20 +794,20 @@
         }
 
         function updateField(id, field, val) {
-            const bus = flotte.find(b => b.id === id);
-            if(bus) { 
-                bus[field] = val; 
-                // Si on change la date de CT manuellement, ça annule l'état "Contre-visite"
-                if (field === 'ct') bus.contre_visite = false; 
-
-                if (field === 'statut' || field === 'ct') updateUI(); 
-                else localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
-            }
-        }
+    const bus = flotte.find(b => b.id === id);
+    if(bus) { 
+        bus[field] = val;
+        // Si on change la date de CT manuellement, ça annule l'état "Contre-visite"
+        if (field === 'ct') bus.contre_visite = false;
+        if (field === 'statut' || field === 'ct') updateUI(); 
+        else localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte));
+    }
+}
 
         function updateVenteField(id, field, val) {
             const bus = flotte.find(b => b.id === id);
             if(bus) { bus[field] = val; localStorage.setItem('flotte_tm_v4', JSON.stringify(flotte)); }
+            // Pas de updateUI() ici pour ne pas perdre le focus quand on tape du texte dans le tableau Vente
         }
 
         // --- GRAPHIQUE (PIE AVEC POURCENTAGES) ---
@@ -783,34 +816,42 @@
             const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "🛠️Équipement" && b.statut !== "💲En Vente");
             const counts = listMoteurs.map(m => filtered.filter(b => b.moteur === m).length);
             const total = counts.reduce((a, b) => a + b, 0);
-
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: listMoteurs,
                     datasets: [{
+                 
                         data: counts,
                         backgroundColor: ['#FF4B2B', '#f5af19', '#00b09b', '#38ef7d', '#2193b0'],
-                        borderWidth: 2
+                        borderWidth: 2,
+                        borderColor: '#242526'
                     }]
                 },
+  
                 options: { 
                     plugins: { 
+                        legend: { labels: { color: '#e4e6eb' } },
                         datalabels: {
                             formatter: (value, ctx) => {
+     
                                 if(value === 0) return '';
                                 let sum = 0;
-                                let dataArr = ctx.chart.data.datasets[0].data;
+                                let dataArr 
+                                = ctx.chart.data.datasets[0].data;
                                 dataArr.map(data => { sum += data; });
                                 return (value * 100 / sum).toFixed(1) + "%";
+                      
                             },
                             color: '#fff',
                             font: { weight: 'bold', size: 14 },
-                            textStrokeColor: 'rgba(0,0,0,0.5)',
+                            textStrokeColor: 'rgba(0,0,0,0.8)',
+  
                             textStrokeWidth: 3
                         },
                         tooltip: { callbacks: { label: (item) => ` ${item.label}: ${item.raw} bus (Total Parc: ${total})` } } 
+         
                     } 
                 }
             });
@@ -818,7 +859,7 @@
 
         // --- RAPPORT PANNE & AUTO-IMMOBILISATION ---
         function ouvrirRapport(id) {
-            currentEditId = id; 
+            currentEditId = id;
             // Réinitialiser la case à cocher
             document.getElementById('panne-ct-refuse').checked = false;
             document.getElementById('modal-rapport').style.display = 'flex'; 
@@ -830,7 +871,6 @@
             const motif = document.getElementById('panne-motif').value;
             const pret = document.getElementById('panne-pret').value;
             const immatPure = bus.immat ? bus.immat.replace(/\D/g, '') : 'SANS_PLAQUE';
-            
             document.getElementById('texte-rapport').value = `bonjour,\n\nci joint le rapport de panne de mon ${bus.marque} ${bus.modele} n°${bus.numParc}.\n\nImmatriculation véhicule : [img=100x20]https://transport-manager.net/assets/immat/plaque.php?id=${immatPure}[/img]\nProblème rencontré : ${motif}\nJe souhaite un véhicule de prêt durant la durée des réparations si panne 3 jours ou plus : ${pret}\n\nbonne journée cordialement`;
         }
 
@@ -845,26 +885,31 @@
                 }
                 
                 // Copie du texte
-                document.getElementById('texte-rapport').select(); 
+                document.getElementById('texte-rapport').select();
                 document.execCommand('copy'); 
                 
                 alert("Texte copié ! Le véhicule a été basculé en statut Immobilisé.");
                 closeModal();
-                updateUI(); // Rafraîchit l'interface pour voir le changement de tableau
+                updateUI();
+                // Rafraîchit l'interface pour voir le changement de tableau
             }
         }
 
         function copierRapport() { 
-            document.getElementById('texte-rapport').select(); 
+            document.getElementById('texte-rapport').select();
             document.execCommand('copy'); 
             alert("Copié !"); 
         }
 
         // --- UTILITAIRES & FORMULAIRE ---
-        function calculateDaysLeft(d) { if(!d) return 999; return Math.ceil((new Date(d) - new Date()) / 86400000); }
-        function formatDate(d) { if(!d) return "-"; return new Date(d).toLocaleDateString('fr-FR'); }
-        function deleteBus(id) { if(confirm("Supprimer ce bus ?")) { flotte = flotte.filter(b => b.id !== id); updateUI(); } }
-        function closeModal() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
+        function calculateDaysLeft(d) { if(!d) return 999;
+            return Math.ceil((new Date(d) - new Date()) / 86400000); }
+        function formatDate(d) { if(!d) return "-";
+            return new Date(d).toLocaleDateString('fr-FR'); }
+        function deleteBus(id) { if(confirm("Supprimer ce bus ?")) { flotte = flotte.filter(b => b.id !== id);
+            updateUI(); } }
+        function closeModal() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        }
 
         document.getElementById('bus-form').onsubmit = function(e) {
             e.preventDefault();
@@ -875,10 +920,12 @@
                     id: Date.now().toString() + i,
                     numParc: isNaN(startNum) ? document.getElementById('parc').value : (startNum + i),
                     marque: document.getElementById('marque').value,
+ 
                     modele: document.getElementById('modele').value,
                     depot: document.getElementById('depot-add').value,
                     moteur: document.getElementById('moteur').value,
                     portes: document.getElementById('portes').value,
+                 
                     immat: document.getElementById('immat').value,
                     ligne: document.getElementById('ligne').value,
                     options: [], ct: '', statut: '🟢En Service',
@@ -887,16 +934,19 @@
             }
             updateUI(); this.reset();
         };
-
-        function exporterDonnees() { const data = { flotte, contrats }; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type: "application/json"})); a.download = "sauvegarde_complete.json"; a.click(); }
+        function exporterDonnees() { const data = { flotte, contrats }; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type: "application/json"}));
+            a.download = "sauvegarde_complete.json"; a.click(); }
         function importerDonnees(e) { 
-            const reader = new FileReader(); 
+            const reader = new FileReader();
             reader.onload = (ev) => { 
-                const data = JSON.parse(ev.target.result); 
-                if(data.flotte) { flotte = data.flotte; contrats = data.contrats || []; } 
-                else { flotte = data; } 
-                updateUI(); renderContracts(); 
-            }; 
+                const data = JSON.parse(ev.target.result);
+                if(data.flotte) { flotte = data.flotte; contrats = data.contrats || [];
+                } 
+                else { flotte = data;
+                } // Rétrocompatibilité ancienne sauvegarde
+                updateUI();
+                renderContracts(); 
+            };
             reader.readAsText(e.target.files[0]); 
         }
 
