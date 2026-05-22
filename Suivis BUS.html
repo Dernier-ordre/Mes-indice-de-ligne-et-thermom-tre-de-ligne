@@ -144,12 +144,15 @@
                         <option value="L4">L4</option><option value="L5">L5</option><option value="L6">L6</option>
                         <option value="L7">L7</option><option value="L8">L8</option><option value="L9">L9</option>
                         <option value="L10">L10</option><option value="L11">L11</option><option value="L12">L12</option>
-                        <option value="L13">L13</option><option value="S1">S1</option><option value="S2">S2</option>
-                        <option value="S3">S3</option><option value="S4">S4</option><option value="S5">S5</option>
-                        <option value="PL1">PL1</option><option value="PL2">PL2</option><option value="PL3">PL3</option>
-                        <option value="N73">N73</option><option value="A">A</option><option value="R">R</option>
-                        <option value="RS">RS</option><option value="L">L</option><option value="C">C</option>
-                        <option value="RF">RF</option>
+                        <option value="L13">L13</option><option value="L101">L101</option><option value="L102">L102</option>
+                        <option value="L103">L103</option><option value="L104">L104</option><option value="JD601">JD601</option>
+                        <option value="JD602">JD602</option><option value="L201">L201</option><option value="L202">L202</option>
+                        <option value="L203">L203</option><option value="JD651">JD651</option><option value="JD652">JD652</option>
+                        <option value="S1">S1</option><option value="S2">S2</option><option value="S3">S3</option>
+                        <option value="S4">S4</option><option value="S5">S5</option><option value="PL1">PL1</option>
+                        <option value="PL2">PL2</option><option value="PL3">PL3</option><option value="N73">N73</option>
+                        <option value="A">A</option><option value="R">R</option><option value="RS">RS</option>
+                        <option value="L">L</option><option value="C">C</option><option value="RF">RF</option>
                     </select>
                 </div>
                 <button type="submit">Ajouter au parc</button>
@@ -303,12 +306,15 @@
                 <option value="L4">L4</option><option value="L5">L5</option><option value="L6">L6</option>
                 <option value="L7">L7</option><option value="L8">L8</option><option value="L9">L9</option>
                 <option value="L10">L10</option><option value="L11">L11</option><option value="L12">L12</option>
-                <option value="L13">L13</option><option value="S1">S1</option><option value="S2">S2</option>
-                <option value="S3">S3</option><option value="S4">S4</option><option value="S5">S5</option>
-                <option value="PL1">PL1</option><option value="PL2">PL2</option><option value="PL3">PL3</option>
-                <option value="N73">N73</option><option value="A">A</option><option value="R">R</option>
-                <option value="RS">RS</option><option value="L">L</option><option value="C">C</option>
-                <option value="RF">RF</option>
+                <option value="L13">L13</option><option value="L101">L101</option><option value="L102">L102</option>
+                <option value="L103">L103</option><option value="L104">L104</option><option value="JD601">JD601</option>
+                <option value="JD602">JD602</option><option value="L201">L201</option><option value="L202">L202</option>
+                <option value="L203">L203</option><option value="JD651">JD651</option><option value="JD652">JD652</option>
+                <option value="S1">S1</option><option value="S2">S2</option><option value="S3">S3</option>
+                <option value="S4">S4</option><option value="S5">S5</option><option value="PL1">PL1</option>
+                <option value="PL2">PL2</option><option value="PL3">PL3</option><option value="N73">N73</option>
+                <option value="A">A</option><option value="R">R</option><option value="RS">RS</option>
+                <option value="L">L</option><option value="C">C</option><option value="RF">RF</option>
             </select>
             <label>Statut :</label>
             <select id="bulk-statut">
@@ -411,7 +417,7 @@
 
         // --- LISTES DE CONFIGURATION ---
         const listDepots = ["Unité de Transport d'Oullins", "Unité de Transport de Perrache"]; // <-- Tu peux modifier tes dépôts ici
-        const listLignes = ["P1", "P2", "P3", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "S1", "S2", "S3", "S4", "S5", "R1", "R2", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C", "RF"];
+        const listLignes = ["P1", "P2", "P3", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "L101", "L102", "L103", "L104", "JD601", "JD602", "L201", "L202", "L203", "JD651", "JD652", "S1", "S2", "S3", "S4", "S5", "R1", "R2", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C", "RF"];
         const listMoteurs = ["Diesel", "Diesel MH", "GNV", "GNV MH", "Électrique"];
         const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔵Réserve", "🔴Réformé", "🚚Livraison", "🛠️Équipement", "💲En Vente"];
         const optionsDispo = { 
@@ -813,7 +819,7 @@
         // --- GRAPHIQUE (PIE AVEC POURCENTAGES) ---
         function updateChart() {
             const ctx = document.getElementById('motorChart').getContext('2d');
-            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "🛠️Équipement" && b.statut !== "💲En Vente");
+            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "💲En Vente");
             const counts = listMoteurs.map(m => filtered.filter(b => b.moteur === m).length);
             const total = counts.reduce((a, b) => a + b, 0);
             if (myChart) myChart.destroy();
