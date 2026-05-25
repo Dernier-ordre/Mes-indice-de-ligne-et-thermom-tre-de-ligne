@@ -71,7 +71,7 @@
         .btn-cancel { background: #555; }
         textarea { height: 120px; font-family: monospace; font-size: 0.9em;}
         
-        #chart-wrap { max-width: 500px; margin: 20px auto; background: #242526; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid #3a3b3c; }
+        #chart-wrap { max-width: 650px; margin: 20px auto; background: #242526; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid #3a3b3c; }
         .total-row { background-color: #3a3b3c; font-weight: bold; }
 
         /* Barre d'action en masse */
@@ -816,48 +816,47 @@
             // Pas de updateUI() ici pour ne pas perdre le focus quand on tape du texte dans le tableau Vente
         }
 
-        // --- GRAPHIQUE (PIE AVEC POURCENTAGES) ---
+        // --- GRAPHIQUE (PIE AVEC POURCENTAGES ET LÉGENDE À DROITE) ---
         function updateChart() {
             const ctx = document.getElementById('motorChart').getContext('2d');
-            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "💲En Vente");
+            const filtered = flotte.filter(b => b.statut !== "🚚Livraison" && b.statut !== "🛠️Équipement" && b.statut !== "💲En Vente");
             const counts = listMoteurs.map(m => filtered.filter(b => b.moteur === m).length);
             const total = counts.reduce((a, b) => a + b, 0);
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: listMoteurs,
+                    // Ajoute le nombre de véhicules directement à côté du nom dans la légende
+                    labels: listMoteurs.map((m, i) => `${m} (${counts[i]})`),
                     datasets: [{
-                 
                         data: counts,
                         backgroundColor: ['#FF4B2B', '#f5af19', '#00b09b', '#38ef7d', '#2193b0'],
                         borderWidth: 2,
                         borderColor: '#242526'
                     }]
                 },
-  
                 options: { 
                     plugins: { 
-                        legend: { labels: { color: '#e4e6eb' } },
+                        // Positionne la légende à droite
+                        legend: { 
+                            position: 'right',
+                            labels: { color: '#e4e6eb' } 
+                        },
                         datalabels: {
                             formatter: (value, ctx) => {
-     
                                 if(value === 0) return '';
                                 let sum = 0;
-                                let dataArr 
-                                = ctx.chart.data.datasets[0].data;
+                                let dataArr = ctx.chart.data.datasets[0].data;
                                 dataArr.map(data => { sum += data; });
                                 return (value * 100 / sum).toFixed(1) + "%";
-                      
                             },
                             color: '#fff',
                             font: { weight: 'bold', size: 14 },
                             textStrokeColor: 'rgba(0,0,0,0.8)',
-  
                             textStrokeWidth: 3
                         },
-                        tooltip: { callbacks: { label: (item) => ` ${item.label}: ${item.raw} bus (Total Parc: ${total})` } } 
-         
+                        // Nettoie l'infobulle (tooltip) au survol pour éviter les répétitions de texte
+                        tooltip: { callbacks: { label: (item) => ` ${listMoteurs[item.dataIndex]}: ${item.raw} bus (Total Parc: ${total})` } } 
                     } 
                 }
             });
