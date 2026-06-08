@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:export-batch-path="C:\Users\thoma\OneDrive\Bureau"
-   inkscape:export-batch-name="batch"
+   inkscape:export-batch-name=""
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -141,39 +141,6 @@
        y1="14246.861"
        x2="22556.834"
        y2="15635.533" />
-    <linearGradient
-       id="linearGradient147"
-       inkscape:collect="always"
-       x1="48989.91"
-       y1="46051.707"
-       x2="49989.91"
-       y2="46051.707"
-       gradientUnits="userSpaceOnUse">
-      <stop
-         style="stop-color:#3e2723;stop-opacity:1;"
-         offset="0"
-         id="stop140" />
-      <stop
-         style="stop-color:#5d4037;stop-opacity:1;"
-         offset="0.2"
-         id="stop141" />
-      <stop
-         style="stop-color:#795548;stop-opacity:1;"
-         offset="0.62"
-         id="stop144" />
-      <stop
-         style="stop-color:#8d6e63;stop-opacity:1;"
-         offset="0.80000001"
-         id="stop145" />
-      <stop
-         style="stop-color:#a1887f;stop-opacity:1;"
-         offset="0.89999998"
-         id="stop146" />
-      <stop
-         style="stop-color:#bcaaa4;stop-opacity:1;"
-         offset="1"
-         id="stop147" />
-    </linearGradient>
     <clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipath_lpe_path-effect135-0">
@@ -1029,6 +996,16 @@
        y1="41230.789"
        x2="60363.059"
        y2="41937.898" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient32"
+       id="linearGradient149-6"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.27714512,0,0,0.27450564,33250.751,33194.182)"
+       x1="60819.75"
+       y1="50819.688"
+       x2="57947.953"
+       y2="47397.219" />
   </defs>
   <g
      inkscape:label="Calque 1"
@@ -3031,23 +3008,27 @@
         <g
            id="g382-5-9-8-1-1"
            transform="translate(-21772.991,10431.357)">
-          <circle
-             style="fill:url(#linearGradient147);fill-opacity:1;stroke:#fff200;stroke-width:0;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-             id="circle377-6-4-2-6-7"
-             cy="46551.707"
-             cx="49489.91"
-             r="500" />
-          <text
-             xml:space="preserve"
-             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1130.16px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.13148px;word-spacing:0.490521px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#49c2cf;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-             x="49327.945"
-             y="46941.027"
-             id="text377-8-5-7-1-5"><tspan
-               sodipodi:role="line"
-               id="tspan377-2-0-8-6-5"
-               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Constantia;-inkscape-font-specification:Constantia;fill:#ffffff;stroke-width:0"
-               x="49327.945"
-               y="46941.027">i</tspan></text>
+          <g
+             id="g163"
+             transform="translate(-218.78516,-123.02344)">
+            <circle
+               style="fill:url(#linearGradient149-6);fill-opacity:1;fill-rule:evenodd;stroke:#fff200;stroke-width:0;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+               id="circle377-6-8-5-0"
+               cy="46674.73"
+               cx="49708.695"
+               r="500" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1130.16px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.13148px;word-spacing:0.490521px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#49c2cf;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+               x="49546.73"
+               y="47064.051"
+               id="text377-8-1-8-5"><tspan
+                 sodipodi:role="line"
+                 id="tspan377-2-4-5-3"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Constantia;-inkscape-font-specification:Constantia;fill:#ffffff;stroke-width:0"
+                 x="49546.73"
+                 y="47064.051">i</tspan></text>
+          </g>
         </g>
         <g
            id="g384-4-5-0-3-5"
