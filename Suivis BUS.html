@@ -947,26 +947,37 @@
             document.getElementById('exp-teinte').innerText = bus.v_teinte || "Non renseigné";
             document.getElementById('exp-baie').innerText = bus.v_baie || "Non renseigné";
 
-            // Gestion de l'affichage des images (Affichée si le lien existe, sinon masquée)
+            // --- GESTION DES IMAGES DYNAMIQUES (Lien direct saisi dans le formulaire) ---
+            
+            // Girouette : Utilisation directe du lien entré
             const imgGiro = document.getElementById('export-img-girouette');
-            imgGiro.src = liensGirouettes[bus.v_girouette] || "";
-            document.getElementById('container-img-giro').style.display = bus.v_girouette ? 'block' : 'none';
+            const urlGiro = bus.v_girouette || "";
+            imgGiro.src = urlGiro;
+            document.getElementById('container-img-giro').style.display = urlGiro ? 'block' : 'none';
 
+            // Sièges : Gestion alternative si nommé v_siege ou v_img_siege
             const imgSiege = document.getElementById('export-img-siege');
-            imgSiege.src = bus.v_img_siege || "";
-            document.getElementById('container-img-siege').style.display = bus.v_img_siege ? 'block' : 'none';
+            const urlSiege = bus.v_siege || bus.v_img_siege || "";
+            imgSiege.src = urlSiege;
+            document.getElementById('container-img-siege').style.display = urlSiege ? 'block' : 'none';
 
+            // Revêtement : Sécurité si nommé v_revetement, v_img_revetement, v_img_revet ou v_revet
             const imgRevet = document.getElementById('export-img-revet');
-            imgRevet.src = bus.v_img_revet || "";
-            document.getElementById('container-img-revet').style.display = bus.v_img_revet ? 'block' : 'none';
+            const urlRevet = bus.v_revetement || bus.v_img_revetement || bus.v_img_revet || bus.v_revet || "";
+            imgRevet.src = urlRevet;
+            document.getElementById('container-img-revet').style.display = urlRevet ? 'block' : 'none';
 
+            // Sol : Gestion alternative si nommé v_sol ou v_img_sol
             const imgSol = document.getElementById('export-img-sol');
-            imgSol.src = bus.v_img_sol || "";
-            document.getElementById('container-img-sol').style.display = bus.v_img_sol ? 'block' : 'none';
+            const urlSol = bus.v_sol || bus.v_img_sol || "";
+            imgSol.src = urlSol;
+            document.getElementById('container-img-sol').style.display = urlSol ? 'block' : 'none';
 
+            // Barres : Gestion alternative si nommé v_barres ou v_img_barres
             const imgBarres = document.getElementById('export-img-barres');
-            imgBarres.src = bus.v_img_barres || "";
-            document.getElementById('container-img-barres').style.display = bus.v_img_barres ? 'block' : 'none';
+            const urlBarres = bus.v_barres || bus.v_img_barres || "";
+            imgBarres.src = urlBarres;
+            document.getElementById('container-img-barres').style.display = urlBarres ? 'block' : 'none';
 
             // Remplacement des badges textuels d'options par tes images SVG existantes
             const optionsContainer = document.getElementById('export-options');
