@@ -298,23 +298,23 @@
             </div>
 
             <div id="export-images-grid" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
-                <div id="container-img-giro">
+                <div id="container-img-giro" style="display: none;">
                     <span style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">Girouette :</span>
                     <img id="export-img-girouette" src="" style="width: 115px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Girouette">
                 </div>
-                <div id="container-img-siege">
+                <div id="container-img-siege" style="display: none;">
                     <span style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">Sièges :</span>
                     <img id="export-img-siege" src="" style="width: 115px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Sièges">
                 </div>
-                <div id="container-img-revet">
+                <div id="container-img-revet" style="display: none;">
                     <span style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">Revêtement :</span>
                     <img id="export-img-revet" src="" style="width: 115px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Revêtement">
                 </div>
-                <div id="container-img-sol">
+                <div id="container-img-sol" style="display: none;">
                     <span style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">Sol :</span>
                     <img id="export-img-sol" src="" style="width: 115px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Sol">
                 </div>
-                <div id="container-img-barres">
+                <div id="container-img-barres" style="display: none;">
                     <span style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">Barres :</span>
                     <img id="export-img-barres" src="" style="width: 115px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Barres">
                 </div>
@@ -329,6 +329,7 @@
                 <p style="margin: 2px 0;"><strong>Kilométrage :</strong> <span id="export-km" style="color: #b0b3b8;"></span> km</p>
                 <p style="margin: 2px 0;"><strong>Mise en Service :</strong> <span id="export-mes" style="color: #b0b3b8;"></span></p>
                 <p style="margin: 2px 0;"><strong>Dernière Révision :</strong> <span id="export-rev" style="color: #b0b3b8;"></span></p>
+                <p style="margin: 2px 0;"><strong>Prochain CT :</strong> <span id="export-ct" style="color: #e74c3c; font-weight: bold;"></span></p>
                 <p style="margin: 2px 0;"><strong>Capacité :</strong> <span id="export-capacite" style="color: #b0b3b8;"></span> places</p>
                 <p style="margin: 2px 0;"><strong>Nombre de Portes :</strong> <span id="export-portes" style="color: #b0b3b8;"></span></p>
                 <p style="margin: 2px 0;"><strong>État Technique :</strong> <span id="export-tech" style="color: #b0b3b8;"></span></p>
@@ -350,7 +351,7 @@
             </div>
 
             <div style="margin-top: 12px; background: #242526; padding: 12px; border-radius: 8px; border: 1px solid #2d2f30;">
-                <h4 style="margin: 0 0 8px 0; color: #e4e6eb; font-size:13px;">Équipements et options embarqués</h4>
+                <h4 style="margin: 0 0 8px 0; color: #e4e6eb; font-size:13px;">Équipements et options privilèges</h4>
                 <div id="export-options" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
             </div>
             
@@ -920,7 +921,9 @@
             if (!bus) return alert("Bus introuvable !");
 
             let typeAuto = "Standard";
-            if (bus.modele.includes("18") || bus.modele.includes("25")) typeAuto = "Articulé";
+            if (bus.modele.includes("18") || bus.modele.includes("25") || bus.modele.toLowerCase().includes("articulé")) {
+                typeAuto = "Articulé";
+            }
 
             // Remplissage des textes de la carte
             document.getElementById('export-prix').innerText = bus.v_prix || "Non spécifié";
@@ -932,6 +935,10 @@
             document.getElementById('export-km').innerText = bus.v_km || "-";
             document.getElementById('export-mes').innerText = bus.v_mes || "-";
             document.getElementById('export-rev').innerText = bus.v_rev || "-";
+            
+            // Récupération de la date du prochain CT (vérifie plusieurs clés au cas où)
+            document.getElementById('export-ct').innerText = bus.v_ct || bus.ct || bus.v_prochain_ct || "Non planifié";
+            
             document.getElementById('export-capacite').innerText = bus.v_places || "-";
             document.getElementById('export-portes').innerText = bus.portes || 3;
             document.getElementById('export-tech').innerText = bus.v_tech || "-";
@@ -947,39 +954,42 @@
             document.getElementById('exp-teinte').innerText = bus.v_teinte || "Non renseigné";
             document.getElementById('exp-baie').innerText = bus.v_baie || "Non renseigné";
 
-            // --- GESTION DES IMAGES DYNAMIQUES (Lien direct saisi dans le formulaire) ---
-            
-            // Girouette : Utilisation directe du lien entré
-            const imgGiro = document.getElementById('export-img-girouette');
-            const urlGiro = bus.v_girouette || "";
-            imgGiro.src = urlGiro;
-            document.getElementById('container-img-giro').style.display = urlGiro ? 'block' : 'none';
+            // --- GESTION DES IMAGES ASSIGNÉES PAR OUI / NON (LIENS GITHUB) ---
 
-            // Sièges : Gestion alternative si nommé v_siege ou v_img_siege
+            // 1. Girouette Diode Couleur
+            const imgGiro = document.getElementById('export-img-girouette');
+            const aGiro = (bus.v_girouette === "Oui" || bus.v_girouette === true);
+            // Remplace par ton lien brut GitHub (raw.githubusercontent...)
+            imgGiro.src = aGiro ? "METS_ICI_LE_LIEN_DE_TON_IMAGE_GIROUETTE_SUR_GITHUB" : "";
+            document.getElementById('container-img-giro').style.display = aGiro ? 'block' : 'none';
+
+            // 2. Revêtement Intérieur
+            const imgRevet = document.getElementById('export-img-revet');
+            const valRevet = bus.v_revetement || bus.v_img_revetement || bus.v_img_revet || bus.v_revet || "";
+            const aRevet = (valRevet === "Oui" || valRevet === true);
+            // Remplace par ton lien brut GitHub (raw.githubusercontent...)
+            imgRevet.src = aRevet ? "METS_ICI_LE_LIEN_DE_TON_IMAGE_REVETEMENT_SUR_GITHUB" : "";
+            document.getElementById('container-img-revet').style.display = aRevet ? 'block' : 'none';
+
+            // 3. Sièges (Garde la logique de lien direct ou passe par GitHub si besoin)
             const imgSiege = document.getElementById('export-img-siege');
             const urlSiege = bus.v_siege || bus.v_img_siege || "";
             imgSiege.src = urlSiege;
             document.getElementById('container-img-siege').style.display = urlSiege ? 'block' : 'none';
 
-            // Revêtement : Sécurité si nommé v_revetement, v_img_revetement, v_img_revet ou v_revet
-            const imgRevet = document.getElementById('export-img-revet');
-            const urlRevet = bus.v_revetement || bus.v_img_revetement || bus.v_img_revet || bus.v_revet || "";
-            imgRevet.src = urlRevet;
-            document.getElementById('container-img-revet').style.display = urlRevet ? 'block' : 'none';
-
-            // Sol : Gestion alternative si nommé v_sol ou v_img_sol
+            // 4. Sol
             const imgSol = document.getElementById('export-img-sol');
             const urlSol = bus.v_sol || bus.v_img_sol || "";
             imgSol.src = urlSol;
             document.getElementById('container-img-sol').style.display = urlSol ? 'block' : 'none';
 
-            // Barres : Gestion alternative si nommé v_barres ou v_img_barres
+            // 5. Barres
             const imgBarres = document.getElementById('export-img-barres');
             const urlBarres = bus.v_barres || bus.v_img_barres || "";
             imgBarres.src = urlBarres;
             document.getElementById('container-img-barres').style.display = urlBarres ? 'block' : 'none';
 
-            // Remplacement des badges textuels d'options par tes images SVG existantes
+            // Gestion des logos d'options en bas de la fiche
             const optionsContainer = document.getElementById('export-options');
             optionsContainer.innerHTML = '';
             if (bus.options && bus.options.length > 0) {
@@ -996,7 +1006,7 @@
                 optionsContainer.innerHTML = '<span style="color:#7a7a7a; font-style:italic; font-size:12px;">Aucune option additionnelle</span>';
             }
 
-            // Lancement de la capture d'écran via html2canvas
+            // Attente du chargement avant capture
             setTimeout(() => {
                 const elementToCapture = document.getElementById('discord-card');
                 html2canvas(elementToCapture, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
@@ -1005,9 +1015,8 @@
                     link.href = canvas.toDataURL("image/png");
                     link.click();
                 });
-            }, 400); // Léger délai augmenté pour laisser le temps aux images de se charger avant la capture
+            }, 500);
         }
-
         function calculateDaysLeft(d) { if(!d) return 999; return Math.ceil((new Date(d) - new Date()) / 86400000); }
         function formatDate(d) { if(!d) return "-"; return new Date(d).toLocaleDateString('fr-FR'); }
         function deleteBus(id) { if(confirm("Supprimer ce bus du parc complet ?")) { flotte = flotte.filter(b => b.id !== id); updateUI(); } }
