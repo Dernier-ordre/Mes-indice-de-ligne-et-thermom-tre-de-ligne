@@ -292,27 +292,35 @@
     <div id="export-zone" style="position: absolute; left: -9999px; top: 0;">
         <div id="discord-card" style="width: 550px; background: #18191a; color: #e4e6eb; border: 2px solid #3a3b3c; border-radius: 12px; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
             
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #3a3b3c; padding-bottom: 10px; margin-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #3a3b3c; padding-bottom: 10px; margin-bottom: 15px;">
                 <h2 style="margin: 0; color: #38ef7d; font-size: 22px;">Fiche Technique de Vente</h2>
                 <span id="export-prix" style="font-size: 24px; font-weight: bold; color: #f5af19;"></span>
             </div>
 
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <div>
-                    <span style="font-size:11px; color:#aaa; display:block;">Girouette :</span>
-                    <img id="export-img-girouette" src="" style="width: 110px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Girouette">
+            <div id="export-images-grid" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+                <div id="container-img-giro">
+                    <span style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">Girouette :</span>
+                    <img id="export-img-girouette" src="" style="width: 115px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Girouette">
                 </div>
-                <div>
-                    <span style="font-size:11px; color:#aaa; display:block;">Sièges :</span>
-                    <img id="export-img-siege" src="" style="width: 110px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Sièges" onerror="this.style.display='none'">
+                <div id="container-img-siege">
+                    <span style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">Sièges :</span>
+                    <img id="export-img-siege" src="" style="width: 115px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Sièges">
                 </div>
-                <div>
-                    <span style="font-size:11px; color:#aaa; display:block;">Sol / Intérieur :</span>
-                    <img id="export-img-sol" src="" style="width: 110px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Sol" onerror="this.style.display='none'">
+                <div id="container-img-revet">
+                    <span style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">Revêtement :</span>
+                    <img id="export-img-revet" src="" style="width: 115px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Revêtement">
+                </div>
+                <div id="container-img-sol">
+                    <span style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">Sol :</span>
+                    <img id="export-img-sol" src="" style="width: 115px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Sol">
+                </div>
+                <div id="container-img-barres">
+                    <span style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">Barres :</span>
+                    <img id="export-img-barres" src="" style="width: 115px; height: 65px; object-fit: cover; border-radius: 6px; border: 1px solid #4e4f50;" alt="Barres">
                 </div>
             </div>
 
-            <div style="background: #242526; padding: 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size:13px;">
+            <div style="background: #242526; padding: 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size:13px; border: 1px solid #2d2f30;">
                 <p style="margin: 2px 0;"><strong>Parc :</strong> <span id="export-parc" style="color: #3498db; font-weight:bold;"></span></p>
                 <p style="margin: 2px 0;"><strong>Constructeur :</strong> <span id="export-marque" style="color: #b0b3b8;"></span></p>
                 <p style="margin: 2px 0;"><strong>Modèle :</strong> <span id="export-modele" style="color: #b0b3b8;"></span></p>
@@ -327,23 +335,23 @@
                 <p style="margin: 2px 0;"><strong>État Intérieur :</strong> <span id="export-int" style="color: #b0b3b8;"></span></p>
             </div>
 
-            <div style="margin-top: 12px; background: #242526; padding: 10px; border-radius: 8px; font-size:12px;">
-                <h4 style="margin: 0 0 5px 0; color: #38ef7d;">Caractéristiques structurelles :</h4>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:4px; color:#b0b3b8;">
-                    <div>Agenouillement : <span id="exp-ag" style="color:white;"></span></div>
-                    <div>Emplacement UFR : <span id="exp-ufr" style="color:white;"></span></div>
-                    <div>Palette PMR : <span id="exp-pal" style="color:white;"></span></div>
-                    <div>Ventilation : <span id="exp-vent" style="color:white;"></span></div>
-                    <div>Self-Service : <span id="exp-self" style="color:white;"></span></div>
-                    <div>Vitre Anti-Agression : <span id="exp-anti" style="color:white;"></span></div>
-                    <div>Vitres Teintées : <span id="exp-teinte" style="color:white;"></span></div>
-                    <div>Baie Basse : <span id="exp-baie" style="color:white;"></span></div>
+            <div style="margin-top: 12px; background: #242526; padding: 12px; border-radius: 8px; font-size:12px; border: 1px solid #2d2f30;">
+                <h4 style="margin: 0 0 8px 0; color: #38ef7d; font-size:13px;">Caractéristiques structurelles</h4>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; color:#b0b3b8;">
+                    <div>Agenouillement : <span id="exp-ag" style="color:white; font-weight:500;"></span></div>
+                    <div>Emplacement UFR : <span id="exp-ufr" style="color:white; font-weight:500;"></span></div>
+                    <div>Palette PMR : <span id="exp-pal" style="color:white; font-weight:500;"></span></div>
+                    <div>Ventilation : <span id="exp-vent" style="color:white; font-weight:500;"></span></div>
+                    <div>Self-Service : <span id="exp-self" style="color:white; font-weight:500;"></span></div>
+                    <div>Vitre Anti-Agression : <span id="exp-anti" style="color:white; font-weight:500;"></span></div>
+                    <div>Vitres Teintées : <span id="exp-teinte" style="color:white; font-weight:500;"></span></div>
+                    <div>Baie Basse : <span id="exp-baie" style="color:white; font-weight:500;"></span></div>
                 </div>
             </div>
 
-            <div style="margin-top: 12px;">
-                <h4 style="margin: 0 0 5px 0; color: #e4e6eb; font-size:13px;">Options additionnelles équipées :</h4>
-                <div id="export-options" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+            <div style="margin-top: 12px; background: #242526; padding: 12px; border-radius: 8px; border: 1px solid #2d2f30;">
+                <h4 style="margin: 0 0 8px 0; color: #e4e6eb; font-size:13px;">Équipements et options embarqués</h4>
+                <div id="export-options" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
             </div>
             
             <div style="margin-top: 15px; text-align: right; font-size: 11px; color: #7a7a7a; border-top: 1px solid #3a3b3c; padding-top:5px;">
@@ -492,10 +500,10 @@
 
         // --- LIENS IMAGES DE GIROUETTE À RENSEIGNER TOI-MÊME ---
         const liensGirouettes = {
-            "diode": "RENSEIGNE_TON_LIEN_DIODE_ICI",
-            "diode blanche": "RENSEIGNE_TON_LIEN_DIODE_BLANCHE_ICI",
-            "diode couleur": "RENSEIGNE_TON_LIEN_DIODE_COULEUR_ICI",
-            "diode couleur blanche": "RENSEIGNE_TON_LIEN_DIODE_COULEUR_BLANCHE_ICI"
+            "diode": "https://transport-manager.net/assets/img/opt/girouettes/N2/Diodes/diodes_6.png",
+            "diode blanche": "",
+            "diode couleur": "https://transport-manager.net/assets/img/opt/girouettes/Sans_Voyageurs/diodes_couleurs_sans_voyageurs_2.png",
+            "diode couleur blanche": "https://transport-manager.net/assets/img/opt/girouettes/Sans_Voyageurs/diodes_couleurs_blanches_sans_voyageurs_2.png"
         };
 
         // --- CONFIGURATIONS ---
@@ -906,7 +914,7 @@
             }
         }
 
-        // --- GENERATION IMAGE FICHE DISCORD AVANCEE ---
+ // --- GENERATION IMAGE FICHE DISCORD AVANCEE ---
         function genererFicheDiscord(numParc) {
             const bus = flotte.find(b => b.numParc == numParc);
             if (!bus) return alert("Bus introuvable !");
@@ -914,7 +922,7 @@
             let typeAuto = "Standard";
             if (bus.modele.includes("18") || bus.modele.includes("25")) typeAuto = "Articulé";
 
-            // Remplissage de la carte cachée
+            // Remplissage des textes de la carte
             document.getElementById('export-prix').innerText = bus.v_prix || "Non spécifié";
             document.getElementById('export-parc').innerText = bus.numParc;
             document.getElementById('export-marque').innerText = bus.marque;
@@ -939,34 +947,45 @@
             document.getElementById('exp-teinte').innerText = bus.v_teinte || "Non renseigné";
             document.getElementById('exp-baie').innerText = bus.v_baie || "Non renseigné";
 
-            // Chargement des images de la fiche
+            // Gestion de l'affichage des images (Affichée si le lien existe, sinon masquée)
             const imgGiro = document.getElementById('export-img-girouette');
             imgGiro.src = liensGirouettes[bus.v_girouette] || "";
-            imgGiro.style.display = bus.v_girouette ? 'block' : 'none';
+            document.getElementById('container-img-giro').style.display = bus.v_girouette ? 'block' : 'none';
 
             const imgSiege = document.getElementById('export-img-siege');
             imgSiege.src = bus.v_img_siege || "";
-            imgSiege.style.display = bus.v_img_siege ? 'block' : 'none';
+            document.getElementById('container-img-siege').style.display = bus.v_img_siege ? 'block' : 'none';
+
+            const imgRevet = document.getElementById('export-img-revet');
+            imgRevet.src = bus.v_img_revet || "";
+            document.getElementById('container-img-revet').style.display = bus.v_img_revet ? 'block' : 'none';
 
             const imgSol = document.getElementById('export-img-sol');
             imgSol.src = bus.v_img_sol || "";
-            imgSol.style.display = bus.v_img_sol ? 'block' : 'none';
+            document.getElementById('container-img-sol').style.display = bus.v_img_sol ? 'block' : 'none';
 
-            // Options sous forme de badges textuels
+            const imgBarres = document.getElementById('export-img-barres');
+            imgBarres.src = bus.v_img_barres || "";
+            document.getElementById('container-img-barres').style.display = bus.v_img_barres ? 'block' : 'none';
+
+            // Remplacement des badges textuels d'options par tes images SVG existantes
             const optionsContainer = document.getElementById('export-options');
             optionsContainer.innerHTML = '';
             if (bus.options && bus.options.length > 0) {
                 bus.options.forEach(opt => {
-                    const span = document.createElement('span');
-                    span.innerText = opt;
-                    span.style.cssText = "background: #3a3b3c; padding: 4px 8px; border-radius: 4px; font-size: 11px; border: 1px solid #555; color:#fff;";
-                    optionsContainer.appendChild(span);
+                    if (optionsDispo[opt]) {
+                        const img = document.createElement('img');
+                        img.src = optionsDispo[opt];
+                        img.title = opt;
+                        img.style.cssText = "height: 28px; width: 28px; object-fit: contain; filter: invert(1) opacity(0.9); background: #3a3b3c; padding: 4px; border-radius: 6px; border: 1px solid #555;";
+                        optionsContainer.appendChild(img);
+                    }
                 });
             } else {
-                optionsContainer.innerHTML = '<span style="color:#7a7a7a; font-style:italic;">Aucune option additionnelle</span>';
+                optionsContainer.innerHTML = '<span style="color:#7a7a7a; font-style:italic; font-size:12px;">Aucune option additionnelle</span>';
             }
 
-            // Capture HTML2Canvas
+            // Lancement de la capture d'écran via html2canvas
             setTimeout(() => {
                 const elementToCapture = document.getElementById('discord-card');
                 html2canvas(elementToCapture, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
@@ -975,7 +994,7 @@
                     link.href = canvas.toDataURL("image/png");
                     link.click();
                 });
-            }, 300);
+            }, 400); // Léger délai augmenté pour laisser le temps aux images de se charger avant la capture
         }
 
         function calculateDaysLeft(d) { if(!d) return 999; return Math.ceil((new Date(d) - new Date()) / 86400000); }
