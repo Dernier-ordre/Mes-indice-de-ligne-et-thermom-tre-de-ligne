@@ -832,8 +832,13 @@
                 if(!grouped[key]) grouped[key] = { label: label, items: [], total: 0 };
                 grouped[key].items.push(c); grouped[key].total += c.gain;
             });
+
             Object.keys(grouped).sort().forEach(key => {
                 const group = grouped[key];
+                
+                // 🔧 CORRECTION : Ajout du tri par date de fin ici !
+                group.items.sort((a, b) => new Date(a.fin) - new Date(b.fin));
+
                 let tableHtml = `<div class="table-responsive"><h4 style="margin: 10px;">📅 ${group.label}</h4><table><thead><tr><th>Nom du contrat</th><th>Date de fin</th><th>Gains</th><th>Action</th></tr></thead><tbody>`;
                 group.items.forEach(c => {
                     const isTermine = new Date(c.fin) < new Date().setHours(0,0,0,0);
@@ -842,6 +847,7 @@
                 tableHtml += `<tr class="total-row"><td colspan="2" style="text-align:right;">TOTAL DU MOIS :</td><td>${group.total.toFixed(2)} €</td><td></td></tr></tbody></table></div>`;
                 if (key < currentMonthKey) contArchive.innerHTML += tableHtml; else contActive.innerHTML += tableHtml;
             });
+            
             if(contArchive.innerHTML === '') contArchive.innerHTML = '<p>Aucun contrat archivé.</p>';
             if(contActive.innerHTML === '') contActive.innerHTML = '<p>Aucun contrat en cours.</p>';
         }
