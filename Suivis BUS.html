@@ -282,12 +282,13 @@
                         <th style="background:#d35400;">Nbr Places</th>
                         <th style="background:#d35400;">État Tech</th>
                         <th style="background:#d35400;">État Intérieur</th>
-                        <th style="background:#d35400;">Girouette</th>
+                        <th style="background:#d35400;">État Revêtement</th>
+                        <th style="background:#d35400;">Girouette (Oui/Non)</th>
                         
-                        <th style="background:#27ae60;">Lien Image Siège</th>
-                        <th style="background:#27ae60;">Lien Image Revêtement</th>
-                        <th style="background:#27ae60;">Lien Image Sol</th>
-                        <th style="background:#27ae60;">Lien Image Barres</th>
+                        <th style="background:#27ae60;">Image Siège (Lien)</th>
+                        <th style="background:#27ae60;">Image Revêtement (Oui/Non)</th>
+                        <th style="background:#27ae60;">Image Sol (Lien)</th>
+                        <th style="background:#27ae60;">Image Barres (Lien)</th>
                         
                         <th style="background:#8e44ad;">Agenouillement</th>
                         <th style="background:#8e44ad;">Emplacement UFR</th>
@@ -667,7 +668,6 @@
 
                 // --- LOGIQUE & RENDU DE L'ONGLET VENTE COMPLET ---
                 if (bus.statut === "💲En Vente") {
-                    // Détection automatique du Type de Longueur
                     let typeAuto = "Standard";
                     if (bus.modele.includes("18") || bus.modele.includes("25")) {
                         typeAuto = "Articulé";
@@ -689,19 +689,24 @@
                         <td><input type="number" value="${bus.v_places||''}" onblur="updateVenteField('${bus.id}','v_places',this.value)" style="width:55px;"></td>
                         <td><input type="text" value="${bus.v_tech||''}" onblur="updateVenteField('${bus.id}','v_tech',this.value)" style="width:80px;" placeholder="État"></td>
                         <td><input type="text" value="${bus.v_int||''}" onblur="updateVenteField('${bus.id}','v_int',this.value)" style="width:80px;" placeholder="État Int"></td>
+                        <td><input type="text" value="${bus.v_revet||''}" onblur="updateVenteField('${bus.id}','v_revet',this.value)" style="width:80px;" placeholder="État Revet"></td>
                         
                         <td>
-                            <select onchange="updateVenteField('${bus.id}','v_girouette',this.value)" style="width:120px;">
+                            <select onchange="updateVenteField('${bus.id}','v_girouette',this.value)" style="width:65px;">
                                 <option value=""></option>
-                                <option value="diode" ${bus.v_girouette==='diode'?'selected':''}>diode</option>
-                                <option value="diode blanche" ${bus.v_girouette==='diode blanche'?'selected':''}>diode blanche</option>
-                                <option value="diode couleur" ${bus.v_girouette==='diode couleur'?'selected':''}>diode couleur</option>
-                                <option value="diode couleur blanche" ${bus.v_girouette==='diode couleur blanche'?'selected':''}>diode couleur blanche</option>
+                                <option value="Oui" ${bus.v_girouette==='Oui'?'selected':''}>Oui</option>
+                                <option value="Non" ${bus.v_girouette==='Non'?'selected':''}>Non</option>
                             </select>
                         </td>
                         
                         <td><input type="text" value="${bus.v_img_siege||''}" onblur="updateVenteField('${bus.id}','v_img_siege',this.value)" placeholder="URL image" style="width:90px;"></td>
-                        <td><input type="text" value="${bus.v_img_revet||''}" onblur="updateVenteField('${bus.id}','v_img_revet',this.value)" placeholder="URL image" style="width:90px;"></td>
+                        <td>
+                            <select onchange="updateVenteField('${bus.id}','v_img_revet',this.value)" style="width:65px;">
+                                <option value=""></option>
+                                <option value="Oui" ${bus.v_img_revet==='Oui'?'selected':''}>Oui</option>
+                                <option value="Non" ${bus.v_img_revet==='Non'?'selected':''}>Non</option>
+                            </select>
+                        </td>
                         <td><input type="text" value="${bus.v_img_sol||''}" onblur="updateVenteField('${bus.id}','v_img_sol',this.value)" placeholder="URL image" style="width:90px;"></td>
                         <td><input type="text" value="${bus.v_img_barres||''}" onblur="updateVenteField('${bus.id}','v_img_barres',this.value)" placeholder="URL image" style="width:90px;"></td>
                         
