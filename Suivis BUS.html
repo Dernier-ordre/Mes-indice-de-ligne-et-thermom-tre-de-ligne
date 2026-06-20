@@ -49,10 +49,6 @@
         th, td { padding: 10px; border: 1px solid #3a3b3c; text-align: left; vertical-align: middle;}
         th { background-color: #3a3b3c; color: #e4e6eb; text-align: center; }
         
-        /* Saisie compacte dans les tableaux */
-        table input, table select { background: #3a3b3c; color: #e4e6eb; padding: 4px; border: 1px solid #555; border-radius: 4px; font-size: 11px; width: auto; max-width: 100%; box-sizing: border-box; }
-        table input:focus, table select:focus { border-color: #3498db; outline: none; }
-
         .btn-edit { cursor: pointer; color: #3498db; font-size: 1.1em; margin-left: 5px;}
         .ligne-img { height: 32px; vertical-align: middle; display: block; margin: 0 auto;}
         .option-img { height: 24px; width: 24px; vertical-align: middle; margin-right: 4px; object-fit: contain; filter: invert(1) opacity(0.8); }
@@ -61,54 +57,47 @@
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
         .modal-content { background: #242526; padding: 20px; border-radius: 8px; width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto; border: 1px solid #3a3b3c; }
         
-        /* Champs formulaires généraux */
-        #bus-form input, #bus-form select, #bus-form button { background: #3a3b3c; color: #e4e6eb; padding: 8px; margin: 4px 0; border: 1px solid #555; border-radius: 5px; width: 100%; box-sizing: border-box; }
-        #bus-form input:focus, #bus-form select:focus { outline: none; border-color: #3498db; }
+        /* -------------------------------------------------------------------------- */
+        /* CORRECTION : Champs de saisie (S'applique partout : modales, filtres, etc) */
+        /* -------------------------------------------------------------------------- */
+        input, select, button, textarea { 
+            background: #3a3b3c; 
+            color: #e4e6eb; 
+            padding: 8px; 
+            margin: 4px 0; 
+            border: 1px solid #555; 
+            border-radius: 5px; 
+            width: 100%; 
+            box-sizing: border-box; 
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #3498db; }
         input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+        
+        /* ... Sauf dans les tableaux où on veut que ça soit plus compact ! */
+        table input, table select { 
+            padding: 4px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+            width: auto; 
+            max-width: 100%; 
+            margin: 0; 
+        }
+        /* -------------------------------------------------------------------------- */
         
         /* Boutons */
         button { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
         button:hover { filter: brightness(1.1); }
         .btn-delete { background: #e74c3c; width: auto; padding: 5px 10px; }
         .btn-rapport { background: #f39c12; width: auto; padding: 5px 10px; margin-top: 5px; color: #18191a; }
-        .btn-cancel { background: #555; }
-        textarea { height: 120px; font-family: monospace; font-size: 0.9em; width: 100%; background: #3a3b3c; color: #e4e6eb; border-radius: 5px; border: 1px solid #555;}
+        .btn-cancel { background: #555; margin-top: 5px;}
+        textarea { height: 120px; font-family: monospace; font-size: 0.9em; width: 100%; }
         
         /* Graphique élargi */
         #chart-wrap { max-width: 650px; margin: 20px auto; background: #242526; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid #3a3b3c; }
         .total-row { background-color: #3a3b3c; font-weight: bold; }
 
+        /* Barre d'action en masse */
         #bulk-action-bar { background: #2c3e50; padding: 10px 20px; border-radius: 8px; margin-bottom: 10px; display: none; align-items: center; gap: 15px; border: 1px solid #34495e; color: white;}
-
-        /* 🔧 CORRECTION : Restauration du style des champs dans les modales de modification */
-.modal input, .modal select, .modal button, .modal textarea { 
-    background: #3a3b3c; 
-    color: #e4e6eb; 
-    padding: 8px; 
-    margin: 4px 0; 
-    border: 1px solid #555; 
-    border-radius: 5px; 
-    width: 100%; 
-    box-sizing: border-box; 
-}
-.modal input:focus, .modal select:focus, .modal textarea:focus { 
-    outline: none; 
-    border-color: #3498db; 
-}
-.modal button { 
-    background: #3498db; 
-    color: white; 
-    font-weight: bold; 
-    cursor: pointer; 
-    transition: 0.2s;
-}
-.modal button:hover { 
-    filter: brightness(1.1); 
-}
-.modal .btn-cancel {
-    background: #555;
-    margin-top: 5px;
-}
     </style>
 </head>
 <body>
