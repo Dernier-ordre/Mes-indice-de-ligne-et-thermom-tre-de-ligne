@@ -238,7 +238,7 @@
 
     <div id="tab-stats" class="tab-content">
         <h2 style="text-align:center">Répartition des Motorisations</h2>
-        <p style="text-align:center; font-style:italic; color:#a0a0a0;">(Exclut Livraison, Équipement et Vente)</p>
+        <p style="text-align:center; font-style:italic; color:#a0a0a0;">(Exclut Livraison et Vente)</p>
         <div id="chart-wrap">
             <canvas id="motorChart"></canvas>
         </div>
@@ -527,10 +527,10 @@
         };
 
         // --- CONFIGURATIONS ---
-        const listDepots = ["Unité de Transport d'Oullins", "Unité de Transport de Perrache"]; 
+        const listDepots = ["Unité de Transport d'Oullins", "Unité de Transport de Perrache", "Non affectée"]; 
         const listLignes = ["P1", "P2", "P3", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "L101", "L102", "L103", "L104", "JD601", "JD602", "L201", "L202", "L203", "JD651", "JD652", "S1", "S2", "S3", "S4", "S5", "R1", "R2", "PL1", "PL2", "PL3", "N73", "A", "R", "RS", "L", "C", "RF"];
         const listMoteurs = ["Diesel", "Diesel MH", "GNV", "GNV MH", "Électrique"];
-        const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔵Réserve", "🔴Réformé", "🚚Livraison", "🛠️Équipement", "💲En Vente"];
+        const listStatuts = ["🟢En Service", "🟠Immobilisé", "🔵Réserve", "⚪Retrait de service", "🔴Réformé", "🚚Livraison", "🛠️Équipement", "💲En Vente"];
         const optionsDispo = { 
             "clim": "https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/Climatisation.svg", 
             "pmr": "https://cdn.jsdelivr.net/gh/Dernier-ordre/Mes-indice-de-ligne-et-thermom-tre-de-ligne@main/PMR.svg", 
