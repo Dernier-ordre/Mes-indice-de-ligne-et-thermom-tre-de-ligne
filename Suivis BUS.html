@@ -944,12 +944,14 @@
             const bus = flotte.find(b => b.numParc == numParc);
             if (!bus) return alert("Bus introuvable !");
 
-            let typeAuto = "Standard";
-            if (bus.modele.includes("18") || bus.modele.includes("25") || bus.modele.toLowerCase().includes("articulé")) {
-                typeAuto = "Articulé";
-            }
+            // 🛑 REMPLACE CES DEUX LIENS PAR TES LIENS GITHUB (DOIVENT COMMENCER PAR "https://raw.githubusercontent.com/...")
+            const LIEN_GIROUETTE = "https://transport-manager.net/assets/img/opt/girouettes/Sans_Voyageurs/diodes_couleurs_sans_voyageurs_2.png";
+            const LIEN_REVETEMENT = "METTRE_TON_LIEN_ICI.png";
 
-            // Remplissage des textes de la carte
+            let typeAuto = "Standard";
+            if (bus.modele.includes("18") || bus.modele.includes("25") || bus.modele.toLowerCase().includes("articulé")) typeAuto = "Articulé";
+
+            // Remplissage des textes
             document.getElementById('export-prix').innerText = bus.v_prix || "Non spécifié";
             document.getElementById('export-parc').innerText = bus.numParc;
             document.getElementById('export-marque').innerText = bus.marque;
@@ -959,16 +961,13 @@
             document.getElementById('export-km').innerText = bus.v_km || "-";
             document.getElementById('export-mes').innerText = bus.v_mes || "-";
             document.getElementById('export-rev').innerText = bus.v_rev || "-";
-            
-            // Récupération de la date du prochain CT (vérifie plusieurs clés au cas où)
             document.getElementById('export-ct').innerText = bus.v_ct || bus.ct || bus.v_prochain_ct || "Non planifié";
-            
             document.getElementById('export-capacite').innerText = bus.v_places || "-";
             document.getElementById('export-portes').innerText = bus.portes || 3;
             document.getElementById('export-tech').innerText = bus.v_tech || "-";
             document.getElementById('export-int').innerText = bus.v_int || "-";
 
-            // Options structures
+            // Remplissage Options
             document.getElementById('exp-ag').innerText = bus.v_agenouillement || "Non renseigné";
             document.getElementById('exp-ufr').innerText = bus.v_ufr || "Non renseigné";
             document.getElementById('exp-pal').innerText = bus.v_palette || "Non renseigné";
@@ -978,77 +977,72 @@
             document.getElementById('exp-teinte').innerText = bus.v_teinte || "Non renseigné";
             document.getElementById('exp-baie').innerText = bus.v_baie || "Non renseigné";
 
-            // --- GESTION DES IMAGES ASSIGNÉES PAR OUI / NON (LIENS GITHUB) ---
+            // ---- SYSTÈME DE CHARGEMENT SÉCURISÉ DES IMAGES ----
+            const imagesToLoad = [];
 
-            // 1. Girouette — afficher si une valeur est sélectionnée (pas vide)
-const imgGiro = document.getElementById('export-img-girouette');
-const valGiro = bus.v_girouette || "";
-const aGiro = valGiro !== "";
+            // Fonction qui assigne l'image, affiche la div, et créé une promesse d'attente
+            function assignImageToContainer(containerId, imgId, urlAssigned) {
+                const container = document.getElementById(containerId);
+                const imgNode = document.getElementById(imgId);
+                if (urlAssigned && urlAssigned.trim() !== "") {
+                    imgNode.crossOrigin = "anonymous"; // Contourne les blocages de sécurité GitHub
+                    imgNode.src = urlAssigned;
+                    container.style.display = 'block';
+                    imagesToLoad.push(new Promise((resolve) => {
+                        if (imgNode.complete) resolve();
+                        else { imgNode.onload = resolve; imgNode.onerror = resolve; }
+                    }));
+                } else {
+                    imgNode.src = "";
+                    container.style.display = 'none';
+                }
+            }
 
-// Choisir l'image selon le type de girouette
-const giroImages = {
-    "diode": "diodes_blanches.png",
-    "diode blanche": "diodes_blanches.png",
-    "diode couleur": "diodes_couleurs_blanches_sans_voyageurs_2.png",
-    "diode couleur blanche": "diodes_couleurs_blanches_sans_voyageurs_2.png"
-};
-imgGiro.src = aGiro ? (giroImages[valGiro] || "diodes_couleurs_blanches_sans_voyageurs_2.png") : "";
-document.getElementById('container-img-giro').style.display = aGiro ? 'block' : 'none';
+            // Application des images fixes (Oui/Non) et libres (Liens)
+            const urlGiroFinal = (bus.v_girouette === "Oui") ? LIEN_GIROUETTE : "";
+            assignImageToContainer('container-img-giro', 'export-img-girouette', urlGiroFinal);
 
-// Ajouter le type de girouette en texte sous l'image (optionnel)
-// (ou afficher le label dans la card)
+            const urlRevetFinal = (bus.v_img_revet === "Oui") ? LIEN_REVETEMENT : "";
+            assignImageToContainer('container-img-revet', 'export-img-revet', urlRevetFinal);
 
-// 2. Revêtement — utiliser v_img_revet directement comme URL
-const imgRevet = document.getElementById('export-img-revet');
-const urlRevet = bus.v_img_revet || bus.v_revetement || "";
-imgRevet.src = urlRevet;
-document.getElementById('container-img-revet').style.display = urlRevet ? 'block' : 'none';
+            assignImageToContainer('container-img-siege', 'export-img-siege', bus.v_img_siege);
+            assignImageToContainer('container-img-sol', 'export-img-sol', bus.v_img_sol);
+            assignImageToContainer('container-img-barres', 'export-img-barres', bus.v_img_barres);
 
-// 3. Sièges — corriger la clé
-const imgSiege = document.getElementById('export-img-siege');
-const urlSiege = bus.v_img_siege || bus.v_siege || "";
-imgSiege.src = urlSiege;
-document.getElementById('container-img-siege').style.display = urlSiege ? 'block' : 'none';
-
-// 4. Sol — corriger la clé
-const imgSol = document.getElementById('export-img-sol');
-const urlSol = bus.v_img_sol || bus.v_sol || "";
-imgSol.src = urlSol;
-document.getElementById('container-img-sol').style.display = urlSol ? 'block' : 'none';
-
-// 5. Barres — corriger la clé
-const imgBarres = document.getElementById('export-img-barres');
-const urlBarres = bus.v_img_barres || bus.v_barres || "";
-imgBarres.src = urlBarres;
-document.getElementById('container-img-barres').style.display = urlBarres ? 'block' : 'none';
-
-            // Gestion des logos d'options en bas de la fiche
+            // Gestion des Logos SVG d'options avec la même sécurité
             const optionsContainer = document.getElementById('export-options');
             optionsContainer.innerHTML = '';
             if (bus.options && bus.options.length > 0) {
                 bus.options.forEach(opt => {
                     if (optionsDispo[opt]) {
                         const img = document.createElement('img');
+                        img.crossOrigin = "anonymous";
                         img.src = optionsDispo[opt];
-                        img.title = opt;
                         img.style.cssText = "height: 28px; width: 28px; object-fit: contain; filter: invert(1) opacity(0.9); background: #3a3b3c; padding: 4px; border-radius: 6px; border: 1px solid #555;";
                         optionsContainer.appendChild(img);
+                        imagesToLoad.push(new Promise((resolve) => {
+                            if (img.complete) resolve();
+                            else { img.onload = resolve; img.onerror = resolve; }
+                        }));
                     }
                 });
             } else {
                 optionsContainer.innerHTML = '<span style="color:#7a7a7a; font-style:italic; font-size:12px;">Aucune option additionnelle</span>';
             }
 
-            // Attente du chargement avant capture
-            setTimeout(() => {
-                const elementToCapture = document.getElementById('discord-card');
-                html2canvas(elementToCapture, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `Fiche_Vente_Bus_${bus.numParc}.png`;
-                    link.href = canvas.toDataURL("image/png");
-                    link.click();
-                });
-            }, 500);
+            // ---- CAPTURE FINALE APRÈS CHARGEMENT COMPLET DE TOUTES LES IMAGES ----
+            Promise.all(imagesToLoad).then(() => {
+                // Petit délai supplémentaire de sécurité pour laisser le navigateur dessiner l'image
+                setTimeout(() => {
+                    const elementToCapture = document.getElementById('discord-card');
+                    html2canvas(elementToCapture, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = `Fiche_Vente_Bus_${bus.numParc}.png`;
+                        link.href = canvas.toDataURL("image/png");
+                        link.click();
+                    });
+                }, 100);
+            });
         }
         function calculateDaysLeft(d) { if(!d) return 999; return Math.ceil((new Date(d) - new Date()) / 86400000); }
         function formatDate(d) { if(!d) return "-"; return new Date(d).toLocaleDateString('fr-FR'); }
