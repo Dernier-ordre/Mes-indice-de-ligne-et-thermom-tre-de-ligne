@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
         /* PALETTE MODE SOMBRE */
@@ -111,6 +112,7 @@
         <button class="tab-btn" onclick="switchTab('tab-contrats', this)">💶 Contrats Pub</button>
         <button class="tab-btn" onclick="switchTab('tab-archives', this)">🗄️ Archives Pub</button>
         <button class="tab-btn" onclick="switchTab('tab-vente', this)" style="background-color:#d35400; color:white;">💲 Vente</button>
+        <button class="tab-btn" onclick="switchTab('tab-calculateur', this)" style="background-color:#8e44ad; color:white;">🧮 Calculateur</button>
     </div>
 
     <div id="tab-flotte" class="tab-content active">
@@ -380,7 +382,87 @@
             </div>
         </div>
     </div>
+<div id="tab-calculateur" class="tab-content">
+        <h2>🧮 Calculateur de Besoins et Fréquences</h2>
+        <p style="color:#b0b3b8;">Calculez le nombre de véhicules nécessaires pour répondre à 115% de la demande (100% + 15% de marge).</p>
+        
+        <div class="form-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px; border-right: 1px solid #3a3b3c; padding-right: 20px;">
+                <h3 style="margin-top:0;">1. Importer les fréquentations</h3>
+                <p style="font-size:12px; color:#aaa;">Format accepté : .ods, .xlsx, .xls. La première colonne doit s'appeler "Ligne".</p>
+                <input type="file" id="import-ods" accept=".ods, .xlsx, .xls" style="background:#18191a;">
+                <p id="statut-import" style="color:#f39c12; font-weight:bold; font-size:13px; margin-top:10px;">En attente de fichier...</p>
+            </div>
 
+            <div style="flex: 2; min-width: 300px;">
+                <h3 style="margin-top:0;">2. Paramétrage technique de la ligne</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label style="font-size:12px; color:#aaa;">Ligne à calculer :</label>
+                        <select id="calc-ligne">
+                            </select>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:#aaa;">Temps de parcours A/R (minutes) :</label>
+                        <input type="number" id="calc-temps" value="60" min="10">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:#aaa;">Capacité du véhicule (Places) :</label>
+                        <input type="number" id="calc-capa" value="100" min="10">
+                    </div>
+                    <div style="display: flex; align-items: flex-end;">
+                        <button onclick="lancerCalculBesoins()" style="background-color:#27ae60; padding:10px; width:100%;">🚀 Calculer & Générer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultat-calcul-container" style="display:none; text-align:center;">
+            <p style="color:#38ef7d; font-weight:bold;">Le calcul est terminé ! La fiche a été générée ci-dessous.</p>
+        </div>
+    </div>
+
+    <div id="export-zone-calc" style="position: absolute; left: -9999px; top: 0;">
+        <div id="discord-calc-card" style="width: 600px; background: #18191a; color: #e4e6eb; border: 2px solid #3a3b3c; border-radius: 12px; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            
+            <div id="calc-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #3498db; padding-bottom: 10px; margin-bottom: 15px;">
+                <div>
+                    <h2 style="margin: 0; color: #fff; font-size: 24px;">Analyse d'Exploitation</h2>
+                    <span style="font-size: 12px; color: #aaa;">Marge de sécurité incluse : +15% de la charge</span>
+                </div>
+                <div id="calc-ligne-badge" style="background:#3498db; color:#fff; font-size:28px; font-weight:bold; padding:5px 20px; border-radius:8px; box-shadow: 0 4px 6px rgba(0,0,0,0.4);">
+                    L1
+                </div>
+            </div>
+
+            <div style="background: #242526; padding: 12px; border-radius: 8px; display: flex; justify-content: space-around; font-size:13px; border: 1px solid #2d2f30; margin-bottom:15px;">
+                <span><strong>Temps A/R :</strong> <span id="calc-out-temps" style="color:#38ef7d;"></span> min</span>
+                <span><strong>Capacité :</strong> <span id="calc-out-capa" style="color:#38ef7d;"></span> places</span>
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; margin-bottom: 15px;">
+                <thead>
+                    <tr>
+                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Créneau</th>
+                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Pax (115%)</th>
+                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Fréq. Cible</th>
+                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Fréq. Min (Grille)</th>
+                        <th style="background:#27ae60; padding:8px; border:1px solid #4e4f50; color:#fff;">Fréq. Appliquée</th>
+                        <th style="background:#e67e22; padding:8px; border:1px solid #4e4f50; color:#18191a;">Bus Requis</th>
+                    </tr>
+                </thead>
+                <tbody id="calc-out-tbody">
+                    </tbody>
+            </table>
+
+            <div style="background: rgba(243, 156, 18, 0.15); border: 2px solid #f39c12; padding: 15px; border-radius: 8px; text-align: center;">
+                <span style="font-size: 14px; color: #aaa; text-transform: uppercase;">Engagement Maximum Requis</span><br>
+                <span id="calc-out-total" style="font-size: 32px; font-weight: bold; color: #f39c12; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);"></span>
+                <span style="font-size: 16px; color: #f39c12; font-weight:bold;"> VÉHICULES</span>
+            </div>
+
+        </div>
+    </div>
     <div id="edit-modal" class="modal">
         <div class="modal-content">
             <h3 id="modal-title" style="margin-top:0;">Modifier</h3>
@@ -1087,7 +1169,166 @@
             };
             reader.readAsText(e.target.files[0]); 
         }
+// ============================================================================
+        // MODULE CALCULATEUR DE BESOINS & FRÉQUENCES (ODS -> JSON)
+        // ============================================================================
+        let donneesFrequentation = {};
 
+        // 1. Matrice des fréquences minimales imposées par la grille (en minutes)
+        // Adapté selon tes réseaux P (fort), L (moyen), S (spécifique)
+        function getFrequenceGrille(ligne, creneau) {
+            const grilles = {
+                "P": { "06h00-07h00": 15, "07h00-09h00": 10, "09h00-16h00": 15, "16h00-19h00": 10, "19h00-21h00": 15, "21h00-00h00": 30 },
+                "L": { "06h00-07h00": 20, "07h00-09h00": 15, "09h00-16h00": 20, "16h00-19h00": 15, "19h00-21h00": 20, "21h00-00h00": 45 },
+                "S": { "06h00-07h00": 30, "07h00-09h00": 20, "09h00-16h00": 30, "16h00-19h00": 20, "19h00-21h00": 30, "21h00-00h00": 60 },
+                "DEFAULT": { "06h00-07h00": 30, "07h00-09h00": 15, "09h00-16h00": 30, "16h00-19h00": 15, "19h00-21h00": 30, "21h00-00h00": 60 }
+            };
+            
+            let type = "DEFAULT";
+            if (ligne.startsWith("P") && ligne.length <= 3) type = "P";
+            else if (ligne.startsWith("L") || ligne.startsWith("C")) type = "L";
+            else if (ligne.startsWith("S") || ligne.startsWith("N")) type = "S";
+
+            return grilles[type][creneau] || 60; // Par défaut 60 min si non trouvé
+        }
+
+        // 2. Attribution des couleurs par type de ligne (Inspiration TCL)
+        function getCouleurLigne(ligne) {
+            if (ligne.startsWith("P") || ligne.startsWith("C")) return "#c0392b"; // Rouge
+            if (ligne.startsWith("S")) return "#27ae60"; // Vert
+            if (ligne.startsWith("JD")) return "#f39c12"; // Jaune/Orange
+            if (ligne.startsWith("N")) return "#8e44ad"; // Violet Nuit
+            return "#3498db"; // Bleu (Locales par défaut)
+        }
+
+        // 3. Arrondi intelligent aux standards d'exploitation
+        function arrondirFrequenceExploitation(freq_brute, freq_min_grille) {
+            // Standards de cadencement habituels (en minutes)
+            const standards = [3, 4, 5, 6, 7.5, 8, 10, 12, 15, 20, 30, 45, 60];
+            
+            // On cherche le standard le plus proche qui est INFERIEUR ou EGAL à la fréquence brute (pour assurer la capacité)
+            let freq_retenue = 60;
+            for (let i = standards.length - 1; i >= 0; i--) {
+                if (standards[i] <= freq_brute) {
+                    freq_retenue = standards[i];
+                    break;
+                }
+            }
+            
+            // La fréquence retenue ne doit JAMAIS être supérieure à celle imposée par la grille (sinon on prend la grille)
+            return Math.min(freq_retenue, freq_min_grille);
+        }
+
+        // 4. Lecture du Fichier LibreOffice (SheetJS)
+        document.getElementById('import-ods').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const data = new Uint8Array(evt.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+                
+                donneesFrequentation = {};
+                const selectLigne = document.getElementById('calc-ligne');
+                selectLigne.innerHTML = '';
+
+                jsonData.forEach(row => {
+                    // On cherche la colonne qui contient le mot Ligne
+                    const cles = Object.keys(row);
+                    const cleLigne = cles.find(c => c.toLowerCase().includes("ligne"));
+                    
+                    if (cleLigne && row[cleLigne]) {
+                        const nomLigne = row[cleLigne].toString().trim();
+                        donneesFrequentation[nomLigne] = row;
+                        selectLigne.innerHTML += `<option value="${nomLigne}">${nomLigne}</option>`;
+                    }
+                });
+
+                document.getElementById('statut-import').innerText = "✅ Fichier chargé ! " + Object.keys(donneesFrequentation).length + " lignes détectées.";
+                document.getElementById('statut-import').style.color = "#27ae60";
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        // 5. Moteur de calcul
+        function lancerCalculBesoins() {
+            const ligneSel = document.getElementById('calc-ligne').value;
+            const tempsAR = parseFloat(document.getElementById('calc-temps').value);
+            const capaBus = parseFloat(document.getElementById('calc-capa').value);
+
+            if (!ligneSel || !donneesFrequentation[ligneSel]) {
+                alert("Veuillez d'abord importer un fichier de fréquentation valide.");
+                return;
+            }
+
+            const dataLigne = donneesFrequentation[ligneSel];
+            const tbody = document.getElementById('calc-out-tbody');
+            tbody.innerHTML = '';
+            
+            // Configuration Visuelle de la Carte
+            document.getElementById('calc-ligne-badge').innerText = ligneSel;
+            const couleurBadge = getCouleurLigne(ligneSel);
+            document.getElementById('calc-ligne-badge').style.background = couleurBadge;
+            document.getElementById('calc-header').style.borderBottomColor = couleurBadge;
+            
+            document.getElementById('calc-out-temps').innerText = tempsAR;
+            document.getElementById('calc-out-capa').innerText = capaBus;
+
+            // Définition des créneaux horaires classiques à chercher dans ton tableau ODS
+            const creneaux = ["06h00-07h00", "07h00-09h00", "09h00-16h00", "16h00-19h00", "19h00-21h00", "21h00-00h00"];
+            
+            let maxVehiculesRequis = 0;
+
+            creneaux.forEach(creneau => {
+                // Recherche flexible de la clé dans le fichier ODS (ignorer la casse et les espaces)
+                const cleTrouvee = Object.keys(dataLigne).find(k => k.replace(/\s/g, '') === creneau.replace(/\s/g, ''));
+                
+                const pax100 = cleTrouvee ? (parseFloat(dataLigne[cleTrouvee]) || 0) : 0;
+                
+                // Calculs
+                const pax115 = Math.ceil(pax100 * 1.15); // +15%
+                const departRequisHoraire = pax115 > 0 ? (pax115 / capaBus) : 0;
+                const freqTheoriqueMin = departRequisHoraire > 0 ? (60 / departRequisHoraire) : 999;
+                
+                const freqMinGrille = getFrequenceGrille(ligneSel, creneau);
+                const freqAppliquee = pax115 === 0 ? freqMinGrille : arrondirFrequenceExploitation(freqTheoriqueMin, freqMinGrille);
+                
+                const nbVehicules = Math.ceil(tempsAR / freqAppliquee);
+                
+                if (nbVehicules > maxVehiculesRequis) {
+                    maxVehiculesRequis = nbVehicules;
+                }
+
+                // Ligne du tableau
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="border:1px solid #4e4f50; padding:8px;">${creneau}</td>
+                        <td style="border:1px solid #4e4f50; padding:8px;">${pax115} pax</td>
+                        <td style="border:1px solid #4e4f50; padding:8px; color:#aaa;">${freqTheoriqueMin === 999 ? '-' : freqTheoriqueMin.toFixed(1)} min</td>
+                        <td style="border:1px solid #4e4f50; padding:8px; color:#aaa;">${freqMinGrille} min</td>
+                        <td style="border:1px solid #4e4f50; padding:8px; font-weight:bold; color:#38ef7d;">${freqAppliquee} min</td>
+                        <td style="border:1px solid #4e4f50; padding:8px; font-weight:bold; color:#f39c12;">${nbVehicules}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('calc-out-total').innerText = maxVehiculesRequis;
+            document.getElementById('resultat-calcul-container').style.display = 'block';
+
+            // Capture HTML2Canvas
+            setTimeout(() => {
+                const elementToCapture = document.getElementById('discord-calc-card');
+                html2canvas(elementToCapture, { backgroundColor: null, scale: 2 }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `Besoins_Ligne_${ligneSel}.png`;
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                });
+            }, 300);
+        }
         updateUI(); renderContracts();
     </script>
 </body>
