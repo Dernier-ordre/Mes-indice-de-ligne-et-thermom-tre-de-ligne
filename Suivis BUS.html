@@ -1130,7 +1130,7 @@
         let donneesBrutes = [];
 
         // ⏱️ DICTIONNAIRE DES TEMPS DE PARCOURS ET FORMATS
-        // Tu peux compléter cette liste avec toutes tes lignes !
+        // C'EST ICI QUE TU DOIS RENSEIGNER TES TEMPS POUR QU'ILS SOIENT AUTOMATIQUES !
         const configLignesPredefinie = {
             "P1": { temps: 45, format: "Articulé", capa: 140 },
             "P2": { temps: 50, format: "Articulé", capa: 140 },
@@ -1222,15 +1222,15 @@
             reader.readAsArrayBuffer(file);
         });
 
-        // Moteur de calcul PDF
+        // Moteur de calcul PDF à 2 Lignes
         function lancerCalculGlobalPDF() {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({ orientation: 'landscape', format: 'a3' }); // Grand format A3 pour tout faire rentrer
+            const doc = new jsPDF({ orientation: 'landscape', format: 'a3' });
             
             doc.setFontSize(18);
-            doc.text("Plan de Roulement Global - Analyse des Besoins en Véhicules (+15% de marge)", 14, 15);
+            doc.text("Plan de Roulement Global - Fréquences et Besoins Matériels (+15% de Marge)", 14, 15);
             doc.setFontSize(10);
-            doc.text("F: Fréquence appliquée (en minutes) | B: Nombre de bus requis", 14, 22);
+            doc.text("Lecture : Ligne du haut = Fréquence (min) | Ligne du bas = Besoins (bus)", 14, 22);
 
             const tableHead = [
                 [
@@ -1242,21 +1242,14 @@
                     { content: 'MAX BUS', rowSpan: 2, styles: { valign: 'middle', halign: 'center', fillColor: [230, 126, 34] } }
                 ],
                 [
-                    'Pointe (F|B)', 'Creuse (F|B)', 'Soir (F|B)', 'Nuit (F|B)',
-                    'Pointe (F|B)', 'Creuse (F|B)', 'Soir (F|B)', 'Nuit (F|B)',
-                    'Pointe (F|B)', 'Creuse (F|B)', 'Nuit (F|B)'
+                    'Creuse', 'Pointe', 'Soir', 'Nuit',
+                    'Creuse', 'Pointe', 'Soir', 'Nuit',
+                    'Creuse', 'Pointe', 'Nuit'
                 ]
             ];
 
             const tableBody = [];
             let parcTotalRequis = 0;
-
-            const timeMappings = {
-                "HP": ["07h00-09h00", "16h00-19h00"],
-                "HC": ["06h00-07h00", "09h00-16h00"],
-                "Soir": ["19h00-21h00"],
-                "Nuit": ["21h00-00h00"]
-            };
 
             donneesBrutes.forEach((row, index) => {
                 const cles = Object.keys(row);
@@ -1268,84 +1261,118 @@
                 const tempsAR = parseFloat(document.getElementById(`tps-${index}`).value) || 60;
                 const capaBus = parseFloat(document.getElementById(`capa-${index}`).value) || 100;
 
-                // Fonction pour extraire le max et calculer un créneau spécifique
-                function processCreneau(dayKeywords, creneauId, typeJour) {
+                // Extraction exacte selon tes en-têtes d'image
+                function getVal(keywords) {
                     let maxPax = 0;
                     cles.forEach(k => {
                         let kLow = k.toLowerCase();
-                        let isDayMatch = dayKeywords.length === 0 ? (!kLow.includes("sam") && !kLow.includes("dim")) : dayKeywords.some(d => kLow.includes(d));
-                        let isTimeMatch = timeMappings[creneauId].some(t => kLow.includes(t));
-
-                        if (isDayMatch && isTimeMatch) {
+                        let match = keywords.every(kw => kLow.includes(kw));
+                        if (match) {
                             let val = parseFloat(row[k]) || 0;
                             if (val > maxPax) maxPax = val;
                         }
                     });
+                    return maxPax;
+                }
 
-                    if (maxPax === 0) return { texte: "-", bus: 0 };
+                function processCreneau(pax100, creneauId, typeJour) {
+                    if (pax100 <= 0) return { freq: "-", busText: "-", busNum: 0 };
 
-                    let pax115 = Math.ceil(maxPax * 1.15);
+                    let pax115 = Math.ceil(pax100 * 1.15);
                     let freqTheorique = 60 / (pax115 / capaBus);
                     let freqGrille = getFrequenceGrille(nomLigne, typeJour, creneauId);
                     let freqAppliquee = arrondirFrequence(freqTheorique, freqGrille);
                     let bus = Math.ceil(tempsAR / freqAppliquee);
 
-                    return { texte: `${freqAppliquee}m | ${bus}b`, bus: bus };
+                    return { freq: `${freqAppliquee} min`, busText: `${bus} bus`, busNum: bus };
                 }
 
-                // Calculs de toutes les cases
-                const semHP = processCreneau([], "HP", "Semaine");
-                const semHC = processCreneau([], "HC", "Semaine");
-                const semSoir = processCreneau([], "Soir", "Semaine");
-                const semNuit = processCreneau([], "Nuit", "Semaine");
+                // Ciblages précis des colonnes de ton fichier "Fréquentation"
+                const paxSemHC = getVal(["creuse", "semaine"]);
+                const paxSemHP = getVal(["pointe", "semaine"]);
+                const paxSemSoir = getVal(["soir", "semaine"]);
+                const paxSemNuit = getVal(["nuit", "semaine"]);
 
-                const samHP = processCreneau(["sam"], "HP", "Samedi");
-                const samHC = processCreneau(["sam"], "HC", "Samedi");
-                const samSoir = processCreneau(["sam"], "Soir", "Samedi");
-                const samNuit = processCreneau(["sam"], "Nuit", "Samedi");
+                const paxSamHC = getVal(["creuse", "samedi"]);
+                const paxSamHP = getVal(["pointe", "samedi"]);
+                const paxSamSoir = getVal(["soir", "samedi"]);
+                const paxSamNuit = getVal(["nuit", "samedi"]);
 
-                const dimHP = processCreneau(["dim"], "HP", "Dimanche");
-                const dimHC = processCreneau(["dim"], "HC", "Dimanche");
-                const dimNuit = processCreneau(["dim"], "Nuit", "Dimanche");
+                const paxDimHC = getVal(["creuse", "dimanche"]);
+                const paxDimHP = getVal(["pointe", "dimanche"]);
+                const paxDimNuit = getVal(["nuit", "dimanche"]);
 
-                const maxBusLigne = Math.max(semHP.bus, semHC.bus, semSoir.bus, semNuit.bus, samHP.bus, samHC.bus, samSoir.bus, samNuit.bus, dimHP.bus, dimHC.bus, dimNuit.bus);
+                // Calculs
+                const semHC = processCreneau(paxSemHC, "HC", "Semaine");
+                const semHP = processCreneau(paxSemHP, "HP", "Semaine");
+                const semSoir = processCreneau(paxSemSoir, "Soir", "Semaine");
+                const semNuit = processCreneau(paxSemNuit, "Nuit", "Semaine");
+
+                const samHC = processCreneau(paxSamHC, "HC", "Samedi");
+                const samHP = processCreneau(paxSamHP, "HP", "Samedi");
+                const samSoir = processCreneau(paxSamSoir, "Soir", "Samedi");
+                const samNuit = processCreneau(paxSamNuit, "Nuit", "Samedi");
+
+                const dimHC = processCreneau(paxDimHC, "HC", "Dimanche");
+                const dimHP = processCreneau(paxDimHP, "HP", "Dimanche");
+                const dimNuit = processCreneau(paxDimNuit, "Nuit", "Dimanche");
+
+                const maxBusLigne = Math.max(
+                    semHP.busNum, semHC.busNum, semSoir.busNum, semNuit.busNum,
+                    samHP.busNum, samHC.busNum, samSoir.busNum, samNuit.busNum,
+                    dimHP.busNum, dimHC.busNum, dimNuit.busNum
+                );
+                
                 parcTotalRequis += maxBusLigne;
 
+                let couleurLigne = [100, 100, 100];
+                if (nomLigne.startsWith('P') || nomLigne.startsWith('C')) couleurLigne = [231, 76, 60];
+                else if (nomLigne.startsWith('S')) couleurLigne = [46, 204, 113];
+                else if (nomLigne.startsWith('N')) couleurLigne = [155, 89, 182];
+
+                // LIGNE 1 : FRÉQUENCES
                 tableBody.push([
-                    nomLigne, formatBus,
-                    semHP.texte, semHC.texte, semSoir.texte, semNuit.texte,
-                    samHP.texte, samHC.texte, samSoir.texte, samNuit.texte,
-                    dimHP.texte, dimHC.texte, dimNuit.texte,
-                    maxBusLigne.toString()
+                    { content: nomLigne, rowSpan: 2, styles: { valign: 'middle', fontStyle: 'bold', textColor: couleurLigne } },
+                    { content: formatBus, rowSpan: 2, styles: { valign: 'middle' } },
+                    semHC.freq, semHP.freq, semSoir.freq, semNuit.freq,
+                    samHC.freq, samHP.freq, samSoir.freq, samNuit.freq,
+                    dimHC.freq, dimHP.freq, dimNuit.freq,
+                    { content: maxBusLigne.toString(), rowSpan: 2, styles: { valign: 'middle', halign: 'center', fontStyle: 'bold', textColor: [255, 255, 255], fillColor: [230, 126, 34], fontSize: 12 } }
+                ]);
+
+                // LIGNE 2 : BESOINS EN BUS
+                tableBody.push([
+                    { content: semHC.busText, styles: { fontStyle: 'bold', textColor: [52, 152, 219] } },
+                    { content: semHP.busText, styles: { fontStyle: 'bold', textColor: [52, 152, 219] } },
+                    { content: semSoir.busText, styles: { fontStyle: 'bold', textColor: [52, 152, 219] } },
+                    { content: semNuit.busText, styles: { fontStyle: 'bold', textColor: [52, 152, 219] } },
+                    { content: samHC.busText, styles: { fontStyle: 'bold', textColor: [155, 89, 182] } },
+                    { content: samHP.busText, styles: { fontStyle: 'bold', textColor: [155, 89, 182] } },
+                    { content: samSoir.busText, styles: { fontStyle: 'bold', textColor: [155, 89, 182] } },
+                    { content: samNuit.busText, styles: { fontStyle: 'bold', textColor: [155, 89, 182] } },
+                    { content: dimHC.busText, styles: { fontStyle: 'bold', textColor: [39, 174, 96] } },
+                    { content: dimHP.busText, styles: { fontStyle: 'bold', textColor: [39, 174, 96] } },
+                    { content: dimNuit.busText, styles: { fontStyle: 'bold', textColor: [39, 174, 96] } }
                 ]);
             });
 
-            // Ligne de Total
+            // LIGNE DE TOTAL
             tableBody.push([
-                { content: 'TOTAL PARC REQUIS', colSpan: 13, styles: { halign: 'right', fontStyle: 'bold', fillColor: [58, 59, 60], textColor: [255, 255, 255] } },
-                { content: parcTotalRequis.toString(), styles: { fontStyle: 'bold', fillColor: [230, 126, 34], textColor: [255, 255, 255] } }
+                { content: 'TOTAL PARC REQUIS POUR LE RÉSEAU', colSpan: 13, styles: { halign: 'right', fontStyle: 'bold', fillColor: [58, 59, 60], textColor: [255, 255, 255], fontSize: 12 } },
+                { content: parcTotalRequis.toString(), styles: { fontStyle: 'bold', fillColor: [230, 126, 34], textColor: [255, 255, 255], fontSize: 12 } }
             ]);
 
+            // GENERATION PDF
             doc.autoTable({
                 head: tableHead,
                 body: tableBody,
                 startY: 28,
                 theme: 'grid',
-                styles: { fontSize: 9, halign: 'center', valign: 'middle' },
+                styles: { fontSize: 8, halign: 'center', valign: 'middle', cellPadding: 2 },
                 headStyles: { fillColor: [58, 59, 60] },
-                didParseCell: function(data) {
-                    if (data.section === 'body' && data.column.index === 0) {
-                        let ligne = data.cell.raw;
-                        if (typeof ligne === 'string') {
-                            if (ligne.startsWith('P') || ligne.startsWith('C')) data.cell.styles.textColor = [231, 76, 60];
-                            else if (ligne.startsWith('S')) data.cell.styles.textColor = [46, 204, 113];
-                            else if (ligne.startsWith('N')) data.cell.styles.textColor = [155, 89, 182];
-                        }
-                    }
-                }
             });
 
-            doc.save('Plan_Roulement_Global.pdf');
+            doc.save('Plan_Roulement_Global_Details.pdf');
         }
         updateUI(); renderContracts();
     </script>
