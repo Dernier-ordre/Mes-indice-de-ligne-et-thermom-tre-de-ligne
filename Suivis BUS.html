@@ -1158,43 +1158,13 @@
             reader.readAsText(e.target.files[0]); 
         }
 // ============================================================================
-        // MODULE CALCULATEUR DE BESOINS & FRÉQUENCES (ODS -> JSON)
+        // MODULE CALCULATEUR GLOBAL MULTILIGNES (INTELLIGENT)
         // ============================================================================
-        let donneesFrequentation = {};
+        let donneesBrutes = [];
 
-        // 1. Matrice des fréquences minimales imposées par la grille (en minutes)
-        // Adapté selon tes réseaux P (fort), L (moyen), S (spécifique)
-        function getFrequenceGrille(ligne, creneau) {
-            const grilles = {
-                "P": { "06h00-07h00": 15, "07h00-09h00": 10, "09h00-16h00": 15, "16h00-19h00": 10, "19h00-21h00": 15, "21h00-00h00": 30 },
-                "L": { "06h00-07h00": 20, "07h00-09h00": 15, "09h00-16h00": 20, "16h00-19h00": 15, "19h00-21h00": 20, "21h00-00h00": 45 },
-                "S": { "06h00-07h00": 30, "07h00-09h00": 20, "09h00-16h00": 30, "16h00-19h00": 20, "19h00-21h00": 30, "21h00-00h00": 60 },
-                "DEFAULT": { "06h00-07h00": 30, "07h00-09h00": 15, "09h00-16h00": 30, "16h00-19h00": 15, "19h00-21h00": 30, "21h00-00h00": 60 }
-            };
-            
-            let type = "DEFAULT";
-            if (ligne.startsWith("P") && ligne.length <= 3) type = "P";
-            else if (ligne.startsWith("L") || ligne.startsWith("C")) type = "L";
-            else if (ligne.startsWith("S") || ligne.startsWith("N")) type = "S";
-
-            return grilles[type][creneau] || 60; // Par défaut 60 min si non trouvé
-        }
-
-        // 2. Attribution des couleurs par type de ligne (Inspiration TCL)
-        function getCouleurLigne(ligne) {
-            if (ligne.startsWith("P") || ligne.startsWith("C")) return "#c0392b"; // Rouge
-            if (ligne.startsWith("S")) return "#27ae60"; // Vert
-            if (ligne.startsWith("JD")) return "#f39c12"; // Jaune/Orange
-            if (ligne.startsWith("N")) return "#8e44ad"; // Violet Nuit
-            return "#3498db"; // Bleu (Locales par défaut)
-        }
-
-        // 3. Arrondi intelligent aux standards d'exploitation
-        function arrondirFrequenceExploitation(freq_brute, freq_min_grille) {
-            // Standards de cadencement habituels (en minutes)
+        // Fonction d'arrondi des fréquences aux standards d'exploitation (raboté vers le bas pour garantir la capacité)
+        function arrondirFrequenceExploitation(freq_brute) {
             const standards = [3, 4, 5, 6, 7.5, 8, 10, 12, 15, 20, 30, 45, 60];
-            
-            // On cherche le standard le plus proche qui est INFERIEUR ou EGAL à la fréquence brute (pour assurer la capacité)
             let freq_retenue = 60;
             for (let i = standards.length - 1; i >= 0; i--) {
                 if (standards[i] <= freq_brute) {
@@ -1202,12 +1172,10 @@
                     break;
                 }
             }
-            
-            // La fréquence retenue ne doit JAMAIS être supérieure à celle imposée par la grille (sinon on prend la grille)
-            return Math.min(freq_retenue, freq_min_grille);
+            return freq_retenue;
         }
 
-        // 4. Lecture du Fichier LibreOffice (SheetJS)
+        // Lecture du Fichier Excel/ODS
         document.getElementById('import-ods').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1217,101 +1185,117 @@
                 const data = new Uint8Array(evt.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
                 const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+                donneesBrutes = XLSX.utils.sheet_to_json(firstSheet);
                 
-                donneesFrequentation = {};
-                const selectLigne = document.getElementById('calc-ligne');
-                selectLigne.innerHTML = '';
+                const tbody = document.getElementById('config-lignes-tbody');
+                tbody.innerHTML = '';
+                let nbLignes = 0;
 
-                jsonData.forEach(row => {
-                    // On cherche la colonne qui contient le mot Ligne
+                donneesBrutes.forEach((row, index) => {
                     const cles = Object.keys(row);
                     const cleLigne = cles.find(c => c.toLowerCase().includes("ligne"));
                     
                     if (cleLigne && row[cleLigne]) {
                         const nomLigne = row[cleLigne].toString().trim();
-                        donneesFrequentation[nomLigne] = row;
-                        selectLigne.innerHTML += `<option value="${nomLigne}">${nomLigne}</option>`;
+                        // On crée une ligne dans le tableau de configuration
+                        tbody.innerHTML += `
+                            <tr>
+                                <td style="font-weight:bold; color:#3498db; font-size:14px;">${nomLigne}</td>
+                                <td><input type="number" id="tps-${index}" value="60" min="10" style="width:100px; text-align:center;"></td>
+                                <td><input type="number" id="capa-${index}" value="100" min="10" style="width:100px; text-align:center;"></td>
+                            </tr>
+                        `;
+                        nbLignes++;
                     }
                 });
 
-                document.getElementById('statut-import').innerText = "✅ Fichier chargé ! " + Object.keys(donneesFrequentation).length + " lignes détectées.";
+                document.getElementById('statut-import').innerText = `✅ Fichier chargé ! ${nbLignes} lignes détectées prêtes à être configurées.`;
                 document.getElementById('statut-import').style.color = "#27ae60";
+                document.getElementById('zone-configuration').style.display = "block";
             };
             reader.readAsArrayBuffer(file);
         });
 
-        // 5. Moteur de calcul
-        function lancerCalculBesoins() {
-            const ligneSel = document.getElementById('calc-ligne').value;
-            const tempsAR = parseFloat(document.getElementById('calc-temps').value);
-            const capaBus = parseFloat(document.getElementById('calc-capa').value);
-
-            if (!ligneSel || !donneesFrequentation[ligneSel]) {
-                alert("Veuillez d'abord importer un fichier de fréquentation valide.");
-                return;
-            }
-
-            const dataLigne = donneesFrequentation[ligneSel];
-            const tbody = document.getElementById('calc-out-tbody');
-            tbody.innerHTML = '';
+        // Calcul Global
+        function lancerCalculGlobal() {
+            const tbodyOut = document.getElementById('calc-out-global-tbody');
+            tbodyOut.innerHTML = '';
             
-            // Configuration Visuelle de la Carte
-            document.getElementById('calc-ligne-badge').innerText = ligneSel;
-            const couleurBadge = getCouleurLigne(ligneSel);
-            document.getElementById('calc-ligne-badge').style.background = couleurBadge;
-            document.getElementById('calc-header').style.borderBottomColor = couleurBadge;
-            
-            document.getElementById('calc-out-temps').innerText = tempsAR;
-            document.getElementById('calc-out-capa').innerText = capaBus;
+            let totalSemaine = 0;
+            let totalSamedi = 0;
+            let totalDimanche = 0;
 
-            // Définition des créneaux horaires classiques à chercher dans ton tableau ODS
-            const creneaux = ["06h00-07h00", "07h00-09h00", "09h00-16h00", "16h00-19h00", "19h00-21h00", "21h00-00h00"];
-            
-            let maxVehiculesRequis = 0;
+            donneesBrutes.forEach((row, index) => {
+                const cles = Object.keys(row);
+                const cleLigne = cles.find(c => c.toLowerCase().includes("ligne"));
+                
+                if (!cleLigne || !row[cleLigne]) return;
+                
+                const nomLigne = row[cleLigne].toString().trim();
+                const tempsAR = parseFloat(document.getElementById(`tps-${index}`).value) || 60;
+                const capaBus = parseFloat(document.getElementById(`capa-${index}`).value) || 100;
 
-            creneaux.forEach(creneau => {
-                // Recherche flexible de la clé dans le fichier ODS (ignorer la casse et les espaces)
-                const cleTrouvee = Object.keys(dataLigne).find(k => k.replace(/\s/g, '') === creneau.replace(/\s/g, ''));
-                
-                const pax100 = cleTrouvee ? (parseFloat(dataLigne[cleTrouvee]) || 0) : 0;
-                
-                // Calculs
-                const pax115 = Math.ceil(pax100 * 1.15); // +15%
-                const departRequisHoraire = pax115 > 0 ? (pax115 / capaBus) : 0;
-                const freqTheoriqueMin = departRequisHoraire > 0 ? (60 / departRequisHoraire) : 999;
-                
-                const freqMinGrille = getFrequenceGrille(ligneSel, creneau);
-                const freqAppliquee = pax115 === 0 ? freqMinGrille : arrondirFrequenceExploitation(freqTheoriqueMin, freqMinGrille);
-                
-                const nbVehicules = Math.ceil(tempsAR / freqAppliquee);
-                
-                if (nbVehicules > maxVehiculesRequis) {
-                    maxVehiculesRequis = nbVehicules;
+                // Extraction intelligente des pics de fréquentation
+                let maxSemaine = 0, maxSamedi = 0, maxDimanche = 0;
+
+                cles.forEach(key => {
+                    const val = parseFloat(row[key]);
+                    if (isNaN(val)) return; // Ignorer le texte
+
+                    const keyStr = key.toLowerCase();
+                    if (keyStr.includes("samedi") || keyStr.includes("sam")) {
+                        if (val > maxSamedi) maxSamedi = val;
+                    } else if (keyStr.includes("dimanche") || keyStr.includes("dim")) {
+                        if (val > maxDimanche) maxDimanche = val;
+                    } else if (!keyStr.includes("ligne") && !keyStr.includes("nom")) {
+                        // Tout le reste est considéré comme un créneau Semaine
+                        if (val > maxSemaine) maxSemaine = val;
+                    }
+                });
+
+                // Fonction interne de calcul de bus
+                function calculerBesoinBus(maxPax, capacite, tpsRotation) {
+                    if (maxPax <= 0) return 0;
+                    const pax115 = Math.ceil(maxPax * 1.15);
+                    const departParHeure = pax115 / capacite;
+                    const freqBrute = 60 / departParHeure;
+                    const freqAppliquee = arrondirFrequenceExploitation(freqBrute);
+                    return Math.ceil(tpsRotation / freqAppliquee);
                 }
 
-                // Ligne du tableau
-                tbody.innerHTML += `
+                // Calculs des flottes
+                const busSemaine = calculerBesoinBus(maxSemaine, capaBus, tempsAR);
+                const busSamedi = calculerBesoinBus(maxSamedi, capaBus, tempsAR);
+                const busDimanche = calculerBesoinBus(maxDimanche, capaBus, tempsAR);
+
+                totalSemaine += busSemaine;
+                totalSamedi += busSamedi;
+                totalDimanche += busDimanche;
+
+                // Ajout à la carte d'export
+                tbodyOut.innerHTML += `
                     <tr>
-                        <td style="border:1px solid #4e4f50; padding:8px;">${creneau}</td>
-                        <td style="border:1px solid #4e4f50; padding:8px;">${pax115} pax</td>
-                        <td style="border:1px solid #4e4f50; padding:8px; color:#aaa;">${freqTheoriqueMin === 999 ? '-' : freqTheoriqueMin.toFixed(1)} min</td>
-                        <td style="border:1px solid #4e4f50; padding:8px; color:#aaa;">${freqMinGrille} min</td>
-                        <td style="border:1px solid #4e4f50; padding:8px; font-weight:bold; color:#38ef7d;">${freqAppliquee} min</td>
-                        <td style="border:1px solid #4e4f50; padding:8px; font-weight:bold; color:#f39c12;">${nbVehicules}</td>
+                        <td style="border:1px solid #4e4f50; font-weight:bold; padding:6px;">${nomLigne}</td>
+                        <td style="border:1px solid #4e4f50; color:#aaa; padding:6px;">${tempsAR} min</td>
+                        <td style="border:1px solid #4e4f50; color:#aaa; padding:6px;">${capaBus} pl.</td>
+                        <td style="border:1px solid #4e4f50; color:#3498db; font-weight:bold; font-size:14px;">${busSemaine}</td>
+                        <td style="border:1px solid #4e4f50; color:#9b59b6; font-weight:bold; font-size:14px;">${busSamedi}</td>
+                        <td style="border:1px solid #4e4f50; color:#27ae60; font-weight:bold; font-size:14px;">${busDimanche}</td>
                     </tr>
                 `;
             });
 
-            document.getElementById('calc-out-total').innerText = maxVehiculesRequis;
-            document.getElementById('resultat-calcul-container').style.display = 'block';
+            // Mise à jour des totaux
+            document.getElementById('tot-semaine').innerText = totalSemaine;
+            document.getElementById('tot-samedi').innerText = totalSamedi;
+            document.getElementById('tot-dimanche').innerText = totalDimanche;
 
             // Capture HTML2Canvas
             setTimeout(() => {
                 const elementToCapture = document.getElementById('discord-calc-card');
                 html2canvas(elementToCapture, { backgroundColor: null, scale: 2 }).then(canvas => {
                     const link = document.createElement('a');
-                    link.download = `Besoins_Ligne_${ligneSel}.png`;
+                    link.download = `Besoins_Reseau_Global.png`;
                     link.href = canvas.toDataURL("image/png");
                     link.click();
                 });
