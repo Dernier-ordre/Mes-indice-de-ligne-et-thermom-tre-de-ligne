@@ -1310,19 +1310,19 @@
                 }
 
                 // Ciblages précis des colonnes de ton fichier "Fréquentation"
-                const paxSemHC = getVal(["creuse", "semaine"]);
-                const paxSemHP = getVal(["pointe", "semaine"]);
-                const paxSemSoir = getVal(["soir", "semaine"]);
-                const paxSemNuit = getVal(["nuit", "semaine"]);
+                const paxSemHC = getVal(["LU-VE Creuses"]);
+                const paxSemHP = getVal(["LU-VE Pointes"]);
+                const paxSemSoir = getVal(["LU-VE Soir"]);
+                const paxSemNuit = getVal(["LU-VE Nuit"]);
 
-                const paxSamHC = getVal(["creuse", "samedi"]);
-                const paxSamHP = getVal(["pointe", "samedi"]);
-                const paxSamSoir = getVal(["soir", "samedi"]);
-                const paxSamNuit = getVal(["nuit", "samedi"]);
+                const paxSamHC = getVal(["SA Creuses"]);
+                const paxSamHP = getVal(["SA Pointes"]);
+                const paxSamSoir = getVal(["SA Soir"]);
+                const paxSamNuit = getVal(["SA Nuit"]);
 
-                const paxDimHC = getVal(["creuse", "dimanche"]);
-                const paxDimHP = getVal(["pointe", "dimanche"]);
-                const paxDimNuit = getVal(["nuit", "dimanche"]);
+                const paxDimHC = getVal(["DI&JF Creuses"]);
+                const paxDimHP = getVal(["DI&JF Pointes"]);
+                const paxDimNuit = getVal(["DI&JF Nuit"]);
 
                 // Calculs
                 const semHC = processCreneau(paxSemHC, "HC", "Semaine");
