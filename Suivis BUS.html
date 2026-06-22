@@ -383,84 +383,72 @@
         </div>
     </div>
 <div id="tab-calculateur" class="tab-content">
-        <h2>🧮 Calculateur de Besoins et Fréquences</h2>
-        <p style="color:#b0b3b8;">Calculez le nombre de véhicules nécessaires pour répondre à 115% de la demande (100% + 15% de marge).</p>
+        <h2>🧮 Calculateur de Besoins Global (Réseau Complet)</h2>
+        <p style="color:#b0b3b8;">Calculez l'engagement maximum requis pour toutes vos lignes d'un coup (Demande à 115%).</p>
         
-        <div class="form-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 300px; border-right: 1px solid #3a3b3c; padding-right: 20px;">
-                <h3 style="margin-top:0;">1. Importer les fréquentations</h3>
-                <p style="font-size:12px; color:#aaa;">Format accepté : .ods, .xlsx, .xls. La première colonne doit s'appeler "Ligne".</p>
-                <input type="file" id="import-ods" accept=".ods, .xlsx, .xls" style="background:#18191a;">
-                <p id="statut-import" style="color:#f39c12; font-weight:bold; font-size:13px; margin-top:10px;">En attente de fichier...</p>
-            </div>
-
-            <div style="flex: 2; min-width: 300px;">
-                <h3 style="margin-top:0;">2. Paramétrage technique de la ligne</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div>
-                        <label style="font-size:12px; color:#aaa;">Ligne à calculer :</label>
-                        <select id="calc-ligne">
-                            </select>
-                    </div>
-                    <div>
-                        <label style="font-size:12px; color:#aaa;">Temps de parcours A/R (minutes) :</label>
-                        <input type="number" id="calc-temps" value="60" min="10">
-                    </div>
-                    <div>
-                        <label style="font-size:12px; color:#aaa;">Capacité du véhicule (Places) :</label>
-                        <input type="number" id="calc-capa" value="100" min="10">
-                    </div>
-                    <div style="display: flex; align-items: flex-end;">
-                        <button onclick="lancerCalculBesoins()" style="background-color:#27ae60; padding:10px; width:100%;">🚀 Calculer & Générer</button>
-                    </div>
-                </div>
-            </div>
+        <div class="form-container" style="margin-bottom: 20px;">
+            <h3 style="margin-top:0;">1. Importer les fréquentations (Tableur)</h3>
+            <p style="font-size:12px; color:#aaa;">Format : .ods, .xlsx. La colonne contenant le nom de la ligne doit s'appeler "Ligne". Le script détectera automatiquement les mots "Samedi" ou "Dimanche" dans les en-têtes de colonnes.</p>
+            <input type="file" id="import-ods" accept=".ods, .xlsx, .xls" style="background:#18191a; max-width: 400px;">
+            <p id="statut-import" style="color:#f39c12; font-weight:bold; font-size:13px; margin-top:10px;">En attente de fichier...</p>
         </div>
 
-        <div id="resultat-calcul-container" style="display:none; text-align:center;">
-            <p style="color:#38ef7d; font-weight:bold;">Le calcul est terminé ! La fiche a été générée ci-dessous.</p>
+        <div id="zone-configuration" style="display:none;">
+            <h3>2. Configuration Technique des Lignes</h3>
+            <p style="font-size:12px; color:#aaa;">Renseignez le temps de parcours (Aller/Retour) et la capacité des véhicules pour chaque ligne détectée.</p>
+            
+            <div class="table-responsive">
+                <table style="width: 100%; text-align: center;">
+                    <thead>
+                        <tr>
+                            <th style="background:#2c3e50;">Ligne</th>
+                            <th style="background:#27ae60;">Temps de Parcours A/R (min)</th>
+                            <th style="background:#8e44ad;">Capacité du Véhicule (places)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="config-lignes-tbody">
+                        </tbody>
+                </table>
+            </div>
+
+            <button onclick="lancerCalculGlobal()" style="background-color:#e67e22; padding:12px; width:100%; font-size: 16px; margin-top: 10px;">🚀 Calculer les Besoins du Réseau & Générer l'Export</button>
         </div>
     </div>
 
     <div id="export-zone-calc" style="position: absolute; left: -9999px; top: 0;">
-        <div id="discord-calc-card" style="width: 600px; background: #18191a; color: #e4e6eb; border: 2px solid #3a3b3c; border-radius: 12px; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        <div id="discord-calc-card" style="width: 800px; background: #18191a; color: #e4e6eb; border: 2px solid #3a3b3c; border-radius: 12px; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
             
-            <div id="calc-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #3498db; padding-bottom: 10px; margin-bottom: 15px;">
-                <div>
-                    <h2 style="margin: 0; color: #fff; font-size: 24px;">Analyse d'Exploitation</h2>
-                    <span style="font-size: 12px; color: #aaa;">Marge de sécurité incluse : +15% de la charge</span>
-                </div>
-                <div id="calc-ligne-badge" style="background:#3498db; color:#fff; font-size:28px; font-weight:bold; padding:5px 20px; border-radius:8px; box-shadow: 0 4px 6px rgba(0,0,0,0.4);">
-                    L1
-                </div>
+            <div style="border-bottom: 4px solid #f39c12; padding-bottom: 10px; margin-bottom: 15px; text-align: center;">
+                <h2 style="margin: 0; color: #fff; font-size: 26px;">📊 Plan de Roulement - Engagement Maximum</h2>
+                <span style="font-size: 13px; color: #aaa;">Basé sur la fréquentation à 115% de charge théorique</span>
             </div>
 
-            <div style="background: #242526; padding: 12px; border-radius: 8px; display: flex; justify-content: space-around; font-size:13px; border: 1px solid #2d2f30; margin-bottom:15px;">
-                <span><strong>Temps A/R :</strong> <span id="calc-out-temps" style="color:#38ef7d;"></span> min</span>
-                <span><strong>Capacité :</strong> <span id="calc-out-capa" style="color:#38ef7d;"></span> places</span>
-            </div>
-
-            <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; margin-bottom: 15px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; margin-bottom: 15px; background: #242526;">
                 <thead>
                     <tr>
-                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Créneau</th>
-                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Pax (115%)</th>
-                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Fréq. Cible</th>
-                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Fréq. Min (Grille)</th>
-                        <th style="background:#27ae60; padding:8px; border:1px solid #4e4f50; color:#fff;">Fréq. Appliquée</th>
-                        <th style="background:#e67e22; padding:8px; border:1px solid #4e4f50; color:#18191a;">Bus Requis</th>
+                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Ligne</th>
+                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Temps A/R</th>
+                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Capacité</th>
+                        <th style="background:#2980b9; padding:8px; border:1px solid #4e4f50; color:#fff;">Bus Semaine</th>
+                        <th style="background:#8e44ad; padding:8px; border:1px solid #4e4f50; color:#fff;">Bus Samedi</th>
+                        <th style="background:#27ae60; padding:8px; border:1px solid #4e4f50; color:#fff;">Bus Dimanche</th>
                     </tr>
                 </thead>
-                <tbody id="calc-out-tbody">
+                <tbody id="calc-out-global-tbody">
                     </tbody>
+                <tfoot>
+                    <tr style="background:#3a3b3c; font-weight: bold; font-size: 16px;">
+                        <td colspan="3" style="padding:10px; text-align:right; border:1px solid #4e4f50;">TOTAL RÉSEAU :</td>
+                        <td id="tot-semaine" style="padding:10px; border:1px solid #4e4f50; color:#3498db;">0</td>
+                        <td id="tot-samedi" style="padding:10px; border:1px solid #4e4f50; color:#9b59b6;">0</td>
+                        <td id="tot-dimanche" style="padding:10px; border:1px solid #4e4f50; color:#2ecc71;">0</td>
+                    </tr>
+                </tfoot>
             </table>
-
-            <div style="background: rgba(243, 156, 18, 0.15); border: 2px solid #f39c12; padding: 15px; border-radius: 8px; text-align: center;">
-                <span style="font-size: 14px; color: #aaa; text-transform: uppercase;">Engagement Maximum Requis</span><br>
-                <span id="calc-out-total" style="font-size: 32px; font-weight: bold; color: #f39c12; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);"></span>
-                <span style="font-size: 16px; color: #f39c12; font-weight:bold;"> VÉHICULES</span>
+            
+            <div style="text-align: right; font-size: 11px; color: #7a7a7a; border-top: 1px solid #3a3b3c; padding-top:5px;">
+                Généré par Transport Manager Pro
             </div>
-
         </div>
     </div>
     <div id="edit-modal" class="modal">
