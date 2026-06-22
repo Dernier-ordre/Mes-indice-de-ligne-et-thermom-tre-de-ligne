@@ -8,6 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
         /* PALETTE MODE SOMBRE */
@@ -383,27 +386,28 @@
         </div>
     </div>
 <div id="tab-calculateur" class="tab-content">
-        <h2>🧮 Calculateur de Besoins Global (Réseau Complet)</h2>
-        <p style="color:#b0b3b8;">Calculez l'engagement maximum requis pour toutes vos lignes d'un coup (Demande à 115%).</p>
+        <h2>🧮 Calculateur de Besoins Global (Export PDF)</h2>
+        <p style="color:#b0b3b8;">Importez vos fréquentations. Le système calculera les fréquences et les bus requis pour chaque créneau (avec 15% de marge) et générera un PDF complet.</p>
         
         <div class="form-container" style="margin-bottom: 20px;">
-            <h3 style="margin-top:0;">1. Importer les fréquentations (Tableur)</h3>
-            <p style="font-size:12px; color:#aaa;">Format : .ods, .xlsx. La colonne contenant le nom de la ligne doit s'appeler "Ligne". Le script détectera automatiquement les mots "Samedi" ou "Dimanche" dans les en-têtes de colonnes.</p>
-            <input type="file" id="import-ods" accept=".ods, .xlsx, .xls" style="background:#18191a; max-width: 400px;">
+            <h3 style="margin-top:0;">1. Importer les fréquentations (Tableur .ods / .xlsx)</h3>
+            <p style="font-size:12px; color:#aaa;">La colonne contenant le nom de la ligne doit s'appeler "Ligne".</p>
+            <input type="file" id="import-ods" accept=".ods, .xlsx, .xls" style="background:#18191a; max-width: 400px; padding: 8px; color: white; border: 1px solid #555; border-radius: 5px;">
             <p id="statut-import" style="color:#f39c12; font-weight:bold; font-size:13px; margin-top:10px;">En attente de fichier...</p>
         </div>
 
         <div id="zone-configuration" style="display:none;">
             <h3>2. Configuration Technique des Lignes</h3>
-            <p style="font-size:12px; color:#aaa;">Renseignez le temps de parcours (Aller/Retour) et la capacité des véhicules pour chaque ligne détectée.</p>
+            <p style="font-size:12px; color:#aaa;">Les temps de parcours sont pré-remplis automatiquement selon votre base de données intégrée.</p>
             
-            <div class="table-responsive">
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                 <table style="width: 100%; text-align: center;">
                     <thead>
                         <tr>
                             <th style="background:#2c3e50;">Ligne</th>
+                            <th style="background:#d35400;">Format Véhicule</th>
                             <th style="background:#27ae60;">Temps de Parcours A/R (min)</th>
-                            <th style="background:#8e44ad;">Capacité du Véhicule (places)</th>
+                            <th style="background:#8e44ad;">Capacité du Véhicule</th>
                         </tr>
                     </thead>
                     <tbody id="config-lignes-tbody">
@@ -411,44 +415,7 @@
                 </table>
             </div>
 
-            <button onclick="lancerCalculGlobal()" style="background-color:#e67e22; padding:12px; width:100%; font-size: 16px; margin-top: 10px;">🚀 Calculer les Besoins du Réseau & Générer l'Export</button>
-        </div>
-    </div>
-
-    <div id="export-zone-calc" style="position: absolute; left: -9999px; top: 0;">
-        <div id="discord-calc-card" style="width: 800px; background: #18191a; color: #e4e6eb; border: 2px solid #3a3b3c; border-radius: 12px; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-            
-            <div style="border-bottom: 4px solid #f39c12; padding-bottom: 10px; margin-bottom: 15px; text-align: center;">
-                <h2 style="margin: 0; color: #fff; font-size: 26px;">📊 Plan de Roulement - Engagement Maximum</h2>
-                <span style="font-size: 13px; color: #aaa;">Basé sur la fréquentation à 115% de charge théorique</span>
-            </div>
-
-            <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; margin-bottom: 15px; background: #242526;">
-                <thead>
-                    <tr>
-                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Ligne</th>
-                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Temps A/R</th>
-                        <th style="background:#3a3b3c; padding:8px; border:1px solid #4e4f50;">Capacité</th>
-                        <th style="background:#2980b9; padding:8px; border:1px solid #4e4f50; color:#fff;">Bus Semaine</th>
-                        <th style="background:#8e44ad; padding:8px; border:1px solid #4e4f50; color:#fff;">Bus Samedi</th>
-                        <th style="background:#27ae60; padding:8px; border:1px solid #4e4f50; color:#fff;">Bus Dimanche</th>
-                    </tr>
-                </thead>
-                <tbody id="calc-out-global-tbody">
-                    </tbody>
-                <tfoot>
-                    <tr style="background:#3a3b3c; font-weight: bold; font-size: 16px;">
-                        <td colspan="3" style="padding:10px; text-align:right; border:1px solid #4e4f50;">TOTAL RÉSEAU :</td>
-                        <td id="tot-semaine" style="padding:10px; border:1px solid #4e4f50; color:#3498db;">0</td>
-                        <td id="tot-samedi" style="padding:10px; border:1px solid #4e4f50; color:#9b59b6;">0</td>
-                        <td id="tot-dimanche" style="padding:10px; border:1px solid #4e4f50; color:#2ecc71;">0</td>
-                    </tr>
-                </tfoot>
-            </table>
-            
-            <div style="text-align: right; font-size: 11px; color: #7a7a7a; border-top: 1px solid #3a3b3c; padding-top:5px;">
-                Généré par Transport Manager Pro
-            </div>
+            <button onclick="lancerCalculGlobalPDF()" style="background-color:#e67e22; padding:15px; width:100%; font-size: 16px; margin-top: 15px; color: #18191a; text-transform: uppercase;">📄 Calculer et Télécharger le Plan de Roulement (PDF)</button>
         </div>
     </div>
     <div id="edit-modal" class="modal">
@@ -1158,12 +1125,47 @@
             reader.readAsText(e.target.files[0]); 
         }
 // ============================================================================
-        // MODULE CALCULATEUR GLOBAL MULTILIGNES (INTELLIGENT)
+        // MODULE CALCULATEUR GLOBAL MULTILIGNES -> EXPORT PDF (A3 Paysage)
         // ============================================================================
         let donneesBrutes = [];
 
-        // Fonction d'arrondi des fréquences aux standards d'exploitation (raboté vers le bas pour garantir la capacité)
-        function arrondirFrequenceExploitation(freq_brute) {
+        // ⏱️ DICTIONNAIRE DES TEMPS DE PARCOURS ET FORMATS
+        // Tu peux compléter cette liste avec toutes tes lignes !
+        const configLignesPredefinie = {
+            "P1": { temps: 45, format: "Articulé", capa: 140 },
+            "P2": { temps: 50, format: "Articulé", capa: 140 },
+            "L1": { temps: 60, format: "Standard", capa: 100 },
+            "L2": { temps: 75, format: "Standard", capa: 100 },
+            "S1": { temps: 30, format: "Midibus", capa: 70 },
+            // "NOM_LIGNE": { temps: minutes, format: "Format", capa: places }
+        };
+
+        // Grille de fréquences minimales imposées (Politique de service en minutes)
+        function getFrequenceGrille(ligne, typeJour, creneauId) {
+            const politique = {
+                "Fort": {
+                    "Semaine_HP": 10, "Semaine_HC": 15, "Semaine_Soir": 20, "Semaine_Nuit": 30,
+                    "Samedi_HP": 12, "Samedi_HC": 15, "Samedi_Soir": 20, "Samedi_Nuit": 30,
+                    "Dimanche_HP": 20, "Dimanche_HC": 30, "Dimanche_Nuit": 45
+                },
+                "Normal": {
+                    "Semaine_HP": 15, "Semaine_HC": 20, "Semaine_Soir": 30, "Semaine_Nuit": 45,
+                    "Samedi_HP": 20, "Samedi_HC": 20, "Samedi_Soir": 30, "Samedi_Nuit": 45,
+                    "Dimanche_HP": 30, "Dimanche_HC": 45, "Dimanche_Nuit": 60
+                },
+                "Faible": {
+                    "Semaine_HP": 20, "Semaine_HC": 30, "Semaine_Soir": 45, "Semaine_Nuit": 60,
+                    "Samedi_HP": 30, "Samedi_HC": 30, "Samedi_Soir": 45, "Samedi_Nuit": 60,
+                    "Dimanche_HP": 45, "Dimanche_HC": 60, "Dimanche_Nuit": 60
+                }
+            };
+            let typeLigne = "Normal";
+            if (ligne.startsWith("P") || ligne.startsWith("C")) typeLigne = "Fort";
+            if (ligne.startsWith("S") || ligne.startsWith("N") || ligne.startsWith("JD")) typeLigne = "Faible";
+            return politique[typeLigne][`${typeJour}_${creneauId}`] || 60;
+        }
+
+        function arrondirFrequence(freq_brute, freq_grille) {
             const standards = [3, 4, 5, 6, 7.5, 8, 10, 12, 15, 20, 30, 45, 60];
             let freq_retenue = 60;
             for (let i = standards.length - 1; i >= 0; i--) {
@@ -1172,10 +1174,10 @@
                     break;
                 }
             }
-            return freq_retenue;
+            return Math.min(freq_retenue, freq_grille);
         }
 
-        // Lecture du Fichier Excel/ODS
+        // Importation du fichier
         document.getElementById('import-ods').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1191,115 +1193,159 @@
                 tbody.innerHTML = '';
                 let nbLignes = 0;
 
+                const formats = ["Minibus", "Midibus", "Standard", "Articulé", "Autocar"];
+
                 donneesBrutes.forEach((row, index) => {
                     const cles = Object.keys(row);
                     const cleLigne = cles.find(c => c.toLowerCase().includes("ligne"));
-                    
                     if (cleLigne && row[cleLigne]) {
                         const nomLigne = row[cleLigne].toString().trim();
-                        // On crée une ligne dans le tableau de configuration
+                        const config = configLignesPredefinie[nomLigne] || { temps: 60, format: "Standard", capa: 100 };
+                        
+                        let formatOptions = formats.map(f => `<option value="${f}" ${config.format === f ? 'selected' : ''}>${f}</option>`).join('');
+
                         tbody.innerHTML += `
                             <tr>
-                                <td style="font-weight:bold; color:#3498db; font-size:14px;">${nomLigne}</td>
-                                <td><input type="number" id="tps-${index}" value="60" min="10" style="width:100px; text-align:center;"></td>
-                                <td><input type="number" id="capa-${index}" value="100" min="10" style="width:100px; text-align:center;"></td>
+                                <td style="font-weight:bold; color:#3498db; font-size:15px; vertical-align: middle;">${nomLigne}</td>
+                                <td><select id="format-${index}" style="width:120px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;">${formatOptions}</select></td>
+                                <td><input type="number" id="tps-${index}" value="${config.temps}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
+                                <td><input type="number" id="capa-${index}" value="${config.capa}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
                             </tr>
                         `;
                         nbLignes++;
                     }
                 });
-
-                document.getElementById('statut-import').innerText = `✅ Fichier chargé ! ${nbLignes} lignes détectées prêtes à être configurées.`;
+                document.getElementById('statut-import').innerText = `✅ Fichier chargé ! ${nbLignes} lignes détectées.`;
                 document.getElementById('statut-import').style.color = "#27ae60";
                 document.getElementById('zone-configuration').style.display = "block";
             };
             reader.readAsArrayBuffer(file);
         });
 
-        // Calcul Global
-        function lancerCalculGlobal() {
-            const tbodyOut = document.getElementById('calc-out-global-tbody');
-            tbodyOut.innerHTML = '';
+        // Moteur de calcul PDF
+        function lancerCalculGlobalPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'landscape', format: 'a3' }); // Grand format A3 pour tout faire rentrer
             
-            let totalSemaine = 0;
-            let totalSamedi = 0;
-            let totalDimanche = 0;
+            doc.setFontSize(18);
+            doc.text("Plan de Roulement Global - Analyse des Besoins en Véhicules (+15% de marge)", 14, 15);
+            doc.setFontSize(10);
+            doc.text("F: Fréquence appliquée (en minutes) | B: Nombre de bus requis", 14, 22);
+
+            const tableHead = [
+                [
+                    { content: 'Ligne', rowSpan: 2, styles: { valign: 'middle', halign: 'center' } },
+                    { content: 'Format', rowSpan: 2, styles: { valign: 'middle', halign: 'center' } },
+                    { content: 'SEMAINE', colSpan: 4, styles: { halign: 'center', fillColor: [52, 152, 219] } },
+                    { content: 'SAMEDI', colSpan: 4, styles: { halign: 'center', fillColor: [155, 89, 182] } },
+                    { content: 'DIMANCHE', colSpan: 3, styles: { halign: 'center', fillColor: [39, 174, 96] } },
+                    { content: 'MAX BUS', rowSpan: 2, styles: { valign: 'middle', halign: 'center', fillColor: [230, 126, 34] } }
+                ],
+                [
+                    'Pointe (F|B)', 'Creuse (F|B)', 'Soir (F|B)', 'Nuit (F|B)',
+                    'Pointe (F|B)', 'Creuse (F|B)', 'Soir (F|B)', 'Nuit (F|B)',
+                    'Pointe (F|B)', 'Creuse (F|B)', 'Nuit (F|B)'
+                ]
+            ];
+
+            const tableBody = [];
+            let parcTotalRequis = 0;
+
+            const timeMappings = {
+                "HP": ["07h00-09h00", "16h00-19h00"],
+                "HC": ["06h00-07h00", "09h00-16h00"],
+                "Soir": ["19h00-21h00"],
+                "Nuit": ["21h00-00h00"]
+            };
 
             donneesBrutes.forEach((row, index) => {
                 const cles = Object.keys(row);
                 const cleLigne = cles.find(c => c.toLowerCase().includes("ligne"));
-                
                 if (!cleLigne || !row[cleLigne]) return;
                 
                 const nomLigne = row[cleLigne].toString().trim();
+                const formatBus = document.getElementById(`format-${index}`).value;
                 const tempsAR = parseFloat(document.getElementById(`tps-${index}`).value) || 60;
                 const capaBus = parseFloat(document.getElementById(`capa-${index}`).value) || 100;
 
-                // Extraction intelligente des pics de fréquentation
-                let maxSemaine = 0, maxSamedi = 0, maxDimanche = 0;
+                // Fonction pour extraire le max et calculer un créneau spécifique
+                function processCreneau(dayKeywords, creneauId, typeJour) {
+                    let maxPax = 0;
+                    cles.forEach(k => {
+                        let kLow = k.toLowerCase();
+                        let isDayMatch = dayKeywords.length === 0 ? (!kLow.includes("sam") && !kLow.includes("dim")) : dayKeywords.some(d => kLow.includes(d));
+                        let isTimeMatch = timeMappings[creneauId].some(t => kLow.includes(t));
 
-                cles.forEach(key => {
-                    const val = parseFloat(row[key]);
-                    if (isNaN(val)) return; // Ignorer le texte
+                        if (isDayMatch && isTimeMatch) {
+                            let val = parseFloat(row[k]) || 0;
+                            if (val > maxPax) maxPax = val;
+                        }
+                    });
 
-                    const keyStr = key.toLowerCase();
-                    if (keyStr.includes("samedi") || keyStr.includes("sam")) {
-                        if (val > maxSamedi) maxSamedi = val;
-                    } else if (keyStr.includes("dimanche") || keyStr.includes("dim")) {
-                        if (val > maxDimanche) maxDimanche = val;
-                    } else if (!keyStr.includes("ligne") && !keyStr.includes("nom")) {
-                        // Tout le reste est considéré comme un créneau Semaine
-                        if (val > maxSemaine) maxSemaine = val;
-                    }
-                });
+                    if (maxPax === 0) return { texte: "-", bus: 0 };
 
-                // Fonction interne de calcul de bus
-                function calculerBesoinBus(maxPax, capacite, tpsRotation) {
-                    if (maxPax <= 0) return 0;
-                    const pax115 = Math.ceil(maxPax * 1.15);
-                    const departParHeure = pax115 / capacite;
-                    const freqBrute = 60 / departParHeure;
-                    const freqAppliquee = arrondirFrequenceExploitation(freqBrute);
-                    return Math.ceil(tpsRotation / freqAppliquee);
+                    let pax115 = Math.ceil(maxPax * 1.15);
+                    let freqTheorique = 60 / (pax115 / capaBus);
+                    let freqGrille = getFrequenceGrille(nomLigne, typeJour, creneauId);
+                    let freqAppliquee = arrondirFrequence(freqTheorique, freqGrille);
+                    let bus = Math.ceil(tempsAR / freqAppliquee);
+
+                    return { texte: `${freqAppliquee}m | ${bus}b`, bus: bus };
                 }
 
-                // Calculs des flottes
-                const busSemaine = calculerBesoinBus(maxSemaine, capaBus, tempsAR);
-                const busSamedi = calculerBesoinBus(maxSamedi, capaBus, tempsAR);
-                const busDimanche = calculerBesoinBus(maxDimanche, capaBus, tempsAR);
+                // Calculs de toutes les cases
+                const semHP = processCreneau([], "HP", "Semaine");
+                const semHC = processCreneau([], "HC", "Semaine");
+                const semSoir = processCreneau([], "Soir", "Semaine");
+                const semNuit = processCreneau([], "Nuit", "Semaine");
 
-                totalSemaine += busSemaine;
-                totalSamedi += busSamedi;
-                totalDimanche += busDimanche;
+                const samHP = processCreneau(["sam"], "HP", "Samedi");
+                const samHC = processCreneau(["sam"], "HC", "Samedi");
+                const samSoir = processCreneau(["sam"], "Soir", "Samedi");
+                const samNuit = processCreneau(["sam"], "Nuit", "Samedi");
 
-                // Ajout à la carte d'export
-                tbodyOut.innerHTML += `
-                    <tr>
-                        <td style="border:1px solid #4e4f50; font-weight:bold; padding:6px;">${nomLigne}</td>
-                        <td style="border:1px solid #4e4f50; color:#aaa; padding:6px;">${tempsAR} min</td>
-                        <td style="border:1px solid #4e4f50; color:#aaa; padding:6px;">${capaBus} pl.</td>
-                        <td style="border:1px solid #4e4f50; color:#3498db; font-weight:bold; font-size:14px;">${busSemaine}</td>
-                        <td style="border:1px solid #4e4f50; color:#9b59b6; font-weight:bold; font-size:14px;">${busSamedi}</td>
-                        <td style="border:1px solid #4e4f50; color:#27ae60; font-weight:bold; font-size:14px;">${busDimanche}</td>
-                    </tr>
-                `;
+                const dimHP = processCreneau(["dim"], "HP", "Dimanche");
+                const dimHC = processCreneau(["dim"], "HC", "Dimanche");
+                const dimNuit = processCreneau(["dim"], "Nuit", "Dimanche");
+
+                const maxBusLigne = Math.max(semHP.bus, semHC.bus, semSoir.bus, semNuit.bus, samHP.bus, samHC.bus, samSoir.bus, samNuit.bus, dimHP.bus, dimHC.bus, dimNuit.bus);
+                parcTotalRequis += maxBusLigne;
+
+                tableBody.push([
+                    nomLigne, formatBus,
+                    semHP.texte, semHC.texte, semSoir.texte, semNuit.texte,
+                    samHP.texte, samHC.texte, samSoir.texte, samNuit.texte,
+                    dimHP.texte, dimHC.texte, dimNuit.texte,
+                    maxBusLigne.toString()
+                ]);
             });
 
-            // Mise à jour des totaux
-            document.getElementById('tot-semaine').innerText = totalSemaine;
-            document.getElementById('tot-samedi').innerText = totalSamedi;
-            document.getElementById('tot-dimanche').innerText = totalDimanche;
+            // Ligne de Total
+            tableBody.push([
+                { content: 'TOTAL PARC REQUIS', colSpan: 13, styles: { halign: 'right', fontStyle: 'bold', fillColor: [58, 59, 60], textColor: [255, 255, 255] } },
+                { content: parcTotalRequis.toString(), styles: { fontStyle: 'bold', fillColor: [230, 126, 34], textColor: [255, 255, 255] } }
+            ]);
 
-            // Capture HTML2Canvas
-            setTimeout(() => {
-                const elementToCapture = document.getElementById('discord-calc-card');
-                html2canvas(elementToCapture, { backgroundColor: null, scale: 2 }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `Besoins_Reseau_Global.png`;
-                    link.href = canvas.toDataURL("image/png");
-                    link.click();
-                });
-            }, 300);
+            doc.autoTable({
+                head: tableHead,
+                body: tableBody,
+                startY: 28,
+                theme: 'grid',
+                styles: { fontSize: 9, halign: 'center', valign: 'middle' },
+                headStyles: { fillColor: [58, 59, 60] },
+                didParseCell: function(data) {
+                    if (data.section === 'body' && data.column.index === 0) {
+                        let ligne = data.cell.raw;
+                        if (typeof ligne === 'string') {
+                            if (ligne.startsWith('P') || ligne.startsWith('C')) data.cell.styles.textColor = [231, 76, 60];
+                            else if (ligne.startsWith('S')) data.cell.styles.textColor = [46, 204, 113];
+                            else if (ligne.startsWith('N')) data.cell.styles.textColor = [155, 89, 182];
+                        }
+                    }
+                }
+            });
+
+            doc.save('Plan_Roulement_Global.pdf');
         }
         updateUI(); renderContracts();
     </script>
