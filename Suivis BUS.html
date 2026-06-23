@@ -1129,40 +1129,39 @@
         // ============================================================================
         let donneesBrutes = [];
 
-        // ⏱️ DICTIONNAIRE DES TEMPS DE PARCOURS ET FORMATS
-        // C'EST ICI QUE TU DOIS RENSEIGNER TES TEMPS POUR QU'ILS SOIENT AUTOMATIQUES !
+        // ⏱️ DICTIONNAIRE DES TEMPS DE PARCOURS ET FORMATS (À PRÉ-REMPLIR ICI)
         const configLignesPredefinie = {
-            "P1": { temps: 48, format: "Articulé", capa: 140 },
-            "P2": { temps: 80, format: "Articulé", capa: 140 },
-            "P3": { temps: 64, format: "Standard", capa: 100 },
-            "4": { temps: 56, format: "Standard", capa: 100 },
-            "5": { temps: 80, format: "Midibus", capa: 70 },
-            "6": { temps: 40, format: "Articulé", capa: 140 },
-            "7": { temps: 72, format: "Articulé", capa: 140 },
-            "8": { temps: 64, format: "Standard", capa: 100 },
-            "9": { temps: 36, format: "Standard", capa: 100 },
-            "10": { temps: 60, format: "Midibus", capa: 70 },
-            "11": { temps: 42, format: "Articulé", capa: 140 },
-            "12": { temps: 54, format: "Articulé", capa: 140 },
-            "13": { temps: 36, format: "Standard", capa: 100 },
-            "S1": { temps: 40, format: "Standard", capa: 100 },
-            "S2": { temps: 34, format: "Midibus", capa: 70 },
-            "S3": { temps: 80, format: "Articulé", capa: 140 },
-            "S4": { temps: 58, format: "Articulé", capa: 140 },
-            "S5": { temps: 28, format: "Standard", capa: 100 },
-            "PL1": { temps: 188, format: "Standard", capa: 100 },
-            "PL2": { temps: 82, format: "Midibus", capa: 70 },
-            "101": { temps: 72, format: "Standard", capa: 100 },
-            "102": { temps: 54, format: "Standard", capa: 100 },
-            "103": { temps: 42, format: "Midibus", capa: 70 },
-            "104": { temps: 48, format: "Articulé", capa: 140 },
-            "201": { temps: 116, format: "Articulé", capa: 140 },
-            "202": { temps: 74, format: "Standard", capa: 100 },
-            "203": { temps: 124, format: "Standard", capa: 100 },
-            // "NOM_LIGNE": { temps: minutes, format: "Format", capa: places }
+            "P1": { temps: 48, format: "Articulé", capa: 156 },
+            "P2": { temps: 80, format: "Articulé", capa: 200 },
+            "P3": { temps: 64, format: "Standard", capa: 106 },
+            "4": { temps: 56, format: "Midibus", capa: 76 },
+            "5": { temps: 80, format: "Articulé", capa: 153 },
+            "6": { temps: 40, format: "Standard", capa: 106 },
+            "7": { temps: 72, format: "Articulé", capa: 160 },
+            "8": { temps: 64, format: "Standard", capa: 106 },
+            "9": { temps: 36, format: "Standard", capa: 106 },
+            "10": { temps: 60, format: "Articulé", capa: 153 },
+            "11": { temps: 42, format: "Standard", capa: 106 },
+            "12": { temps: 54, format: "Standard", capa: 106 },
+            "13": { temps: 36, format: "Standard", capa: 106 },
+            "S1": { temps: 40, format: "Minibus", capa: 34 },
+            "S2": { temps: 34, format: "Midibus", capa: 61 },
+            "S3": { temps: 80, format: "Midibus", capa: 76 },
+            "S4": { temps: 58, format: "Midibus", capa: 61 },
+            "S5": { temps: 28, format: "Midibus", capa: 76 },
+            "PL1": { temps: 188, format: "Articulé", capa: 153 },
+            "PL2": { temps: 82, format: "Articulé", capa: 153 },
+            "101": { temps: 72, format: "Standard", capa: 106 },
+            "102": { temps: 54, format: "Standard", capa: 106 },
+            "103": { temps: 42, format: "Articulé", capa: 106 },
+            "104": { temps: 48, format: "Articulé", capa: 106 },
+            "201": { temps: 116, format: "Autocar", capa: 63 },
+            "202": { temps: 74, format: "Autocar", capa: 63 },
+            "203": { temps: 124, format: "Autocar", capa: 63 },
+            // Ajoute le reste de tes lignes ici au même format...
         };
 
-        // Grille de fréquences minimales imposées (Politique de service en minutes)
+        // Grille de fréquences minimales imposées
         function getFrequenceGrille(ligne, typeJour, creneauId) {
             const politique = {
                 "Fort": {
@@ -1199,7 +1198,7 @@
             return Math.min(freq_retenue, freq_grille);
         }
 
-        // Importation du fichier
+        // --- IMPORTATION INTELLIGENTE DU FICHIER (Gère les cellules fusionnées) ---
         document.getElementById('import-ods').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1209,42 +1208,103 @@
                 const data = new Uint8Array(evt.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
                 const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                donneesBrutes = XLSX.utils.sheet_to_json(firstSheet);
                 
+                // Lecture en mode tableau brut pour voir les en-têtes multiples
+                const rawArray = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                
+                let headerRow1Index = -1;
+                let headerRow2Index = -1;
+                let dataStartIndex = -1;
+
+                // On cherche où commence le tableau (là où se trouve le mot "Ligne")
+                for(let i = 0; i < Math.min(10, rawArray.length); i++) {
+                    if (rawArray[i] && rawArray[i].some(cell => typeof cell === 'string' && cell.toLowerCase().includes("ligne"))) {
+                        headerRow1Index = i;
+                        // Si la ligne suivante contient Pointe/Creuse, c'est un tableau à 2 étages
+                        if (rawArray[i+1] && rawArray[i+1].some(cell => typeof cell === 'string' && (cell.toLowerCase().includes("pointe") || cell.toLowerCase().includes("creuse")))) {
+                             headerRow2Index = i + 1;
+                             dataStartIndex = i + 2;
+                        } else {
+                             dataStartIndex = i + 1;
+                        }
+                        break;
+                    }
+                }
+
+                if (headerRow1Index === -1) {
+                    alert("Erreur: Colonne 'Ligne' introuvable dans le fichier. Veuillez vérifier la première colonne.");
+                    return;
+                }
+
+                // Reconstruction des noms de colonnes fusionnées
+                let colMappings = {}; 
+                let currentDay = "";
+                let hr1 = rawArray[headerRow1Index] || [];
+                let hr2 = headerRow2Index !== -1 ? rawArray[headerRow2Index] : [];
+                let ligneColIndex = 0;
+
+                for (let col = 0; col < Math.max(hr1.length, hr2.length); col++) {
+                    let val1 = hr1[col] ? hr1[col].toString().toLowerCase() : "";
+                    let val2 = hr2[col] ? hr2[col].toString().toLowerCase() : "";
+
+                    if (val1.includes("ligne")) {
+                        ligneColIndex = col;
+                        continue;
+                    }
+                    if (val1 && val1.trim() !== "") {
+                        currentDay = val1; // Garde en mémoire "semaine" pour les cellules fusionnées vides
+                    }
+                    let combined = currentDay + " " + val2;
+                    colMappings[col] = combined.toLowerCase();
+                }
+
+                // Récupération des données passagers avec les bons en-têtes
+                donneesBrutes = [];
+                for (let r = dataStartIndex; r < rawArray.length; r++) {
+                    let rowData = rawArray[r];
+                    if (!rowData || !rowData[ligneColIndex]) continue;
+
+                    let obj = { "Ligne": rowData[ligneColIndex].toString().trim() };
+                    for (let c = 0; c < rowData.length; c++) {
+                        if (c === ligneColIndex) continue;
+                        if (colMappings[c] && rowData[c] !== undefined) {
+                            obj[colMappings[c]] = rowData[c];
+                        }
+                    }
+                    donneesBrutes.push(obj);
+                }
+                
+                // Remplissage du tableau de configuration HTML
                 const tbody = document.getElementById('config-lignes-tbody');
                 tbody.innerHTML = '';
                 let nbLignes = 0;
-
                 const formats = ["Minibus", "Midibus", "Standard", "Articulé", "Autocar"];
 
                 donneesBrutes.forEach((row, index) => {
-                    const cles = Object.keys(row);
-                    const cleLigne = cles.find(c => c.toLowerCase().includes("ligne"));
-                    if (cleLigne && row[cleLigne]) {
-                        const nomLigne = row[cleLigne].toString().trim();
-                        const config = configLignesPredefinie[nomLigne] || { temps: 60, format: "Standard", capa: 100 };
-                        
-                        let formatOptions = formats.map(f => `<option value="${f}" ${config.format === f ? 'selected' : ''}>${f}</option>`).join('');
+                    const nomLigne = row["Ligne"];
+                    const config = configLignesPredefinie[nomLigne] || { temps: 60, format: "Standard", capa: 100 };
+                    
+                    let formatOptions = formats.map(f => `<option value="${f}" ${config.format === f ? 'selected' : ''}>${f}</option>`).join('');
 
-                        tbody.innerHTML += `
-                            <tr>
-                                <td style="font-weight:bold; color:#3498db; font-size:15px; vertical-align: middle;">${nomLigne}</td>
-                                <td><select id="format-${index}" style="width:120px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;">${formatOptions}</select></td>
-                                <td><input type="number" id="tps-${index}" value="${config.temps}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
-                                <td><input type="number" id="capa-${index}" value="${config.capa}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
-                            </tr>
-                        `;
-                        nbLignes++;
-                    }
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight:bold; color:#3498db; font-size:15px; vertical-align: middle;">${nomLigne}</td>
+                            <td><select id="format-${index}" style="width:120px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;">${formatOptions}</select></td>
+                            <td><input type="number" id="tps-${index}" value="${config.temps}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
+                            <td><input type="number" id="capa-${index}" value="${config.capa}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
+                        </tr>
+                    `;
+                    nbLignes++;
                 });
-                document.getElementById('statut-import').innerText = `✅ Fichier chargé ! ${nbLignes} lignes détectées.`;
+
+                document.getElementById('statut-import').innerText = `✅ Fichier chargé et décodé ! ${nbLignes} lignes détectées.`;
                 document.getElementById('statut-import').style.color = "#27ae60";
                 document.getElementById('zone-configuration').style.display = "block";
             };
             reader.readAsArrayBuffer(file);
         });
 
-        // Moteur de calcul PDF à 2 Lignes
+        // --- MOTEUR DE CALCUL PDF ---
         function lancerCalculGlobalPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ orientation: 'landscape', format: 'a3' });
@@ -1274,21 +1334,17 @@
             let parcTotalRequis = 0;
 
             donneesBrutes.forEach((row, index) => {
-                const cles = Object.keys(row);
-                const cleLigne = cles.find(c => c.toLowerCase().includes("ligne"));
-                if (!cleLigne || !row[cleLigne]) return;
-                
-                const nomLigne = row[cleLigne].toString().trim();
+                const nomLigne = row["Ligne"];
                 const formatBus = document.getElementById(`format-${index}`).value;
                 const tempsAR = parseFloat(document.getElementById(`tps-${index}`).value) || 60;
                 const capaBus = parseFloat(document.getElementById(`capa-${index}`).value) || 100;
+                const cles = Object.keys(row);
 
-                // Extraction exacte selon tes en-têtes d'image
+                // Extraction par mots-clés exacts
                 function getVal(keywords) {
                     let maxPax = 0;
                     cles.forEach(k => {
-                        let kLow = k.toLowerCase();
-                        let match = keywords.every(kw => kLow.includes(kw));
+                        let match = keywords.every(kw => k.includes(kw));
                         if (match) {
                             let val = parseFloat(row[k]) || 0;
                             if (val > maxPax) maxPax = val;
@@ -1299,32 +1355,29 @@
 
                 function processCreneau(pax100, creneauId, typeJour) {
                     if (pax100 <= 0) return { freq: "-", busText: "-", busNum: 0 };
-
                     let pax115 = Math.ceil(pax100 * 1.15);
                     let freqTheorique = 60 / (pax115 / capaBus);
                     let freqGrille = getFrequenceGrille(nomLigne, typeJour, creneauId);
                     let freqAppliquee = arrondirFrequence(freqTheorique, freqGrille);
                     let bus = Math.ceil(tempsAR / freqAppliquee);
-
                     return { freq: `${freqAppliquee} min`, busText: `${bus} bus`, busNum: bus };
                 }
 
-                // Ciblages précis des colonnes de ton fichier "Fréquentation"
-                const paxSemHC = getVal(["LU-VE Creuses"]);
-                const paxSemHP = getVal(["LU-VE Pointes"]);
-                const paxSemSoir = getVal(["LU-VE Soir"]);
-                const paxSemNuit = getVal(["LU-VE Nuit"]);
+                // Recherche basée sur tes colonnes fusionnées
+                const paxSemHC = getVal(["creuse", "semaine"]);
+                const paxSemHP = getVal(["pointe", "semaine"]);
+                const paxSemSoir = getVal(["soir", "semaine"]);
+                const paxSemNuit = getVal(["nuit", "semaine"]);
 
-                const paxSamHC = getVal(["SA Creuses"]);
-                const paxSamHP = getVal(["SA Pointes"]);
-                const paxSamSoir = getVal(["SA Soir"]);
-                const paxSamNuit = getVal(["SA Nuit"]);
+                const paxSamHC = getVal(["creuse", "samedi"]);
+                const paxSamHP = getVal(["pointe", "samedi"]);
+                const paxSamSoir = getVal(["soir", "samedi"]);
+                const paxSamNuit = getVal(["nuit", "samedi"]);
 
-                const paxDimHC = getVal(["DI&JF Creuses"]);
-                const paxDimHP = getVal(["DI&JF Pointes"]);
-                const paxDimNuit = getVal(["DI&JF Nuit"]);
+                const paxDimHC = getVal(["creuse", "dimanche"]);
+                const paxDimHP = getVal(["pointe", "dimanche"]);
+                const paxDimNuit = getVal(["nuit", "dimanche"]);
 
-                // Calculs
                 const semHC = processCreneau(paxSemHC, "HC", "Semaine");
                 const semHP = processCreneau(paxSemHP, "HP", "Semaine");
                 const semSoir = processCreneau(paxSemSoir, "Soir", "Semaine");
@@ -1352,7 +1405,6 @@
                 else if (nomLigne.startsWith('S')) couleurLigne = [46, 204, 113];
                 else if (nomLigne.startsWith('N')) couleurLigne = [155, 89, 182];
 
-                // LIGNE 1 : FRÉQUENCES
                 tableBody.push([
                     { content: nomLigne, rowSpan: 2, styles: { valign: 'middle', fontStyle: 'bold', textColor: couleurLigne } },
                     { content: formatBus, rowSpan: 2, styles: { valign: 'middle' } },
@@ -1362,7 +1414,6 @@
                     { content: maxBusLigne.toString(), rowSpan: 2, styles: { valign: 'middle', halign: 'center', fontStyle: 'bold', textColor: [255, 255, 255], fillColor: [230, 126, 34], fontSize: 12 } }
                 ]);
 
-                // LIGNE 2 : BESOINS EN BUS
                 tableBody.push([
                     { content: semHC.busText, styles: { fontStyle: 'bold', textColor: [52, 152, 219] } },
                     { content: semHP.busText, styles: { fontStyle: 'bold', textColor: [52, 152, 219] } },
@@ -1378,13 +1429,11 @@
                 ]);
             });
 
-            // LIGNE DE TOTAL
             tableBody.push([
                 { content: 'TOTAL PARC REQUIS POUR LE RÉSEAU', colSpan: 13, styles: { halign: 'right', fontStyle: 'bold', fillColor: [58, 59, 60], textColor: [255, 255, 255], fontSize: 12 } },
                 { content: parcTotalRequis.toString(), styles: { fontStyle: 'bold', fillColor: [230, 126, 34], textColor: [255, 255, 255], fontSize: 12 } }
             ]);
 
-            // GENERATION PDF
             doc.autoTable({
                 head: tableHead,
                 body: tableBody,
