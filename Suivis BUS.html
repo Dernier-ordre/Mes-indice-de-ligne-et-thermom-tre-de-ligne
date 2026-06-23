@@ -1160,7 +1160,7 @@
             "203": { temps: 124, format: "Standard", capa: 100 }
         };
 
-        // Grille de fréquences minimales imposées
+        // Grille de fréquences minimales imposées (Politique de service en minutes)
         function getFrequenceGrille(ligne, typeJour, creneauId) {
             const politique = {
                 "Fort": {
@@ -1197,7 +1197,7 @@
             return Math.min(freq_retenue, freq_grille);
         }
 
-        // --- IMPORTATION ODS / EXCEL (AVEC NETTOYAGE DES NOMS DE COLONNES) ---
+        // Importation du fichier
         document.getElementById('import-ods').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1207,58 +1207,42 @@
                 const data = new Uint8Array(evt.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
                 const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                donneesBrutes = XLSX.utils.sheet_to_json(firstSheet);
                 
-                const rawArray = XLSX.utils.sheet_to_json(firstSheet);
-
-                // Normalise une chaîne : tout en minuscules, sans accents, tirets bas transformés en espaces
-                function normaliserCle(str) {
-                    return str.toLowerCase()
-                              .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                              .replace(/_/g, ' ')
-                              .trim()
-                              .replace(/\s+/g, ' ');
-                }
-
-                donneesBrutes = rawArray.map(row => {
-                    let cleanRow = {};
-                    for (let key in row) {
-                        cleanRow[normaliserCle(key)] = row[key];
-                    }
-                    // On sauvegarde le nom de la ligne sous un identifiant sûr
-                    cleanRow["identifiant_ligne"] = row["Ligne"] || row["ligne"] || row["Line"] || "Inconnu";
-                    return cleanRow;
-                }).filter(row => row["identifiant_ligne"] !== "Inconnu");
-
                 const tbody = document.getElementById('config-lignes-tbody');
                 tbody.innerHTML = '';
                 let nbLignes = 0;
+
                 const formats = ["Minibus", "Midibus", "Standard", "Articulé", "Autocar"];
 
                 donneesBrutes.forEach((row, index) => {
-                    const nomLigne = row["identifiant_ligne"];
-                    const config = configLignesPredefinie[nomLigne] || { temps: 60, format: "Standard", capa: 100 };
-                    
-                    let formatOptions = formats.map(f => `<option value="${f}" ${config.format === f ? 'selected' : ''}>${f}</option>`).join('');
+                    const cles = Object.keys(row);
+                    const cleLigne = cles.find(c => c.toLowerCase().includes("ligne"));
+                    if (cleLigne && row[cleLigne]) {
+                        const nomLigne = row[cleLigne].toString().trim();
+                        const config = configLignesPredefinie[nomLigne] || { temps: 60, format: "Standard", capa: 100 };
+                        
+                        let formatOptions = formats.map(f => `<option value="${f}" ${config.format === f ? 'selected' : ''}>${f}</option>`).join('');
 
-                    tbody.innerHTML += `
-                        <tr>
-                            <td style="font-weight:bold; color:#3498db; font-size:15px; vertical-align: middle;">${nomLigne}</td>
-                            <td><select id="format-${index}" style="width:120px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;">${formatOptions}</select></td>
-                            <td><input type="number" id="tps-${index}" value="${config.temps}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
-                            <td><input type="number" id="capa-${index}" value="${config.capa}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
-                        </tr>
-                    `;
-                    nbLignes++;
+                        tbody.innerHTML += `
+                            <tr>
+                                <td style="font-weight:bold; color:#3498db; font-size:15px; vertical-align: middle;">${nomLigne}</td>
+                                <td><select id="format-${index}" style="width:120px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;">${formatOptions}</select></td>
+                                <td><input type="number" id="tps-${index}" value="${config.temps}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
+                                <td><input type="number" id="capa-${index}" value="${config.capa}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
+                            </tr>
+                        `;
+                        nbLignes++;
+                    }
                 });
-
-                document.getElementById('statut-import').innerText = `✅ Fichier analysé ! (${nbLignes} lignes prêtes pour le calcul)`;
+                document.getElementById('statut-import').innerText = `✅ Fichier chargé ! ${nbLignes} lignes détectées.`;
                 document.getElementById('statut-import').style.color = "#27ae60";
                 document.getElementById('zone-configuration').style.display = "block";
             };
             reader.readAsArrayBuffer(file);
         });
 
-        // --- GÉNÉRATION DU PDF ---
+        // Moteur de calcul PDF
         function lancerCalculGlobalPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ orientation: 'landscape', format: 'a3' });
@@ -1288,24 +1272,32 @@
             let parcTotalRequis = 0;
 
             donneesBrutes.forEach((row, index) => {
-                const nomLigne = row["identifiant_ligne"];
+                const cles = Object.keys(row);
+                const cleLigne = cles.find(c => c.toLowerCase().includes("ligne"));
+                if (!cleLigne || !row[cleLigne]) return;
+                
+                const nomLigne = row[cleLigne].toString().trim();
                 const formatBus = document.getElementById(`format-${index}`).value;
                 const tempsAR = parseFloat(document.getElementById(`tps-${index}`).value) || 60;
                 const capaBus = parseFloat(document.getElementById(`capa-${index}`).value) || 100;
 
-                // Cherche la valeur en vérifiant que la colonne contient les 2 mots clés (ex: "semaine" ET "pointe")
-                function getVal(mot1, mot2) {
-                    for (let cle in row) {
-                        if (cle === "identifiant_ligne") continue;
-                        if (cle.includes(mot1) && cle.includes(mot2)) {
-                            return parseFloat(row[cle]) || 0;
+                // Fonction de filtrage très robuste (ignorant les majuscules, les tirets, et les espaces)
+                function getVal(keywords) {
+                    let maxPax = 0;
+                    cles.forEach(k => {
+                        let kLow = k.toLowerCase().replace(/\s+/g, '');
+                        // On vérifie que TOUS les mots-clés demandés sont dans le nom de la colonne
+                        let match = keywords.every(kw => kLow.includes(kw.toLowerCase().replace(/\s+/g, '')));
+                        if (match) {
+                            let val = parseFloat(row[k]) || 0;
+                            if (val > maxPax) maxPax = val;
                         }
-                    }
-                    return 0;
+                    });
+                    return maxPax;
                 }
 
                 function processCreneau(pax100, creneauId, typeJour) {
-                    if (pax100 <= 0 || isNaN(pax100)) return { freq: "-", busText: "-", busNum: 0 };
+                    if (pax100 <= 0) return { freq: "-", busText: "-", busNum: 0 };
                     let pax115 = Math.ceil(pax100 * 1.15);
                     let freqTheorique = 60 / (pax115 / capaBus);
                     let freqGrille = getFrequenceGrille(nomLigne, typeJour, creneauId);
@@ -1314,19 +1306,35 @@
                     return { freq: `${freqAppliquee} min`, busText: `${bus} bus`, busNum: bus };
                 }
 
-                const semHC   = processCreneau(getVal("semaine", "creuse"), "HC", "Semaine");
-                const semHP   = processCreneau(getVal("semaine", "pointe"), "HP", "Semaine");
-                const semSoir = processCreneau(getVal("semaine", "soir"), "Soir", "Semaine");
-                const semNuit = processCreneau(getVal("semaine", "nuit"), "Nuit", "Semaine");
+                // Utilisation de mots-clés très larges pour matcher à coup sûr ("lu", "pointe", "sa", "creuse"...)
+                const paxSemHC = getVal(["lu", "creuse"]);
+                const paxSemHP = getVal(["lu", "pointe"]);
+                const paxSemSoir = getVal(["lu", "soir"]);
+                const paxSemNuit = getVal(["lu", "nuit"]);
 
-                const samHC   = processCreneau(getVal("samedi", "creuse"), "HC", "Samedi");
-                const samHP   = processCreneau(getVal("samedi", "pointe"), "HP", "Samedi");
-                const samSoir = processCreneau(getVal("samedi", "soir"), "Soir", "Samedi");
-                const samNuit = processCreneau(getVal("samedi", "nuit"), "Nuit", "Samedi");
+                const paxSamHC = getVal(["sa", "creuse"]);
+                const paxSamHP = getVal(["sa", "pointe"]);
+                const paxSamSoir = getVal(["sa", "soir"]);
+                const paxSamNuit = getVal(["sa", "nuit"]);
 
-                const dimHC   = processCreneau(getVal("dimanche", "creuse"), "HC", "Dimanche");
-                const dimHP   = processCreneau(getVal("dimanche", "pointe"), "HP", "Dimanche");
-                const dimNuit = processCreneau(getVal("dimanche", "nuit"), "Nuit", "Dimanche");
+                const paxDimHC = getVal(["di", "creuse"]);
+                const paxDimHP = getVal(["di", "pointe"]);
+                const paxDimNuit = getVal(["di", "nuit"]);
+
+                // Calculs
+                const semHC = processCreneau(paxSemHC, "HC", "Semaine");
+                const semHP = processCreneau(paxSemHP, "HP", "Semaine");
+                const semSoir = processCreneau(paxSemSoir, "Soir", "Semaine");
+                const semNuit = processCreneau(paxSemNuit, "Nuit", "Semaine");
+
+                const samHC = processCreneau(paxSamHC, "HC", "Samedi");
+                const samHP = processCreneau(paxSamHP, "HP", "Samedi");
+                const samSoir = processCreneau(paxSamSoir, "Soir", "Samedi");
+                const samNuit = processCreneau(paxSamNuit, "Nuit", "Samedi");
+
+                const dimHC = processCreneau(paxDimHC, "HC", "Dimanche");
+                const dimHP = processCreneau(paxDimHP, "HP", "Dimanche");
+                const dimNuit = processCreneau(paxDimNuit, "Nuit", "Dimanche");
 
                 const maxBusLigne = Math.max(
                     semHP.busNum, semHC.busNum, semSoir.busNum, semNuit.busNum,
@@ -1341,6 +1349,7 @@
                 else if (nomLigne.startsWith('S')) couleurLigne = [46, 204, 113];
                 else if (nomLigne.startsWith('N')) couleurLigne = [155, 89, 182];
 
+                // LIGNE 1 : FRÉQUENCES
                 tableBody.push([
                     { content: nomLigne, rowSpan: 2, styles: { valign: 'middle', fontStyle: 'bold', textColor: couleurLigne } },
                     { content: formatBus, rowSpan: 2, styles: { valign: 'middle' } },
@@ -1350,6 +1359,7 @@
                     { content: maxBusLigne.toString(), rowSpan: 2, styles: { valign: 'middle', halign: 'center', fontStyle: 'bold', textColor: [255, 255, 255], fillColor: [230, 126, 34], fontSize: 12 } }
                 ]);
 
+                // LIGNE 2 : BESOINS EN BUS
                 tableBody.push([
                     { content: semHC.busText, styles: { fontStyle: 'bold', textColor: [52, 152, 219] } },
                     { content: semHP.busText, styles: { fontStyle: 'bold', textColor: [52, 152, 219] } },
@@ -1365,11 +1375,13 @@
                 ]);
             });
 
+            // LIGNE DE TOTAL
             tableBody.push([
                 { content: 'TOTAL PARC REQUIS POUR LE RÉSEAU', colSpan: 13, styles: { halign: 'right', fontStyle: 'bold', fillColor: [58, 59, 60], textColor: [255, 255, 255], fontSize: 12 } },
                 { content: parcTotalRequis.toString(), styles: { fontStyle: 'bold', fillColor: [230, 126, 34], textColor: [255, 255, 255], fontSize: 12 } }
             ]);
 
+            // GENERATION PDF
             doc.autoTable({
                 head: tableHead,
                 body: tableBody,
