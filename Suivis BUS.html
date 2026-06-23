@@ -1290,7 +1290,7 @@
                         freqAppliquee = tempsAR / bus;
                     }
 
-                    let freqAffichee = Number.isInteger(freqAppliquee) ? freqAppliquee : freqAppliquee.toFixed(1);
+                    let freqAffichee = Math.round(freqAppliquee);
 
                     return { freq: `${freqAffichee} min`, busText: `${bus} bus`, busNum: bus };
                 }
