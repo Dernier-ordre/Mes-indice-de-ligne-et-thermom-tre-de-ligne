@@ -1160,7 +1160,7 @@
             "203": { temps: 124, format: "Autocar", capa: 63 }
         };
 
-       // --- IMPORTATION ODS / EXCEL (AVEC NETTOYAGE DES NOMS DE COLONNES) ---
+       // --- IMPORTATION ODS / EXCEL ---
         document.getElementById('import-ods').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1186,7 +1186,10 @@
                     for (let key in row) {
                         cleanRow[normaliserCle(key)] = row[key];
                     }
-                    cleanRow["identifiant_ligne"] = row["Ligne"] || row["ligne"] || row["Line"] || "Inconnu";
+                    // On retire les espaces des noms de lignes (ex: "PL 1" devient "PL1") pour coller au dictionnaire
+                    let ligneId = (row["Ligne"] || row["ligne"] || row["Line"] || "Inconnu").toString();
+                    cleanRow["identifiant_ligne"] = ligneId.replace(/\s+/g, '');
+                    cleanRow["nom_affichage"] = ligneId; // On garde le nom original pour l'affichage
                     return cleanRow;
                 }).filter(row => row["identifiant_ligne"] !== "Inconnu");
 
@@ -1196,14 +1199,15 @@
                 const formats = ["Minibus", "Midibus", "Standard", "Articulé", "Autocar"];
 
                 donneesBrutes.forEach((row, index) => {
-                    const nomLigne = row["identifiant_ligne"].toString();
+                    const nomLigne = row["identifiant_ligne"];
+                    const nomAffichage = row["nom_affichage"];
                     const config = configLignesPredefinie[nomLigne] || { temps: 60, format: "Standard", capa: 100 };
                     
                     let formatOptions = formats.map(f => `<option value="${f}" ${config.format === f ? 'selected' : ''}>${f}</option>`).join('');
 
                     tbody.innerHTML += `
                         <tr>
-                            <td style="font-weight:bold; color:#3498db; font-size:15px; vertical-align: middle;">${nomLigne}</td>
+                            <td style="font-weight:bold; color:#3498db; font-size:15px; vertical-align: middle;">${nomAffichage}</td>
                             <td><select id="format-${index}" style="width:120px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;">${formatOptions}</select></td>
                             <td><input type="number" id="tps-${index}" value="${config.temps}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
                             <td><input type="number" id="capa-${index}" value="${config.capa}" min="10" style="width:80px; text-align:center; background:#3a3b3c; color:white; border:1px solid #555; padding:6px; border-radius:4px;"></td>
@@ -1249,15 +1253,16 @@
             let parcTotalRequis = 0;
 
             donneesBrutes.forEach((row, index) => {
-                const nomLigne = row["identifiant_ligne"].toString();
+                const nomLigne = row["identifiant_ligne"];
+                const nomAffichage = row["nom_affichage"];
                 const formatBus = document.getElementById(`format-${index}`).value;
                 const tempsAR = parseFloat(document.getElementById(`tps-${index}`).value) || 60;
                 const capaBus = parseFloat(document.getElementById(`capa-${index}`).value) || 100;
 
-                // Fonction pour extraire le bon nombre de passagers de la colonne concernée
+                // Extraction ciblée sur les vrais noms de ton fichier ("lu-ve", "sa", "di&jf")
                 function getVal(mot1, mot2) {
                     for (let cle in row) {
-                        if (cle === "identifiant_ligne") continue;
+                        if (cle === "identifiant_ligne" || cle === "nom_affichage") continue;
                         if (cle.includes(mot1) && cle.includes(mot2)) {
                             return parseFloat(row[cle]) || 0;
                         }
@@ -1265,53 +1270,45 @@
                     return 0;
                 }
 
-                // --- NOUVEL ALGORITHME MATHÉMATIQUE EXACT ---
+                // ALGORITHME MATHÉMATIQUE EXACT
                 function processCreneau(pax100) {
-                    // Liste des lignes soumises à la règle stricte des 30 minutes max
                     const lignesA30 = ["P1", "P2", "P3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "S1", "S2", "S3", "S4", "S5"];
                     const aFrequenceMax30 = lignesA30.includes(nomLigne);
 
-                    // Si pas de passager, 0 bus engagé
                     if (pax100 <= 0 || isNaN(pax100)) {
                         return { freq: "-", busText: "-", busNum: 0 };
                     }
 
-                    // 1. Division (pax + 15%) par capacité
-                    let pax115 = Math.ceil(pax100 * 1.15);
-                    
-                    // 2. Arrondi systématiquement au supérieur pour les bus
+                    let pax115 = Math.ceil((pax100 || 0) * 1.15);
                     let bus = Math.ceil(pax115 / capaBus);
-                    
-                    if (bus === 0) bus = 1; // Un bus minimum si des passagers sont détectés
+                    if (bus === 0) bus = 1;
 
-                    // 3. Calcul de la fréquence mathématique
                     let freqAppliquee = tempsAR / bus;
 
-                    // 4. Application de la contrainte des 30min si la ligne est concernée
                     if (aFrequenceMax30 && freqAppliquee > 30) {
                         bus = Math.ceil(tempsAR / 30);
                         freqAppliquee = tempsAR / bus;
                     }
 
-                    // Arrondi à une décimale si ce n'est pas un chiffre rond (ex: 13.5 min)
                     let freqAffichee = Number.isInteger(freqAppliquee) ? freqAppliquee : freqAppliquee.toFixed(1);
 
                     return { freq: `${freqAffichee} min`, busText: `${bus} bus`, busNum: bus };
                 }
 
-                const semHC   = processCreneau(getVal("semaine", "creuse"));
-                const semHP   = processCreneau(getVal("semaine", "pointe"));
-                const semSoir = processCreneau(getVal("semaine", "soir"));
-                const semNuit = processCreneau(getVal("semaine", "nuit"));
+                // Ici on cherche exactement LU-VE, SA et DI (DI&JF normalisé devient souvent di)
+                const semHC   = processCreneau(getVal("lu-ve", "creuse"));
+                const semHP   = processCreneau(getVal("lu-ve", "pointe"));
+                const semSoir = processCreneau(getVal("lu-ve", "soir"));
+                const semNuit = processCreneau(getVal("lu-ve", "nuit"));
 
-                const samHC   = processCreneau(getVal("samedi", "creuse"));
-                const samHP   = processCreneau(getVal("samedi", "pointe"));
-                const samSoir = processCreneau(getVal("samedi", "soir"));
-                const samNuit = processCreneau(getVal("samedi", "nuit"));
+                const samHC   = processCreneau(getVal("sa", "creuse"));
+                const samHP   = processCreneau(getVal("sa", "pointe"));
+                const samSoir = processCreneau(getVal("sa", "soir"));
+                const samNuit = processCreneau(getVal("sa", "nuit"));
 
-                const dimHC   = processCreneau(getVal("dimanche", "creuse"));
-                const dimHP   = processCreneau(getVal("dimanche", "pointe"));
-                const dimNuit = processCreneau(getVal("dimanche", "nuit"));
+                const dimHC   = processCreneau(getVal("di", "creuse"));
+                const dimHP   = processCreneau(getVal("di", "pointe"));
+                const dimNuit = processCreneau(getVal("di", "nuit"));
 
                 const maxBusLigne = Math.max(
                     semHP.busNum, semHC.busNum, semSoir.busNum, semNuit.busNum,
@@ -1323,11 +1320,11 @@
 
                 let couleurLigne = [100, 100, 100];
                 if (nomLigne.startsWith('P') || nomLigne.startsWith('C') || /^[1-9]$|^1[0-3]$/.test(nomLigne)) couleurLigne = [231, 76, 60]; 
-                else if (nomLigne.startsWith('S') || /^[1-2][0-9]{2}$/.test(nomLigne)) couleurLigne = [46, 204, 113]; 
+                else if (nomLigne.startsWith('S') || /^[1-2][0-9]{2}$/.test(nomLigne) || nomLigne.startsWith('PL')) couleurLigne = [46, 204, 113]; 
                 else if (nomLigne.startsWith('N')) couleurLigne = [155, 89, 182]; 
 
                 tableBody.push([
-                    { content: nomLigne, rowSpan: 2, styles: { valign: 'middle', fontStyle: 'bold', textColor: couleurLigne } },
+                    { content: nomAffichage, rowSpan: 2, styles: { valign: 'middle', fontStyle: 'bold', textColor: couleurLigne } },
                     { content: formatBus, rowSpan: 2, styles: { valign: 'middle' } },
                     semHC.freq, semHP.freq, semSoir.freq, semNuit.freq,
                     samHC.freq, samHP.freq, samSoir.freq, samNuit.freq,
