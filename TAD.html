@@ -12,10 +12,37 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic,900,900italic%7CPlayfair%20Display:400,400italic,700,700italic&subset=latin,latin-ext" media="all">
 
     <style>
+        /* CORRECTIONS VISUELLES DU CLONE */
         body.custom-background { background-color: #ffffff; }
         .materialis-front-page .content.blog-page, .materialis-inner-page .page-content, .materialis-inner-page .content { background-color: #ffffff; }
         
-        /* Styles de ton formulaire TAD */
+        /* 1. Fix du logo géant */
+        img.custom-logo { max-height: 80px !important; width: auto !important; margin-top: 10px; }
+        
+        /* 2. Fix de la barre de navigation */
+        .header-top { position: absolute; width: 100%; top: 0; left: 0; z-index: 10000; }
+        #main_menu > li > a { color: rgba(255, 255, 255, 0.8) !important; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+        #main_menu > li:hover > a { color: #ffffff !important; }
+
+        /* 3. Fix de l'image de fond et du titre */
+        .header-wrapper .header {
+            background-size: cover !important;
+            background-position: center center !important;
+            min-height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 60px; /* Laisse de la place pour le menu en haut */
+        }
+        .hero-title {
+            color: #ffffff;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        /* Styles de ton formulaire TAD (que l'on garde de côté pour l'instant) */
         .tad-form-wrapper { max-width: 700px; margin: 40px auto; padding: 30px; background: #f9f9f9; border-top: 4px solid #c0000a; border-radius: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .tad-form-wrapper h2 { color: #c0000a; font-weight: 700; text-align: center; margin-bottom: 20px; font-size: 1.5rem; }
         .tad-form label { display: block; margin-top: 15px; font-weight: bold; color: #333; }
@@ -30,12 +57,12 @@
 
     <!-- MENU DE NAVIGATION -->
     <div id="page-top" class="header-top">
-        <div class="navigation-bar" data-sticky="0" data-sticky-mobile="1" data-sticky-to="top" style="z-index: 10000;">
+        <div class="navigation-bar" data-sticky="0" data-sticky-mobile="1" data-sticky-to="top">
             <div class="navigation-wrapper">
-                <div class="row basis-auto">
+                <div class="row basis-auto align-items-center">
                     <div class="logo_col col-xs col-sm-fit">
                         <a href="https://seal.transport-manager.net/dernier_ordre/" class="custom-logo-link" rel="home">
-                            <img width="840" height="318" src="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO.png" class="custom-logo" alt="TCRR vous transporte">
+                            <img src="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO.png" class="custom-logo" alt="TCRR vous transporte">
                         </a>
                     </div>
                     <div class="main_menu_col col-xs">
@@ -44,13 +71,10 @@
                                 <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre" class="mdc-ripple-upgraded">ACCUEIL</a></li>
                                 <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/category/notre-entreprise/" class="mdc-ripple-upgraded">NOTRE ENTREPRISE</a></li>
                                 <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/" class="mdc-ripple-upgraded">VOTRE MOBILITÉ</a></li>
-                                <li class="menu-item current-menu-ancestor current-menu-parent"><a href="https://seal.transport-manager.net/dernier_ordre/category/nos-service/" class="mdc-ripple-upgraded">NOS SERVICES</a></li>
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/category/nos-service/" class="mdc-ripple-upgraded">NOS SERVICES</a></li>
                                 <li class="menu-item"><a href="https://seal.transport-manager.net/dernierordre/events/" class="mdc-ripple-upgraded">INFO TRAFIC</a></li>
                             </ul>
                         </div>
-                        <a href="#" data-component="offcanvas" data-target="#offcanvas-wrapper" data-direction="right" data-width="300px" data-push="false">
-                            <i class="mdi mdi-view-sequential"></i>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -58,13 +82,14 @@
     </div>
 
     <div id="page" class="site">
-        <!-- BANNIERE HEADER -->
+        <!-- BANNIERE HEADER AVEC IMAGE PIXEL ART -->
         <div class="header-wrapper">
-            <div class="header color-overlay" style="background-image: url('https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/09/lyon_night_header_resized.jpg'); padding-top: 111px;">
+            <div class="header color-overlay" style="background-image: url('https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/09/lyon_night_header_resized.jpg');">
                 <div class="inner-header-description gridContainer">
                     <div class="row header-description-row">
                         <div class="col-xs col-xs-12">
-                            <h1 class="hero-title" style="text-align: center;">Réservation TAD</h1>
+                            <!-- Remise du titre exact de l'image 1 -->
+                            <h1 class="hero-title">Transport à la Demande (TAD)</h1>
                         </div>
                     </div>
                 </div>
@@ -139,34 +164,5 @@
         </div>
     </div>
 
-    <!-- SCRIPT DU FORMULAIRE POUR DISCORD (À Configurer) -->
-    <script>
-        document.getElementById('formulaire-tad').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const nom = document.getElementById('nom').value;
-            const ligne = document.getElementById('ligne').value;
-            const arret = document.getElementById('arret').value;
-            const dateHeure = document.getElementById('date-heure').value;
-
-            // REMPLACE CETTE URL PAR CELLE DE TON WEBHOOK DISCORD
-            const webhookUrl = "TON_LIEN_WEBHOOK_DISCORD_ICI"; 
-            
-            if (webhookUrl !== "TON_LIEN_WEBHOOK_DISCORD_ICI") {
-                const payload = {
-                    content: `🚐 **Nouvelle demande de TAD**\n**Usager:** ${nom}\n**Ligne:** ${ligne}\n**Arrêt:** ${arret}\n**Date et Heure:** ${dateHeure}`
-                };
-
-                fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }).catch(error => console.error('Erreur:', error));
-            }
-
-            this.style.display = 'none';
-            document.getElementById('message-confirmation').style.display = 'block';
-        });
-    </script>
 </body>
 </html>
