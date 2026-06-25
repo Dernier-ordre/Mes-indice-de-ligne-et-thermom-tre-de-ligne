@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Transport à la Demande (TAD) – TCRR vous transporte</title>
+
+    <!-- Styles principaux de ton thème Materialis pour garder le design exact -->
+    <link rel="stylesheet" id="materialis-style-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/style.min.css" media="all">
+    <link rel="stylesheet" id="materialis-material-icons-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/assets/css/material-icons.min.css" media="all">
+    <link rel="stylesheet" id="materialis-style-bundle-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/assets/css/theme.bundle.min.css" media="all">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic,900,900italic%7CPlayfair%20Display:400,400italic,700,700italic&subset=latin,latin-ext" media="all">
+
+    <style>
+        body.custom-background { background-color: #ffffff; }
+        .materialis-front-page .content.blog-page, .materialis-inner-page .page-content, .materialis-inner-page .content { background-color: #ffffff; }
+        
+        /* Styles de ton formulaire TAD */
+        .tad-form-wrapper { max-width: 700px; margin: 40px auto; padding: 30px; background: #f9f9f9; border-top: 4px solid #c0000a; border-radius: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .tad-form-wrapper h2 { color: #c0000a; font-weight: 700; text-align: center; margin-bottom: 20px; font-size: 1.5rem; }
+        .tad-form label { display: block; margin-top: 15px; font-weight: bold; color: #333; }
+        .tad-form input, .tad-form select { width: 100%; padding: 12px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .tad-form button { background-color: #c0000a; color: white; border: none; cursor: pointer; font-weight: bold; padding: 15px; width: 100%; margin-top: 25px; border-radius: 4px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .tad-form button:hover { background-color: #a00008; }
+        #message-confirmation { display: none; background-color: #d4edda; color: #155724; padding: 20px; border: 1px solid #c3e6cb; border-radius: 5px; text-align: center; margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+
+<body class="wp-singular page-template-default page custom-background wp-custom-logo wp-theme-materialis materialis-inner-page">
+
+    <!-- MENU DE NAVIGATION -->
+    <div id="page-top" class="header-top">
+        <div class="navigation-bar" data-sticky="0" data-sticky-mobile="1" data-sticky-to="top" style="z-index: 10000;">
+            <div class="navigation-wrapper">
+                <div class="row basis-auto">
+                    <div class="logo_col col-xs col-sm-fit">
+                        <a href="https://seal.transport-manager.net/dernier_ordre/" class="custom-logo-link" rel="home">
+                            <img width="840" height="318" src="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO.png" class="custom-logo" alt="TCRR vous transporte">
+                        </a>
+                    </div>
+                    <div class="main_menu_col col-xs">
+                        <div id="mainmenu_container" class="row">
+                            <ul id="main_menu" class="simple-text-buttons main-menu dropdown-menu">
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre" class="mdc-ripple-upgraded">ACCUEIL</a></li>
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/category/notre-entreprise/" class="mdc-ripple-upgraded">NOTRE ENTREPRISE</a></li>
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/" class="mdc-ripple-upgraded">VOTRE MOBILITÉ</a></li>
+                                <li class="menu-item current-menu-ancestor current-menu-parent"><a href="https://seal.transport-manager.net/dernier_ordre/category/nos-service/" class="mdc-ripple-upgraded">NOS SERVICES</a></li>
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernierordre/events/" class="mdc-ripple-upgraded">INFO TRAFIC</a></li>
+                            </ul>
+                        </div>
+                        <a href="#" data-component="offcanvas" data-target="#offcanvas-wrapper" data-direction="right" data-width="300px" data-push="false">
+                            <i class="mdi mdi-view-sequential"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page" class="site">
+        <!-- BANNIERE HEADER -->
+        <div class="header-wrapper">
+            <div class="header color-overlay" style="background-image: url('https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/09/lyon_night_header_resized.jpg'); padding-top: 111px;">
+                <div class="inner-header-description gridContainer">
+                    <div class="row header-description-row">
+                        <div class="col-xs col-xs-12">
+                            <h1 class="hero-title" style="text-align: center;">Réservation TAD</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENU DE LA PAGE : LE FORMULAIRE -->
+        <div class="page-content mdc-elevation--z20 boxed-layout" id="page-content">
+            <div class="gridContainer content">
+                
+                <div class="tad-form-wrapper">
+                    <h2>🚌 Réserver votre trajet en ligne</h2>
+                    <p style="text-align: center; color: #555; font-size: 0.9rem;">Lignes R1 & R2 — Réservation possible de 24h à 2 mois avant le trajet.</p>
+                    
+                    <form id="formulaire-tad" class="tad-form">
+                        <label for="nom">Nom / Pseudo usager :</label>
+                        <input type="text" id="nom" required placeholder="Votre nom sur le réseau">
+
+                        <label for="ligne">Ligne TAD :</label>
+                        <select id="ligne" required>
+                            <option value="">Sélectionnez votre ligne...</option>
+                            <option value="Ligne R1">Ligne R1</option>
+                            <option value="Ligne R2">Ligne R2</option>
+                        </select>
+
+                        <label for="arret">Arrêt de prise en charge :</label>
+                        <input type="text" id="arret" required placeholder="Nom de l'arrêt de départ">
+
+                        <label for="date-heure">Date et Heure du trajet :</label>
+                        <input type="datetime-local" id="date-heure" required>
+
+                        <button type="submit">Confirmer la réservation</button>
+                    </form>
+
+                    <div id="message-confirmation">
+                        Votre réservation a bien été envoyée au PC Régulation ! Merci de votre confiance.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- PIED DE PAGE -->
+    <div class="footer footer-contact-boxes">
+        <div class="footer-content">
+            <div class="gridContainer">
+                <div class="row text-center">
+                    <div class="col-sm-3">
+                        <div>
+                            <i class="big-icon mdi mdi-alert-circle"></i>
+                            <p>IL S'AGIT D'UN RÉSEAU DE TRANSPORT FICTIF TOUTE RESSEMBLANCE AVEC UN VRAI RÉSEAU SERAIT FORTUITE</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div>
+                            <i class="big-icon mdi mdi-bus"></i>
+                            <p>RÉSEAU TCRR</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div>
+                            <i class="big-icon mdi mdi-account"></i>
+                            <p>SITE DÉVELOPPÉ PAR DERNIER ORDRE</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 footer-bg-accent">
+                        <p class="copyright">© 2026 TCRR vous transporte. Construit avec WordPress et le thème Materialis</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DU FORMULAIRE POUR DISCORD (À Configurer) -->
+    <script>
+        document.getElementById('formulaire-tad').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const nom = document.getElementById('nom').value;
+            const ligne = document.getElementById('ligne').value;
+            const arret = document.getElementById('arret').value;
+            const dateHeure = document.getElementById('date-heure').value;
+
+            // REMPLACE CETTE URL PAR CELLE DE TON WEBHOOK DISCORD
+            const webhookUrl = "TON_LIEN_WEBHOOK_DISCORD_ICI"; 
+            
+            if (webhookUrl !== "TON_LIEN_WEBHOOK_DISCORD_ICI") {
+                const payload = {
+                    content: `🚐 **Nouvelle demande de TAD**\n**Usager:** ${nom}\n**Ligne:** ${ligne}\n**Arrêt:** ${arret}\n**Date et Heure:** ${dateHeure}`
+                };
+
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch(error => console.error('Erreur:', error));
+            }
+
+            this.style.display = 'none';
+            document.getElementById('message-confirmation').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
