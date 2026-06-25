@@ -29,9 +29,9 @@
         /* 2. TAILLE DU LOGO */
         img.custom-logo { max-height: 100px !important; width: auto !important; transition: max-height 0.3s ease; }
         
-        /* 3. BARRE DE NAVIGATION (FOND BLANC AU SCROLL) */
-        .header-top { position: fixed; width: 100%; top: 0; left: 0; z-index: 999999 !important; transition: background-color 0.3s ease, box-shadow 0.3s ease; background-color: transparent; pointer-events: auto; }
-        #main_menu > li > a { color: rgba(255, 255, 255, 0.9) !important; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); transition: color 0.3s ease; padding: 15px 10px; display: block; text-decoration: none; cursor: pointer; }
+        /* 3. BARRE DE NAVIGATION ET CLICS FORCÉS */
+        .header-top { position: fixed; width: 100%; top: 0; left: 0; z-index: 9999999 !important; transition: background-color 0.3s ease, box-shadow 0.3s ease; background-color: transparent; pointer-events: auto; }
+        #main_menu > li > a { color: rgba(255, 255, 255, 0.9) !important; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); transition: color 0.3s ease; padding: 15px 10px; display: block; text-decoration: none; cursor: pointer; position: relative; z-index: 9999999; }
         #main_menu > li:hover > a { color: #ffffff !important; }
         
         .header-top.scrolled-header { background-color: #ffffff !important; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -44,9 +44,9 @@
             #main_menu li { list-style: none !important; }
             #main_menu li.menu-item-has-children { position: relative; }
             #main_menu > li.menu-item-has-children > a::after { content: ' ▼'; font-size: 0.7em; opacity: 0.7; }
-            #main_menu li .sub-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; padding: 0; min-width: 240px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 1000000; border-radius: 4px; list-style: none !important; margin: 0; }
+            #main_menu li .sub-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; padding: 0; min-width: 240px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 10000000; border-radius: 4px; list-style: none !important; margin: 0; }
             #main_menu li:hover > .sub-menu { display: block; }
-            #main_menu .sub-menu li { border-bottom: 1px solid #f0f0f0; }
+            #main_menu .sub-menu li { border-bottom: 1px solid #f0f0f0; position: relative; z-index: 10000000; }
             #main_menu .sub-menu li:last-child { border-bottom: none; }
             #main_menu .sub-menu li a { color: #333 !important; text-shadow: none !important; padding: 12px 20px; display: block; font-weight: 500; font-size: 14px; text-transform: none; text-decoration: none; transition: background 0.2s, color 0.2s; cursor: pointer; }
             #main_menu .sub-menu li a:hover { background-color: #f9f9f9; color: #c0000a !important; padding-left: 25px; }
@@ -83,12 +83,12 @@
         .tad-form button:hover { background-color: #a00008; }
         #message-confirmation { display: none; background-color: #d4edda; color: #155724; padding: 20px; border: 1px solid #c3e6cb; border-radius: 5px; text-align: center; margin-top: 20px; font-weight: bold; }
         
-        /* 7. REPRODUCTION EXACTE DU PIED DE PAGE (D'après ton image) */
+        /* 7. REPRODUCTION EXACTE DU PIED DE PAGE */
         .custom-footer-row {
             display: flex;
             flex-wrap: wrap;
-            align-items: stretch; /* Force toutes les colonnes à avoir la même hauteur */
-            background-color: #1a1a1a; /* Gris très foncé du pied de page */
+            align-items: stretch;
+            background-color: #1a1a1a;
             color: white;
             margin: 0;
             width: 100%;
@@ -101,7 +101,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            border-right: 1px solid rgba(255,255,255,0.05); /* Ligne de séparation très légère */
+            border-right: 1px solid rgba(255,255,255,0.05);
         }
         .custom-footer-col i {
             font-size: 36px;
@@ -114,9 +114,8 @@
             line-height: 1.6;
             text-transform: uppercase;
         }
-        /* La colonne rouge à droite */
         .custom-footer-col.footer-red-bg {
-            background-color: #ff5252; /* Le rouge de ton thème */
+            background-color: #ff5252;
             border-right: none;
         }
         .custom-footer-col.footer-red-bg p {
@@ -132,13 +131,13 @@
 
 <body class="wp-singular page-template-default page custom-background wp-custom-logo wp-theme-materialis materialis-inner-page">
 
-    <!-- MENU DE NAVIGATION (LIENS À INSÉRER) -->
+    <!-- MENU DE NAVIGATION (LIENS INTÉGRÉS) -->
     <div id="page-top" class="header-top">
         <div class="navigation-bar" data-sticky="0" data-sticky-mobile="1" data-sticky-to="top">
             <div class="navigation-wrapper">
                 <div class="row basis-auto align-items-center">
                     <div class="logo_col col-xs col-sm-fit">
-                        <a href="LIEN_ACCUEIL_ICI" class="custom-logo-link" rel="home">
+                        <a href="https://seal.transport-manager.net/dernier_ordre/" class="custom-logo-link" rel="home">
                             <img src="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO.png" class="custom-logo" alt="TCRR vous transporte">
                         </a>
                     </div>
@@ -147,29 +146,29 @@
                             <ul id="main_menu" class="simple-text-buttons main-menu dropdown-menu">
                                 <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/">ACCUEIL</a></li>
                                 
-                                <li class="menu-item menu-item-has-children"><a href="LIEN_NOTRE_ENTREPRISE_ICI">NOTRE ENTREPRISE</a>
+                                <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/notre-entreprise/">NOTRE ENTREPRISE</a>
                                     <ul class="sub-menu">
-                                        <li class="menu-item menu-item-has-children"><a href="LIEN_SOUS_MENU_ICI">Notre entreprise</a>
+                                        <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/notre-entreprise/">Notre entreprise</a>
                                             <ul class="sub-menu">
                                                 <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/page-d-exemple/">L’évolution de notre entreprise</a></li>
                                                 <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/politique-de-lentreprise/">Politique de l’entreprise</a></li>
                                             </ul>
                                         </li>
-                                        <li class="menu-item menu-item-has-children"><a href="LIEN_LA_FLOTTE_ICI">La Flotte</a>
+                                        <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/la-flotte/">La Flotte</a>
                                             <ul class="sub-menu">
                                                 <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/la-flotte/">Index des Modèles</a></li>
-                                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/la-flotte/">Répartition des véhicules</a></li>
+                                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/repartition-des-vheicule/">Répartition des véhicules</a></li>
                                             </ul>
                                         </li>
                                         <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/preservation/">Préservation</a></li>
                                     </ul>
                                 </li>
 
-                                <li class="menu-item menu-item-has-children"><a href="LIEN_VOTRE_MOBILITE_ICI">VOTRE MOBILITÉ</a>
+                                <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/">VOTRE MOBILITÉ</a>
                                     <ul class="sub-menu">
                                         <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/agence/">Les agences</a></li>
                                         <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/le-plan-du-reseau/">Le plan du réseau</a></li>
-                                        <li class="menu-item menu-item-has-children"><a href="LIEN_VOS_LIGNES_ICI">Vos lignes</a>
+                                        <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/">Vos lignes</a>
                                             <ul class="sub-menu">
                                                 <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/ligne-urbaine/">Ligne Urbaine</a></li>
                                                 <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/ligne-suburbaine/">Ligne Suburbaine</a></li>
@@ -180,7 +179,7 @@
                                     </ul>
                                 </li>
 
-                                <li class="menu-item menu-item-has-children"><a href="LIEN_NOS_SERVICES_ICI">NOS SERVICES</a>
+                                <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/nos-service/">NOS SERVICES</a>
                                     <ul class="sub-menu">
                                         <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/espace-billetique/">Espace billettique</a></li>
                                         <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/espace-calendrier/">Espace calendrier</a></li>
