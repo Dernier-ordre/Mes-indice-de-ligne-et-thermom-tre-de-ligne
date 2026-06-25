@@ -6,23 +6,33 @@
     <title>Transport à la Demande (TAD) – TCRR vous transporte</title>
 
     <!-- Styles principaux de ton thème Materialis -->
-    <link rel="stylesheet" id="materialis-style-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/style.min.css" media="all">
-    <link rel="stylesheet" id="materialis-material-icons-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/assets/css/material-icons.min.css" media="all">
-    <link rel="stylesheet" id="materialis-style-bundle-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/assets/css/theme.bundle.min.css" media="all">
+    <link rel="stylesheet" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/style.min.css" media="all">
+    <link rel="stylesheet" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/assets/css/theme.bundle.min.css" media="all">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic,900,900italic%7CPlayfair%20Display:400,400italic,700,700italic&subset=latin,latin-ext" media="all">
+    
+    <!-- CORRECTION : Chargement officiel des icônes pour remplacer les petits carrés du pied de page -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" media="all">
 
     <style>
-        /* 1. FOND DE LA PAGE ET ALIGNEMENT */
-        body.custom-background { background-color: #ffffff; }
-        .materialis-front-page .content.blog-page, .materialis-inner-page .page-content, .materialis-inner-page .content { background-color: #ffffff; }
-        .page-content { margin-top: 0 !important; } 
+        /* 1. FOND DE LA PAGE GRIS FONCÉ (#212121) COMME L'ORIGINAL */
+        body, #page, .page-content, .content, .materialis-inner-page .page-content, body.custom-background { 
+            background-color: #212121 !important; 
+        }
+        
+        /* Étendre la page pour coller le pied de page en bas */
+        .page-content { 
+            margin-top: 0 !important; 
+            min-height: 50vh; 
+            padding-bottom: 60px;
+            margin-bottom: 0 !important;
+        } 
         
         /* 2. TAILLE DU LOGO */
         img.custom-logo { max-height: 100px !important; width: auto !important; transition: max-height 0.3s ease; }
         
-        /* 3. BARRE DE NAVIGATION ET FOND BLANC AU DÉFILEMENT */
-        .header-top { position: fixed; width: 100%; top: 0; left: 0; z-index: 10000; transition: background-color 0.3s ease, box-shadow 0.3s ease; background-color: transparent; }
-        #main_menu > li > a { color: rgba(255, 255, 255, 0.9) !important; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); transition: color 0.3s ease; padding: 15px 10px; display: block; text-decoration: none; }
+        /* 3. BARRE DE NAVIGATION (CORRECTION DES CLICS ET DU FOND) */
+        .header-top { position: fixed; width: 100%; top: 0; left: 0; z-index: 999999 !important; transition: background-color 0.3s ease, box-shadow 0.3s ease; background-color: transparent; pointer-events: auto; }
+        #main_menu > li > a { color: rgba(255, 255, 255, 0.9) !important; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); transition: color 0.3s ease; padding: 15px 10px; display: block; text-decoration: none; cursor: pointer; }
         #main_menu > li:hover > a { color: #ffffff !important; }
         
         /* Comportement au défilement (Scroll) */
@@ -31,39 +41,38 @@
         .header-top.scrolled-header #main_menu > li:hover > a { color: #c0000a !important; }
         .header-top.scrolled-header img.custom-logo { max-height: 80px !important; }
 
-        /* 4. CORRECTION DES MENUS DÉROULANTS (Restauration sans bugs) */
+        /* 4. MENUS DÉROULANTS */
         @media (min-width: 768px) {
             #main_menu li { list-style: none !important; }
             #main_menu li.menu-item-has-children { position: relative; }
             
-            /* Ajout d'une petite flèche discrète pour montrer qu'il y a un sous-menu */
+            /* Flèche de sous-menu */
             #main_menu > li.menu-item-has-children > a::after { content: ' ▼'; font-size: 0.7em; opacity: 0.7; }
             
-            #main_menu li .sub-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; padding: 0; min-width: 240px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 1000; border-radius: 4px; list-style: none !important; margin: 0; }
+            #main_menu li .sub-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; padding: 0; min-width: 240px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 1000000; border-radius: 4px; list-style: none !important; margin: 0; }
             #main_menu li:hover > .sub-menu { display: block; }
             
             /* Style des liens dans les sous-menus */
             #main_menu .sub-menu li { border-bottom: 1px solid #f0f0f0; }
             #main_menu .sub-menu li:last-child { border-bottom: none; }
-            #main_menu .sub-menu li a { color: #333 !important; text-shadow: none !important; padding: 12px 20px; display: block; font-weight: 500; font-size: 14px; text-transform: none; text-decoration: none; transition: background 0.2s, color 0.2s; }
-            #main_menu .sub-menu li a:hover { background-color: #f9f9f9; color: #c0000a !important; padding-left: 25px; /* Petit effet de glissement sympa au survol */ }
+            #main_menu .sub-menu li a { color: #333 !important; text-shadow: none !important; padding: 12px 20px; display: block; font-weight: 500; font-size: 14px; text-transform: none; text-decoration: none; transition: background 0.2s, color 0.2s; cursor: pointer; }
+            #main_menu .sub-menu li a:hover { background-color: #f9f9f9; color: #c0000a !important; padding-left: 25px; }
             
-            /* Suppression des carrés / icônes cassées */
             #main_menu .sub-menu li::before, #main_menu .sub-menu li::after, #main_menu .sub-menu li a::before, #main_menu .sub-menu li a::after { display: none !important; content: none !important; }
-            
-            /* Sous-menus imbriqués (ex: Vos lignes -> Ligne Urbaine) */
             #main_menu .sub-menu .sub-menu { top: 0; left: 100%; margin-left: 1px; }
         }
 
-        /* 5. CORRECTION DE L'IMAGE DE FOND PIXEL ART */
+        /* 5. IMAGE DE FOND PIXEL ART */
         .header-wrapper .header {
             background-size: cover !important;
-            background-position: center center !important; /* Centre l'image pour voir la lune et la basilique */
-            min-height: 550px; /* Agrandit la hauteur pour correspondre au site d'origine */
+            background-position: center center !important; 
+            min-height: 550px; 
             display: flex;
             align-items: center;
             justify-content: center;
             padding-top: 80px;
+            position: relative;
+            z-index: 1; /* Permet au menu de passer devant */
         }
         .hero-title {
             color: #ffffff;
@@ -74,19 +83,22 @@
         }
 
         /* 6. STYLE DU FORMULAIRE TAD */
-        .tad-form-wrapper { max-width: 700px; margin: 40px auto; padding: 30px; background: #f9f9f9; border-top: 4px solid #c0000a; border-radius: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .tad-form-wrapper { max-width: 700px; margin: 40px auto; padding: 30px; background: #f9f9f9; border-top: 4px solid #c0000a; border-radius: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); position: relative; z-index: 10; color: #333; }
         .tad-form-wrapper h2 { color: #c0000a; font-weight: 700; text-align: center; margin-bottom: 20px; font-size: 1.5rem; }
         .tad-form label { display: block; margin-top: 15px; font-weight: bold; color: #333; }
-        .tad-form input, .tad-form select { width: 100%; padding: 12px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .tad-form input, .tad-form select { width: 100%; padding: 12px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; background: #fff; color: #333; }
         .tad-form button { background-color: #c0000a; color: white; border: none; cursor: pointer; font-weight: bold; padding: 15px; width: 100%; margin-top: 25px; border-radius: 4px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
         .tad-form button:hover { background-color: #a00008; }
         #message-confirmation { display: none; background-color: #d4edda; color: #155724; padding: 20px; border: 1px solid #c3e6cb; border-radius: 5px; text-align: center; margin-top: 20px; font-weight: bold; }
+        
+        /* Correction du pied de page */
+        .footer { margin-top: 0 !important; }
     </style>
 </head>
 
 <body class="wp-singular page-template-default page custom-background wp-custom-logo wp-theme-materialis materialis-inner-page">
 
-    <!-- MENU DE NAVIGATION (Nettoyé des scripts bloquants) -->
+    <!-- MENU DE NAVIGATION -->
     <div id="page-top" class="header-top">
         <div class="navigation-bar" data-sticky="0" data-sticky-mobile="1" data-sticky-to="top">
             <div class="navigation-wrapper">
@@ -99,7 +111,7 @@
                     <div class="main_menu_col col-xs">
                         <div id="mainmenu_container" class="row">
                             <ul id="main_menu" class="simple-text-buttons main-menu dropdown-menu">
-                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre">ACCUEIL</a></li>
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/">ACCUEIL</a></li>
                                 
                                 <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/notre-entreprise/">NOTRE ENTREPRISE</a>
                                     <ul class="sub-menu">
@@ -152,7 +164,7 @@
     </div>
 
     <div id="page" class="site">
-        <!-- BANNIERE HEADER AVEC IMAGE PIXEL ART CORRIGÉE -->
+        <!-- BANNIERE HEADER AVEC IMAGE PIXEL ART -->
         <div class="header-wrapper">
             <div class="header color-overlay" style="background-image: url('https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/09/lyon_night_header_resized.jpg');">
                 <div class="inner-header-description gridContainer">
