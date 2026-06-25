@@ -1,457 +1,172 @@
-<html lang="fr-FR" class="has-offscreen"><head>
+<!DOCTYPE html>
+<html lang="fr-FR">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="profile" href="http://gmpg.org/xfn/11">
-
     <title>Transport à la Demande (TAD) – TCRR vous transporte</title>
-<meta name="robots" content="max-image-preview:large">
-<link rel="dns-prefetch" href="//fonts.googleapis.com">
-<link rel="alternate" type="application/rss+xml" title="TCRR vous transporte » Flux" href="https://seal.transport-manager.net/dernier_ordre/feed/">
-<link rel="alternate" type="application/rss+xml" title="TCRR vous transporte » Flux des commentaires" href="https://seal.transport-manager.net/dernier_ordre/comments/feed/">
-<link rel="alternate" type="text/calendar" title="TCRR vous transporte » Flux iCal" href="https://seal.transport-manager.net/dernier_ordre/events/?ical=1">
-<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://seal.transport-manager.net/dernier_ordre/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fseal.transport-manager.net%2Fdernier_ordre%2Ftransport-a-la-demande-tad%2F">
-<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://seal.transport-manager.net/dernier_ordre/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fseal.transport-manager.net%2Fdernier_ordre%2Ftransport-a-la-demande-tad%2F&amp;format=xml">
-<style id="wp-img-auto-sizes-contain-inline-css">
-img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
-/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
-</style>
-<link rel="stylesheet" id="dashicons-css" href="https://seal.transport-manager.net/dernier_ordre/wp-includes/css/dashicons.min.css?ver=7.0" media="all">
-<link rel="stylesheet" id="admin-bar-css" href="https://seal.transport-manager.net/dernier_ordre/wp-includes/css/admin-bar.min.css?ver=7.0" media="all">
-<style id="admin-bar-inline-css">
 
-		@media screen { html { margin-top: 32px !important; } }
-		@media screen and ( max-width: 782px ) { html { margin-top: 46px !important; } }
-	
-@media print { #wpadminbar { display:none; } }
-/*# sourceURL=admin-bar-inline-css */
-</style>
-<link rel="stylesheet" id="tribe-events-admin-menu-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/the-events-calendar/build/css/admin-menu.css?ver=6.16.4" media="all">
-<style id="wp-emoji-styles-inline-css">
+    <!-- Styles principaux de ton thème Materialis pour garder le design exact -->
+    <link rel="stylesheet" id="materialis-style-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/style.min.css" media="all">
+    <link rel="stylesheet" id="materialis-material-icons-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/assets/css/material-icons.min.css" media="all">
+    <link rel="stylesheet" id="materialis-style-bundle-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/assets/css/theme.bundle.min.css" media="all">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic,900,900italic%7CPlayfair%20Display:400,400italic,700,700italic&subset=latin,latin-ext" media="all">
 
-	img.wp-smiley, img.emoji {
-		display: inline !important;
-		border: none !important;
-		box-shadow: none !important;
-		height: 1em !important;
-		width: 1em !important;
-		margin: 0 0.07em !important;
-		vertical-align: -0.1em !important;
-		background: none !important;
-		padding: 0 !important;
-	}
-/*# sourceURL=wp-emoji-styles-inline-css */
-</style>
-<style id="wp-block-library-inline-css">
-:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}:root .has-text-align-center{text-align:center}:root .has-text-align-left{text-align:left}:root .has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{word-wrap:normal!important;border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style*=border-color]){border-style:solid}html :where([style*=border-top-color]){border-top-style:solid}html :where([style*=border-right-color]){border-right-style:solid}html :where([style*=border-bottom-color]){border-bottom-style:solid}html :where([style*=border-left-color]){border-left-style:solid}html :where([style*=border-width]){border-style:solid}html :where([style*=border-top-width]){border-top-style:solid}html :where([style*=border-right-width]){border-right-style:solid}html :where([style*=border-bottom-width]){border-bottom-style:solid}html :where([style*=border-left-width]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
-
-/*# sourceURL=/wp-includes/css/dist/block-library/common.min.css */
-</style>
-<style id="wp-block-paragraph-inline-css">
-.is-small-text{font-size:.875em}.is-regular-text{font-size:1em}.is-large-text{font-size:2.25em}.is-larger-text{font-size:3em}.has-drop-cap:not(:focus):first-letter{float:left;font-size:8.4em;font-style:normal;font-weight:100;line-height:.68;margin:.05em .1em 0 0;text-transform:uppercase}body.rtl .has-drop-cap:not(:focus):first-letter{float:none;margin-left:.1em}p.has-drop-cap.has-background{overflow:hidden}:root :where(p.has-background){padding:1.25em 2.375em}:where(p.has-text-color:not(.has-link-color)) a{color:inherit}p.has-text-align-left[style*="writing-mode:vertical-lr"],p.has-text-align-right[style*="writing-mode:vertical-rl"]{rotate:180deg}
-/*# sourceURL=https://seal.transport-manager.net/dernier_ordre/wp-includes/blocks/paragraph/style.min.css */
-</style>
-
-<style id="classic-theme-styles-inline-css">
-/*! This file is auto-generated */
-.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
-/*# sourceURL=/wp-includes/css/classic-themes.min.css */
-</style>
-
-<style id="global-styles-inline-css">
-:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}:where(body) { margin: 0; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
-/*# sourceURL=global-styles-inline-css */
-</style>
-
-<link rel="stylesheet" id="pb_animate-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/ays-popup-box/public/css/animate.css?ver=6.3.1" media="all">
-<link rel="stylesheet" id="wpsm_ac-font-awesome-front-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/responsive-accordion-and-collapse/css/font-awesome/css/font-awesome.min.css?ver=7.0" media="all">
-<link rel="stylesheet" id="wpsm_ac_bootstrap-front-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/responsive-accordion-and-collapse/css/bootstrap-front.css?ver=7.0" media="all">
-<link rel="stylesheet" id="wpsm_tabs_pro_font-icon-picker-glyphicon_style-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/tabs-pro/assets/css/mul-type-icon-picker/picker/glyphicon.css?ver=7.0" media="all">
-<link rel="stylesheet" id="wpsm_tabs_pro_font-icon-picker-dashicons_style-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/tabs-pro/assets/css/mul-type-icon-picker/picker/dashicons.css?ver=7.0" media="all">
-<link rel="stylesheet" id="wpsm_tabs_pro-font-awesome-front-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/tabs-pro/assets/css/font-awesome/css/font-awesome.min.css?ver=7.0" media="all">
-<link rel="stylesheet" id="wpsm_tabs_pro_bootstrap-front-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/tabs-pro/assets/css/bootstrap-front.css?ver=7.0" media="all">
-<link rel="stylesheet" id="wpsm_tabs_pro_animate-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/tabs-pro/assets/css/animate.css?ver=7.0" media="all">
-<link rel="stylesheet" id="wpsm_tabs_pro_scrollbar_style-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/tabs-pro/assets/css/scrollbar/jquery.mCustomScrollbar.css?ver=7.0" media="all">
-<link rel="stylesheet" id="wp-mail-smtp-admin-bar-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/wp-mail-smtp/assets/css/admin-bar.min.css?ver=4.8.0" media="all">
-<link rel="stylesheet" id="materialis-style-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/style.min.css?ver=1.1.65" media="all">
-<style id="materialis-style-inline-css">
-img.logo.dark, img.custom-logo{width:auto;max-height:100px;}
-/*# sourceURL=materialis-style-inline-css */
-</style>
-<link rel="stylesheet" id="materialis-material-icons-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/assets/css/material-icons.min.css?ver=1.1.65" media="all">
-<link rel="stylesheet" id="materialis-style-bundle-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/assets/css/theme.bundle.min.css?ver=1.1.65" media="all">
-<link rel="stylesheet" id="materialis-fonts-css" data-href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic,900,900italic%7CPlayfair%20Display:400,400italic,700,700italic&amp;subset=latin,latin-ext" media="all" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic,900,900italic%7CPlayfair%20Display:400,400italic,700,700italic&amp;subset=latin,latin-ext">
-<link rel="stylesheet" id="tablepress-default-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/tablepress-combined.min.css?ver=259" media="all">
-<link rel="stylesheet" id="wpforms-admin-bar-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/wpforms-lite/assets/css/admin-bar.min.css?ver=1.10.1.1" media="all">
-<style id="wpforms-admin-bar-inline-css">
-#wpadminbar .wpforms-menu-notification-counter, #wpadminbar .wpforms-menu-notification-indicator {
-						background-color: #d63638 !important;
-						color: #ffffff !important;
-					}
-/*# sourceURL=wpforms-admin-bar-inline-css */
-</style>
-<link rel="stylesheet" id="kirki-styles-materialis-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/customizer/kirki/assets/css/kirki-styles.css" media="all">
-<style id="kirki-styles-materialis-inline-css">
-/** cached kirki style */#page{background-color:#212121;}.header-homepage{background-position:center bottom;}.header{background-position:left top;}.header.color-overlay:before{background:#181818;}.header .background-overlay,.header.color-overlay::before{opacity:0.4;}.header-homepage .hero-title{color:#ffffff;}.header-homepage .header-description-row{padding-top:20%;padding-bottom:24%;}.header-homepage .align-holder{background:rgba(0,0,0,0.5);padding-top:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;border-color:#C52525;-webkit-border-radius:1px;-moz-border-radius:1px;border-radius:1px;}.inner-header-description{padding-top:12%;padding-bottom:12%;}.materialis-front-page .navigation-bar.bordered{border-bottom-color:rgba(255,255,255,0.5);border-bottom-style:solid;}.materialis-front-page .navigation-bar.bordered:not(.fixto-fixed){border-bottom-width:2px;}@media screen and (max-width:767px){.header-homepage .header-description-row{padding-top:10%;padding-bottom:10%;}}@media only screen and (min-width: 768px){.header-content .align-holder{width:54%!important;}.inner-header-description{text-align:center!important;}}
-/*# sourceURL=kirki-styles-materialis-inline-css */
-</style>
-<script id="jquery-core-js" src="https://seal.transport-manager.net/dernier_ordre/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"></script>
-<script id="jquery-core-js-after">
-MaterialisTheme = {"blog_posts_as_masonry_grid":true}
-//# sourceURL=jquery-core-js-after
-</script>
-<script id="jquery-migrate-js" src="https://seal.transport-manager.net/dernier_ordre/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1"></script>
-<script id="jquery-js-after">
-(function ($) {
-            function setHeaderTopSpacing() {
-                $('.header-wrapper .header,.header-wrapper .header-homepage').css({
-                    'padding-top': $('.header-top').height()
-                });
-
-             setTimeout(function() {
-                  var headerTop = document.querySelector('.header-top');
-                  var headers = document.querySelectorAll('.header-wrapper .header,.header-wrapper .header-homepage');
-
-                  for (var i = 0; i < headers.length; i++) {
-                      var item = headers[i];
-                      item.style.paddingTop = headerTop.getBoundingClientRect().height + "px";
-                  }
-
-                    var languageSwitcher = document.querySelector('.materialis-language-switcher');
-
-                    if(languageSwitcher){
-                        languageSwitcher.style.top = "calc( " +  headerTop.getBoundingClientRect().height + "px + 1rem)" ;
-                    }
-                    
-                }, 100);
-
-            }
-
-            jQuery(window).on('resize orientationchange', setHeaderTopSpacing);
-            window.materialisSetHeaderTopSpacing = setHeaderTopSpacing
-
-        })(jQuery);
-    
-    
-//# sourceURL=jquery-js-after
-</script>
-<script id="ays-pb-js-extra">
-var pbLocalizeObj = {"ajax":"https://seal.transport-manager.net/dernier_ordre/wp-admin/admin-ajax.php","seconds":"seconds","thisWillClose":"This will close in","icons":{"close_icon":"\u003Csvg class=\"ays_pb_material_close_icon\" xmlns=\"https://www.w3.org/2000/svg\" height=\"36px\" viewBox=\"0 0 24 24\" width=\"36px\" fill=\"#000000\" alt=\"Pop-up Close\"\u003E\u003Cpath d=\"M0 0h24v24H0z\" fill=\"none\"/\u003E\u003Cpath d=\"M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z\"/\u003E\u003C/svg\u003E","close_circle_icon":"\u003Csvg class=\"ays_pb_material_close_circle_icon\" xmlns=\"https://www.w3.org/2000/svg\" height=\"24\" viewBox=\"0 0 24 24\" width=\"36\" alt=\"Pop-up Close\"\u003E\u003Cpath d=\"M0 0h24v24H0z\" fill=\"none\"/\u003E\u003Cpath d=\"M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z\"/\u003E\u003C/svg\u003E","volume_up_icon":"\u003Csvg class=\"ays_pb_fa_volume\" xmlns=\"https://www.w3.org/2000/svg\" height=\"24\" viewBox=\"0 0 24 24\" width=\"36\"\u003E\u003Cpath d=\"M0 0h24v24H0z\" fill=\"none\"/\u003E\u003Cpath d=\"M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z\"/\u003E\u003C/svg\u003E","volume_mute_icon":"\u003Csvg xmlns=\"https://www.w3.org/2000/svg\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"\u003E\u003Cpath d=\"M0 0h24v24H0z\" fill=\"none\"/\u003E\u003Cpath d=\"M7 9v6h4l5 5V4l-5 5H7z\"/\u003E\u003C/svg\u003E"}};
-//# sourceURL=ays-pb-js-extra
-</script>
-<script id="ays-pb-js" src="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/ays-popup-box/public/js/ays-pb-public.js?ver=6.3.1"></script>
-<script id="wpsm_tabs_pro_bootstrap-collapse-front-js" src="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/tabs-pro/assets/js/bootstrap-tabcollapse.js?ver=7.0"></script>
-<script id="wpsm_tabs_pro_scrollbar_script-js" src="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/tabs-pro/assets/js/scrollbar/jquery.mCustomScrollbar.concat.min.js?ver=7.0"></script>
-<link rel="https://api.w.org/" href="https://seal.transport-manager.net/dernier_ordre/wp-json/"><link rel="alternate" title="JSON" type="application/json" href="https://seal.transport-manager.net/dernier_ordre/wp-json/wp/v2/pages/3203"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://seal.transport-manager.net/dernier_ordre/xmlrpc.php?rsd">
-<meta name="generator" content="WordPress 7.0">
-<link rel="canonical" href="https://seal.transport-manager.net/dernier_ordre/transport-a-la-demande-tad/">
-<link rel="shortlink" href="https://seal.transport-manager.net/dernier_ordre/?p=3203">
-<meta name="tec-api-version" content="v1"><meta name="tec-api-origin" content="https://seal.transport-manager.net/dernier_ordre"><link rel="alternate" href="https://seal.transport-manager.net/dernier_ordre/wp-json/tribe/events/v1/">    <script type="text/javascript" data-name="async-styles">
-        (function () {
-            var links = document.querySelectorAll('link[data-href]');
-            for (var i = 0; i < links.length; i++) {
-                var item = links[i];
-                item.href = item.getAttribute('data-href')
-            }
-        })();
-    </script>
-    <style id="custom-background-css">
-body.custom-background { background-color: #ffffff; }
-</style>
-<link rel="icon" href="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/05/cropped-Symbole-lumineux-sur-fond-sombre-1-32x32.png" sizes="32x32">
-<link rel="icon" href="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/05/cropped-Symbole-lumineux-sur-fond-sombre-1-192x192.png" sizes="192x192">
-<link rel="apple-touch-icon" href="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/05/cropped-Symbole-lumineux-sur-fond-sombre-1-180x180.png">
-<meta name="msapplication-TileImage" content="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/05/cropped-Symbole-lumineux-sur-fond-sombre-1-270x270.png">
-    <style data-name="background-content-colors">
-        .materialis-front-page .content.blog-page,
-        .materialis-inner-page .page-content,
-        .materialis-inner-page .content,
-        .materialis-front-page.materialis-content-padding .page-content {
-            background-color: #ffffff;
-        }
-    </style>
-    <link rel="stylesheet" id="ays-pb-min-css" href="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/ays-popup-box/public/css/ays-pb-public-min.css?ver=6.3.1" media="all">
-
-<script src="https://seal.transport-manager.net/dernier_ordre/wp-includes/js/wp-emoji-release.min.js?ver=7.0" defer=""></script><style type="text/css"></style></head>
-
-<body class="wp-singular page-template-default page page-id-3203 logged-in admin-bar custom-background wp-custom-logo wp-theme-materialis tribe-js materialis-inner-page customize-support">
-<script>
-		(function() {
-			var request, b = document.body, c = 'className', cs = 'customize-support', rcs = new RegExp('(^|\\s+)(no-)?'+cs+'(\\s+|$)');
-
-				request = true;
-	
-			b[c] = b[c].replace( rcs, ' ' );
-			// The customizer requires postMessage and CORS (if the site is cross domain).
-			b[c] += ( window.postMessage && request ? ' ' : ' no-' ) + cs;
-		}());
-	
-//# sourceURL=wp_customize_support_script
-</script>
-		<div id="wpadminbar" class="nojq">
-						<div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="Barre d’outils">
-				<ul role="menu" id="wp-admin-bar-root-default" class="ab-top-menu"><li role="group" id="wp-admin-bar-wp-logo" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/about.php"><span class="ab-icon" aria-hidden="true"></span><span class="screen-reader-text">À propos de WordPress</span></a><div class="ab-sub-wrapper"><ul role="menu" aria-label="À propos de WordPress" id="wp-admin-bar-wp-logo-default" class="ab-submenu"><li role="group" id="wp-admin-bar-about"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/about.php">À propos de WordPress</a></li><li role="group" id="wp-admin-bar-contribute"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/contribute.php">Contribuer</a></li></ul><ul role="menu" aria-label="À propos de WordPress" id="wp-admin-bar-wp-logo-external" class="ab-sub-secondary ab-submenu"><li role="group" id="wp-admin-bar-wporg"><a class="ab-item" role="menuitem" href="https://fr.wordpress.org/">Site de WordPress-FR</a></li><li role="group" id="wp-admin-bar-documentation"><a class="ab-item" role="menuitem" href="https://fr.wordpress.org/support/">Documentation</a></li><li role="group" id="wp-admin-bar-learn"><a class="ab-item" role="menuitem" href="https://learn.wordpress.org/">Apprendre WordPress</a></li><li role="group" id="wp-admin-bar-support-forums"><a class="ab-item" role="menuitem" href="https://wpfr.net/support">Forums de support</a></li><li role="group" id="wp-admin-bar-feedback"><a class="ab-item" role="menuitem" href="https://wordpress.org/support/forum/requests-and-feedback">Vos retours</a></li></ul></div></li><li role="group" id="wp-admin-bar-my-sites" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/my-sites.php">Mes sites</a><div class="ab-sub-wrapper"><ul role="menu" id="wp-admin-bar-my-sites-list" class="ab-submenu"><li role="group" id="wp-admin-bar-blog-419" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/"><span class="wp-admin-bar-arrow" aria-hidden="true"></span><img class="blavatar" src="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/05/cropped-Symbole-lumineux-sur-fond-sombre-1-32x32.png" srcset="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/05/cropped-Symbole-lumineux-sur-fond-sombre-1-32x32.png 2x" alt="" width="16" height="16" loading="lazy">TCRR vous transporte</a><div class="ab-sub-wrapper"><ul role="menu" id="wp-admin-bar-blog-419-default" class="ab-submenu"><li role="group" id="wp-admin-bar-blog-419-d"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/">Tableau de bord</a></li><li role="group" id="wp-admin-bar-blog-419-n"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/post-new.php">Nouvel article</a></li><li role="group" id="wp-admin-bar-blog-419-c"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/edit-comments.php">Gérer les commentaires</a></li><li role="group" id="wp-admin-bar-blog-419-v"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/">Aller sur le site</a></li></ul></div></li></ul></div></li><li role="group" id="wp-admin-bar-site-name" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/">TCRR vous transporte</a><div class="ab-sub-wrapper"><ul role="menu" aria-label="TCRR vous transporte" id="wp-admin-bar-site-name-default" class="ab-submenu"><li role="group" id="wp-admin-bar-dashboard"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/">Tableau de bord</a></li></ul><ul role="menu" aria-label="TCRR vous transporte" id="wp-admin-bar-appearance" class="ab-submenu"><li role="group" id="wp-admin-bar-themes"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/themes.php">Thèmes</a></li><li role="group" id="wp-admin-bar-widgets"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/widgets.php">Widgets</a></li><li role="group" id="wp-admin-bar-menus"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/nav-menus.php">Menus</a></li><li role="group" id="wp-admin-bar-background" class="hide-if-customize"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/themes.php?page=custom-background">Arrière-plan</a></li><li role="group" id="wp-admin-bar-header" class="hide-if-customize"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/themes.php?page=custom-header">Entête</a></li></ul></div></li><li role="group" id="wp-admin-bar-customize" class="hide-if-no-customize"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/customize.php?url=https%3A%2F%2Fseal.transport-manager.net%2Fdernier_ordre%2Ftransport-a-la-demande-tad%2F">Personnaliser</a></li><li role="group" id="wp-admin-bar-comments"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/edit-comments.php"><span class="ab-icon" aria-hidden="true"></span><span class="ab-label awaiting-mod pending-count count-0" aria-hidden="true">0</span><span class="screen-reader-text comments-in-moderation-text">0 commentaire en modération</span></a></li><li role="group" id="wp-admin-bar-new-content" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/post-new.php"><span class="ab-icon" aria-hidden="true"></span><span class="ab-label">Créer</span></a><div class="ab-sub-wrapper"><ul role="menu" aria-label="Créer" id="wp-admin-bar-new-content-default" class="ab-submenu"><li role="group" id="wp-admin-bar-new-post"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/post-new.php">Article</a></li><li role="group" id="wp-admin-bar-new-media"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/media-new.php">Fichier média</a></li><li role="group" id="wp-admin-bar-new-page"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/post-new.php?post_type=page">Page</a></li><li role="group" id="wp-admin-bar-new-tribe_events"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/post-new.php?post_type=tribe_events">Évènement</a></li><li role="group" id="wp-admin-bar-new-user"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/user-new.php">Compte</a></li><li role="group" id="wp-admin-bar-wpforms"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-builder">WPForms</a></li></ul></div></li><li role="group" id="wp-admin-bar-edit"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/post.php?post=3203&amp;action=edit">Modifier la page</a></li><li role="group" id="wp-admin-bar-wpforms-menu" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-overview">WPForms</a><div class="ab-sub-wrapper"><ul role="menu" id="wp-admin-bar-wpforms-menu-default" class="ab-submenu"><li role="group" id="wp-admin-bar-wpforms-forms"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-overview">Tous les formulaires</a></li><li role="group" id="wp-admin-bar-wpforms-add-new"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-builder">Add New Form</a></li><li role="group" id="wp-admin-bar-wpforms-payments"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-payments">Paiements</a></li><li role="group" id="wp-admin-bar-wpforms-settings" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-settings"><span class="wp-admin-bar-arrow" aria-hidden="true"></span>Réglages</a><div class="ab-sub-wrapper"><ul role="menu" id="wp-admin-bar-wpforms-settings-default" class="ab-submenu"><li role="group" id="wp-admin-bar-wpforms-general-settings"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-settings&amp;view=general">Général</a></li><li role="group" id="wp-admin-bar-wpforms-email-settings"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-settings&amp;view=email">E-mail</a></li><li role="group" id="wp-admin-bar-wpforms-captcha-settings"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-settings&amp;view=captcha">CAPTCHA</a></li><li role="group" id="wp-admin-bar-wpforms-validation-settings"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-settings&amp;view=validation">Validation</a></li><li role="group" id="wp-admin-bar-wpforms-payments-settings"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-settings&amp;view=payments">Paiements</a></li><li role="group" id="wp-admin-bar-wpforms-integrations-settings"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-settings&amp;view=integrations">Intégrations</a></li><li role="group" id="wp-admin-bar-wpforms-geolocation-settings"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-settings&amp;view=geolocation">Géolocalisation</a></li><li role="group" id="wp-admin-bar-wpforms-access-settings"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-settings&amp;view=access">Contrôle d’accès</a></li><li role="group" id="wp-admin-bar-wpforms-misc-settings"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-settings&amp;view=misc">Divers</a></li></ul></div></li><li role="group" id="wp-admin-bar-wpforms-tools" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools"><span class="wp-admin-bar-arrow" aria-hidden="true"></span>Outils</a><div class="ab-sub-wrapper"><ul role="menu" id="wp-admin-bar-wpforms-tools-default" class="ab-submenu"><li role="group" id="wp-admin-bar-wpforms-tools-import"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=import">Importer</a></li><li role="group" id="wp-admin-bar-wpforms-tools-export"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=export">Exporter</a></li><li role="group" id="wp-admin-bar-wpforms-tools-entry-automation"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=entry-automation">Entry Automation</a></li><li role="group" id="wp-admin-bar-wpforms-tools-system"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=system">Infos système</a></li><li role="group" id="wp-admin-bar-wpforms-tools-action-scheduler" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=action-scheduler&amp;s=wpforms"><span class="wp-admin-bar-arrow" aria-hidden="true"></span>Actions planifiées</a><div class="ab-sub-wrapper"><ul role="menu" id="wp-admin-bar-wpforms-tools-action-scheduler-default" class="ab-submenu"><li role="group" id="wp-admin-bar-wpforms-tools-action-scheduler-all"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=action-scheduler&amp;s=wpforms&amp;orderby=hook&amp;order=desc">Tout voir</a></li><li role="group" id="wp-admin-bar-wpforms-tools-action-scheduler-complete"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=action-scheduler&amp;s=wpforms&amp;status=complete&amp;orderby=hook&amp;order=desc">Actions terminées</a></li><li role="group" id="wp-admin-bar-wpforms-tools-action-scheduler-failed"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=action-scheduler&amp;s=wpforms&amp;status=failed&amp;orderby=hook&amp;order=desc">Actions échouées</a></li><li role="group" id="wp-admin-bar-wpforms-tools-action-scheduler-pending"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=action-scheduler&amp;s=wpforms&amp;status=pending&amp;orderby=hook&amp;order=desc">Actions en attente</a></li><li role="group" id="wp-admin-bar-wpforms-tools-action-scheduler-past-due"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=action-scheduler&amp;s=wpforms&amp;status=past-due&amp;orderby=hook&amp;order=desc">Actions en retard</a></li></ul></div></li><li role="group" id="wp-admin-bar-wpforms-tools-logs"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=logs">Journaux</a></li><li role="group" id="wp-admin-bar-wpforms-tools-wpcode"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/admin.php?page=wpforms-tools&amp;view=wpcode">Extraits de code</a></li></ul></div></li><li role="group" id="wp-admin-bar-wpforms-community"><a class="ab-item" role="menuitem" href="https://www.facebook.com/groups/wpformsvip/" target="_blank" rel="noopener noreferrer">Communauté</a></li><li role="group" id="wp-admin-bar-wpforms-help-docs"><a class="ab-item" role="menuitem" href="https://wpforms.com/docs/?utm_campaign=liteplugin&amp;utm_medium=admin-bar&amp;utm_source=WordPress&amp;utm_content=Documentation" target="_blank" rel="noopener noreferrer">Docs d’aide</a></li><li role="group" id="wp-admin-bar-wpforms-upgrade"><a class="ab-item" role="menuitem" href="https://wpforms.com/lite-upgrade/?utm_campaign=liteplugin&amp;utm_source=WordPress&amp;utm_medium=admin-bar&amp;utm_content=Upgrade%20to%20Pro&amp;utm_locale=fr_FR" target="_blank" rel="noopener noreferrer">Passer à la version Pro</a></li></ul></div></li><li role="group" id="wp-admin-bar-tribe-events" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/events/"><div id="tec-events-ab-icon" class="ab-item tec-events-logo svg"></div>Évènements</a><div class="ab-sub-wrapper"><ul role="menu" id="wp-admin-bar-tribe-events-group" class="ab-submenu"><li role="group" id="wp-admin-bar-tribe-events-view-calendar"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/events/">Voir le calendrier</a></li><li role="group" id="wp-admin-bar-tribe-events-add-event"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/post-new.php?post_type=tribe_events">Ajouter un Évènement</a></li><li role="group" id="wp-admin-bar-tribe-events-edit-events"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/edit.php?post_type=tribe_events">Modifier Évènements</a></li></ul><div id="wp-admin-bar-tribe-events-add-ons-group-container" class="ab-group-container"><ul role="menu" id="wp-admin-bar-tribe-events-import-group" class="ab-submenu"><li role="group" id="wp-admin-bar-tribe-events-import" class="menupop"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/edit.php?post_type=tribe_events&amp;page=aggregator"><span class="wp-admin-bar-arrow" aria-hidden="true"></span>Importer</a><div class="ab-sub-wrapper"><ul role="menu" id="wp-admin-bar-tribe-events-import-default" class="ab-submenu"><li role="group" id="wp-admin-bar-tribe-aggregator-import-csv"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/edit.php?page=aggregator&amp;post_type=tribe_events&amp;ea-origin=csv">Fichier CSV</a></li></ul></div></li></ul></div><ul role="menu" id="wp-admin-bar-tribe-events-settings-group" class="ab-submenu"><li role="group" id="wp-admin-bar-tribe-events-settings"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/edit.php?page=tec-events-settings&amp;post_type=tribe_events">Réglages</a></li><li role="group" id="wp-admin-bar-tribe-events-help"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/edit.php?post_type=tribe_events&amp;page=tec-events-help-hub">Aide</a></li></ul></div></li></ul><ul role="menu" id="wp-admin-bar-top-secondary" class="ab-top-secondary ab-top-menu"><li role="group" id="wp-admin-bar-my-account" class="menupop with-avatar"><a class="ab-item" role="menuitem" aria-expanded="false" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/profile.php">Bonjour, <span class="display-name">dernier1ordre</span><img alt="" src="https://secure.gravatar.com/avatar/4d950a59f8e48f32f2cbc9f55dd7bdfb8ffb23c10396a72a991716cb945d5272?s=26&amp;d=mm&amp;r=g" srcset="https://secure.gravatar.com/avatar/4d950a59f8e48f32f2cbc9f55dd7bdfb8ffb23c10396a72a991716cb945d5272?s=52&amp;d=mm&amp;r=g 2x" class="avatar avatar-26 photo" height="26" width="26" decoding="async"></a><div class="ab-sub-wrapper"><ul role="menu" aria-label="Bonjour, dernier1ordre" id="wp-admin-bar-user-actions" class="ab-submenu"><li role="group" id="wp-admin-bar-user-info"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-admin/profile.php"><img alt="" src="https://secure.gravatar.com/avatar/4d950a59f8e48f32f2cbc9f55dd7bdfb8ffb23c10396a72a991716cb945d5272?s=64&amp;d=mm&amp;r=g" srcset="https://secure.gravatar.com/avatar/4d950a59f8e48f32f2cbc9f55dd7bdfb8ffb23c10396a72a991716cb945d5272?s=128&amp;d=mm&amp;r=g 2x" class="avatar avatar-64 photo" height="64" width="64" decoding="async"><span class="display-name">dernier1ordre</span><span class="display-name edit-profile">Modifier le profil</span></a></li><li role="group" id="wp-admin-bar-logout"><a class="ab-item" role="menuitem" href="https://seal.transport-manager.net/dernier_ordre/wp-login.php?action=logout&amp;_wpnonce=ba92035f07">Se déconnecter</a></li></ul></div></li><li role="group" id="wp-admin-bar-search" class="admin-bar-search"><div class="ab-item ab-empty-item" tabindex="-1" role="menuitem"><form action="https://seal.transport-manager.net/dernier_ordre/" method="get" id="adminbarsearch"><input class="adminbar-input" name="s" id="adminbar-search" type="text" value="" maxlength="150"><label for="adminbar-search" class="screen-reader-text">Rechercher</label><input type="submit" class="adminbar-button" value="Rechercher"></form></div></li></ul>			</div>
-		</div>
-
-		    <style>
-        .screen-reader-text[href="#page-content"]:focus {
-            background-color: #f1f1f1;
-            border-radius: 3px;
-            box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
-            clip: auto !important;
-            clip-path: none;
-            color: #21759b;
-           
-        }
-    </style>
-    <a class="skip-link screen-reader-text" href="#page-content">Skip to content</a>
-    <div id="page-top" class="header-top">
-        <div style="visibility: hidden; display: none;"></div><div class="navigation-bar" data-sticky="0" data-sticky-mobile="1" data-sticky-to="top" style="z-index: 10000;">
-    <div class="navigation-wrapper">
-        <div class="row basis-auto">
-            <div class="logo_col col-xs col-sm-fit">
-                <a href="https://seal.transport-manager.net/dernier_ordre/" class="custom-logo-link" rel="home"><img width="840" height="318" src="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO.png" class="custom-logo" alt="TCRR vous transporte" decoding="async" fetchpriority="high" srcset="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO.png 840w, https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO-300x114.png 300w, https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO-768x291.png 768w" sizes="(max-width: 840px) 100vw, 840px"></a>            </div>
-            <div class="main_menu_col col-xs">
-                <div id="mainmenu_container" class="row"><ul id="main_menu" class="simple-text-buttons main-menu dropdown-menu"><li id="menu-item-129" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-129"><a href="https://seal.transport-manager.net/dernier_ordre" class="mdc-ripple-upgraded">ACCUEIL</a></li>
-<li id="menu-item-1111" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1111"><a href="https://seal.transport-manager.net/dernier_ordre/category/notre-entreprise/" class="mdc-ripple-upgraded">NOTRE ENTREPRISE</a>
-<ul class="sub-menu">
-	<li id="menu-item-1226" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1226"><a href="https://seal.transport-manager.net/dernier_ordre/notre-entreprise/" class="mdc-ripple-upgraded">Notre entreprise</a>
-	<ul class="sub-menu">
-		<li id="menu-item-1227" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1227"><a href="https://seal.transport-manager.net/dernier_ordre/page-d-exemple/" class="mdc-ripple-upgraded">L’évolution de notre entreprise</a></li>
-		<li id="menu-item-1228" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1228"><a href="https://seal.transport-manager.net/dernier_ordre/politique-de-lentreprise/" class="mdc-ripple-upgraded">Politique de l’entreprise</a></li>
-	</ul>
-</li>
-	<li id="menu-item-1109" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1109"><a href="https://seal.transport-manager.net/dernier_ordre/category/la-flotte/" class="mdc-ripple-upgraded">La Flotte</a>
-	<ul class="sub-menu">
-		<li id="menu-item-988" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-988"><a href="https://seal.transport-manager.net/dernier_ordre/la-flotte/" class="mdc-ripple-upgraded">Index des Modèles</a></li>
-		<li id="menu-item-427" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-427"><a href="https://seal.transport-manager.net/dernier_ordre/repartition-des-vheicule/" class="mdc-ripple-upgraded">Répartition des véhicule</a></li>
-	</ul>
-</li>
-	<li id="menu-item-532" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-532"><a href="https://seal.transport-manager.net/dernier_ordre/preservation/" class="mdc-ripple-upgraded">Préservation</a></li>
-</ul>
-</li>
-<li id="menu-item-1112" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1112"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/" class="mdc-ripple-upgraded">VOTRE MOBILITÉ</a>
-<ul class="sub-menu">
-	<li id="menu-item-91" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-91"><a href="https://seal.transport-manager.net/dernier_ordre/agence/" class="mdc-ripple-upgraded">Les agence</a></li>
-	<li id="menu-item-97" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-97"><a href="https://seal.transport-manager.net/dernier_ordre/le-plan-du-reseau/" class="mdc-ripple-upgraded">Le plan du réseau</a></li>
-	<li id="menu-item-3819" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3819"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/" class="mdc-ripple-upgraded">Vos lignes</a>
-	<ul class="sub-menu">
-		<li id="menu-item-3823" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3823"><a href="https://seal.transport-manager.net/dernier_ordre/ligne-urbaine/" class="mdc-ripple-upgraded">Ligne Urbaine</a></li>
-		<li id="menu-item-3822" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3822"><a href="https://seal.transport-manager.net/dernier_ordre/ligne-suburbaine/" class="mdc-ripple-upgraded">Ligne Suburbaine</a></li>
-		<li id="menu-item-3820" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3820"><a href="https://seal.transport-manager.net/dernier_ordre/ligne-interurbaine/" class="mdc-ripple-upgraded">Ligne Interurbaine</a></li>
-		<li id="menu-item-3821" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3821"><a href="https://seal.transport-manager.net/dernier_ordre/ligne-navette/" class="mdc-ripple-upgraded">Ligne Navette</a></li>
-	</ul>
-</li>
-</ul>
-</li>
-<li id="menu-item-1110" class="menu-item menu-item-type-taxonomy menu-item-object-category current-menu-ancestor current-menu-parent menu-item-has-children menu-item-1110"><a href="https://seal.transport-manager.net/dernier_ordre/category/nos-service/" class="mdc-ripple-upgraded">NOS SERVICE</a>
-<ul class="sub-menu">
-	<li id="menu-item-101" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-101"><a href="https://seal.transport-manager.net/dernier_ordre/espace-billetique/" class="mdc-ripple-upgraded">Espace billettique</a></li>
-	<li id="menu-item-102" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-102"><a href="https://seal.transport-manager.net/dernier_ordre/espace-calendrier/" class="mdc-ripple-upgraded">Espace calendrier</a></li>
-	<li id="menu-item-3205" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-3203 current_page_item menu-item-3205"><a href="https://seal.transport-manager.net/dernier_ordre/transport-a-la-demande-tad/" aria-current="page" class="mdc-ripple-upgraded">Transport à la Demande (TAD)</a></li>
-</ul>
-</li>
-<li id="menu-item-140" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-140"><a href="https://seal.transport-manager.net/dernierordre/events/" class="mdc-ripple-upgraded">INFO TRAFIC</a></li>
-</ul></div>    <a href="#" data-component="offcanvas" data-target="#offcanvas-wrapper" data-direction="right" data-width="300px" data-push="false" data-loaded="true">
-        <div class="bubble"></div>
-        <i class="mdi mdi-view-sequential"></i>
-    </a>
-    
-                </div>
-        </div>
-    </div>
-</div>
-</div>
-
-<div id="page" class="site">
-    <div class="header-wrapper">
-        <div class="header  color-overlay  custom-mobile-image" style="background-image: url(&quot;https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/09/lyon_night_header_resized.jpg&quot;); background-color: rgba(106, 115, 218, 0); padding-top: 111.031px;">
-                                        <div class="inner-header-description gridContainer">
-        <div class="row header-description-row">
-            <div class="col-xs col-xs-12">
-                <h1 class="hero-title">
-                    Transport à la Demande (TAD)                </h1>
-                                    <p class="header-subtitle"></p>
-                            </div>
-
-        </div>
-    </div>
-        <script>
-		if (window.materialisSetHeaderTopSpacing) {
-			window.materialisSetHeaderTopSpacing();
-		}
-    </script>
-                        </div>
-    </div>
-
-<div class="page-content mdc-elevation--z20  boxed-layout" style="margin-top:-0px" id="page-content">
-  <div class="gridContainer content">
-   <div id="post-3203" class="post-3203 page type-page status-publish hentry">
-  <div>
-   
-<div style="background:#111;border-top:4px solid #c0000a;padding:28px 24px;text-align:center;font-family:sans-serif;margin:20px 0">
-  <div style="color:#c0000a;font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">
-    Transport à la Demande — Lignes R1 &amp; R2
-  </div>
-  <div style="color:#f0f0f0;font-size:1.3rem;font-weight:700;letter-spacing:1px;margin-bottom:18px">
-    <img draggable="false" role="img" class="emoji" alt="🚌" src="https://s.w.org/images/core/emoji/17.0.2/svg/1f68c.svg"> Réserver votre trajet en ligne
-  </div>
-  <a href="https://dernier-ordre.github.io/Mes-indice-de-ligne-et-thermom-tre-de-ligne/formulaire réservation TAD.html" target="_blank" style="background:#c0000a;color:#fff;text-decoration:none;font-weight:700;font-size:0.95rem;letter-spacing:3px;text-transform:uppercase;padding:14px 36px">
-    <img draggable="false" role="img" class="emoji" alt="▶" src="https://s.w.org/images/core/emoji/17.0.2/svg/25b6.svg"> ACCÉDER AU FORMULAIRE
-  </a>
-  <div style="color:#555;font-size:0.72rem;letter-spacing:1px;text-transform:uppercase;margin-top:14px">
-    Réservation possible de 24h à 2 mois avant le trajet
-  </div>
-</div>
-
-
-
-<p class="wp-block-paragraph"></p>
-  </div>
-    </div>
-  </div>
-</div>
-
-</div>
-<div class="footer footer-contact-boxes">
-    <div class="footer-content">
-        <div class="gridContainer">
-            <div class="row text-center">
-                <div class="col-sm-3">
-                        <div data-type="group" data-dynamic-mod="true">
-        <i class="big-icon mdi mdi-alert-circle"></i>
-        <p>
-            IL S'AGIT D'UN RÉSEAUX DE TRANSPORT FICTIF TOUTE RESSEMBLANCE AVEC UN VRAIS RESEAUX DE TRANSPORT SERAIT FORTUITE        </p>
-    </div>
-                    </div>
-                <div class="col-sm-3">
-                        <div data-type="group" data-dynamic-mod="true">
-        <i class="big-icon mdi mdi-bus"></i>
-        <p>
-            RÉSEAU TCRR        </p>
-    </div>
-                    </div>
-                <div class="col-sm-3">
-                        <div data-type="group" data-dynamic-mod="true">
-        <i class="big-icon mdi mdi-account"></i>
-        <p>
-            SITE DÉVELOPPÉ PAR DERNIER ORDRE        </p>
-    </div>
-                    </div>
-                <div class="col-sm-3 footer-bg-accent">
-                    <div>
-                            <div data-type="group" data-dynamic-mod="true" class="footer-social-icons">
+    <style>
+        body.custom-background { background-color: #ffffff; }
+        .materialis-front-page .content.blog-page, .materialis-inner-page .page-content, .materialis-inner-page .content { background-color: #ffffff; }
         
-    </div>
+        /* Styles de ton formulaire TAD */
+        .tad-form-wrapper { max-width: 700px; margin: 40px auto; padding: 30px; background: #f9f9f9; border-top: 4px solid #c0000a; border-radius: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .tad-form-wrapper h2 { color: #c0000a; font-weight: 700; text-align: center; margin-bottom: 20px; font-size: 1.5rem; }
+        .tad-form label { display: block; margin-top: 15px; font-weight: bold; color: #333; }
+        .tad-form input, .tad-form select { width: 100%; padding: 12px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .tad-form button { background-color: #c0000a; color: white; border: none; cursor: pointer; font-weight: bold; padding: 15px; width: 100%; margin-top: 25px; border-radius: 4px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .tad-form button:hover { background-color: #a00008; }
+        #message-confirmation { display: none; background-color: #d4edda; color: #155724; padding: 20px; border: 1px solid #c3e6cb; border-radius: 5px; text-align: center; margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
 
+<body class="wp-singular page-template-default page custom-background wp-custom-logo wp-theme-materialis materialis-inner-page">
+
+    <!-- MENU DE NAVIGATION -->
+    <div id="page-top" class="header-top">
+        <div class="navigation-bar" data-sticky="0" data-sticky-mobile="1" data-sticky-to="top" style="z-index: 10000;">
+            <div class="navigation-wrapper">
+                <div class="row basis-auto">
+                    <div class="logo_col col-xs col-sm-fit">
+                        <a href="https://seal.transport-manager.net/dernier_ordre/" class="custom-logo-link" rel="home">
+                            <img width="840" height="318" src="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO.png" class="custom-logo" alt="TCRR vous transporte">
+                        </a>
+                    </div>
+                    <div class="main_menu_col col-xs">
+                        <div id="mainmenu_container" class="row">
+                            <ul id="main_menu" class="simple-text-buttons main-menu dropdown-menu">
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre" class="mdc-ripple-upgraded">ACCUEIL</a></li>
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/category/notre-entreprise/" class="mdc-ripple-upgraded">NOTRE ENTREPRISE</a></li>
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/" class="mdc-ripple-upgraded">VOTRE MOBILITÉ</a></li>
+                                <li class="menu-item current-menu-ancestor current-menu-parent"><a href="https://seal.transport-manager.net/dernier_ordre/category/nos-service/" class="mdc-ripple-upgraded">NOS SERVICES</a></li>
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernierordre/events/" class="mdc-ripple-upgraded">INFO TRAFIC</a></li>
+                            </ul>
                         </div>
-                    <p class="copyright">©&nbsp;&nbsp;2026&nbsp;TCRR vous transporte.&nbsp;Construit avec WordPress et le <a rel="nofollow" target="_blank" href="https://extendthemes.com/go/built-with-materialis/">thème Materialis</a></p>                </div>
+                        <a href="#" data-component="offcanvas" data-target="#offcanvas-wrapper" data-direction="right" data-width="300px" data-push="false">
+                            <i class="mdi mdi-view-sequential"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-		<script>
-		( function ( body ) {
-			'use strict';
-			body.className = body.className.replace( /\btribe-no-js\b/, 'tribe-js' );
-		} )( document.body );
-		</script>
-		<script> /* <![CDATA[ */var tribe_l10n_datatables = {"aria":{"sort_ascending":": activate to sort column ascending","sort_descending":": activate to sort column descending"},"length_menu":"Show _MENU_ entries","empty_table":"No data available in table","info":"Showing _START_ to _END_ of _TOTAL_ entries","info_empty":"Showing 0 to 0 of 0 entries","info_filtered":"(filtered from _MAX_ total entries)","zero_records":"No matching records found","search":"Search:","all_selected_text":"All items on this page were selected. ","select_all_link":"Select all pages","clear_selection":"Clear Selection.","pagination":{"all":"All","next":"Next","previous":"Previous"},"select":{"rows":{"0":"","_":": Selected %d rows","1":": Selected 1 row"}},"datepicker":{"dayNames":["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"],"dayNamesShort":["dim","lun","mar","mer","jeu","ven","sam"],"dayNamesMin":["D","L","M","M","J","V","S"],"monthNames":["janvier","f\u00e9vrier","mars","avril","mai","juin","juillet","ao\u00fbt","septembre","octobre","novembre","d\u00e9cembre"],"monthNamesShort":["janvier","f\u00e9vrier","mars","avril","mai","juin","juillet","ao\u00fbt","septembre","octobre","novembre","d\u00e9cembre"],"monthNamesMin":["Jan","F\u00e9v","Mar","Avr","Mai","Juin","Juil","Ao\u00fbt","Sep","Oct","Nov","D\u00e9c"],"nextText":"Next","prevText":"Prev","currentText":"Today","closeText":"Done","today":"Today","clear":"Clear"}};/* ]]> */ </script>    <script>
-        /(trident|msie)/i.test(navigator.userAgent) && document.getElementById && window.addEventListener && window.addEventListener("hashchange", function() {
-            var t, e = location.hash.substring(1);
-            /^[A-z0-9_-]+$/.test(e) && (t = document.getElementById(e)) && (/^(?:a|select|input|button|textarea)$/i.test(t.tagName) || (t.tabIndex = -1), t.focus())
-        }, !1);
-    </script>
-<script id="hoverintent-js-js" src="https://seal.transport-manager.net/dernier_ordre/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
-<script id="admin-bar-js-before">
-( function() {
-				function wpforms_admin_bar_menu_init() {
-					var template = document.getElementById( 'tmpl-wpforms-admin-menubar-data' ),
-						notifications = document.getElementById( 'wp-admin-bar-wpforms-notifications' );
 
-					if ( ! template ) {
-						return;
-					}
-
-					if ( ! notifications ) {
-						var menu = document.getElementById( 'wp-admin-bar-wpforms-menu-default' );
-
-						if ( ! menu ) {
-							return;
-						}
-
-						menu.insertAdjacentHTML( 'afterBegin', template.innerHTML );
-					} else {
-						notifications.insertAdjacentHTML( 'afterend', template.innerHTML );
-					}
-				};
-				document.addEventListener( 'DOMContentLoaded', wpforms_admin_bar_menu_init );
-			}() );
-//# sourceURL=admin-bar-js-before
-</script>
-<script id="admin-bar-js" src="https://seal.transport-manager.net/dernier_ordre/wp-includes/js/admin-bar.min.js?ver=7.0"></script>
-<script id="tec-user-agent-js" src="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/the-events-calendar/common/build/js/user-agent.js?ver=da75d0bdea6dde3898df"></script>
-<script id="call_ac-custom-js-front-js" src="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/responsive-accordion-and-collapse/js/accordion-custom.js?ver=7.0"></script>
-<script id="call_ac-js-front-js" src="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/responsive-accordion-and-collapse/js/accordion.js?ver=7.0"></script>
-<script id="wpsm_tabs_pro_bootstrap-js-front-js" src="https://seal.transport-manager.net/dernier_ordre/wp-content/plugins/tabs-pro/assets/js/bootstrap.js?ver=7.0"></script>
-<script id="jquery-effects-core-js" src="https://seal.transport-manager.net/dernier_ordre/wp-includes/js/jquery/ui/effect.min.js?ver=1.13.3"></script>
-<script id="jquery-effects-slide-js" src="https://seal.transport-manager.net/dernier_ordre/wp-includes/js/jquery/ui/effect-slide.min.js?ver=1.13.3"></script>
-<script id="imagesloaded-js" defer="defer" src="https://seal.transport-manager.net/dernier_ordre/wp-includes/js/imagesloaded.min.js?ver=5.0.0"></script>
-<script id="masonry-js" defer="defer" src="https://seal.transport-manager.net/dernier_ordre/wp-includes/js/masonry.min.js?ver=4.2.2"></script>
-<script id="materialis-theme-js" defer="defer" src="https://seal.transport-manager.net/dernier_ordre/wp-content/themes/materialis/assets/js/theme.bundle.min.js?ver=1.1.65"></script>
-<script id="wp-emoji-settings" type="application/json">
-{"baseUrl":"https://s.w.org/images/core/emoji/17.0.2/72x72/","ext":".png","svgUrl":"https://s.w.org/images/core/emoji/17.0.2/svg/","svgExt":".svg","source":{"concatemoji":"https://seal.transport-manager.net/dernier_ordre/wp-includes/js/wp-emoji-release.min.js?ver=7.0"}}
-</script>
-<script type="module">
-/*! This file is auto-generated */
-const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(window._wpemojiSettings=a,"wpEmojiSettingsSupports"),s=["flag","emoji"];function i(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function c(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0);const a=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);return t.every((e,t)=>e===a[t])}function p(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var n=e.getImageData(16,16,1,1);for(let e=0;e<n.data.length;e++)if(0!==n.data[e])return!1;return!0}function u(e,t,n,a){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!a(e,"\ud83e\u1fac8")}return!1}function f(e,t,n,a){let r;const o=(r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):document.createElement("canvas")).getContext("2d",{willReadFrequently:!0}),s=(o.textBaseline="top",o.font="600 32px Arial",{});return e.forEach(e=>{s[e]=t(o,e,n,a)}),s}function r(e){var t=document.createElement("script");t.src=e,t.defer=!0,document.head.appendChild(t)}a.supports={everything:!0,everythingExceptFlag:!0},new Promise(t=>{let n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),c.toString(),p.toString()].join(",")+"));",a=new Blob([e],{type:"text/javascript"});const r=new Worker(URL.createObjectURL(a),{name:"wpTestEmojiSupports"});return void(r.onmessage=e=>{i(n=e.data),r.terminate(),t(n)})}catch(e){}i(n=f(s,u,c,p))}t(n)}).then(e=>{for(const n in e)a.supports[n]=e[n],a.supports.everything=a.supports.everything&&a.supports[n],"flag"!==n&&(a.supports.everythingExceptFlag=a.supports.everythingExceptFlag&&a.supports[n]);var t;a.supports.everythingExceptFlag=a.supports.everythingExceptFlag&&!a.supports.flag,a.supports.everything||((t=a.source||{}).concatemoji?r(t.concatemoji):t.wpemoji&&t.twemoji&&(r(t.twemoji),r(t.wpemoji)))});
-//# sourceURL=https://seal.transport-manager.net/dernier_ordre/wp-includes/js/wp-emoji-loader.min.js
-</script>
-
-
-<div id="offcanvas-wrapper" class="hide offcanvas-right offcanvas">
-        <div class="offcanvas-top">
-            <div class="logo-holder">
-                <a href="https://seal.transport-manager.net/dernier_ordre/" class="custom-logo-link" rel="home"><img width="840" height="318" src="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO.png" class="custom-logo" alt="TCRR vous transporte" decoding="async" srcset="https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO.png 840w, https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO-300x114.png 300w, https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2026/02/TCRR-LOGO-768x291.png 768w" sizes="(max-width: 840px) 100vw, 840px"></a>            </div>
+    <div id="page" class="site">
+        <!-- BANNIERE HEADER -->
+        <div class="header-wrapper">
+            <div class="header color-overlay" style="background-image: url('https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/09/lyon_night_header_resized.jpg'); padding-top: 111px;">
+                <div class="inner-header-description gridContainer">
+                    <div class="row header-description-row">
+                        <div class="col-xs col-xs-12">
+                            <h1 class="hero-title" style="text-align: center;">Réservation TAD</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="offcanvas-menu" class="menu-menu-container"><ul id="offcanvas_menu" class="offcanvas_menu"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-129"><a href="https://seal.transport-manager.net/dernier_ordre">ACCUEIL</a></li>
-<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1111"><a href="https://seal.transport-manager.net/dernier_ordre/category/notre-entreprise/">NOTRE ENTREPRISE<i class="mdi mdi-chevron-right"></i></a>
-<ul class="sub-menu">
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1226"><a href="https://seal.transport-manager.net/dernier_ordre/notre-entreprise/">Notre entreprise<i class="mdi mdi-chevron-right"></i></a>
-	<ul class="sub-menu">
-		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1227"><a href="https://seal.transport-manager.net/dernier_ordre/page-d-exemple/">L’évolution de notre entreprise</a></li>
-		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1228"><a href="https://seal.transport-manager.net/dernier_ordre/politique-de-lentreprise/">Politique de l’entreprise</a></li>
-	</ul>
-</li>
-	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1109"><a href="https://seal.transport-manager.net/dernier_ordre/category/la-flotte/">La Flotte<i class="mdi mdi-chevron-right"></i></a>
-	<ul class="sub-menu">
-		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-988"><a href="https://seal.transport-manager.net/dernier_ordre/la-flotte/">Index des Modèles</a></li>
-		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-427"><a href="https://seal.transport-manager.net/dernier_ordre/repartition-des-vheicule/">Répartition des véhicule</a></li>
-	</ul>
-</li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-532"><a href="https://seal.transport-manager.net/dernier_ordre/preservation/">Préservation</a></li>
-</ul>
-</li>
-<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1112"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/">VOTRE MOBILITÉ<i class="mdi mdi-chevron-right"></i></a>
-<ul class="sub-menu">
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-91"><a href="https://seal.transport-manager.net/dernier_ordre/agence/">Les agence</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-97"><a href="https://seal.transport-manager.net/dernier_ordre/le-plan-du-reseau/">Le plan du réseau</a></li>
-	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3819"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/">Vos lignes<i class="mdi mdi-chevron-right"></i></a>
-	<ul class="sub-menu">
-		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3823"><a href="https://seal.transport-manager.net/dernier_ordre/ligne-urbaine/">Ligne Urbaine</a></li>
-		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3822"><a href="https://seal.transport-manager.net/dernier_ordre/ligne-suburbaine/">Ligne Suburbaine</a></li>
-		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3820"><a href="https://seal.transport-manager.net/dernier_ordre/ligne-interurbaine/">Ligne Interurbaine</a></li>
-		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3821"><a href="https://seal.transport-manager.net/dernier_ordre/ligne-navette/">Ligne Navette</a></li>
-	</ul>
-</li>
-</ul>
-</li>
-<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-menu-ancestor current-menu-parent menu-item-has-children menu-item-1110"><a href="https://seal.transport-manager.net/dernier_ordre/category/nos-service/">NOS SERVICE<i class="mdi mdi-chevron-right"></i></a>
-<ul class="sub-menu">
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-101"><a href="https://seal.transport-manager.net/dernier_ordre/espace-billetique/">Espace billettique</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-102"><a href="https://seal.transport-manager.net/dernier_ordre/espace-calendrier/">Espace calendrier</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-3203 current_page_item menu-item-3205"><a href="https://seal.transport-manager.net/dernier_ordre/transport-a-la-demande-tad/" aria-current="page">Transport à la Demande (TAD)</a></li>
-</ul>
-</li>
-<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-140"><a href="https://seal.transport-manager.net/dernierordre/events/">INFO TRAFIC</a></li>
-</ul></div>
-            </div></body></html>
+
+        <!-- CONTENU DE LA PAGE : LE FORMULAIRE -->
+        <div class="page-content mdc-elevation--z20 boxed-layout" id="page-content">
+            <div class="gridContainer content">
+                
+                <div class="tad-form-wrapper">
+                    <h2>🚌 Réserver votre trajet en ligne</h2>
+                    <p style="text-align: center; color: #555; font-size: 0.9rem;">Lignes R1 & R2 — Réservation possible de 24h à 2 mois avant le trajet.</p>
+                    
+                    <form id="formulaire-tad" class="tad-form">
+                        <label for="nom">Nom / Pseudo usager :</label>
+                        <input type="text" id="nom" required placeholder="Votre nom sur le réseau">
+
+                        <label for="ligne">Ligne TAD :</label>
+                        <select id="ligne" required>
+                            <option value="">Sélectionnez votre ligne...</option>
+                            <option value="Ligne R1">Ligne R1</option>
+                            <option value="Ligne R2">Ligne R2</option>
+                        </select>
+
+                        <label for="arret">Arrêt de prise en charge :</label>
+                        <input type="text" id="arret" required placeholder="Nom de l'arrêt de départ">
+
+                        <label for="date-heure">Date et Heure du trajet :</label>
+                        <input type="datetime-local" id="date-heure" required>
+
+                        <button type="submit">Confirmer la réservation</button>
+                    </form>
+
+                    <div id="message-confirmation">
+                        Votre réservation a bien été envoyée au PC Régulation ! Merci de votre confiance.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- PIED DE PAGE -->
+    <div class="footer footer-contact-boxes">
+        <div class="footer-content">
+            <div class="gridContainer">
+                <div class="row text-center">
+                    <div class="col-sm-3">
+                        <div>
+                            <i class="big-icon mdi mdi-alert-circle"></i>
+                            <p>IL S'AGIT D'UN RÉSEAU DE TRANSPORT FICTIF TOUTE RESSEMBLANCE AVEC UN VRAI RÉSEAU SERAIT FORTUITE</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div>
+                            <i class="big-icon mdi mdi-bus"></i>
+                            <p>RÉSEAU TCRR</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div>
+                            <i class="big-icon mdi mdi-account"></i>
+                            <p>SITE DÉVELOPPÉ PAR DERNIER ORDRE</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 footer-bg-accent">
+                        <p class="copyright">© 2026 TCRR vous transporte. Construit avec WordPress et le thème Materialis</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DU FORMULAIRE POUR DISCORD (À Configurer) -->
+    <script>
+        document.getElementById('formulaire-tad').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const nom = document.getElementById('nom').value;
+            const ligne = document.getElementById('ligne').value;
+            const arret = document.getElementById('arret').value;
+            const dateHeure = document.getElementById('date-heure').value;
+
+            // REMPLACE CETTE URL PAR CELLE DE TON WEBHOOK DISCORD
+            const webhookUrl = "TON_LIEN_WEBHOOK_DISCORD_ICI"; 
+            
+            if (webhookUrl !== "TON_LIEN_WEBHOOK_DISCORD_ICI") {
+                const payload = {
+                    content: `🚐 **Nouvelle demande de TAD**\n**Usager:** ${nom}\n**Ligne:** ${ligne}\n**Arrêt:** ${arret}\n**Date et Heure:** ${dateHeure}`
+                };
+
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch(error => console.error('Erreur:', error));
+            }
+
+            this.style.display = 'none';
+            document.getElementById('message-confirmation').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
