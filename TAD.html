@@ -15,39 +15,51 @@
         /* 1. FOND DE LA PAGE ET ALIGNEMENT */
         body.custom-background { background-color: #ffffff; }
         .materialis-front-page .content.blog-page, .materialis-inner-page .page-content, .materialis-inner-page .content { background-color: #ffffff; }
-        .page-content { margin-top: 0 !important; } /* Démarre exactement sous l'image */
+        .page-content { margin-top: 0 !important; } 
         
-        /* 2. TAILLE DU LOGO (Agrandie comme demandé) */
+        /* 2. TAILLE DU LOGO */
         img.custom-logo { max-height: 100px !important; width: auto !important; transition: max-height 0.3s ease; }
         
-        /* 3. BARRE DE NAVIGATION ET FOND BLANC AU DEFILEMENT */
+        /* 3. BARRE DE NAVIGATION ET FOND BLANC AU DÉFILEMENT */
         .header-top { position: fixed; width: 100%; top: 0; left: 0; z-index: 10000; transition: background-color 0.3s ease, box-shadow 0.3s ease; background-color: transparent; }
-        #main_menu > li > a { color: rgba(255, 255, 255, 0.9) !important; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); transition: color 0.3s ease; }
+        #main_menu > li > a { color: rgba(255, 255, 255, 0.9) !important; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); transition: color 0.3s ease; padding: 15px 10px; display: block; text-decoration: none; }
         #main_menu > li:hover > a { color: #ffffff !important; }
         
-        /* Classe ajoutée automatiquement quand on descend la page */
+        /* Comportement au défilement (Scroll) */
         .header-top.scrolled-header { background-color: #ffffff !important; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .header-top.scrolled-header #main_menu > li > a { color: #333333 !important; text-shadow: none; }
         .header-top.scrolled-header #main_menu > li:hover > a { color: #c0000a !important; }
-        .header-top.scrolled-header img.custom-logo { max-height: 80px !important; } /* Rétrécit un peu le logo au scroll */
+        .header-top.scrolled-header img.custom-logo { max-height: 80px !important; }
 
-        /* 4. MENUS DÉROULANTS (Restauration) */
+        /* 4. CORRECTION DES MENUS DÉROULANTS (Restauration sans bugs) */
         @media (min-width: 768px) {
+            #main_menu li { list-style: none !important; }
             #main_menu li.menu-item-has-children { position: relative; }
-            #main_menu li .sub-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; padding: 10px 0; min-width: 220px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000; border-radius: 4px; list-style: none; margin: 0; }
+            
+            /* Ajout d'une petite flèche discrète pour montrer qu'il y a un sous-menu */
+            #main_menu > li.menu-item-has-children > a::after { content: ' ▼'; font-size: 0.7em; opacity: 0.7; }
+            
+            #main_menu li .sub-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; padding: 0; min-width: 240px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 1000; border-radius: 4px; list-style: none !important; margin: 0; }
             #main_menu li:hover > .sub-menu { display: block; }
-            #main_menu .sub-menu li a { color: #333 !important; text-shadow: none !important; padding: 10px 20px; display: block; font-weight: 500; font-size: 14px; text-transform: none; text-decoration: none; }
-            #main_menu .sub-menu li a:hover { background-color: #f5f5f5; color: #c0000a !important; }
+            
+            /* Style des liens dans les sous-menus */
+            #main_menu .sub-menu li { border-bottom: 1px solid #f0f0f0; }
+            #main_menu .sub-menu li:last-child { border-bottom: none; }
+            #main_menu .sub-menu li a { color: #333 !important; text-shadow: none !important; padding: 12px 20px; display: block; font-weight: 500; font-size: 14px; text-transform: none; text-decoration: none; transition: background 0.2s, color 0.2s; }
+            #main_menu .sub-menu li a:hover { background-color: #f9f9f9; color: #c0000a !important; padding-left: 25px; /* Petit effet de glissement sympa au survol */ }
+            
+            /* Suppression des carrés / icônes cassées */
+            #main_menu .sub-menu li::before, #main_menu .sub-menu li::after, #main_menu .sub-menu li a::before, #main_menu .sub-menu li a::after { display: none !important; content: none !important; }
+            
             /* Sous-menus imbriqués (ex: Vos lignes -> Ligne Urbaine) */
-            #main_menu .sub-menu .sub-menu { top: 0; left: 100%; }
-            #main_menu .sub-menu i.mdi-chevron-right { display: none; }
+            #main_menu .sub-menu .sub-menu { top: 0; left: 100%; margin-left: 1px; }
         }
 
-        /* 5. IMAGE DE FOND PIXEL ART */
+        /* 5. CORRECTION DE L'IMAGE DE FOND PIXEL ART */
         .header-wrapper .header {
             background-size: cover !important;
-            background-position: center bottom !important;
-            min-height: 480px;
+            background-position: center center !important; /* Centre l'image pour voir la lune et la basilique */
+            min-height: 550px; /* Agrandit la hauteur pour correspondre au site d'origine */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -56,8 +68,8 @@
         .hero-title {
             color: #ffffff;
             text-align: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            font-size: 2.5rem;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.9);
+            font-size: 2.8rem;
             margin: 0;
         }
 
@@ -74,7 +86,7 @@
 
 <body class="wp-singular page-template-default page custom-background wp-custom-logo wp-theme-materialis materialis-inner-page">
 
-    <!-- MENU DE NAVIGATION COMPLET AVEC DÉROULANTS -->
+    <!-- MENU DE NAVIGATION (Nettoyé des scripts bloquants) -->
     <div id="page-top" class="header-top">
         <div class="navigation-bar" data-sticky="0" data-sticky-mobile="1" data-sticky-to="top">
             <div class="navigation-wrapper">
@@ -87,9 +99,9 @@
                     <div class="main_menu_col col-xs">
                         <div id="mainmenu_container" class="row">
                             <ul id="main_menu" class="simple-text-buttons main-menu dropdown-menu">
-                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre" class="mdc-ripple-upgraded">ACCUEIL</a></li>
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre">ACCUEIL</a></li>
                                 
-                                <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/notre-entreprise/" class="mdc-ripple-upgraded">NOTRE ENTREPRISE</a>
+                                <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/notre-entreprise/">NOTRE ENTREPRISE</a>
                                     <ul class="sub-menu">
                                         <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/notre-entreprise/">Notre entreprise</a>
                                             <ul class="sub-menu">
@@ -107,7 +119,7 @@
                                     </ul>
                                 </li>
 
-                                <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/" class="mdc-ripple-upgraded">VOTRE MOBILITÉ</a>
+                                <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/votre-mobilite/">VOTRE MOBILITÉ</a>
                                     <ul class="sub-menu">
                                         <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/agence/">Les agences</a></li>
                                         <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/le-plan-du-reseau/">Le plan du réseau</a></li>
@@ -122,7 +134,7 @@
                                     </ul>
                                 </li>
 
-                                <li class="menu-item menu-item-has-children current-menu-ancestor"><a href="https://seal.transport-manager.net/dernier_ordre/category/nos-service/" class="mdc-ripple-upgraded">NOS SERVICES</a>
+                                <li class="menu-item menu-item-has-children"><a href="https://seal.transport-manager.net/dernier_ordre/category/nos-service/">NOS SERVICES</a>
                                     <ul class="sub-menu">
                                         <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/espace-billetique/">Espace billettique</a></li>
                                         <li class="menu-item"><a href="https://seal.transport-manager.net/dernier_ordre/espace-calendrier/">Espace calendrier</a></li>
@@ -130,7 +142,7 @@
                                     </ul>
                                 </li>
 
-                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernierordre/events/" class="mdc-ripple-upgraded">INFO TRAFIC</a></li>
+                                <li class="menu-item"><a href="https://seal.transport-manager.net/dernierordre/events/">INFO TRAFIC</a></li>
                             </ul>
                         </div>
                     </div>
@@ -140,7 +152,7 @@
     </div>
 
     <div id="page" class="site">
-        <!-- BANNIERE HEADER AVEC IMAGE PIXEL ART -->
+        <!-- BANNIERE HEADER AVEC IMAGE PIXEL ART CORRIGÉE -->
         <div class="header-wrapper">
             <div class="header color-overlay" style="background-image: url('https://seal.transport-manager.net/dernier_ordre/wp-content/uploads/sites/419/2025/09/lyon_night_header_resized.jpg');">
                 <div class="inner-header-description gridContainer">
@@ -221,15 +233,13 @@
         </div>
     </div>
 
-    <!-- SCRIPT POUR LA BARRE BLANCHE AU DÉFILEMENT (Sticky Header) -->
+    <!-- SCRIPT POUR LA BARRE BLANCHE AU DÉFILEMENT -->
     <script>
         window.addEventListener('scroll', function() {
             var header = document.getElementById('page-top');
             if (window.scrollY > 50) {
-                // Dès qu'on descend un peu, on ajoute le fond blanc
                 header.classList.add('scrolled-header');
             } else {
-                // Si on remonte tout en haut, on remet transparent
                 header.classList.remove('scrolled-header');
             }
         });
