@@ -36,33 +36,14 @@
   <defs
      id="defs1">
     <linearGradient
-       id="linearGradient5"
-       inkscape:collect="always">
-      <stop
-         style="stop-color:#3e2723;stop-opacity:1;"
-         offset="0"
-         id="stop1" />
-      <stop
-         style="stop-color:#5d4037;stop-opacity:1;"
-         offset="0.2"
-         id="stop2" />
-      <stop
-         style="stop-color:#795548;stop-opacity:1;"
-         offset="0.62"
-         id="stop3" />
-      <stop
-         style="stop-color:#8d6e63;stop-opacity:1;"
-         offset="0.80000001"
-         id="stop4" />
-      <stop
-         style="stop-color:#a1887f;stop-opacity:1;"
-         offset="0.89999998"
-         id="stop6" />
-      <stop
-         style="stop-color:#bcaaa4;stop-opacity:1;"
-         offset="1"
-         id="stop5" />
-    </linearGradient>
+       inkscape:collect="always"
+       xlink:href="#linearGradient413"
+       id="linearGradient720"
+       gradientUnits="userSpaceOnUse"
+       x1="23415.641"
+       y1="7800.6353"
+       x2="26056.561"
+       y2="10441.557" />
     <linearGradient
        id="linearGradient413"
        inkscape:collect="always">
@@ -87,172 +68,104 @@
          offset="1"
          id="stop414" />
     </linearGradient>
-    <linearGradient
-       id="linearGradient1874"
-       inkscape:collect="always">
-      <stop
-         style="stop-color:#1f5d8b;stop-opacity:1;"
-         offset="0"
-         id="stop1873" />
-      <stop
-         style="stop-color:#1f5e8d;stop-opacity:1;"
-         offset="1"
-         id="stop1874" />
-    </linearGradient>
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect425-2-9-2-1"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient413"
-       id="linearGradient719"
+       id="linearGradient721"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-3028.0966,1708.6513)"
-       x1="59655.949"
-       y1="41230.789"
-       x2="60363.059"
-       y2="41937.898" />
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipath_lpe_path-effect425-2-9-2">
-      <rect
-         style="display:none;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
-         id="rect1953"
-         width="2199.0156"
-         height="1186.7852"
-         x="24293.176"
-         y="8527.7031"
-         d="m 24293.176,8527.7031 h 2199.015 v 1186.7852 h -2199.015 z" />
-      <path
-         id="lpe_path-effect425-2-9-2"
-         style="display:block;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
-         class="powerclip"
-         d="m 22863.687,8416.0957 h 3744.827 v 1410 h -3744.827 z m 1429.489,111.6074 v 1186.7852 h 2199.015 V 8527.7031 Z" />
-    </clipPath>
+       gradientTransform="translate(-8.7180109,9.8089251e-5)"
+       x1="24769"
+       y1="8398.5752"
+       x2="26161.91"
+       y2="9791.4854" />
     <inkscape:path-effect
        effect="powerclip"
        message=""
-       id="path-effect425-2-9-2"
+       id="path-effect79-4-2-9-2-17-2-0-9-0-0-2"
        is_visible="true"
        lpeversion="1"
        inverse="true"
        flatten="false"
        hide_clip="false" />
     <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipath_lpe_path-effect79-4-2-9-2-17-2-0-9-0-0">
-      <rect
-         style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
-         id="rect1913"
-         width="1270.9302"
-         height="1148.0061"
-         x="27749.107"
-         y="2890.4697"
-         d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" />
-      <path
-         id="lpe_path-effect79-4-2-9-2-17-2-0-9-0-0"
-         style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
-         class="powerclip"
-         d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" />
-    </clipPath>
-    <inkscape:path-effect
-       effect="powerclip"
-       message=""
-       id="path-effect79-4-2-9-2-17-2-0-9-0-0"
-       is_visible="true"
-       lpeversion="1"
-       inverse="true"
-       flatten="false"
-       hide_clip="false" />
-    <clipPath
-       id="presentation_clip_path-7-6-8-6-5"
+       id="presentation_clip_path-7-6-8-6-5-7"
        clipPathUnits="userSpaceOnUse">
    <rect
    x="0"
    y="0"
    width="2450"
    height="1400"
-   id="rect1-31-6-9-93-7" />
+   id="rect1-31-6-9-93-7-9" />
 
   </clipPath>
     <clipPath
-       id="clip_path_1-41-0-3-83-9"
+       id="clip_path_1-41-0-3-83-9-5"
        clipPathUnits="userSpaceOnUse">
           <path
    d="M 0,0 H 2449 V 1399 H 0 Z"
-   id="path14-39-7-4-10-8" />
+   id="path14-39-7-4-10-8-4" />
 
          </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipath_lpe_path-effect154-6-3-0-3-5-06-8">
-      <rect
-         style="display:none;fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-         id="rect1914"
-         width="2199.9048"
-         height="1149.8398"
-         x="16026.101"
-         y="13830"
-         d="m 16026.101,13830 h 2199.904 v 1149.84 h -2199.904 z" />
-      <path
-         id="lpe_path-effect154-6-3-0-3-5-06-8"
-         style="fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-         class="powerclip"
-         d="m 15896.5,13700.4 h 2460 v 1410 h -2460 z m 129.601,129.6 v 1149.84 h 2199.904 V 13830 Z" />
-    </clipPath>
     <inkscape:path-effect
        effect="powerclip"
        message=""
-       id="path-effect154-6-3-0-3-5-06-8"
+       id="path-effect154-6-3-0-3-5-06-8-2"
        is_visible="true"
        lpeversion="1"
        inverse="true"
        flatten="false"
        hide_clip="false" />
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipath_lpe_path-effect448-5-6-8-3">
-      <rect
-         style="display:none;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
-         id="rect1897-4"
-         width="2199.0156"
-         height="1186.7852"
-         x="28193.705"
-         y="8970.1484"
-         d="m 28193.705,8970.1484 h 2199.016 v 1186.7856 h -2199.016 z" />
-      <path
-         id="lpe_path-effect448-5-6-8-5"
-         style="display:block;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
-         class="powerclip"
-         d="m 26764.217,8858.541 h 3744.826 v 1410 h -3744.826 z m 1429.488,111.6074 v 1186.7856 h 2199.016 V 8970.1484 Z" />
-    </clipPath>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient413"
+       id="linearGradient722"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(3900.5308,442.44537)"
+       x1="23415.641"
+       y1="7800.6353"
+       x2="26056.561"
+       y2="10441.557" />
     <inkscape:path-effect
        effect="powerclip"
        message=""
-       id="path-effect448-5-6-8-3"
+       id="path-effect448-5-6-8-3-1"
        is_visible="true"
        lpeversion="1"
        inverse="true"
        flatten="false"
        hide_clip="false" />
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipath_lpe_path-effect154-6-48-7-2-4-7">
-      <rect
-         style="display:none;fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-         id="rect1916"
-         width="2199.9048"
-         height="1149.8398"
-         x="16026.101"
-         y="13830"
-         d="m 16026.101,13830 h 2199.904 v 1149.84 h -2199.904 z" />
-      <path
-         id="lpe_path-effect154-6-48-7-2-4-7"
-         style="fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-         class="powerclip"
-         d="m 15896.5,13700.4 h 2460 v 1410 h -2460 z m 129.601,129.6 v 1149.84 h 2199.904 V 13830 Z" />
-    </clipPath>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient413"
+       id="linearGradient723"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(3910.5064,441.18143)"
+       x1="24769"
+       y1="8398.5752"
+       x2="26161.91"
+       y2="9791.4854" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient413"
+       id="linearGradient724"
+       gradientUnits="userSpaceOnUse"
+       x1="16260.294"
+       y1="13539.194"
+       x2="17992.705"
+       y2="15271.606" />
     <inkscape:path-effect
        effect="powerclip"
        message=""
-       id="path-effect154-6-48-7-2-4-7"
+       id="path-effect154-6-48-7-2-4-7-8"
        is_visible="true"
        lpeversion="1"
        inverse="true"
@@ -270,7 +183,7 @@
        y2="15635.533" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient5"
+       xlink:href="#linearGradient25"
        id="linearGradient1864"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.99999707,0,0,0.99999707,5.8571273e-4,0.06521781)"
@@ -278,6 +191,30 @@
        y1="31755.275"
        x2="46475.367"
        y2="31755.275" />
+    <linearGradient
+       id="linearGradient25"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#0a2e4f;stop-opacity:1;"
+         offset="0"
+         id="stop66" />
+      <stop
+         style="stop-color:#154569;stop-opacity:1;"
+         offset="0.2"
+         id="stop67" />
+      <stop
+         style="stop-color:#23679a;stop-opacity:1;"
+         offset="0.62"
+         id="stop68" />
+      <stop
+         style="stop-color:#3b8ac2;stop-opacity:1;"
+         offset="0.80000001"
+         id="stop69" />
+      <stop
+         style="stop-color:#4b98d0;stop-opacity:1;"
+         offset="0.89999998"
+         id="stop70" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient1874"
@@ -288,6 +225,18 @@
        y1="31755.275"
        x2="8066.606"
        y2="31755.275" />
+    <linearGradient
+       id="linearGradient1874"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#1f5d8b;stop-opacity:1;"
+         offset="0"
+         id="stop1873" />
+      <stop
+         style="stop-color:#1f5e8d;stop-opacity:1;"
+         offset="1"
+         id="stop1874" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient1872"
@@ -332,107 +281,207 @@
          offset="1"
          id="stop1876" />
     </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient165"
+       id="linearGradient739"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-3028.0966,1708.6513)"
+       x1="59655.949"
+       y1="41230.789"
+       x2="60363.059"
+       y2="41937.898" />
+    <linearGradient
+       id="linearGradient165"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#0a2e4f;stop-opacity:1;"
+         offset="0"
+         id="stop161" />
+      <stop
+         style="stop-color:#154569;stop-opacity:1;"
+         offset="0.19687501"
+         id="stop162" />
+      <stop
+         style="stop-color:#23679a;stop-opacity:1;"
+         offset="0.61874998"
+         id="stop163" />
+      <stop
+         style="stop-color:#3b8ac2;stop-opacity:1;"
+         offset="0.80000001"
+         id="stop164" />
+      <stop
+         style="stop-color:#5ca6df;stop-opacity:1;"
+         offset="1"
+         id="stop165" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect1878-2-2"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect1905-8-9"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect1912-1-9"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
     <clipPath
        clipPathUnits="userSpaceOnUse"
-       id="clipath_lpe_path-effect1878-2">
+       id="clipath_lpe_path-effect425-2-9-2-1">
+      <rect
+         style="display:none;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+         id="rect36"
+         width="2199.0156"
+         height="1186.7852"
+         x="24293.176"
+         y="8527.7031"
+         d="m 24293.176,8527.7031 h 2199.015 v 1186.7852 h -2199.015 z" />
+      <path
+         id="lpe_path-effect425-2-9-2-1"
+         style="display:block;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+         class="powerclip"
+         d="m 22863.687,8416.0957 h 3744.827 v 1410 h -3744.827 z m 1429.489,111.6074 v 1186.7852 h 2199.015 V 8527.7031 Z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect79-4-2-9-2-17-2-0-9-0-0-2">
+      <rect
+         style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+         id="rect37"
+         width="1270.9302"
+         height="1148.0061"
+         x="27749.107"
+         y="2890.4697"
+         d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" />
+      <path
+         id="lpe_path-effect79-4-2-9-2-17-2-0-9-0-0-2"
+         style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+         class="powerclip"
+         d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect154-6-3-0-3-5-06-8-2">
       <rect
          style="display:none;fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-         id="rect1918"
+         id="rect38"
          width="2199.9048"
          height="1149.8398"
          x="16026.101"
          y="13830"
          d="m 16026.101,13830 h 2199.904 v 1149.84 h -2199.904 z" />
       <path
-         id="lpe_path-effect1878-2"
+         id="lpe_path-effect154-6-3-0-3-5-06-8-2"
          style="fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
          class="powerclip"
          d="m 15896.5,13700.4 h 2460 v 1410 h -2460 z m 129.601,129.6 v 1149.84 h 2199.904 V 13830 Z" />
     </clipPath>
-    <inkscape:path-effect
-       effect="powerclip"
-       message=""
-       id="path-effect1878-2"
-       is_visible="true"
-       lpeversion="1"
-       inverse="true"
-       flatten="false"
-       hide_clip="false" />
     <clipPath
        clipPathUnits="userSpaceOnUse"
-       id="clipath_lpe_path-effect1905-8">
+       id="clipath_lpe_path-effect448-5-6-8-3-1">
       <rect
          style="display:none;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
-         id="rect1919"
+         id="rect39"
          width="2199.0156"
          height="1186.7852"
          x="28193.705"
          y="8970.1484"
          d="m 28193.705,8970.1484 h 2199.016 v 1186.7856 h -2199.016 z" />
       <path
-         id="lpe_path-effect1905-8"
+         id="lpe_path-effect448-5-6-8-3-1"
          style="display:block;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
          class="powerclip"
          d="m 26764.217,8858.541 h 3744.826 v 1410 h -3744.826 z m 1429.488,111.6074 v 1186.7856 h 2199.016 V 8970.1484 Z" />
     </clipPath>
-    <inkscape:path-effect
-       effect="powerclip"
-       message=""
-       id="path-effect1905-8"
-       is_visible="true"
-       lpeversion="1"
-       inverse="true"
-       flatten="false"
-       hide_clip="false" />
     <clipPath
        clipPathUnits="userSpaceOnUse"
-       id="clipath_lpe_path-effect1912-1">
+       id="clipath_lpe_path-effect154-6-48-7-2-4-7-8">
+      <rect
+         style="display:none;fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+         id="rect40"
+         width="2199.9048"
+         height="1149.8398"
+         x="16026.101"
+         y="13830"
+         d="m 16026.101,13830 h 2199.904 v 1149.84 h -2199.904 z" />
+      <path
+         id="lpe_path-effect154-6-48-7-2-4-7-8"
+         style="fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+         class="powerclip"
+         d="m 15896.5,13700.4 h 2460 v 1410 h -2460 z m 129.601,129.6 v 1149.84 h 2199.904 V 13830 Z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect1878-2-2">
+      <rect
+         style="display:none;fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+         id="rect41"
+         width="2199.9048"
+         height="1149.8398"
+         x="16026.101"
+         y="13830"
+         d="m 16026.101,13830 h 2199.904 v 1149.84 h -2199.904 z" />
+      <path
+         id="lpe_path-effect1878-2-2"
+         style="fill:#d40000;fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+         class="powerclip"
+         d="m 15896.5,13700.4 h 2460 v 1410 h -2460 z m 129.601,129.6 v 1149.84 h 2199.904 V 13830 Z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect1905-8-9">
       <rect
          style="display:none;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
-         id="rect1920"
+         id="rect42"
          width="2199.0156"
          height="1186.7852"
          x="28193.705"
          y="8970.1484"
          d="m 28193.705,8970.1484 h 2199.016 v 1186.7856 h -2199.016 z" />
       <path
-         id="lpe_path-effect1912-1"
+         id="lpe_path-effect1905-8-9"
          style="display:block;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
          class="powerclip"
          d="m 26764.217,8858.541 h 3744.826 v 1410 h -3744.826 z m 1429.488,111.6074 v 1186.7856 h 2199.016 V 8970.1484 Z" />
     </clipPath>
-    <inkscape:path-effect
-       effect="powerclip"
-       message=""
-       id="path-effect1912-1"
-       is_visible="true"
-       lpeversion="1"
-       inverse="true"
-       flatten="false"
-       hide_clip="false" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect1912-1-9">
+      <rect
+         style="display:none;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+         id="rect43"
+         width="2199.0156"
+         height="1186.7852"
+         x="28193.705"
+         y="8970.1484"
+         d="m 28193.705,8970.1484 h 2199.016 v 1186.7856 h -2199.016 z" />
+      <path
+         id="lpe_path-effect1912-1-9"
+         style="display:block;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+         class="powerclip"
+         d="m 26764.217,8858.541 h 3744.826 v 1410 h -3744.826 z m 1429.488,111.6074 v 1186.7856 h 2199.016 V 8970.1484 Z" />
+    </clipPath>
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient413"
-       id="linearGradient15"
-       gradientUnits="userSpaceOnUse"
-       x1="23415.641"
-       y1="7800.6353"
-       x2="26056.561"
-       y2="10441.557" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient413"
-       id="linearGradient16"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-8.7180109,9.8089251e-5)"
-       x1="24769"
-       y1="8398.5752"
-       x2="26161.91"
-       y2="9791.4854" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5"
-       id="linearGradient17"
+       id="linearGradient59"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(3900.5308,442.44537)"
        x1="23415.641"
@@ -441,8 +490,8 @@
        y2="10441.557" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient5"
-       id="linearGradient18"
+       xlink:href="#linearGradient413"
+       id="linearGradient60"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(3910.5064,441.18143)"
        x1="24769"
@@ -452,7 +501,7 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient413"
-       id="linearGradient19"
+       id="linearGradient61"
        gradientUnits="userSpaceOnUse"
        x1="16260.294"
        y1="13539.194"
@@ -461,7 +510,7 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient413"
-       id="linearGradient20"
+       id="linearGradient62"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(2870.072,2057.1355)"
        x1="21168.162"
@@ -471,16 +520,7 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient413"
-       id="linearGradient21"
-       gradientUnits="userSpaceOnUse"
-       x1="16260.294"
-       y1="13539.194"
-       x2="17992.705"
-       y2="15271.606" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5"
-       id="linearGradient22"
+       id="linearGradient63"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(3900.5308,442.44537)"
        x1="23415.641"
@@ -489,28 +529,8 @@
        y2="10441.557" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient5"
-       id="linearGradient23"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(3910.5064,441.18143)"
-       x1="24769"
-       y1="8398.5752"
-       x2="26161.91"
-       y2="9791.4854" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5"
-       id="linearGradient24"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(3900.5308,442.44537)"
-       x1="23415.641"
-       y1="7800.6353"
-       x2="26056.561"
-       y2="10441.557" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5"
-       id="linearGradient25"
+       xlink:href="#linearGradient413"
+       id="linearGradient64"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(3910.5064,441.18143)"
        x1="24769"
@@ -522,10 +542,10 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(550.01822,-262.89094)">
+     transform="translate(-41.539591,-188.99699)">
     <g
        id="g1913-8"
-       transform="matrix(0.01,0,0,0.01,-552.01567,45.300899)"
+       transform="matrix(0.01,0,0,0.01,39.542137,-28.593054)"
        inkscape:label="Thermomètre Ligne JD601"
        style="fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round">
       <g
@@ -535,37 +555,37 @@
          inkscape:export-xdpi="96"
          inkscape:export-ydpi="96">
         <path
-           style="fill:url(#linearGradient15);fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+           style="fill:url(#linearGradient720);fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
            id="rect548-3-4-0-7-0"
            width="3734.8267"
            height="1400"
            x="22868.688"
            y="8421.0957"
-           clip-path="url(#clipath_lpe_path-effect425-2-9-2)"
+           clip-path="url(#clipath_lpe_path-effect425-2-9-2-1)"
            sodipodi:type="rect"
            d="m 22868.687,8421.0957 h 3734.827 v 1400 h -3734.827 z"
-           inkscape:path-effect="#path-effect425-2-9-2" />
+           inkscape:path-effect="#path-effect425-2-9-2-1" />
         <text
            class="SVGTextShape"
            id="text20-8-9-5-7-7-4"
-           style="font-size:11.9657px;fill:url(#linearGradient16);fill-rule:evenodd;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+           style="font-size:11.9657px;fill:url(#linearGradient721);fill-rule:evenodd;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
            transform="scale(0.99714228,1.0028659)"
            x="24252.234"
            y="8394.1729"><tspan
              class="TextParagraph"
              id="tspan20-5-5-6-06-0-6"
-             style="fill:url(#linearGradient16);stroke-width:0;stroke-dasharray:none"><tspan
+             style="fill:url(#linearGradient721);stroke-width:0;stroke-dasharray:none"><tspan
                class="TextPosition"
                x="24432.717"
                y="9518.9492"
                id="tspan19-0-8-20-0-2-7"
-               style="fill:url(#linearGradient16);stroke-width:0;stroke-dasharray:none"><tspan
+               style="fill:url(#linearGradient721);stroke-width:0;stroke-dasharray:none"><tspan
                  font-family="'Liberation Sans', sans-serif"
                  font-size="1231.47px"
                  font-weight="700"
                  fill="#ff7f27"
                  stroke="none"
-                 style="white-space:pre;fill:url(#linearGradient16);stroke-width:0;stroke-dasharray:none"
+                 style="white-space:pre;fill:url(#linearGradient721);stroke-width:0;stroke-dasharray:none"
                  id="tspan18-0-7-2-3-7-0-8">601</tspan></tspan></tspan></text>
         <text
            class="SVGTextShape"
@@ -605,8 +625,8 @@
            height="1400"
            x="26696.5"
            y="2764.8999"
-           clip-path="url(#clipath_lpe_path-effect79-4-2-9-2-17-2-0-9-0-0)"
-           inkscape:path-effect="#path-effect79-4-2-9-2-17-2-0-9-0-0"
+           clip-path="url(#clipath_lpe_path-effect79-4-2-9-2-17-2-0-9-0-0-2)"
+           inkscape:path-effect="#path-effect79-4-2-9-2-17-2-0-9-0-0-2"
            sodipodi:type="rect"
            d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
            transform="translate(2741.5358,-1510.0331)" />
@@ -645,7 +665,7 @@
     <g
    id="g401-6-50-5"
    class="Slide"
-   clip-path="url(#presentation_clip_path-7-6-8-6-5)">
+   clip-path="url(#presentation_clip_path-7-6-8-6-5-7)">
      <g
    class="Page"
    id="g400-6-50-7">
@@ -668,7 +688,7 @@
    id="defs395-9-61-8" />
 
         <g
-   clip-path="url(#clip_path_1-41-0-3-83-9)"
+   clip-path="url(#clip_path_1-41-0-3-83-9-5)"
    id="g396-7-63-5">
          <path
    fill="none"
@@ -720,8 +740,8 @@
            height="1400"
            x="15901.5"
            y="13705.4"
-           clip-path="url(#clipath_lpe_path-effect154-6-3-0-3-5-06-8)"
-           inkscape:path-effect="#path-effect154-6-3-0-3-5-06-8"
+           clip-path="url(#clipath_lpe_path-effect154-6-3-0-3-5-06-8-2)"
+           inkscape:path-effect="#path-effect154-6-3-0-3-5-06-8-2"
            sodipodi:type="rect"
            d="m 15901.5,13705.4 h 2450 v 1400 h -2450 z"
            transform="translate(-2740.849,374.17734)" />
@@ -744,37 +764,37 @@
          inkscape:export-xdpi="96"
          inkscape:export-ydpi="96">
         <path
-           style="fill:url(#linearGradient17);fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+           style="fill:url(#linearGradient59);fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
            id="rect548-3-4-8-8-7-1-0-9"
            width="3734.8267"
            height="1400"
            x="26769.217"
            y="8863.541"
-           clip-path="url(#clipath_lpe_path-effect448-5-6-8-3)"
+           clip-path="url(#clipath_lpe_path-effect448-5-6-8-3-1)"
            sodipodi:type="rect"
-           inkscape:path-effect="#path-effect448-5-6-8-3"
+           inkscape:path-effect="#path-effect448-5-6-8-3-1"
            d="m 26769.217,8863.541 h 3734.826 v 1400 h -3734.826 z" />
         <text
            class="SVGTextShape"
            id="text20-8-9-5-5-6-7-0-5-1"
-           style="font-size:11.9657px;fill:url(#linearGradient18);fill-rule:evenodd;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+           style="font-size:11.9657px;fill:url(#linearGradient60);fill-rule:evenodd;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
            transform="scale(0.99714228,1.0028659)"
            x="28171.459"
            y="8835.3535"><tspan
              class="TextParagraph"
              id="tspan20-5-5-6-7-5-9-2-0-2"
-             style="fill:url(#linearGradient18);stroke-width:0;stroke-dasharray:none"><tspan
+             style="fill:url(#linearGradient60);stroke-width:0;stroke-dasharray:none"><tspan
                class="TextPosition"
                x="28351.941"
                y="9960.1299"
                id="tspan19-0-8-20-5-1-5-5-1-3"
-               style="fill:url(#linearGradient18);stroke-width:0;stroke-dasharray:none"><tspan
+               style="fill:url(#linearGradient60);stroke-width:0;stroke-dasharray:none"><tspan
                  font-family="'Liberation Sans', sans-serif"
                  font-size="1231.47px"
                  font-weight="700"
                  fill="#ff7f27"
                  stroke="none"
-                 style="white-space:pre;fill:url(#linearGradient18);stroke-width:0;stroke-dasharray:none"
+                 style="white-space:pre;fill:url(#linearGradient60);stroke-width:0;stroke-dasharray:none"
                  id="tspan18-0-7-2-3-7-2-0-1-0-2">652</tspan></tspan></tspan></text>
         <text
            class="SVGTextShape"
@@ -806,26 +826,26 @@
          inkscape:export-ydpi="96"
          transform="matrix(0.63171428,0,0,0.63178571,-14011.412,22148.597)">
         <path
-           style="fill:url(#linearGradient19);fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:url(#linearGradient61);fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
            id="rect141-8-8-1-6-8-3"
            width="2450"
            height="1400"
            x="15901.5"
            y="13705.4"
-           clip-path="url(#clipath_lpe_path-effect154-6-48-7-2-4-7)"
-           inkscape:path-effect="#path-effect154-6-48-7-2-4-7"
+           clip-path="url(#clipath_lpe_path-effect154-6-48-7-2-4-7-8)"
+           inkscape:path-effect="#path-effect154-6-48-7-2-4-7-8"
            sodipodi:type="rect"
            d="m 15901.5,13705.4 h 2450 v 1400 h -2450 z"
            transform="translate(7619.9558,2592.9312)" />
         <text
            xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1236.32px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif';text-align:start;letter-spacing:6.70751px;word-spacing:0.536598px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:url(#linearGradient20);fill-opacity:1;fill-rule:evenodd;stroke:#ff1a73;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1236.32px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif';text-align:start;letter-spacing:6.70751px;word-spacing:0.536598px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:url(#linearGradient62);fill-opacity:1;fill-rule:evenodd;stroke:#ff1a73;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
            x="23672.758"
            y="17423.92"
            id="text154-4-6-6-4-4"><tspan
              sodipodi:role="line"
              id="tspan154-0-64-8-7-3"
-             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';fill:url(#linearGradient20);fill-opacity:1;stroke-width:0"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';fill:url(#linearGradient62);fill-opacity:1;stroke-width:0"
              x="23672.758"
              y="17423.92">104</tspan></text>
       </g>
@@ -953,7 +973,7 @@
          id="g165-4-777-5-3-5-70-75"
          transform="matrix(1.5374304,0,0,1.5374304,-35895.137,-44019.869)">
         <rect
-           style="fill:url(#linearGradient719);fill-rule:evenodd;stroke:#44a2b4;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:url(#linearGradient739);fill-rule:evenodd;stroke:#44a2b4;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
            id="rect145-4-02-1-7-0-1-4"
            width="1000"
            height="1000"
@@ -992,14 +1012,14 @@
          inkscape:export-ydpi="96"
          transform="matrix(0.63171428,0,0,0.63178571,-2727.1192,22148.597)">
         <path
-           style="fill:url(#linearGradient21);fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:url(#linearGradient724);fill-opacity:1;fill-rule:evenodd;stroke:#44c1d1;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
            id="path1877-9"
            width="2450"
            height="1400"
            x="15901.5"
            y="13705.4"
-           clip-path="url(#clipath_lpe_path-effect1878-2)"
-           inkscape:path-effect="#path-effect1878-2"
+           clip-path="url(#clipath_lpe_path-effect1878-2-2)"
+           inkscape:path-effect="#path-effect1878-2-2"
            sodipodi:type="rect"
            d="m 15901.5,13705.4 h 2450 v 1400 h -2450 z"
            transform="translate(7619.9558,2592.9312)" />
@@ -1035,37 +1055,37 @@
          inkscape:export-xdpi="96"
          inkscape:export-ydpi="96">
         <path
-           style="fill:url(#linearGradient22);fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+           style="fill:url(#linearGradient63);fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
            id="path1899-4"
            width="3734.8267"
            height="1400"
            x="26769.217"
            y="8863.541"
-           clip-path="url(#clipath_lpe_path-effect1905-8)"
+           clip-path="url(#clipath_lpe_path-effect1905-8-9)"
            sodipodi:type="rect"
-           inkscape:path-effect="#path-effect1905-8"
+           inkscape:path-effect="#path-effect1905-8-9"
            d="m 26769.217,8863.541 h 3734.826 v 1400 h -3734.826 z" />
         <text
            class="SVGTextShape"
            id="text1901-6"
-           style="font-size:11.9657px;fill:url(#linearGradient23);fill-rule:evenodd;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+           style="font-size:11.9657px;fill:url(#linearGradient64);fill-rule:evenodd;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
            transform="scale(0.99714228,1.0028659)"
            x="28171.459"
            y="8835.3535"><tspan
              class="TextParagraph"
              id="tspan1901-9"
-             style="fill:url(#linearGradient23);stroke-width:0;stroke-dasharray:none"><tspan
+             style="fill:url(#linearGradient64);stroke-width:0;stroke-dasharray:none"><tspan
                class="TextPosition"
                x="28351.941"
                y="9960.1299"
                id="tspan1900-3"
-               style="fill:url(#linearGradient23);stroke-width:0;stroke-dasharray:none"><tspan
+               style="fill:url(#linearGradient64);stroke-width:0;stroke-dasharray:none"><tspan
                  font-family="'Liberation Sans', sans-serif"
                  font-size="1231.47px"
                  font-weight="700"
                  fill="#ff7f27"
                  stroke="none"
-                 style="white-space:pre;fill:url(#linearGradient23);stroke-width:0;stroke-dasharray:none"
+                 style="white-space:pre;fill:url(#linearGradient64);stroke-width:0;stroke-dasharray:none"
                  id="tspan1899-3">652</tspan></tspan></tspan></text>
         <text
            class="SVGTextShape"
@@ -1097,37 +1117,37 @@
          inkscape:export-xdpi="96"
          inkscape:export-ydpi="96">
         <path
-           style="fill:url(#linearGradient24);fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+           style="fill:url(#linearGradient722);fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
            id="path1906-2"
            width="3734.8267"
            height="1400"
            x="26769.217"
            y="8863.541"
-           clip-path="url(#clipath_lpe_path-effect1912-1)"
+           clip-path="url(#clipath_lpe_path-effect1912-1-9)"
            sodipodi:type="rect"
-           inkscape:path-effect="#path-effect1912-1"
+           inkscape:path-effect="#path-effect1912-1-9"
            d="m 26769.217,8863.541 h 3734.826 v 1400 h -3734.826 z" />
         <text
            class="SVGTextShape"
            id="text1908-0"
-           style="font-size:11.9657px;fill:url(#linearGradient25);fill-rule:evenodd;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+           style="font-size:11.9657px;fill:url(#linearGradient723);fill-rule:evenodd;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
            transform="scale(0.99714228,1.0028659)"
            x="28171.459"
            y="8835.3535"><tspan
              class="TextParagraph"
              id="tspan1908-5"
-             style="fill:url(#linearGradient25);stroke-width:0;stroke-dasharray:none"><tspan
+             style="fill:url(#linearGradient723);stroke-width:0;stroke-dasharray:none"><tspan
                class="TextPosition"
                x="28351.941"
                y="9960.1299"
                id="tspan1907-4"
-               style="fill:url(#linearGradient25);stroke-width:0;stroke-dasharray:none"><tspan
+               style="fill:url(#linearGradient723);stroke-width:0;stroke-dasharray:none"><tspan
                  font-family="'Liberation Sans', sans-serif"
                  font-size="1231.47px"
                  font-weight="700"
                  fill="#ff7f27"
                  stroke="none"
-                 style="white-space:pre;fill:url(#linearGradient25);stroke-width:0;stroke-dasharray:none"
+                 style="white-space:pre;fill:url(#linearGradient723);stroke-width:0;stroke-dasharray:none"
                  id="tspan1906-2">652</tspan></tspan></tspan></text>
         <text
            class="SVGTextShape"
