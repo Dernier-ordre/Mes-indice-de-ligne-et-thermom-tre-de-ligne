@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="37.348267mm"
+   height="14mm"
+   viewBox="0 0 37.348267 14"
+   version="1.1"
+   id="svg1"
+   inkscape:export-batch-path="C:\Users\thoma\OneDrive\Bureau"
+   inkscape:export-batch-name=""
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="37.348267"
+       height="14"
+       id="page1"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient413"
+       id="linearGradient628"
+       gradientUnits="userSpaceOnUse"
+       x1="23415.641"
+       y1="7800.6353"
+       x2="26056.561"
+       y2="10441.557" />
+    <linearGradient
+       id="linearGradient413"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#0a2e4f;stop-opacity:1;"
+         offset="0"
+         id="stop413" />
+      <stop
+         style="stop-color:#154569;stop-opacity:1;"
+         offset="0.2"
+         id="stop415" />
+      <stop
+         style="stop-color:#23679a;stop-opacity:1;"
+         offset="0.62"
+         id="stop416" />
+      <stop
+         style="stop-color:#3b8ac2;stop-opacity:1;"
+         offset="0.80000001"
+         id="stop417" />
+      <stop
+         style="stop-color:#5ca6df;stop-opacity:1;"
+         offset="1"
+         id="stop414" />
+    </linearGradient>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect425-2-9">
+      <rect
+         style="display:none;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+         id="rect66-1"
+         width="2199.0156"
+         height="1186.7852"
+         x="24293.176"
+         y="8527.7031"
+         d="m 24293.176,8527.7031 h 2199.015 v 1186.7852 h -2199.015 z" />
+      <path
+         id="lpe_path-effect425-2-0"
+         style="display:block;fill:#27a753;fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+         class="powerclip"
+         d="m 22863.687,8416.0957 h 3744.827 v 1410 h -3744.827 z m 1429.489,111.6074 v 1186.7852 h 2199.015 V 8527.7031 Z" />
+    </clipPath>
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect425-2-9"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient413"
+       id="linearGradient629"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-8.7180109,9.8089251e-5)"
+       x1="24769"
+       y1="8398.5752"
+       x2="26161.91"
+       y2="9791.4854" />
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-298.97914,-139.43541)">
+    <g
+       id="g427-7"
+       transform="matrix(0.01,0,0,0.01,70.292268,55.224448)"
+       inkscape:export-filename="L601.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       style="fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round"
+       inkscape:label="JD601">
+      <path
+         style="fill:url(#linearGradient628);fill-opacity:1;stroke:#ff7f27;stroke-width:0;stroke-linejoin:miter;stroke-opacity:1"
+         id="rect548-3-4-0-7"
+         width="3734.8267"
+         height="1400"
+         x="22868.688"
+         y="8421.0957"
+         clip-path="url(#clipath_lpe_path-effect425-2-9)"
+         sodipodi:type="rect"
+         inkscape:path-effect="#path-effect425-2-9"
+         d="m 22868.687,8421.0957 h 3734.827 v 1400 h -3734.827 z" />
+      <text
+         class="SVGTextShape"
+         id="text20-8-9-5-7-7"
+         style="font-size:11.9657px;fill:url(#linearGradient629);fill-rule:evenodd;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+         transform="scale(0.99714228,1.0028659)"
+         x="24252.234"
+         y="8394.1729"><tspan
+           class="TextParagraph"
+           id="tspan20-5-5-6-06-0"
+           style="fill:url(#linearGradient629);stroke-width:0;stroke-dasharray:none"><tspan
+             class="TextPosition"
+             x="24432.717"
+             y="9518.9492"
+             id="tspan19-0-8-20-0-2"
+             style="fill:url(#linearGradient629);stroke-width:0;stroke-dasharray:none"><tspan
+               font-family="'Liberation Sans', sans-serif"
+               font-size="1231.47px"
+               font-weight="700"
+               fill="#ff7f27"
+               stroke="none"
+               style="white-space:pre;fill:url(#linearGradient629);stroke-width:0;stroke-dasharray:none"
+               id="tspan18-0-7-2-3-7-0">601</tspan></tspan></tspan></text>
+      <text
+         class="SVGTextShape"
+         id="text19-41-7-5-0-0"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.3119px;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS Italic';fill-rule:evenodd;stroke:#ff7f27;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         transform="scale(0.86618724,1.1544848)"
+         x="26434.02"
+         y="7197.3872"><tspan
+           class="TextParagraph"
+           id="tspan19-7-0-9-6-5-8"
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS Italic';stroke:#ff7f27;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"><tspan
+             class="TextPosition"
+             x="26488.396"
+             y="8354.7031"
+             id="tspan18-4-6-6-6-6"
+             style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS Italic';stroke:#ff7f27;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"><tspan
+               font-family="'Liberation Sans', sans-serif"
+               font-size="1267.1px"
+               font-weight="700"
+               fill="#ffffff"
+               stroke="none"
+               style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS Italic';white-space:pre;stroke:#ff7f27;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+               id="tspan17-85-1-6-7-4">JD</tspan></tspan></tspan></text>
+    </g>
+  </g>
+</svg>
