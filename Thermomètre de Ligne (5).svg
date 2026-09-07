@@ -26,9 +26,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="0.067175144"
-     inkscape:cx="5716.4001"
-     inkscape:cy="6989.1923"
+     inkscape:zoom="0.125"
+     inkscape:cx="2860"
+     inkscape:cy="748"
      inkscape:window-width="1920"
      inkscape:window-height="1057"
      inkscape:window-x="-8"
@@ -712,23 +712,23 @@
                style="stroke-width:1048.2;stroke-dasharray:none" /></g></g></g><text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:73.5605px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif';text-align:start;letter-spacing:1.91566px;word-spacing:0.383129px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-         x="1664.8405"
+         x="1669.4567"
          y="1150.1267"
          id="text1615"><tspan
            sodipodi:role="line"
            id="tspan1615"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:73.5605px;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';letter-spacing:1.91566px;fill:#ffffff;fill-opacity:1;stroke-width:0;stroke-dasharray:none"
-           x="1664.8405"
+           x="1669.4567"
            y="1150.1267">Musée des Confluence</tspan></text><text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:73.5605px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif';text-align:start;letter-spacing:1.91566px;word-spacing:0.383129px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-         x="2910.6714"
+         x="2921.9607"
          y="1149.7533"
          id="text1616"><tspan
            sodipodi:role="line"
            id="tspan1616"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:73.5605px;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';letter-spacing:1.91566px;fill:#ffffff;fill-opacity:1;stroke-width:0;stroke-dasharray:none"
-           x="2910.6714"
+           x="2921.9607"
            y="1149.7533">Eurexpo</tspan></text><g
          id="g1617"
          transform="translate(694.51184)"><path
@@ -1104,7 +1104,7 @@
          transform="matrix(0.07980607,-0.07980607,0.07980607,0.07980607,1214.4183,-642.2604)"><tspan
            x="-10591.565"
            y="17009.51"
-           id="tspan10"><tspan
+           id="tspan9"><tspan
              dx="0 0 0 0 -1.3779582 1.3779421 0 0 0 -1.37792 1.3778658 0 0 0 0 0 0 -1.3779277"
              style="fill:#000000"
              id="tspan8">Hall Tony Garnier </tspan></tspan></text><g
@@ -1195,23 +1195,27 @@
    stroke-width="125"
    stroke-linejoin="miter"
    d="M 62,62 H 2387 V 1337 H 62 Z"
-   id="path1680" />
+   id="path1680"
+   style="stroke:#96002f;stroke-opacity:1" />
         </g>
         <text
    class="SVGTextShape"
-   id="text1682"><tspan
+   id="text1682"
+   style="fill:#96002f;fill-opacity:1"><tspan
      class="TextParagraph"
-     id="tspan1682"><tspan
+     id="tspan1682"
+     style="fill:#96002f;fill-opacity:1"><tspan
        class="TextPosition"
        x="881"
        y="1128"
-       id="tspan1681"><tspan
+       id="tspan1681"
+       style="fill:#96002f;fill-opacity:1"><tspan
          font-family="'Liberation Sans', sans-serif"
          font-size="1235px"
          font-weight="700"
          fill="#ff1a99"
          stroke="none"
-         style="white-space:pre"
+         style="white-space:pre;fill:#96002f;fill-opacity:1"
          id="tspan1680">8</tspan></tspan></tspan></text>
        </g>
       </g>
