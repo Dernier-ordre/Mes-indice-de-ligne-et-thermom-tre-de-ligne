@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="24.5005mm"
+   height="14mm"
+   viewBox="0 0 24.5005 14"
+   version="1.1"
+   id="svg1"
+   inkscape:export-batch-path="C:\Users\thoma\OneDrive\Bureau"
+   inkscape:export-batch-name=""
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="24.500502"
+       height="14"
+       id="page1"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath67-5">
+      <rect
+         style="display:none;fill:#ffffff;fill-opacity:1;stroke:#00ffff;stroke-width:0;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+         id="rect68-5"
+         width="82.123962"
+         height="59.040794"
+         x="1237.3148"
+         y="254.9855"
+         d="m 1237.3148,254.9855 h 82.124 v 59.0408 h -82.124 z" />
+      <path
+         id="lpe_path-effect68"
+         style="fill:#ffffff;fill-opacity:1;stroke:#00ffff;stroke-width:0;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+         class="powerclip"
+         d="m 1194.4723,243.39834 h 136.0564 v 82.03788 h -136.0564 z m 42.8425,11.58716 v 59.0408 h 82.124 v -59.0408 z" />
+    </clipPath>
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect68"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(101.74816,-125.2831)">
+    <g
+       id="g184-4-3-0-8-7"
+       inkscape:label="Ligne N73"
+       transform="matrix(0.19436138,0,0,0.19434221,-334.87924,77.008813)">
+      <path
+         style="fill:#183a69;fill-opacity:1;stroke:#183a69;stroke-width:30.1092;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+         id="rect3-15-5-4-7-3-82-3-0-4-8-4"
+         width="95.94722"
+         height="41.928677"
+         x="1214.5269"
+         y="263.45294"
+         clip-path="url(#clipPath67-5)"
+         inkscape:path-effect="#path-effect68"
+         sodipodi:type="rect"
+         d="m 1214.5269,263.45294 h 95.9472 v 41.92868 h -95.9472 z" />
+      <path
+         d="m 1207.3954,268.04927 h 4.82 l 10.6552,19.53455 c 0.7613,1.52218 1.2686,3.04435 1.5223,4.56652 v -24.10107 h 5.0738 v 32.98043 h -5.0738 l -10.6552,-19.53457 c -0.7611,-1.52217 -1.2685,-3.04435 -1.5223,-4.56652 v 24.10109 h -5.0738 v -32.98043 z"
+         fill="#ffffff"
+         id="path7-2-8-7-8-5-7"
+         style="fill:#ffffff;stroke-width:2.53695" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:46.4858px;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#183a69;fill-opacity:1;stroke:#d3d800;stroke-width:0;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+         x="1252.3656"
+         y="300.50763"
+         id="text5-16-2-1-3-9-1-8-8-0-7-3"><tspan
+           sodipodi:role="line"
+           id="tspan5-8-7-9-4-6-86-0-7-1-0-7"
+           x="1252.3656"
+           y="300.50763"
+           style="font-size:46.4858px;fill:#183a69;fill-opacity:1;stroke:#d3d800;stroke-width:0;stroke-opacity:1">73</tspan></text>
+    </g>
+  </g>
+</svg>

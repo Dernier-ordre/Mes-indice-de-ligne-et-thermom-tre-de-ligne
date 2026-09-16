@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="24.5mm"
+   height="14mm"
+   viewBox="0 0 24.5 14"
+   version="1.1"
+   id="svg1"
+   inkscape:export-batch-path="C:\Users\thoma\OneDrive\Bureau"
+   inkscape:export-batch-name=""
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="24.5"
+       height="14"
+       id="page1"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <clipPath
+       id="presentation_clip_path-04-82"
+       clipPathUnits="userSpaceOnUse">
+   <rect
+   x="0"
+   y="0"
+   width="2450"
+   height="1400"
+   id="rect1-40-1" />
+
+  </clipPath>
+    <clipPath
+       id="clip_path_1-827-1"
+       clipPathUnits="userSpaceOnUse">
+          <path
+   d="M 0,0 H 2449 V 1399 H 0 Z"
+   id="path14-71-9" />
+
+         </clipPath>
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(68.52199,-188.23229)">
+    <g
+       style="fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round"
+       id="g104-9"
+       transform="matrix(0.01,0,0,0.01,-68.52199,188.23229)"
+       inkscape:export-filename="L11.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       inkscape:label="Ligne 11">
+      <g
+         id="g13-71-4">
+  <g
+   id="id2-40-1"
+   class="Master_Slide">
+   <g
+   id="bg-id2-61-9"
+   class="Background" />
+
+   <g
+   id="bo-id2-21-6"
+   class="BackgroundObjects" />
+
+  </g>
+
+ </g>
+      <g
+         class="SlideGroup"
+         id="g20-4-9">
+  <g
+   id="g19-95-8">
+   <g
+   id="container-id1-2-2">
+    <g
+   id="id1-34-5"
+   class="Slide"
+   clip-path="url(#presentation_clip_path-04-82)">
+     <g
+   class="Page"
+   id="g18-1-5">
+      <g
+   class="Graphic"
+   id="g17-52-4">
+       <g
+   id="id3-31-9">
+        <rect
+   class="BoundingBox"
+   stroke="none"
+   fill="none"
+   x="0"
+   y="0"
+   width="2450"
+   height="1400"
+   id="rect13-6-1" />
+
+        <defs
+   id="defs14-8-2" />
+
+        <g
+   clip-path="url(#clip_path_1-827-1)"
+   id="g15-26-8">
+         <path
+   fill="none"
+   stroke="#ff1a73"
+   stroke-width="125"
+   stroke-linejoin="miter"
+   d="M 62,62 H 2387 V 1337 H 62 Z"
+   id="path15-0-3"
+   style="stroke:#c20344;stroke-opacity:1" />
+
+        </g>
+
+        <text
+   class="SVGTextShape"
+   id="text17-49-9"
+   style="fill:#c20344;fill-opacity:1"><tspan
+     class="TextParagraph"
+     id="tspan17-46-3"
+     style="fill:#c20344;fill-opacity:1"><tspan
+       class="TextPosition"
+       x="571"
+       y="1128"
+       id="tspan16-03-9"
+       style="fill:#c20344;fill-opacity:1"><tspan
+         font-family="'Liberation Sans', sans-serif"
+         font-size="1235px"
+         font-weight="700"
+         fill="#ff1a73"
+         stroke="none"
+         style="white-space:pre;fill:#c20344;fill-opacity:1"
+         id="tspan15-62-6">11</tspan></tspan></tspan></text>
+
+       </g>
+
+      </g>
+
+     </g>
+
+    </g>
+
+   </g>
+
+  </g>
+
+ </g>
+    </g>
+  </g>
+</svg>

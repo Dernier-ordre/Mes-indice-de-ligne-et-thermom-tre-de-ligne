@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="24.5mm"
+   height="14mm"
+   viewBox="0 0 24.5 14"
+   version="1.1"
+   id="svg1"
+   inkscape:export-batch-path="C:\Users\thoma\OneDrive\Bureau"
+   inkscape:export-batch-name=""
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="24.5"
+       height="14"
+       id="page1"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect79-4-0-0-8">
+      <rect
+         style="display:none;opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+         id="rect737-5"
+         width="1270.9302"
+         height="1148.0061"
+         x="27749.107"
+         y="2890.4697"
+         d="m 27749.107,2890.4697 h 1270.931 v 1148.0061 h -1270.931 z" />
+      <path
+         id="lpe_path-effect79-4-0-0-6"
+         style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:0;stroke-opacity:1"
+         class="powerclip"
+         d="m 26691.5,2759.8999 h 2460 v 1410 h -2460 z m 1057.607,130.5698 v 1148.0061 h 1270.931 V 2890.4697 Z" />
+    </clipPath>
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect79-4-0-0-6"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(38.41505,-62.333906)">
+    <g
+       id="g99-5-2"
+       transform="matrix(0.01,0,0,0.01,-332.84033,64.725267)"
+       style="fill:#08bf00;fill-opacity:1;fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round"
+       inkscape:label="Ligne S3">
+      <path
+         style="fill:#96002f;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+         id="rect77-9-5-6-5"
+         width="2450"
+         height="1400"
+         x="26696.5"
+         y="2764.8999"
+         clip-path="url(#clipath_lpe_path-effect79-4-0-0-8)"
+         inkscape:path-effect="#path-effect79-4-0-0-6"
+         sodipodi:type="rect"
+         d="m 26696.5,2764.8999 h 2450 v 1400 h -2450 z"
+         transform="translate(2746.028,-3004.036)" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1441.87px;line-height:2;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';text-align:start;letter-spacing:7.82266px;word-spacing:0.625811px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+         x="29567.32"
+         y="963.50177"
+         id="text79-2-6-82-9"><tspan
+           sodipodi:role="line"
+           id="tspan79-0-7-6-5"
+           style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;fill-opacity:1;stroke-width:0"
+           x="29567.32"
+           y="963.50177">S</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1236.54px;line-height:2;font-family:'Liberation Sans', sans-serif;-inkscape-font-specification:'Liberation Sans, sans-serif Bold';text-align:start;letter-spacing:6.70871px;word-spacing:0.536697px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#96002f;fill-opacity:1;fill-rule:evenodd;stroke:#33ff33;stroke-width:0;stroke-opacity:1"
+         x="30788.27"
+         y="886.22638"
+         id="text80-7-3-8-3"><tspan
+           sodipodi:role="line"
+           style="fill:#96002f;fill-opacity:1;stroke-width:0"
+           x="30788.27"
+           y="886.22638"
+           id="tspan97-4-1-5">3</tspan></text>
+    </g>
+  </g>
+</svg>
